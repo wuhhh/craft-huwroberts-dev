@@ -1,0 +1,44 @@
+dateModified: 1715590326
+email:
+  fromEmail: hello@rootsy.co.uk
+  fromName: 'Huw Roberts | Freelance Web Developer'
+  transportType: craft\mail\transportadapters\Sendmail
+meta:
+  __names__:
+    25a33ae6-3901-458a-8998-5f63d864a3f3: 'Huw Roberts | Freelance Web Developer' # Huw Roberts | Freelance Web Developer
+    80763c4f-603e-4f78-8e46-e05e80044efe: 'Huw Roberts | Freelance Web Developer' # Huw Roberts | Freelance Web Developer
+    bd8c65e7-b611-45be-8f4c-658c6cf4a0f7: Simple # Simple
+plugins:
+  ckeditor:
+    edition: standard
+    enabled: true
+    schemaVersion: 3.0.0.0
+  cp-field-inspect:
+    edition: standard
+    enabled: true
+    schemaVersion: 1.0.0
+  hyper:
+    edition: standard
+    enabled: true
+    schemaVersion: 1.0.0
+  seomatic:
+    edition: standard
+    enabled: true
+    schemaVersion: 3.0.12
+  vite:
+    edition: standard
+    enabled: true
+    schemaVersion: 1.0.0
+system:
+  edition: solo
+  live: true
+  name: 'Huw Roberts | Freelance Web Developer'
+  schemaVersion: 5.0.0.20
+  timeZone: America/Los_Angeles
+users:
+  allowPublicRegistration: false
+  defaultGroup: null
+  photoSubpath: null
+  photoVolumeUid: null
+  require2fa: false
+  requireEmailVerification: true
