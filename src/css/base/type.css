@@ -1,0 +1,51 @@
+@layer base {
+  body {
+    @apply font-sans base-sans font-light antialiased;
+  }
+}
+
+@layer utilities {
+  .heading0 {
+    @apply font-sans font-bold text-[64px] leading-[126%] tracking-[2%];
+  }
+
+  .heading1 {
+    @apply font-sans font-medium text-[52px] leading-[126%];
+  }
+
+  .heading2 {
+    @apply font-sans font-medium text-[45px] leading-[126%];
+  }
+
+  .heading3 {
+    @apply font-sans font-medium text-[40px] leading-[126%];
+  }
+
+  .heading4 {
+    @apply font-sans font-medium text-[37px] leading-[126%];
+  }
+
+  .heading5 {
+    @apply font-sans font-medium text-[26px] leading-[126%] -tracking-[1%];
+  }
+
+  .base-sans {
+    @apply font-sans font-light text-[24px] leading-[140%];
+  }
+
+  .sm-sans {
+    @apply font-sans font-light text-lg leading-[135%];
+  }
+
+  .heading2-mono {
+    @apply font-mono text-[21px] leading-[140%];
+  }
+
+  .heading3-mono {
+    @apply font-mono text-[19px] leading-normal;
+  }
+
+  .base-mono {
+    @apply font-mono text-base leading-normal;
+  }
+}
