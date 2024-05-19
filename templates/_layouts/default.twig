@@ -14,6 +14,10 @@
     <title>{{ siteName }}</title>
     {% include "_includes/scripts.twig" %}
   </head>
+
+  {% set lang = currentSite.language %}
+  {% set langAlt = lang == "en-GB" ? "cy-GB" : "en-GB" %}
+
   {% block bodyTag %}
  		<body class="relative flex flex-col min-h-screenh antialiased">
       <a class="skip-link" href="#main" tabindex="1">Skip to content</a>
