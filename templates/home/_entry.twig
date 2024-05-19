@@ -1,0 +1,30 @@
+{% extends "_layouts/default" %}
+
+{% block content %}
+
+  <div
+    x-data
+    class="container"
+  >
+
+    <div class="py-[124px] md:py-[156px] 2xl:py-[172px]">
+
+      {% include "_includes/langSelect" %}
+
+      {% set lang = currentSite.language %}
+      {% set langAlt = lang == "en-GB" ? "cy-GB" : "en-GB" %}
+      {% set entryAlt = craft.entries.language(langAlt).id(entry.id).one() ?? null %}
+
+      <h1
+        data-localised="{{ entryAlt.heading|nl2br|escape|default('') }}"
+        class="heading1"
+      >{{ entry.heading|nl2br }}</h1>
+
+    </div>
+
+    {% include "_includes/work" %}
+
+  </div>
+
+
+{% endblock %}
