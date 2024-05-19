@@ -1,0 +1,26 @@
+<header class="site-header sticky top-0 pt-8 md:pt-[52px] 2xl:pt-[60px]">
+  <div class="container flex justify-between items-center">
+    <a
+      href="{{ siteUrl }}"
+      aria-label="{{ siteUrl }} home"
+      class="size-[44px] border-2 border-black flex items-center justify-center md:size-14 md:border-[3px] 2xl:border-4"
+    >
+      {{ svg('@webroot/dist/images/h--logomark.svg', true, true)|attr({ class: 'w-[14px] md:w-[18px]' }) }}
+    </a>
+
+    <nav class="flex gap-x-12 md:gap-24">
+      <a
+        class="font-medium text-[17px] md:text-[22px] 2xl:text-[28px]"
+        href="#"
+      >
+        Who?
+      </a>
+      <a
+        class="font-medium text-[17px] md:text-[22px] 2xl:text-[28px]"
+        href="#"
+      >
+        Say hello!
+      </a>
+    </nav>
+  </div>
+</header>
