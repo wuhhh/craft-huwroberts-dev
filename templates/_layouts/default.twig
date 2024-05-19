@@ -12,13 +12,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="origin-when-cross-origin" />
     <title>{{ siteName }}</title>
-    {% include "_includes/fonts.twig" %}
     {% include "_includes/scripts.twig" %}
   </head>
   {% block bodyTag %}
  		<body class="relative flex flex-col min-h-screenh antialiased">
       <a class="skip-link" href="#main" tabindex="1">Skip to content</a>
   {% endblock %}
+  {% include "_includes/header" only %}
 	{% block content %}{% endblock %}
   </body>
 </html>
