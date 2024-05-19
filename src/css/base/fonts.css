@@ -1,0 +1,51 @@
+@layer base {
+  @font-face {
+    font-family: 'bm';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src:
+      url('/dist/fonts/bm/bm-regular.woff2') format('woff2'),
+      url('/dist/fonts/bm/bm-regular.woff') format('woff');
+  }
+
+  /* @font-face {
+    font-family: 'gs';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src:
+      url('/dist/fonts/gs/gs-regular.woff2') format('woff2'),
+      url('/dist/fonts/gs/gs-regular.woff') format('woff');
+  } */
+
+  @font-face {
+    font-family: 'gs';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src:
+      url('/dist/fonts/gs/gs-light.woff2') format('woff2'),
+      url('/dist/fonts/gs/gs-light.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'gs';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src:
+      url('/dist/fonts/gs/gs-medium.woff2') format('woff2'),
+      url('/dist/fonts/gs/gs-medium.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'gs';
+    font-style: normal;
+    font-weight: bold;
+    font-display: swap;
+    src:
+      url('/dist/fonts/gs/gs-bold.woff2') format('woff2'),
+      url('/dist/fonts/gs/gs-bold.woff') format('woff');
+  }
+}
