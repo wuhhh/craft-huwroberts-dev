@@ -1,0 +1,32 @@
+defaultPlacement: end
+enableVersioning: true
+entryTypes:
+  - c0160475-3256-40fc-89bf-3e63d0add54c # Home
+handle: home
+maxAuthors: 1
+name: Home
+previewTargets:
+  -
+    __assoc__:
+      -
+        - label
+        - 'Primary entry page'
+      -
+        - urlFormat
+        - '{url}'
+      -
+        - refresh
+        - '1'
+propagationMethod: all
+siteSettings:
+  5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: # Huw Roberts | Datblygwr Gwe Llawrydd
+    enabledByDefault: true
+    hasUrls: true
+    template: home/_entry
+    uriFormat: __home__
+  25a33ae6-3901-458a-8998-5f63d864a3f3: # Huw Roberts | Freelance Web Developer
+    enabledByDefault: true
+    hasUrls: true
+    template: home/_entry
+    uriFormat: __home__
+type: single

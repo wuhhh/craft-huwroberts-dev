@@ -1,13 +1,20 @@
-dateModified: 1715590326
+dateModified: 1715955678
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
   transportType: craft\mail\transportadapters\Sendmail
 meta:
   __names__:
+    5c24cd7c-3d48-44f0-831a-3abc4d6b54ff: Work # Work
+    5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: 'Huw Roberts | Datblygwr Gwe Llawrydd' # Huw Roberts | Datblygwr Gwe Llawrydd
+    6c0338fc-c096-4d7d-bef5-22406ee8bbe6: Heading # Heading
+    7d71bee4-9355-40e3-8514-ee80a2a15c2f: Home # Home
+    9df05e4c-ad18-498a-9fba-144f3ed8f8db: Summary # Summary
     25a33ae6-3901-458a-8998-5f63d864a3f3: 'Huw Roberts | Freelance Web Developer' # Huw Roberts | Freelance Web Developer
-    80763c4f-603e-4f78-8e46-e05e80044efe: 'Huw Roberts | Freelance Web Developer' # Huw Roberts | Freelance Web Developer
+    80763c4f-603e-4f78-8e46-e05e80044efe: 'Huw Roberts' # Huw Roberts
     bd8c65e7-b611-45be-8f4c-658c6cf4a0f7: Simple # Simple
+    c0160475-3256-40fc-89bf-3e63d0add54c: Home # Home
+    f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae: Work # Work
 plugins:
   ckeditor:
     edition: standard
@@ -20,10 +27,12 @@ plugins:
   hyper:
     edition: standard
     enabled: true
+    licenseKey: UDDM44M3ZSVWYC1RU23YT5KQ
     schemaVersion: 1.0.0
   seomatic:
     edition: standard
     enabled: true
+    licenseKey: LXIUM7N8HL6R4M4ER2B2DXEK
     schemaVersion: 3.0.12
   vite:
     edition: standard
@@ -32,9 +41,10 @@ plugins:
 system:
   edition: solo
   live: true
-  name: 'Huw Roberts | Freelance Web Developer'
+  name: 'Huw Roberts'
+  retryDuration: null
   schemaVersion: 5.0.0.20
-  timeZone: America/Los_Angeles
+  timeZone: Europe/London
 users:
   allowPublicRegistration: false
   defaultGroup: null

@@ -1,8 +1,9 @@
 baseUrl: $PRIMARY_SITE_URL
+enabled: true
 handle: default
 hasUrls: true
 language: en-GB
 name: 'Huw Roberts | Freelance Web Developer'
 primary: true
-siteGroup: 80763c4f-603e-4f78-8e46-e05e80044efe # Huw Roberts | Freelance Web Developer
+siteGroup: 80763c4f-603e-4f78-8e46-e05e80044efe # Huw Roberts
 sortOrder: 1

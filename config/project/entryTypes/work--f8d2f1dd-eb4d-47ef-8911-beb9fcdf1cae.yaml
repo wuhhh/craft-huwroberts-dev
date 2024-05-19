@@ -1,0 +1,65 @@
+color: violet
+fieldLayouts:
+  bdf11e45-a581-46bf-892a-ed49a53f7289:
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            disabled: false
+            elementCondition: null
+            id: null
+            includeInCards: false
+            inputType: null
+            instructions: null
+            label: null
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            providesThumbs: false
+            readonly: false
+            requirable: false
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\entries\EntryTitleField
+            uid: 93a5014b-ebe6-4c72-bb2c-8afe2016799c
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            elementCondition: null
+            fieldUid: 9df05e4c-ad18-498a-9fba-144f3ed8f8db # Summary
+            handle: null
+            includeInCards: false
+            instructions: null
+            label: null
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: cdda0965-32c2-4e39-aac7-016c09bacda7
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: 60097500-d3c0-4650-887d-55df7a025306
+        userCondition: null
+handle: work
+hasTitleField: true
+icon: alien
+name: Work
+showSlugField: true
+showStatusField: true
+slugTranslationKeyFormat: ''
+slugTranslationMethod: none
+titleFormat: ''
+titleTranslationKeyFormat: ''
+titleTranslationMethod: none
