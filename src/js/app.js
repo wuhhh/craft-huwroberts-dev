@@ -2,7 +2,7 @@
 import "@js/parts/css";
 
 /* Non-alpine JS */
-// 
+//
 
 /**
  * Alpine JS
@@ -10,10 +10,16 @@ import "@js/parts/css";
  * when components start getting initialized.
 */
 import Alpine from 'alpinejs';
-import alpineComponent from "@js/parts/alpineComponent";
+import langToggle from './parts/langToggle';
+import global from './stores/global';
+
+console.log(global);
 
 /* Register components */
-Alpine.data('alpineComponent', alpineComponent); 
+Alpine.data('langToggle', langToggle);
+Alpine.store('global', global());
+
+/* Stores */
 
 Alpine.start();
 
