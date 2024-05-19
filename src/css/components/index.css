@@ -1,1 +1,15 @@
 @import 'tailwindcss/components';
+
+@layer components {
+  .container {
+    @apply w-full max-w-[1728px] mx-auto px-[26px];
+
+    @screen md {
+      @apply px-12;
+    }
+
+    @screen 2xl {
+      @apply px-20;
+    }
+  }
+}
