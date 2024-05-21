@@ -11,15 +11,13 @@ import "@js/parts/css";
 */
 import Alpine from 'alpinejs';
 import langToggle from './parts/langToggle';
-import global from './stores/global';
-
-console.log(global);
+import localisation from './stores/localisation';
 
 /* Register components */
 Alpine.data('langToggle', langToggle);
-Alpine.store('global', global());
 
 /* Stores */
+Alpine.store('localisation', localisation());
 
 Alpine.start();
 
