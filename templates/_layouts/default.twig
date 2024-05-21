@@ -22,7 +22,7 @@
  		<body class="relative flex flex-col min-h-screenh antialiased">
       <a class="skip-link" href="#main" tabindex="1">Skip to content</a>
   {% endblock %}
-  {% include "_includes/header" only %}
+  {% include "_includes/header" with { lang: lang } only %}
 	{% block content %}{% endblock %}
   </body>
 </html>
