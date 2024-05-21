@@ -10,16 +10,34 @@
 
     <nav class="flex gap-x-12 md:gap-24">
       <a
+        {% if lang == "en-GB" %}
+          data-localised="Pwy?"
+        {% else %}
+          data-localised="Who?"
+        {% endif %}
         class="font-medium text-[17px] md:text-[22px] 2xl:text-[28px]"
         href="#"
       >
-        Who?
+        {% if lang == "en-GB" %}
+          Who?
+        {% else %}
+          Pwy?
+        {% endif %}
       </a>
       <a
+        {% if lang == "en-GB" %}
+          data-localised="Dwedwch Helo!"
+        {% else %}
+          data-localised="Say hello!"
+        {% endif %}
         class="font-medium text-[17px] md:text-[22px] 2xl:text-[28px]"
         href="#"
       >
-        Say hello!
+        {% if lang == "en-GB" %}
+          Say hello!
+        {% else %}
+          Dwedwch Helo!
+        {% endif %}
       </a>
     </nav>
   </div>
