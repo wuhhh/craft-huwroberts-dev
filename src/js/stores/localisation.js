@@ -1,4 +1,4 @@
-const global = () => {
+const localisation = () => {
   return {
     langs: ["en-GB", "cy-GB"],
     lang: document.documentElement.lang,
@@ -41,4 +41,4 @@ const global = () => {
   };
 }
 
-export default global;
+export default localisation;
