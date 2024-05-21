@@ -35,13 +35,8 @@
 
     <li>
       <a
-        @click.prevent="() => {
-          if ($store.localisation.lang != '{{ lang.language }}') {
-            $store.localisation.toggleLang('{{ lang.language }}')
-          }
-        }"
         href="{{ url }}"
-        :class="{ 'underline': $store.localisation.lang == '{{ lang.language }}' }"
+        class="{% if lang.id == craft.app.sites.currentSite.id %}underline{% endif %}"
       >{{ locale.getDisplayName(locale.id) }}</a>
       {% if not loop.last %}<span> / </span>{% endif %}
     </li>

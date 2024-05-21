@@ -10,14 +10,11 @@ import "@js/parts/css";
  * when components start getting initialized.
 */
 import Alpine from 'alpinejs';
-import langToggle from './parts/langToggle';
-import localisation from './stores/localisation';
+import focus from '@alpinejs/focus';
+import ui from '@alpinejs/ui';
 
-/* Register components */
-Alpine.data('langToggle', langToggle);
-
-/* Stores */
-Alpine.store('localisation', localisation());
+Alpine.plugin(focus);
+Alpine.plugin(ui);
 
 Alpine.start();
 

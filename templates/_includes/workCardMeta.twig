@@ -11,7 +11,6 @@
 
   {% if agency %}
     {% set agencyTitle = agency.title %}
-    {% set categoryAlt = craft.categories().language(langAlt).id(type.id).one() ?? null %}
   {% endif %}
 {% endif %}
 
@@ -22,27 +21,7 @@
 
   <div class="base-mono">
     <p>
-      {# Label (Type/Math) #}
-      <span
-        {% if lang == "en-GB" %}
-          data-localised="Math:"
-        {% else %}
-          data-localised="Type:"
-        {% endif %}
-      >
-        {% if lang == "en-GB" %}
-          Type:
-        {% else %}
-          Math:
-        {% endif %}
-      </span>
-
-      {# Category title (Agency/Commercial/Personal) #}
-      <span
-        {% if categoryAlt %}data-localised="{{ categoryAlt.title }}"{% endif %}
-      >{{ type }} </span>
-
-      {# Name of agency if applicable #}
+      <span>Type: {{ type }}</span>
       {% if isAgency %}
         <span>
           ({{ agencyTitle }})
