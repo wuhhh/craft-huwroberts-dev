@@ -1,0 +1,35 @@
+defaultPlacement: end
+enableVersioning: true
+entryTypes:
+  - b72f3694-5d2a-478c-badd-08344714d7d0 # Agency
+handle: agency
+maxAuthors: 1
+name: Agency
+previewTargets:
+  -
+    __assoc__:
+      -
+        - label
+        - 'Primary entry page'
+      -
+        - urlFormat
+        - '{url}'
+      -
+        - refresh
+        - '1'
+propagationMethod: all
+siteSettings:
+  5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: # Huw Roberts | Datblygwr Gwe Llawrydd
+    enabledByDefault: true
+    hasUrls: false
+    template: null
+    uriFormat: null
+  25a33ae6-3901-458a-8998-5f63d864a3f3: # Huw Roberts | Freelance Web Developer
+    enabledByDefault: true
+    hasUrls: false
+    template: null
+    uriFormat: null
+structure:
+  maxLevels: 1
+  uid: 548fdbe3-a33a-4e69-8c8e-54e4752cc567
+type: structure

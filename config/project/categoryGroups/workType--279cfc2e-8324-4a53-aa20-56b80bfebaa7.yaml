@@ -1,0 +1,53 @@
+defaultPlacement: end
+fieldLayouts:
+  ab01a9a1-a159-4b84-b5f2-333c1c85fd84:
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            disabled: false
+            elementCondition: null
+            id: null
+            includeInCards: false
+            inputType: null
+            instructions: null
+            label: null
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            providesThumbs: false
+            readonly: false
+            requirable: false
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\TitleField
+            uid: 189240e5-7b15-4a96-9506-1042abe240cd
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: 5b5c359c-70d8-4ddf-befd-893aab8e4a97
+        userCondition: null
+handle: workType
+name: 'Work Type'
+siteSettings:
+  5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: # Huw Roberts | Datblygwr Gwe Llawrydd
+    hasUrls: false
+    template: null
+    uriFormat: null
+  25a33ae6-3901-458a-8998-5f63d864a3f3: # Huw Roberts | Freelance Web Developer
+    hasUrls: false
+    template: null
+    uriFormat: null
+structure:
+  maxLevels: 1
+  uid: c89e980d-fa18-4457-af67-f4b52a5c3fa0

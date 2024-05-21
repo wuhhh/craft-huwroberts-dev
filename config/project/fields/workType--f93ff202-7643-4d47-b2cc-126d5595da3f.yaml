@@ -1,0 +1,22 @@
+columnSuffix: null
+handle: workType
+instructions: null
+name: 'Work Type'
+searchable: false
+settings:
+  allowSelfRelations: false
+  branchLimit: null
+  localizeRelations: false
+  maintainHierarchy: false
+  maxRelations: 1
+  minRelations: null
+  selectionLabel: null
+  showCardsInGrid: false
+  showSiteMenu: false
+  source: 'group:279cfc2e-8324-4a53-aa20-56b80bfebaa7' # Work Type
+  targetSiteId: null
+  validateRelatedElements: false
+  viewMode: list
+translationKeyFormat: null
+translationMethod: site
+type: craft\fields\Categories

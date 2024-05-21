@@ -1,20 +1,41 @@
-dateModified: 1715955678
+dateModified: 1716300724
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
   transportType: craft\mail\transportadapters\Sendmail
+fs:
+  local:
+    hasUrls: true
+    name: Local
+    settings:
+      path: '@webroot'
+    type: craft\fs\Local
+    url: '@web'
 meta:
   __names__:
+    4e5f4410-fe03-41d3-a103-8619a3dee7de: 'Live URL' # Live URL
     5c24cd7c-3d48-44f0-831a-3abc4d6b54ff: Work # Work
     5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: 'Huw Roberts | Datblygwr Gwe Llawrydd' # Huw Roberts | Datblygwr Gwe Llawrydd
     6c0338fc-c096-4d7d-bef5-22406ee8bbe6: Heading # Heading
     7d71bee4-9355-40e3-8514-ee80a2a15c2f: Home # Home
+    7e3c30a7-fdc1-41a8-af20-5e6a20bd61ac: Video # Video
     9df05e4c-ad18-498a-9fba-144f3ed8f8db: Summary # Summary
     25a33ae6-3901-458a-8998-5f63d864a3f3: 'Huw Roberts | Freelance Web Developer' # Huw Roberts | Freelance Web Developer
+    52ecdaa0-e78c-4b23-a67b-b2de241c25ac: Year # Year
+    261d41fd-97b6-4906-874d-66df44df7420: Role # Role
+    279cfc2e-8324-4a53-aa20-56b80bfebaa7: 'Work Type' # Work Type
+    763f00c3-3720-4070-ab7e-910babff9419: Tech # Tech
     80763c4f-603e-4f78-8e46-e05e80044efe: 'Huw Roberts' # Huw Roberts
+    99701ea9-a4da-4fb6-b997-541f0661f9a9: Agency # Agency
+    b72f3694-5d2a-478c-badd-08344714d7d0: Agency # Agency
     bd8c65e7-b611-45be-8f4c-658c6cf4a0f7: Simple # Simple
     c0160475-3256-40fc-89bf-3e63d0add54c: Home # Home
+    c5b973a9-a07d-4d67-acb9-a3f0cbcb1450: 'Tech Tags' # Tech Tags
+    d5f87477-e8cd-4d2e-b3b9-c8c97050dadb: Assets # Assets
+    e3f4a53d-c1e3-40fc-8be5-5523b72fadd8: Agency # Agency
+    ed859a0d-5ce9-4907-931f-8a5f8b76b2b2: 'Card Image' # Card Image
     f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae: Work # Work
+    f93ff202-7643-4d47-b2cc-126d5595da3f: 'Work Type' # Work Type
 plugins:
   ckeditor:
     edition: standard

@@ -1,0 +1,22 @@
+columnSuffix: null
+handle: techTags
+instructions: null
+name: 'Tech Tags'
+searchable: false
+settings:
+  allowSelfRelations: false
+  branchLimit: null
+  localizeRelations: false
+  maintainHierarchy: false
+  maxRelations: null
+  minRelations: null
+  selectionLabel: null
+  showCardsInGrid: false
+  showSiteMenu: false
+  source: 'taggroup:763f00c3-3720-4070-ab7e-910babff9419' # Tech
+  targetSiteId: null
+  validateRelatedElements: false
+  viewMode: null
+translationKeyFormat: null
+translationMethod: site
+type: craft\fields\Tags

@@ -1,0 +1,12 @@
+columnSuffix: null
+handle: liveUrl
+instructions: null
+name: 'Live URL'
+searchable: false
+settings:
+  maxLength: 255
+  types:
+    - url
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Url

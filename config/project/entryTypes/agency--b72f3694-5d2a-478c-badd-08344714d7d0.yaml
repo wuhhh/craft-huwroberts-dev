@@ -1,6 +1,6 @@
-color: teal
+color: fuchsia
 fieldLayouts:
-  c2f125f0-13b9-42a4-b0b2-5afbc60c616a:
+  876abadd-78f0-4dc4-b011-d0da225c4619:
     tabs:
       -
         elementCondition: null
@@ -30,36 +30,36 @@ fieldLayouts:
             tip: null
             title: null
             type: craft\fieldlayoutelements\entries\EntryTitleField
-            uid: 1006a8ec-197b-46d0-afe8-8b01dd7ea6ee
+            uid: f261ad98-97e8-453b-afee-98a876ec7873
             userCondition: null
             warning: null
             width: 100
           -
             elementCondition: null
-            fieldUid: 6c0338fc-c096-4d7d-bef5-22406ee8bbe6 # Heading
+            fieldUid: 4e5f4410-fe03-41d3-a103-8619a3dee7de # Live URL
             handle: null
             includeInCards: false
             instructions: null
-            label: null
+            label: URL
             providesThumbs: false
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
-            uid: e6fecc58-b15c-465a-a5b8-d2ceef9b288c
+            uid: 23336cc8-3300-40fe-bba5-80661a778bf0
             userCondition: null
             warning: null
             width: 100
         name: Content
-        uid: 20a74ab7-6018-4505-b33c-b8264fe51858
+        uid: 763dc329-113b-4ce9-a281-8fb91a68b7b1
         userCondition: null
-handle: home
+handle: agency
 hasTitleField: true
-icon: moon-stars
-name: Home
-showSlugField: true
+icon: mace
+name: Agency
+showSlugField: false
 showStatusField: true
 slugTranslationKeyFormat: ''
-slugTranslationMethod: site
+slugTranslationMethod: none
 titleFormat: ''
 titleTranslationKeyFormat: ''
-titleTranslationMethod: site
+titleTranslationMethod: none

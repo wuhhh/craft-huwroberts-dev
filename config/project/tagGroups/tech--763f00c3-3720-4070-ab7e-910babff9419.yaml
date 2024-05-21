@@ -1,0 +1,40 @@
+fieldLayouts:
+  1754c3a7-d47d-489a-bc3e-482663789047:
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            disabled: false
+            elementCondition: null
+            id: null
+            includeInCards: false
+            inputType: null
+            instructions: null
+            label: null
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            providesThumbs: false
+            readonly: false
+            requirable: false
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\TitleField
+            uid: 4d2ecb53-1efd-4a4b-94ca-09435e506971
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: 2d04e758-3f98-4362-8088-da328c98f585
+        userCondition: null
+handle: tech
+name: Tech
