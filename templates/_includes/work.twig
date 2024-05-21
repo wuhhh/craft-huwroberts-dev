@@ -4,15 +4,44 @@
   <article class="grid grid-cols-12 gap-x-16 gap-y-24">
     {% for entry in craft.entries.section('work').all() %}
         {% set entryAlt = craft.entries.language(langAlt).id(entry.id).one() ?? null %}
+        {% set image = entry.cardImage.one() ?? null %}
 
-        <div class="col-span-4 space-y-5">
-          <h2 class="heading3-mono">{{ entry.title }}</h2>
-          <div class="aspect-[480/288] bg-blue-100 shadow-sm"></div>
-          <div class="base-mono">
-            <p>Type: TODO</p>
-            <p>TODO</p>
-          </div>
+        <div class="relative col-span-4 space-y-5">
+          <h2 class="heading3-mono">
+            <a
+              href="{{ url(entry.uri) }}"
+              class="box-link"
+              aria-label="View {{ entry.title }} project details, opens dialog"
+            >
+              {{ entry.title }}
+            </a>
+          </h2>
+
+          {% if image %}
+            <div class="aspect-[480/288] shadow-sm">
+              {% include "_includes/picture" with {
+                disableAlt: true,
+                image: image,
+                mode: "crop",
+                classes: "object-cover w-full h-full",
+                ratio: [480, 288],
+                pictureSets: [
+                  { "1536": [480, null] },
+                  { "834": [481, null] },
+                  { "default": [414, null] },
+                ],
+              } only %}
+            </div>
+          {% endif %}
+
+          {% include "_includes/workCardMeta" with {
+            type: entry.workType,
+            year: entry.year,
+            agency: entry.agency,
+            langAlt: langAlt
+          } %}
         </div>
     {% endfor %}
   </article>
+
 {% endif %}

@@ -1,0 +1,56 @@
+{% set type = type.one() ?? null %}
+{% set isAgency = false %}
+{% set agencyTitle = null %}
+{% set agencyUrl = null %}
+{% set categoryAlt = null %}
+
+{# Safe to use slug because it is not translatable #}
+{% if type.slug == "agency" %}
+  {% set isAgency = true %}
+  {% set agency = agency.one() ?? null %}
+
+  {% if agency %}
+    {% set agencyTitle = agency.title %}
+    {% set categoryAlt = craft.categories().language(langAlt).id(type.id).one() ?? null %}
+  {% endif %}
+{% endif %}
+
+{% set year = year ?? null %}
+
+
+{% if type and year and ((isAgency and agencyTitle) or not isAgency) %}
+
+  <div class="base-mono">
+    <p>
+      {# Label (Type/Math) #}
+      <span
+        {% if lang == "en-GB" %}
+          data-localised="Math:"
+        {% else %}
+          data-localised="Type:"
+        {% endif %}
+      >
+        {% if lang == "en-GB" %}
+          Type:
+        {% else %}
+          Math:
+        {% endif %}
+      </span>
+
+      {# Category title (Agency/Commercial/Personal) #}
+      <span
+        {% if categoryAlt %}data-localised="{{ categoryAlt.title }}"{% endif %}
+      >{{ type }} </span>
+
+      {# Name of agency if applicable #}
+      {% if isAgency %}
+        <span>
+          ({{ agencyTitle }})
+        </span>
+      {% endif %}
+    </p>
+    <p>{{ year }}</p>
+  </div>
+
+{% endif %}
+

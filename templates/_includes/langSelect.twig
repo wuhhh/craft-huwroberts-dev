@@ -36,12 +36,12 @@
     <li>
       <a
         @click.prevent="() => {
-          if ($store.global.lang != '{{ lang.language }}') {
-            $store.global.toggleLang('{{ lang.language }}')
+          if ($store.localisation.lang != '{{ lang.language }}') {
+            $store.localisation.toggleLang('{{ lang.language }}')
           }
         }"
         href="{{ url }}"
-        :class="{ 'underline': $store.global.lang == '{{ lang.language }}' }"
+        :class="{ 'underline': $store.localisation.lang == '{{ lang.language }}' }"
       >{{ locale.getDisplayName(locale.id) }}</a>
       {% if not loop.last %}<span> / </span>{% endif %}
     </li>
