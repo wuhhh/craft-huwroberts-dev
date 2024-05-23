@@ -6,21 +6,16 @@
     x-data
     class="container"
   >
-    <div class="py-[124px] md:py-[156px] 2xl:py-[172px]">
+    <div class="pt-[200px] pb-[124px] md:pt-[264px] md:pb-[156px] 2xl:pt-[288px] 2xl:pb-[172px]">
 
       {% include "_includes/langSelect" %}
-      {% set entryAlt = craft.entries.language(langAlt).id(entry.id).one() ?? null %}
 
-      <h1
-        data-localised="{{ entryAlt.heading|nl2br|escape|default('') }}"
-        class="heading5 md:heading2 2xl:heading1"
-      >{{ entry.heading|nl2br }}</h1>
+      <h1 class="heading5 md:w-full md:max-w-[756px] md:heading2 xl:max-w-none 2xl:heading1">{{ entry.heading|nl2br }}</h1>
 
     </div>
 
     {% include "_includes/work" with { lang: lang, langAlt: langAlt } only %}
 
   </div>
-
 
 {% endblock %}
