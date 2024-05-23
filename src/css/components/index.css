@@ -2,14 +2,14 @@
 
 @layer components {
   .container {
-    @apply w-full max-w-[1728px] mx-auto px-[26px];
+    @apply w-full max-w-screen-3xl mx-auto px-[26px];
 
     @screen md {
       @apply px-12;
     }
 
     @screen 2xl {
-      @apply px-20;
+      @apply px-[var(--3xl-px)];
     }
   }
 }
