@@ -1,3 +1,9 @@
 @import 'base/index.css';
 @import 'components/index.css';
 @import 'utilities/index.css';
+
+:root {
+  --3xl-w: 1728px;
+  --3xl-px: 80px;
+  --3xl-panel-w: calc(((100vw - var(--3xl-w)) / 2) + (var(--3xl-w) / 100 * 87));
+}
