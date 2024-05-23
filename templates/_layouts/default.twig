@@ -20,9 +20,10 @@
 
   {% block bodyTag %}
  		<body class="relative flex flex-col min-h-screenh antialiased">
-      <a class="skip-link" href="#main" tabindex="1">Skip to content</a>
+      <a class="skip-link" href="#main" tabindex="1">{{ "Skip to content"|t }}</a>
   {% endblock %}
-  {% include "_includes/header" with { lang: lang } only %}
+  {% include "_includes/header" only %}
 	{% block content %}{% endblock %}
+  {% include "_includes/footer" only %}
   </body>
 </html>
