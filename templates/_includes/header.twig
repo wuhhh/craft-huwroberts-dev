@@ -1,44 +1,30 @@
-<header class="site-header sticky top-0 pt-8 md:pt-[52px] 2xl:pt-[60px]">
-  <div class="container flex justify-between items-center">
+<div class="fixed top-0 inset-x-0 z-20 pointer-events-none pt-8 md:pt-[52px] 2xl:pt-[60px]">
+  <div class="container">
     <a
       href="{{ siteUrl }}"
-      aria-label="{{ siteUrl }} home"
+      aria-label="{{ siteUrl }} {{ "home"|t }}"
       class="size-[44px] border-2 border-black flex items-center justify-center md:size-14 md:border-[3px] 2xl:border-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-blue-700"
     >
       {{ svg('@webroot/dist/images/h--logomark.svg', true, true)|attr({ class: 'w-[14px] md:w-[18px]' }) }}
     </a>
+  </div>
+</div>
 
-    <nav class="flex gap-x-12 md:gap-24">
+<div class="fixed top-0 inset-x-0 z-10 pointer-events-auto pt-8 md:pt-[52px] 2xl:pt-[60px]">
+  <div class="container">
+    <nav class="flex items-center justify-end gap-x-12 h-[44px] md:h-14 md:gap-24">
       <a
-        {% if lang == "en-GB" %}
-          data-localised="Pwy?"
-        {% else %}
-          data-localised="Who?"
-        {% endif %}
         class="font-medium text-[17px] md:text-[22px] 2xl:text-[28px]"
         href="#"
       >
-        {% if lang == "en-GB" %}
-          Who?
-        {% else %}
-          Pwy?
-        {% endif %}
+        {{ "Who?"|t }}
       </a>
       <a
-        {% if lang == "en-GB" %}
-          data-localised="Dwedwch Helo!"
-        {% else %}
-          data-localised="Say hello!"
-        {% endif %}
         class="font-medium text-[17px] md:text-[22px] 2xl:text-[28px]"
         href="#"
       >
-        {% if lang == "en-GB" %}
-          Say hello!
-        {% else %}
-          Dwedwch Helo!
-        {% endif %}
+        {{ "Say hello!"|t }}
       </a>
     </nav>
   </div>
-</header>
+</div>
