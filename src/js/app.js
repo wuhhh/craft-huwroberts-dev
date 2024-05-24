@@ -11,9 +11,11 @@ import "@js/parts/css";
 */
 import Alpine from 'alpinejs';
 import focus from '@alpinejs/focus';
+import intersect from '@alpinejs/intersect';
 import ui from '@alpinejs/ui';
 
 Alpine.plugin(focus);
+Alpine.plugin(intersect);
 Alpine.plugin(ui);
 
 Alpine.start();
