@@ -1,0 +1,14 @@
+{% set tags = tags ?? null %}
+
+{% if tags %}
+
+  <div class="sr-only">Tags:</div>
+  <div class="flex flex-wrap gap-3 md:gap-4">
+    {% for tag in tags %}
+      {% include "_includes/tag" with {
+        tag: tag,
+      } only %}
+    {% endfor %}
+  </div>
+
+{% endif %}
