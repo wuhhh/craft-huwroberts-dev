@@ -1,5 +1,6 @@
 {% set work = craft.entries.section('work') %}
 {% set workEntries = work.all() ?? [] %}
+{% set navStyle = "icon" %} {# "icon" or "text" #}
 
 {% if workEntries|length %}
 
@@ -158,48 +159,98 @@
           <div class="container">
 
             {# Nav and close buttons #}
-            <div class="pointer-events-none pt-8 md:pt-[52px] 2xl:pt-[60px]">
+            <div class="sticky top-0 inset-x-0 pointer-events-none pt-8 md:pt-[52px] 2xl:pt-[60px]">
               <div class="grid grid-cols-12 gap-x-16">
                 <div class="col-span-9 col-start-3">
                   <div class="base-mono flex items-center justify-between">
 
                     {# Close #}
-                    <button
-                      type="button"
-                      @click="$dialog.close()"
-                      @keydown.escape.window="$dialog.close()"
-                      class="pointer-events-auto group"
-                    >
-                      <span>[Esc] <span class="group-hover:underline">Close</span></span>
-                    </button>
+                    {% if navStyle == "icon" %}
+
+                      <button
+                        type="button"
+                        @click="$dialog.close()"
+                        @keydown.escape.window="$dialog.close()"
+                        class="pointer-events-auto transition hover:rotate-90"
+                      >
+                        <span>{{ svg('@webroot/dist/images/icon--close.svg', true, true)|attr({ class: 'w-[44px]' }) }}</span>
+                      </button>
+
+                    {% else %}
+
+                      <button
+                        type="button"
+                        @click="$dialog.close()"
+                        @keydown.escape.window="$dialog.close()"
+                        class="pointer-events-auto group"
+                      >
+                        <span>[Esc] <span class="group-hover:underline">Close</span></span>
+                      </button>
+
+                    {% endif %}
 
                     {# Nav #}
                     <div class="flex items-center justify-end gap-x-2">
-                      {# Prev #}
-                      <button
-                        class="pointer-events-auto group"
-                        :class="{ 'pointer-events-none text-gray-400': !hasPrev() }"
-                        :tabindex="hasPrev() ? 0 : -1"
-                        aria-label="Previous project"
-                        @click="prev()"
-                        @keydown.left.window="showSlideover && prev()"
-                        >
-                        <span>[&#8592;] <span class="group-hover:underline">Previous</span></span>
-                      </button>
 
-                      <span class="text-gray-300"> / </span>
+                      {# Prev #}
+                      {% if navStyle == "icon" %}
+
+                        <button
+                          class="pointer-events-auto"
+                          :class="{ 'pointer-events-none text-gray-400': !hasPrev() }"
+                          :tabindex="hasPrev() ? 0 : -1"
+                          aria-label="Previous project"
+                          @click="prev()"
+                          @keydown.left.window="showSlideover && prev()"
+                        >
+                          <span>{{ svg('@webroot/dist/images/icon--arrow-right-circ.svg', true, true)|attr({ class: 'w-[44px] rotate-180' }) }}</span>
+                        </button>
+
+                      {% else %}
+
+                        <button
+                          class="pointer-events-auto group"
+                          :class="{ 'pointer-events-none text-gray-400': !hasPrev() }"
+                          :tabindex="hasPrev() ? 0 : -1"
+                          aria-label="Previous project"
+                          @click="prev()"
+                          @keydown.left.window="showSlideover && prev()"
+                          >
+                          <span>[&#8592;] <span class="group-hover:underline">Previous</span></span>
+                        </button>
+
+                        <span class="text-gray-300"> / </span>
+
+                      {% endif %}
 
                       {# Next #}
-                      <button
-                        class="pointer-events-auto group"
-                        :class="{ 'pointer-events-none text-gray-400': !hasNext() }"
-                        :tabindex="hasNext() ? 0 : -1"
-                        aria-label="Next project"
-                        @click="next()"
-                        @keydown.right.window="showSlideover && next()"
-                      >
-                        <span><span class="group-hover:underline">Next</span> [&#8594;] </span>
-                      </button>
+                      {% if navStyle == "icon" %}
+
+                        <button
+                          class="pointer-events-auto"
+                          :class="{ 'pointer-events-none text-gray-400': !hasNext() }"
+                          :tabindex="hasNext() ? 0 : -1"
+                          aria-label="Next project"
+                          @click="next()"
+                          @keydown.right.window="showSlideover && next()"
+                        >
+                          <span>{{ svg('@webroot/dist/images/icon--arrow-right-circ.svg', true, true)|attr({ class: 'w-[44px]' }) }}</span>
+                        </button>
+
+                      {% else %}
+
+                        <button
+                          class="pointer-events-auto group"
+                          :class="{ 'pointer-events-none text-gray-400': !hasNext() }"
+                          :tabindex="hasNext() ? 0 : -1"
+                          aria-label="Next project"
+                          @click="next()"
+                          @keydown.right.window="showSlideover && next()"
+                        >
+                          <span><span class="group-hover:underline">Next</span> [&#8594;] </span>
+                        </button>
+
+                      {% endif %}
 
                     </div>
                   </div>
