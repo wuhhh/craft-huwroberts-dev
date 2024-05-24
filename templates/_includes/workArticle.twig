@@ -50,7 +50,7 @@
       {# Video #}
       {# {% if video %} #}
         <div class="w-full max-w-[1160px]">
-          <div class="aspect-[1160/680] bg-[#f1f1f1] flex items-center justify-center">
+          <div class="aspect-[1160/680] bg-gray-50 flex items-center justify-center">
             {# <div class="aspect-[960/576] w-full max-w-[960px] bg-green-500 flex items-center justify-center shadow-sm">
               <div class="base-mono">VIDEO</div>
             </div> #}
@@ -66,11 +66,11 @@
             </video> #}
 
             {% if cardImage %}
-              <div class="relative aspect-[960/576] w-full max-w-[960px] shadow-sm">
+              <div class="relative aspect-[960/576] w-full max-w-[960px]">
                 {% include "_includes/picture" with {
                   image: cardImage,
                   mode: "fit",
-                  classes: "object-cover w-full h-full",
+                  classes: "object-cover w-full h-full rounded-sm",
                   ratio: [960, 576],
                   pictureSets: [
                     { "default": [960, null] },

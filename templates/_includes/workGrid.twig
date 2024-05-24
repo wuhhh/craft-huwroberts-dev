@@ -91,7 +91,7 @@
                 disableAlt: true,
                 image: image,
                 mode: "crop",
-                classes: "object-cover w-full h-full",
+                classes: "object-cover w-full h-full rounded-sm",
                 ratio: [480, 288],
                 pictureSets: [
                   { "467": [560, null] },
@@ -129,7 +129,7 @@
       {# Backdrop overlay #}
       <div
         x-dialog:overlay
-        x-transition.opacity.duration.300ms
+        x-transition.opacity.duration.600ms
         class="fixed inset-0 bg-[#dfdfdf]/65 backdrop-blur-lg"
       ></div>
 
@@ -137,10 +137,10 @@
       <div
         class="fixed inset-y-0 right-0 bg-white w-[var(--panel-w)] 3xl:w-[var(--3xl-panel-w)]"
         x-show="showSlideover"
-        x-transition:enter="transition duration-200"
+        x-transition:enter="transition duration-500"
         x-transition:enter-start="translate-x-8 opacity-0"
         x-transition:enter-end="translate-x-0 opacity-100"
-        x-transition:leave="transition duration-200"
+        x-transition:leave="transition duration-500"
         x-transition:leave-start="translate-x-0 opacity-100"
         x-transition:leave-end="translate-x-8 opacity-0"
       ></div>
@@ -153,7 +153,7 @@
         <div
           x-ref="panel-content"
           x-show="showSlideover"
-          x-transition.opacity.duration.300ms
+          x-transition.opacity.duration.500ms
           class="absolute inset-0 overflow-auto -ml-[var(--panel-away-w)] 3xl:-ml-[calc(100vw-var(--3xl-panel-w))]"
         >
           <div class="container">
@@ -197,7 +197,7 @@
 
                         <button
                           class="pointer-events-auto"
-                          :class="{ 'pointer-events-none text-gray-400': !hasPrev() }"
+                          :class="{ 'pointer-events-none text-gray-300': !hasPrev() }"
                           :tabindex="hasPrev() ? 0 : -1"
                           aria-label="Previous project"
                           @click="prev()"
@@ -210,7 +210,7 @@
 
                         <button
                           class="pointer-events-auto group"
-                          :class="{ 'pointer-events-none text-gray-400': !hasPrev() }"
+                          :class="{ 'pointer-events-none text-gray-100': !hasPrev() }"
                           :tabindex="hasPrev() ? 0 : -1"
                           aria-label="Previous project"
                           @click="prev()"
@@ -219,7 +219,7 @@
                           <span>[&#8592;] <span class="group-hover:underline">Previous</span></span>
                         </button>
 
-                        <span class="text-gray-300"> / </span>
+                        <span class="text-gray-100"> / </span>
 
                       {% endif %}
 
@@ -228,7 +228,7 @@
 
                         <button
                           class="pointer-events-auto"
-                          :class="{ 'pointer-events-none text-gray-400': !hasNext() }"
+                          :class="{ 'pointer-events-none text-gray-100': !hasNext() }"
                           :tabindex="hasNext() ? 0 : -1"
                           aria-label="Next project"
                           @click="next()"
@@ -272,7 +272,7 @@
       {# Click away region #}
       <div
         @click="$dialog.close()"
-        class="fixed left-0 inset-y-0 w-[var(--panel-away-w)] 3xl:w-[var(--3xl-panel-away-w)]"
+        class="cursor-w-resize fixed left-0 inset-y-0 w-[var(--panel-away-w)] 3xl:w-[var(--3xl-panel-away-w)]"
       ></div>
 
     </div> {# /Slideover #}
