@@ -42,4 +42,5 @@ return [
     'timezone' => 'UTC',
     'transformGifs' => false,
     'useEmailAsUsername' => true,
+	'maxUploadFileSize' => '100M',
 ];
