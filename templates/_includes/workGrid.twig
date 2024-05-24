@@ -17,20 +17,34 @@
         this.showSlideover = true;
       },
 
+      top: function () {
+        this.$refs['panel-content'].scrollTo({ top: 0, behavior: 'instant' });
+      },
+
       prev: function () {
-        const index = this.workIDs.indexOf(this.selected);
-        const prevIndex = index - 1;
-        if (prevIndex >= 0) {
-          this.selected = this.workIDs[prevIndex];
+        if (this.hasPrev()) {
+          this.selected = this.workIDs[this.index() - 1];
+          this.top();
         }
       },
 
       next: function () {
-        const index = this.workIDs.indexOf(this.selected);
-        const nextIndex = index + 1;
-        if (nextIndex < this.workIDs.length) {
-          this.selected = this.workIDs[nextIndex];
+        if (this.hasNext()) {
+          this.selected = this.workIDs[this.index() + 1];
+          this.top();
         }
+      },
+
+      hasPrev: function () {
+        return this.workIDs.indexOf(this.selected) > 0;
+      },
+
+      hasNext: function () {
+        return this.workIDs.indexOf(this.selected) < this.workIDs.length - 1;
+      },
+
+      index: function () {
+        return this.workIDs.indexOf(this.selected);
       },
     }"
   >
@@ -110,8 +124,6 @@
       x-model="showSlideover"
       style="display: none"
       class="fixed inset-0 z-10"
-      @keydown.left.prevent="$dispatch('key-left')"
-      @keydown.right.prevent="$dispatch('key-right')"
     >
       {# Backdrop overlay #}
       <div
@@ -138,39 +150,60 @@
         class="fixed inset-y-0 right-0 w-[var(--panel-w)] 3xl:w-[var(--3xl-panel-w)]"
       >
         <div
+          x-ref="panel-content"
           x-show="showSlideover"
           x-transition.opacity.duration.300ms
-          class="absolute inset-0 overflow-auto -ml-[calc(100vw-var(--3xl-panel-w))]"
+          class="absolute inset-0 overflow-auto -ml-[var(--panel-away-w)] 3xl:-ml-[calc(100vw-var(--3xl-panel-w))]"
         >
           <div class="container">
 
             {# Nav and close buttons #}
-            <div class="sticky top-0 inset-x-0 pointer-events-none pt-8 md:pt-[52px] 2xl:pt-[60px]">
-              <div class="flex flex-col items-end">
+            <div class="pointer-events-none pt-8 md:pt-[52px] 2xl:pt-[60px]">
+              <div class="grid grid-cols-12 gap-x-16">
+                <div class="col-span-9 col-start-3">
+                  <div class="base-mono flex items-center justify-between">
 
-                {# Close #}
-                <button
-                  type="button"
-                  @click="$dialog.close()"
-                  class="pointer-events-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-transform duration-200 hover:rotate-90"
-                >
-                  <span class="sr-only">Close slideover</span>
-                  {{ svg('@webroot/dist/images/icon--close.svg', true, true) }}
-                </button>
+                    {# Close #}
+                    <button
+                      type="button"
+                      @click="$dialog.close()"
+                      @keydown.escape.window="$dialog.close()"
+                      class="pointer-events-auto group"
+                    >
+                      <span>[Esc] <span class="group-hover:underline">Close</span></span>
+                    </button>
 
-                {# Prev #}
-                <button
-                  class="pointer-events-auto"
-                  @click="prev()"
-                  @keydown.left.window.prevent="showSlideover && prev()"
-                >Prev</button>
+                    {# Nav #}
+                    <div class="flex items-center justify-end gap-x-2">
+                      {# Prev #}
+                      <button
+                        class="pointer-events-auto group"
+                        :class="{ 'pointer-events-none text-gray-400': !hasPrev() }"
+                        :tabindex="hasPrev() ? 0 : -1"
+                        aria-label="Previous project"
+                        @click="prev()"
+                        @keydown.left.window="showSlideover && prev()"
+                        >
+                        <span>[&#8592;] <span class="group-hover:underline">Previous</span></span>
+                      </button>
 
-                {# Next #}
-                <button
-                  class="pointer-events-auto"
-                  @click="next()"
-                  @keydown.right.window.prevent="showSlideover && next()"
-                >Next</button>
+                      <span class="text-gray-300"> / </span>
+
+                      {# Next #}
+                      <button
+                        class="pointer-events-auto group"
+                        :class="{ 'pointer-events-none text-gray-400': !hasNext() }"
+                        :tabindex="hasNext() ? 0 : -1"
+                        aria-label="Next project"
+                        @click="next()"
+                        @keydown.right.window="showSlideover && next()"
+                      >
+                        <span><span class="group-hover:underline">Next</span> [&#8594;] </span>
+                      </button>
+
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -187,7 +220,7 @@
 
       {# Click away region #}
       <div
-        @click="showSlideover = false"
+        @click="$dialog.close()"
         class="fixed left-0 inset-y-0 w-[var(--panel-away-w)] 3xl:w-[var(--3xl-panel-away-w)]"
       ></div>
 

@@ -2,6 +2,7 @@
 
 {% if entry %}
 
+  {% set cardImage = entry.cardImage.one() ?? null %}
   {% set liveUrl = entry.liveUrl ?? null %}
   {% set summary = entry.summary ?? null %}
   {% set video = entry.video.one() ?? null %}
@@ -15,9 +16,9 @@
     x-show="selected === {{ entry.id }}"
     {% if prevEntry %} @keydown.left.prevent="setSlideover({{ prevEntry.id }})" {% endif %}
     {% if nextEntry %} @keydown.right.prevent="setSlideover({{ nextEntry.id }})" {% endif %}
-    class="grid grid-cols-12 gap-x-16 space-y-[72px] pt-[130px] md:pt-[164px] 2xl:pt-[84px] pb-12 md:pb-[72px] 2xl:pb-24"
+    class="grid grid-cols-12 gap-x-16 space-y-16 pt-[130px] md:pt-[164px] 2xl:pt-[84px] pb-12 md:pb-[72px] 2xl:pb-24"
   >
-    <div class="pointer-events-auto col-span-9 col-start-3 space-y-[72px]">
+    <div class="pointer-events-auto col-span-9 col-start-3 space-y-16">
 
       {# Head #}
       <div class="w-full max-w-[752px]">
@@ -37,22 +38,49 @@
           {% endif %}
         </div>
 
-        {# Summary #}
-        {% if summary %}
-          <p>{{ summary }}</p>
-        {% endif %}
       </div>
 
       {# Video #}
       {# {% if video %} #}
         <div class="w-full max-w-[1160px]">
           <div class="aspect-[1160/680] bg-[#f1f1f1] flex items-center justify-center">
-            <div class="aspect-[960/600] w-full max-w-[960px] bg-green-500 flex items-center justify-center shadow-sm">
+            {# <div class="aspect-[960/576] w-full max-w-[960px] bg-green-500 flex items-center justify-center shadow-sm">
               <div class="base-mono">VIDEO</div>
-            </div>
+            </div> #}
+            {# <video
+              controls
+              muted
+              playsinline
+              loop
+              class="w-auto h-[576px] shadow-sm"
+            >
+              <source src="{{ video.url }}" type="{{ video.getMimeType() }}">
+              Your browser does not support the video tag.
+            </video> #}
+
+            {% if cardImage %}
+              <div class="relative aspect-[960/576] w-full max-w-[960px] shadow-sm">
+                {% include "_includes/picture" with {
+                  image: cardImage,
+                  mode: "fit",
+                  classes: "object-cover w-full h-full",
+                  ratio: [960, 576],
+                  pictureSets: [
+                    { "default": [960, null] },
+                  ],
+                } only %}
+              </div>
+            {% endif %}
           </div>
         </div>
       {# {% endif %} #}
+
+      {# Summary #}
+      {% if summary %}
+        <p class="w-full max-w-[752px]">
+          {{ summary }}
+        </p>
+      {% endif %}
 
       {# Role #}
       {% if role %}
@@ -77,11 +105,6 @@
 
     </div> {# /.col-span-9 #}
 
-    {# Nav #}
-    {# {% include "_includes/workNav" with {
-      prevEntry: prevEntry,
-      nextEntry: nextEntry,
-    } only %} #}
   </article>
 
 
