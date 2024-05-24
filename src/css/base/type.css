@@ -37,6 +37,10 @@
     @apply font-sans font-light text-lg leading-[135%];
   }
 
+  .xs-sans {
+    @apply font-sans font-light text-base;
+  }
+
   .heading2-mono {
     @apply font-mono text-[21px] leading-[140%];
   }
