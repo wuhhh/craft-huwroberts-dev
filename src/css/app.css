@@ -5,7 +5,7 @@
 :root {
   --3xl-w: 1728px;
   --3xl-px: 80px;
-  --panel-w: clamp(818px, 1509px, 87%);
+  --panel-w: clamp(818px, 1509px, 87vw);
   --panel-away-w: calc(100vw - var(--panel-w));
   --3xl-panel-w: calc(((100vw - var(--3xl-w)) / 2) + (var(--3xl-w) / 100 * 87));
   --3xl-panel-away-w: calc(((100vw - var(--3xl-w)) / 2) + (var(--3xl-w) / 100 * 13));
