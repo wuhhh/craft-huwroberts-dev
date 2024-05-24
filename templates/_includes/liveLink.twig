@@ -1,0 +1,14 @@
+{% set url = url ?? null %}
+
+{% if url %}
+  <a
+    class="bg-[#ecebeb] rounded-full p-1 pr-3 flex gap-x-[9px] items-center transition-colors duration-200 hover:bg-white"
+    href="{{ url }}"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="{{ "View live site, opens in new tab"|t }}"
+  >
+    {{ svg('@webroot/dist/images/icon--diagonal-arrow-circ.svg', true, true)|attr({ class: "w-[23px]" }) }}
+    <span class="xs-sans md:sm-sans !font-medium">{{ "View Live"|t }}</span>
+  </a>
+{% endif %}
