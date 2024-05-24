@@ -16,7 +16,7 @@
     x-show="selected === {{ entry.id }}"
     {% if prevEntry %} @keydown.left.prevent="setSlideover({{ prevEntry.id }})" {% endif %}
     {% if nextEntry %} @keydown.right.prevent="setSlideover({{ nextEntry.id }})" {% endif %}
-    class="grid grid-cols-12 gap-x-16 space-y-16 pt-[130px] md:pt-[164px] 2xl:pt-[84px] pb-12 md:pb-[72px] 2xl:pb-24"
+    class="grid grid-cols-12 gap-x-16 space-y-16 pt-[84px] pb-12 md:pb-[72px] 2xl:pb-24"
   >
     <div class="pointer-events-auto col-span-9 col-start-3 space-y-16">
 
@@ -39,6 +39,13 @@
         </div>
 
       </div>
+
+      {# Summary #}
+      {% if summary %}
+        <p class="w-full max-w-[752px]">
+          {{ summary }}
+        </p>
+      {% endif %}
 
       {# Video #}
       {# {% if video %} #}
@@ -74,13 +81,6 @@
           </div>
         </div>
       {# {% endif %} #}
-
-      {# Summary #}
-      {% if summary %}
-        <p class="w-full max-w-[752px]">
-          {{ summary }}
-        </p>
-      {% endif %}
 
       {# Role #}
       {% if role %}
