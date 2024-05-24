@@ -1,0 +1,23 @@
+<nav class="pointer-events-auto col-span-full flex justify-end">
+  {% if prevEntry %}
+    <a
+      @click.prevent="setSlideover({{ prevEntry.id }})"
+      @keydown.space="setSlideover({{ prevEntry.id }})"
+      aria-label="{{ 'View previous work project'|t }}"
+      href="{{ url(prevEntry.uri) }}"
+    >
+      Previous project
+    </a>
+  {% endif %}
+
+  {% if nextEntry %}
+    <a
+      @click.prevent="setSlideover({{ nextEntry.id }})"
+      @keydown.space.prevent="setSlideover({{ nextEntry.id }})"
+      aria-label="{{ 'View next work project'|t }}"
+      href="{{ url(nextEntry.uri) }}"
+    >
+      Next project
+    </a>
+  {% endif %}
+</nav>

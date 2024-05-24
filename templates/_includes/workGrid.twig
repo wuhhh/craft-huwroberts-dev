@@ -1,0 +1,199 @@
+{% set work = craft.entries.section('work') %}
+{% set workEntries = work.all() ?? [] %}
+
+{% if workEntries|length %}
+
+  {% set workIDs = work.collect().pluck('id') %}
+
+  <section
+    x-cloak
+    x-data="{
+      showSlideover: false,
+      selected: null,
+      workIDs: {{ workIDs|json_encode|raw }},
+
+      setSlideover: function (id) {
+        this.selected = id;
+        this.showSlideover = true;
+      },
+
+      prev: function () {
+        const index = this.workIDs.indexOf(this.selected);
+        const prevIndex = index - 1;
+        if (prevIndex >= 0) {
+          this.selected = this.workIDs[prevIndex];
+        }
+      },
+
+      next: function () {
+        const index = this.workIDs.indexOf(this.selected);
+        const nextIndex = index + 1;
+        if (nextIndex < this.workIDs.length) {
+          this.selected = this.workIDs[nextIndex];
+        }
+      },
+    }"
+  >
+    <h2 class="sr-only">Recent work</h2>
+
+    {# Work card grid #}
+    <div class="grid grid-cols-12 gap-y-24 lg:gap-x-16">
+      {% for entry in workEntries %}
+
+        {% set image = entry.cardImage.one() ?? null %}
+        {% set cls = "" %}
+
+        {# Vertical stacking #}
+        {% if ((loop.index0 % 6) + 1 == 2)
+          or ((loop.index0 % 6) + 1 == 5)
+          or ((loop.index0 % 6) + 1 == 6)
+        %}
+          {% set cls = "ml-auto lg:ml-0" %}
+        {% endif %}
+
+        {# Three to a row with blanks #}
+        {% if ((loop.index0 % 10) + 1) == 3
+          or ((loop.index0 % 12) + 1) == 9
+        %}
+          <div class="hidden xl:block xl:col-span-4">{# blank grid space #}</div>
+        {% endif %}
+
+        {# Three to a row with blanks #}
+        {% if ((loop.index0 % 12) + 1) == 3
+          or ((loop.index0 % 12) + 1) == 6
+          or ((loop.index0 % 12) + 1) == 9
+          or ((loop.index0 % 12) + 1) == 13
+        %}
+          <div class="hidden xl:block xl:col-span-4">{# blank grid space #}</div>
+        {% endif %}
+
+        <div class="relative col-span-full space-y-5 w-full max-w-[480px] lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
+          <h2 class="heading3-mono">{{ entry.title }}</h2>
+
+          {% if image %}
+            <div class="aspect-[480/288] shadow-sm">
+              {% include "_includes/picture" with {
+                disableAlt: true,
+                image: image,
+                mode: "crop",
+                classes: "object-cover w-full h-full",
+                ratio: [480, 288],
+                pictureSets: [
+                  { "467": [560, null] },
+                  { "default": [414, null] },
+                ],
+              } only %}
+            </div>
+          {% endif %}
+
+          {% include "_includes/workCardMeta" with {
+            type: entry.workType,
+            year: entry.year,
+            agency: entry.agency,
+          } %}
+
+          <a
+            @click.prevent="setSlideover({{ entry.id }})"
+            @keydown.space.prevent="setSlideover({{ entry.id }})"
+            href="{{ url(entry.uri) }}"
+            class="box-link before:focus-visible:outline before:focus-visible:outline-2 before:focus-visible:outline-offset-2 before:focus-visible:outline-blue-700"
+            aria-label="{{ 'View details, opens dialog'|t }}"
+          ></a>
+        </div>
+
+      {% endfor %}
+    </div>
+
+    {# Slideover #}
+    <div
+      x-dialog
+      x-model="showSlideover"
+      style="display: none"
+      class="fixed inset-0 z-10"
+      @keydown.left.prevent="$dispatch('key-left')"
+      @keydown.right.prevent="$dispatch('key-right')"
+    >
+      {# Backdrop overlay #}
+      <div
+        x-dialog:overlay
+        x-transition.opacity.duration.300ms
+        class="fixed inset-0 bg-[#dfdfdf]/65 backdrop-blur-lg"
+      ></div>
+
+      {# Panel background (white fill) #}
+      <div
+        class="fixed inset-y-0 right-0 bg-white w-[var(--panel-w)] 3xl:w-[var(--3xl-panel-w)]"
+        x-show="showSlideover"
+        x-transition:enter="transition duration-200"
+        x-transition:enter-start="translate-x-8 opacity-0"
+        x-transition:enter-end="translate-x-0 opacity-100"
+        x-transition:leave="transition duration-200"
+        x-transition:leave-start="translate-x-0 opacity-100"
+        x-transition:leave-end="translate-x-8 opacity-0"
+      ></div>
+
+      {# Panel #}
+      <div
+        x-dialog:panel
+        class="fixed inset-y-0 right-0 w-[var(--panel-w)] 3xl:w-[var(--3xl-panel-w)]"
+      >
+        <div
+          x-show="showSlideover"
+          x-transition.opacity.duration.300ms
+          class="absolute inset-0 overflow-auto -ml-[calc(100vw-var(--3xl-panel-w))]"
+        >
+          <div class="container">
+
+            {# Nav and close buttons #}
+            <div class="sticky top-0 inset-x-0 pointer-events-none pt-8 md:pt-[52px] 2xl:pt-[60px]">
+              <div class="flex flex-col items-end">
+
+                {# Close #}
+                <button
+                  type="button"
+                  @click="$dialog.close()"
+                  class="pointer-events-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-transform duration-200 hover:rotate-90"
+                >
+                  <span class="sr-only">Close slideover</span>
+                  {{ svg('@webroot/dist/images/icon--close.svg', true, true) }}
+                </button>
+
+                {# Prev #}
+                <button
+                  class="pointer-events-auto"
+                  @click="prev()"
+                  @keydown.left.window.prevent="showSlideover && prev()"
+                >Prev</button>
+
+                {# Next #}
+                <button
+                  class="pointer-events-auto"
+                  @click="next()"
+                  @keydown.right.window.prevent="showSlideover && next()"
+                >Next</button>
+              </div>
+            </div>
+
+            {# Articles #}
+            {% for entry in workEntries %}
+              {% include "_includes/workArticle" with {
+                entry: entry,
+              } only %}
+            {% endfor %}
+
+          </div>
+        </div>
+      </div> {# /Panel #}
+
+      {# Click away region #}
+      <div
+        @click="showSlideover = false"
+        class="fixed left-0 inset-y-0 w-[var(--panel-away-w)] 3xl:w-[var(--3xl-panel-away-w)]"
+      ></div>
+
+    </div> {# /Slideover #}
+
+  </section>
+
+{% endif %}
+

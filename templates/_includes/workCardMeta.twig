@@ -2,7 +2,6 @@
 {% set isAgency = false %}
 {% set agencyTitle = null %}
 {% set agencyUrl = null %}
-{% set categoryAlt = null %}
 
 {# Safe to use slug because it is not translatable #}
 {% if type.slug == "agency" %}
@@ -21,7 +20,7 @@
 
   <div class="base-mono">
     <p>
-      <span>Type: {{ type }}</span>
+      <span>{{ "Type"|t }}: {{ type }}</span>
       {% if isAgency %}
         <span>
           ({{ agencyTitle }})

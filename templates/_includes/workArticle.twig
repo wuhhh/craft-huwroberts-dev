@@ -1,0 +1,88 @@
+{% set entry = entry ?? null %}
+
+{% if entry %}
+
+  {% set liveUrl = entry.liveUrl ?? null %}
+  {% set summary = entry.summary ?? null %}
+  {% set video = entry.video.one() ?? null %}
+  {% set role = entry.role ?? null %}
+  {% set tags = entry.techTags.all() ?? [] %}
+
+  {% set prevEntry = craft.entries.section('work').prevSiblingOf(entry).one() ?? null %}
+  {% set nextEntry = craft.entries.section('work').nextSiblingOf(entry).one() ?? null %}
+
+  <article
+    x-show="selected === {{ entry.id }}"
+    {% if prevEntry %} @keydown.left.prevent="setSlideover({{ prevEntry.id }})" {% endif %}
+    {% if nextEntry %} @keydown.right.prevent="setSlideover({{ nextEntry.id }})" {% endif %}
+    class="grid grid-cols-12 gap-x-16 space-y-[72px] pt-[130px] md:pt-[164px] 2xl:pt-[84px] pb-12 md:pb-[72px] 2xl:pb-24"
+  >
+    <div class="pointer-events-auto col-span-9 col-start-3 space-y-[72px]">
+
+      {# Head #}
+      <div class="w-full max-w-[752px]">
+        <div class="flex items-baseline gap-x-4 mb-12">
+          {# Title #}
+          <h2
+            class="heading3 md:heading1"
+            aria-label="{{ '{0} project details'|t([entry.title]) }}"
+          >
+            {{ entry.title }}
+          </h2>
+
+          {% if entry.liveUrl %}
+            <span class="-translate-y-[2px]">
+              {% include "_includes/liveLink" with { url: entry.liveUrl } only %}
+            </span>
+          {% endif %}
+        </div>
+
+        {# Summary #}
+        {% if summary %}
+          <p>{{ summary }}</p>
+        {% endif %}
+      </div>
+
+      {# Video #}
+      {# {% if video %} #}
+        <div class="w-full max-w-[1160px]">
+          <div class="aspect-[1160/680] bg-[#f1f1f1] flex items-center justify-center">
+            <div class="aspect-[960/600] w-full max-w-[960px] bg-green-500 flex items-center justify-center shadow-sm">
+              <div class="base-mono">VIDEO</div>
+            </div>
+          </div>
+        </div>
+      {# {% endif %} #}
+
+      {# Role #}
+      {% if role %}
+        <div class="w-full max-w-[752px]">
+          <div>{{ role|nl2br }}</div>
+        </div>
+      {% endif %}
+
+      {# Tags #}
+      {% if tags %}
+        <div class="w-full max-w-[752px]">
+          {% include "_includes/tags" with { tags: tags } only %}
+        </div>
+      {% endif %}
+
+      {# Meta #}
+      {% include "_includes/workCardMeta" with {
+        type: entry.workType,
+        year: entry.year,
+        agency: entry.agency,
+      } %}
+
+    </div> {# /.col-span-9 #}
+
+    {# Nav #}
+    {# {% include "_includes/workNav" with {
+      prevEntry: prevEntry,
+      nextEntry: nextEntry,
+    } only %} #}
+  </article>
+
+
+{% endif %}
