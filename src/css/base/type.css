@@ -10,23 +10,23 @@
   }
 
   .heading1 {
-    @apply font-sans font-medium text-[52px] leading-[126%];
+    @apply font-sans text-[52px] leading-[126%];
   }
 
   .heading2 {
-    @apply font-sans font-medium text-[45px] leading-[126%];
+    @apply font-sans text-[45px] leading-[126%];
   }
 
   .heading3 {
-    @apply font-sans font-medium text-[40px] leading-[126%];
+    @apply font-sans text-[40px] leading-[126%];
   }
 
   .heading4 {
-    @apply font-sans font-medium text-[37px] leading-[126%];
+    @apply font-sans text-[37px] leading-[126%];
   }
 
   .heading5 {
-    @apply font-sans font-medium text-[26px] leading-[126%] -tracking-[1%];
+    @apply font-sans text-[26px] leading-[126%] -tracking-[1%];
   }
 
   .base-sans {
