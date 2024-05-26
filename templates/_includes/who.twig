@@ -1,0 +1,37 @@
+{% set panelContent %}
+  <div>
+    <article class="grid grid-cols-12 gap-x-16 space-y-16 pt-[84px] pb-12 md:pb-[72px] 2xl:pb-24">
+      <div class="pointer-events-auto col-span-9 col-start-3 space-y-16">
+        <h2
+          x-dialog:title
+          class="heading1"
+        >Who?</h2>
+      </div>
+    </article>
+  </div>
+{% endset %}
+
+<div
+  x-data="{
+    showSlideover: false,
+    handleOpenEvent(event) {
+      if (event.detail.name === 'who') {
+        this.showSlideover = true
+      }
+    },
+    handleCloseEvent(event) {
+      if (event.detail.name === 'who') {
+        this.showSlideover = false
+      }
+    },
+  }"
+  @open-slideover.window="handleOpenEvent($event)"
+  @close-slideover.window="handleCloseEvent($event)"
+>
+  {% include "_includes/slideover" with {
+    showCloseButton: true,
+    showNav: false,
+    navStyle: "icon",
+    panelContent: panelContent,
+  } %}
+</div>
