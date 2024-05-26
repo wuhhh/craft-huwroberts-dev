@@ -24,6 +24,11 @@ module.exports = {
       "3xl": "1728px",
     },
     extend: {
+      colors: {
+        'coral-red': {
+          DEFAULT: "#F36855",
+        }
+      },
       minHeight: {
         screenh: "100vh",
       },
