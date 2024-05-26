@@ -22,8 +22,11 @@
  		<body class="relative flex flex-col min-h-screenh antialiased">
       <a class="skip-link" href="#main" tabindex="1">{{ "Skip to content"|t }}</a>
   {% endblock %}
-  {% include "_includes/header" only %}
-	{% block content %}{% endblock %}
-  {% include "_includes/footer" only %}
+
+    {% include "_includes/header" only %}
+    {% block content %}{% endblock %}
+    {% include "_includes/footer" only %}
+    {% include "_includes/who" only %}
+    {% include "_includes/sayHello" only %}
   </body>
 </html>
