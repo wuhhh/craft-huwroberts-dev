@@ -14,12 +14,16 @@
   <div class="container">
     <nav class="flex items-center justify-end gap-x-12 h-[44px] md:h-14 md:gap-24">
       <a
+        x-data
+        @click.prevent="$dispatch('open-slideover', { name: 'who' })"
         class="font-medium text-[17px] md:text-[22px] 2xl:text-[28px]"
         href="#"
       >
         {{ "Who?"|t }}
       </a>
       <a
+        x-data
+        @click.prevent="$dispatch('open-slideover', { name: 'sayHello' })"
         class="font-medium text-[17px] md:text-[22px] 2xl:text-[28px]"
         href="#"
       >
