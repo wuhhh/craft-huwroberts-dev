@@ -9,4 +9,5 @@
 		"Type" => "Math",
 		"View Live"	=> "Gweld Yn Fyw",
 		"View live site, opens in new tab" => "Gweld safle byw, yn agor mewn tab newydd",
+		"Main menu" => "Prif ddewislen",
 	];
