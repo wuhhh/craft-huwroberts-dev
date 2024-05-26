@@ -23,8 +23,12 @@
       <a class="skip-link" href="#main" tabindex="1">{{ "Skip to content"|t }}</a>
   {% endblock %}
 
+    <div class="noise-overlay"></div>
+
     {% include "_includes/header" only %}
-    {% block content %}{% endblock %}
+
+    <main id="main">{% block content %}{% endblock %}</main>
+
     {% include "_includes/footer" only %}
     {% include "_includes/who" only %}
     {% include "_includes/sayHello" only %}
