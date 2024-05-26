@@ -119,163 +119,20 @@
       {% endfor %}
     </div>
 
-    {# Slideover #}
-    <div
-      x-dialog
-      x-model="showSlideover"
-      style="display: none"
-      class="fixed inset-0 z-10"
-    >
-      {# Backdrop overlay #}
-      <div
-        x-dialog:overlay
-        x-transition.opacity.duration.600ms
-        class="fixed inset-0 bg-[#dfdfdf]/65 backdrop-blur-lg"
-      ></div>
+    {% set panelContent %}
+      {% for entry in workEntries %}
+        {% include "_includes/workArticle" with {
+          entry: entry,
+        } only %}
+      {% endfor %}
+    {% endset %}
 
-      {# Panel background (white fill) #}
-      <div
-        class="fixed inset-y-0 right-0 bg-white w-[var(--panel-w)] 3xl:w-[var(--3xl-panel-w)]"
-        x-show="showSlideover"
-        x-transition:enter="transition duration-500"
-        x-transition:enter-start="translate-x-8 opacity-0"
-        x-transition:enter-end="translate-x-0 opacity-100"
-        x-transition:leave="transition duration-500"
-        x-transition:leave-start="translate-x-0 opacity-100"
-        x-transition:leave-end="translate-x-8 opacity-0"
-      ></div>
-
-      {# Panel #}
-      <div
-        x-dialog:panel
-        class="fixed inset-y-0 right-0 w-[var(--panel-w)] 3xl:w-[var(--3xl-panel-w)]"
-      >
-        <div
-          x-ref="panel-content"
-          x-show="showSlideover"
-          x-transition.opacity.duration.500ms
-          class="absolute inset-0 overflow-auto -ml-[var(--panel-away-w)] 3xl:-ml-[calc(100vw-var(--3xl-panel-w))]"
-        >
-          <div class="container">
-
-            {# Nav and close buttons #}
-            <div class="sticky top-0 inset-x-0 pointer-events-none pt-8 md:pt-[52px] 2xl:pt-[60px]">
-              <div class="grid grid-cols-12 gap-x-16">
-                <div class="col-span-9 col-start-3">
-                  <div class="base-mono flex items-center justify-between">
-
-                    {# Close #}
-                    {% if navStyle == "icon" %}
-
-                      <button
-                        type="button"
-                        @click="$dialog.close()"
-                        @keydown.escape.window="$dialog.close()"
-                        class="pointer-events-auto transition hover:rotate-90"
-                      >
-                        <span>{{ svg('@webroot/dist/images/icon--close.svg', true, true)|attr({ class: 'w-[44px]' }) }}</span>
-                      </button>
-
-                    {% else %}
-
-                      <button
-                        type="button"
-                        @click="$dialog.close()"
-                        @keydown.escape.window="$dialog.close()"
-                        class="pointer-events-auto group"
-                      >
-                        <span>[Esc] <span class="group-hover:underline">Close</span></span>
-                      </button>
-
-                    {% endif %}
-
-                    {# Nav #}
-                    <div class="flex items-center justify-end gap-x-2">
-
-                      {# Prev #}
-                      {% if navStyle == "icon" %}
-
-                        <button
-                          class="pointer-events-auto"
-                          :class="{ 'pointer-events-none text-gray-300': !hasPrev() }"
-                          :tabindex="hasPrev() ? 0 : -1"
-                          aria-label="Previous project"
-                          @click="prev()"
-                          @keydown.left.window="showSlideover && prev()"
-                        >
-                          <span>{{ svg('@webroot/dist/images/icon--arrow-right-circ.svg', true, true)|attr({ class: 'w-[44px] rotate-180' }) }}</span>
-                        </button>
-
-                      {% else %}
-
-                        <button
-                          class="pointer-events-auto group"
-                          :class="{ 'pointer-events-none text-gray-100': !hasPrev() }"
-                          :tabindex="hasPrev() ? 0 : -1"
-                          aria-label="Previous project"
-                          @click="prev()"
-                          @keydown.left.window="showSlideover && prev()"
-                          >
-                          <span>[&#8592;] <span class="group-hover:underline">Previous</span></span>
-                        </button>
-
-                        <span class="text-gray-100"> / </span>
-
-                      {% endif %}
-
-                      {# Next #}
-                      {% if navStyle == "icon" %}
-
-                        <button
-                          class="pointer-events-auto"
-                          :class="{ 'pointer-events-none text-gray-100': !hasNext() }"
-                          :tabindex="hasNext() ? 0 : -1"
-                          aria-label="Next project"
-                          @click="next()"
-                          @keydown.right.window="showSlideover && next()"
-                        >
-                          <span>{{ svg('@webroot/dist/images/icon--arrow-right-circ.svg', true, true)|attr({ class: 'w-[44px]' }) }}</span>
-                        </button>
-
-                      {% else %}
-
-                        <button
-                          class="pointer-events-auto group"
-                          :class="{ 'pointer-events-none text-gray-400': !hasNext() }"
-                          :tabindex="hasNext() ? 0 : -1"
-                          aria-label="Next project"
-                          @click="next()"
-                          @keydown.right.window="showSlideover && next()"
-                        >
-                          <span><span class="group-hover:underline">Next</span> [&#8594;] </span>
-                        </button>
-
-                      {% endif %}
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {# Articles #}
-            {% for entry in workEntries %}
-              {% include "_includes/workArticle" with {
-                entry: entry,
-              } only %}
-            {% endfor %}
-
-          </div>
-        </div>
-      </div> {# /Panel #}
-
-      {# Click away region #}
-      <div
-        @click="$dialog.close()"
-        class="cursor-w-resize fixed left-0 inset-y-0 w-[var(--panel-away-w)] 3xl:w-[var(--3xl-panel-away-w)]"
-      ></div>
-
-    </div> {# /Slideover #}
+    {% include "_includes/slideover" with {
+      showCloseButton: true,
+      showNav: true,
+      navStyle: "icon",
+      panelContent: panelContent,
+    } only %}
 
   </section>
 
