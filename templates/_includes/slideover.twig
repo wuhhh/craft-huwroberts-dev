@@ -2,7 +2,12 @@
 {% set closeButtonPosition = closeButtonPosition ?? "left" %}
 {% set showNav = showNav ?? true %}
 {% set navStyle = navStyle ?? "icon" %}
+
+{# For grid layout #}
 {% set panelContent = panelContent ?? null %}
+
+{# For fixed layout relative to slidover fill #}
+{% set fixedContent = fixedContent ?? null %}
 
 {# Slideover #}
 <div
@@ -35,17 +40,37 @@
     x-dialog:panel
     class="fixed inset-y-0 right-0 w-[var(--panel-w)] 3xl:w-[var(--3xl-panel-w)]"
   >
+    {% if panelContent %}
+      <div
+        x-ref="panel-content"
+        x-show="showSlideover"
+        x-transition.opacity.duration.500ms
+        class="absolute inset-0 overflow-auto -ml-[var(--panel-away-w)] 3xl:-ml-[calc(100vw-var(--3xl-panel-w))]"
+        aria-live="polite"
+      >
+        <div class="container">{{ panelContent }}</div>
+      </div>
+    {% endif %}
+
+    {% if fixedContent %}
+      <div
+        x-show="showSlideover"
+        x-transition.opacity.duration.500ms
+        aria-live="polite"
+        class="absolute inset-0 bg-white pointer-events-none"
+      >
+        {{ fixedContent }}
+      </div>
+    {% endif %}
+
+    {# Nav and close buttons #}
     <div
-      x-ref="panel-content"
       x-show="showSlideover"
       x-transition.opacity.duration.500ms
-      class="absolute inset-0 overflow-auto -ml-[var(--panel-away-w)] 3xl:-ml-[calc(100vw-var(--3xl-panel-w))]"
-      aria-live="polite"
+      class="absolute inset-0 pointer-events-none -ml-[var(--panel-away-w)] 3xl:-ml-[calc(100vw-var(--3xl-panel-w))]"
     >
       <div class="container">
-
-        {# Nav and close buttons #}
-        <div class="sticky top-0 inset-x-0 pointer-events-none pt-8 md:pt-[52px] 2xl:pt-[60px]">
+        <div class="sticky top-0 inset-x-0 pt-8 md:pt-[52px] 2xl:pt-[60px]">
           <div class="grid grid-cols-12 gap-x-16">
             <div class="col-span-10 col-start-3">
               <div class="base-mono flex items-center {% if closeButtonPosition == "left" %} justify-between {% else %} justify-end {% endif %}">
@@ -143,11 +168,9 @@
             </div>
           </div>
         </div>
-
-       {% if panelContent %}{{ panelContent }}{% endif %}
-
       </div>
     </div>
+
   </div> {# /Panel #}
 
   {# Click away region #}
