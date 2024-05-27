@@ -53,3 +53,11 @@
     @apply font-mono text-base leading-normal;
   }
 }
+
+.ckeditor {
+  &.-simple {
+    a {
+      @apply decoration-from-font decoration-coral-red underline hover:no-underline hover:bg-yellow-100;
+    }
+  }
+}
