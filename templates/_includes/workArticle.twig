@@ -16,17 +16,17 @@
     x-show="selected === {{ entry.id }}"
     {% if prevEntry %} @keydown.left.prevent="setSlideover({{ prevEntry.id }})" {% endif %}
     {% if nextEntry %} @keydown.right.prevent="setSlideover({{ nextEntry.id }})" {% endif %}
-    class="grid grid-cols-12 gap-x-16 space-y-16 pt-[84px] pb-12 md:pb-[72px] 2xl:pb-24"
+    class="grid grid-cols-12 gap-x-16 space-y-16 pt-[186px] pb-12 md:pb-[72px] 2xl:pb-24"
   >
     <div class="pointer-events-auto col-span-9 col-start-3 space-y-16">
 
       {# Head #}
-      <div class="w-full max-w-[752px]">
-        <div class="flex items-baseline gap-x-4 mb-12">
+      <div class="w-full max-w-[752px] -mb-5">
+        <div class="flex items-baseline gap-x-4">
           {# Title #}
           <h2
             x-dialog:title
-            class="font-medium heading3 md:heading1"
+            class="font-medium heading3 md:heading1 leading-none"
             aria-label="{{ '{0} project details'|t([entry.title]) }}"
           >
             {{ entry.title }}
