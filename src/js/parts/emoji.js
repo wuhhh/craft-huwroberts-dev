@@ -1,4 +1,4 @@
-import * as confetti from  "canvas-confetti";
+import confetti from  "canvas-confetti";
 
 export default function emoji() {
   return {
@@ -38,16 +38,25 @@ export default function emoji() {
 
     initConfetti() {
       this.confettiInstance = confetti.create(this.$refs.confettiCanvas, {
-        resize: true,
         disableForReducedMotion: true,
+        resize: true,
         useWorker: false,
       });
     },
 
     doConfetti() {
+
+
       this.confettiInstance({
+        colors: ['#F36855'],
+        decay: 0.9,
+        gravity: 1,
+        origin: { x: 0.5, y: 0.7 },
         particleCount: 100,
-        spread: 160
+        scalar: 0.85,
+        shapes: ['square', 'circle'],
+        spread: 80,
+        ticks: 800,
       });
     },
 
