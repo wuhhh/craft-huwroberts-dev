@@ -8,6 +8,7 @@
         <a
           x-data
           @click.prevent="$dispatch('open-slideover', { name: 'who' })"
+          @keydown.space.prevent="$dispatch('open-slideover', { name: 'who' })"
           class="relative font-medium text-[17px] text-white hover:underline md:text-[22px] 2xl:text-[28px]"
           href="#"
         >
@@ -16,6 +17,7 @@
         <a
           x-data
           @click.prevent="$dispatch('open-slideover', { name: 'sayHello' })"
+          @keydown.space.prevent="$dispatch('open-slideover', { name: 'sayHello' })"
           class="relative font-medium text-[17px] text-white hover:underline md:text-[22px] 2xl:text-[28px]"
           href="#"
         >
