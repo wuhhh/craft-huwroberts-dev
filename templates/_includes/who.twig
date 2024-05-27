@@ -1,38 +1,80 @@
-{% set panelContent %}
-  <div>
-    <article class="grid grid-cols-12 gap-x-16 space-y-16 pt-[84px] pb-12 md:pb-[72px] 2xl:pb-24">
-      <div class="pointer-events-auto col-span-9 col-start-3 space-y-16">
-        <h2
-          x-dialog:title
-          class="font-medium heading1"
-        >Who?</h2>
-      </div>
-    </article>
-  </div>
-{% endset %}
+{% set entry = craft.entries.section('who').one() ?? null %}
 
-<div
-  x-data="{
-    showSlideover: false,
-    handleOpenEvent(event) {
-      if (event.detail.name === 'who') {
-        this.showSlideover = true
-      }
-    },
-    handleCloseEvent(event) {
-      if (event.detail.name === 'who') {
-        this.showSlideover = false
-      }
-    },
-  }"
-  @open-slideover.window="handleOpenEvent($event)"
-  @close-slideover.window="handleCloseEvent($event)"
->
-  {% include "_includes/slideover" with {
-    showCloseButton: true,
-    closeButtonPosition: "right",
-    showNav: false,
-    navStyle: "icon",
-    panelContent: panelContent,
-  } %}
-</div>
+{% if entry %}
+
+  {% set heading = entry.heading ?? null %}
+  {% set richText = entry.richText ?? null %}
+  {% set tags = entry.techTags.all() ?? [] %}
+  {% set image = entry.image.one() ?? null %}
+
+  {% set panelContent %}
+    <div>
+      <article class="grid grid-cols-12 gap-x-16 space-y-16 pt-[186px] pb-12 md:pb-[72px] 2xl:pb-24">
+        <div class="pointer-events-auto col-span-10 col-start-3 grid grid-cols-subgrid">
+            <div class="col-span-6 flex flex-col justify-between h-full">
+              {% if heading %}
+                <h2 x-dialog:title class="sr-only">About me</h2>
+                <h2
+                  aria-hidden="true"
+                  class="font-medium heading1 mb-16"
+                >{{ heading }}</h2>
+              {% endif %}
+
+              <div class="space-y-16">
+                {% if richText %}
+                  <div class="heading4 font-medium ckeditor -simple">{{ richText }}</div>
+                {% endif %}
+
+                {# Tags #}
+                {% if tags %}
+                  <div class="w-full max-w-[752px]">
+                    {% include "_includes/tags" with { tags: tags } only %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="col-span-4">
+              {% if image %}
+                {% include "_includes/picture" with {
+                  image: image,
+                  mode: "crop",
+                  classes: "opacity-25",
+                  pictureSets: [
+                    { "default": [480, 700] },
+                  ],
+                } only %}
+              {% endif %}
+            </div>
+        </div>
+      </article>
+    </div>
+  {% endset %}
+
+  <div
+    x-data="{
+      showSlideover: false,
+      handleOpenEvent(event) {
+        if (event.detail.name === 'who') {
+          this.showSlideover = true
+        }
+      },
+      handleCloseEvent(event) {
+        if (event.detail.name === 'who') {
+          this.showSlideover = false
+        }
+      },
+    }"
+    @open-slideover.window="handleOpenEvent($event)"
+    @close-slideover.window="handleCloseEvent($event)"
+  >
+    {% include "_includes/slideover" with {
+      showCloseButton: true,
+      closeButtonPosition: "right",
+      showNav: false,
+      navStyle: "icon",
+      panelContent: panelContent,
+    } %}
+  </div>
+
+{% endif %}
