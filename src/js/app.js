@@ -14,9 +14,13 @@ import focus from '@alpinejs/focus';
 import intersect from '@alpinejs/intersect';
 import ui from '@alpinejs/ui';
 
+import emoji from './parts/emoji';
+
 Alpine.plugin(focus);
 Alpine.plugin(intersect);
 Alpine.plugin(ui);
+
+Alpine.data('emoji', emoji);
 
 Alpine.start();
 
