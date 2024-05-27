@@ -40,7 +40,7 @@ export default function emoji() {
       this.confettiInstance = confetti.create(this.$refs.confettiCanvas, {
         resize: true,
         disableForReducedMotion: true,
-        useWorker: true
+        useWorker: false,
       });
     },
 
