@@ -1,5 +1,5 @@
 <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="26" cy="26" r="26" fill="black"/>
+<circle cx="26" cy="26" r="26" fill="currentColor"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M35.5994 37.9453L13.7204 16.0663L16.0645 13.7223L37.9434 35.6013L35.5994 37.9453Z" fill="white"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M16.0657 37.9453L37.9446 16.0663L35.6006 13.7223L13.7216 35.6013L16.0657 37.9453Z" fill="white"/>
 </svg>
