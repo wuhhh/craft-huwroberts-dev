@@ -6,7 +6,6 @@ export default function emoji() {
     confettiCanvas: null,
     confettiInstance: null,
     delta: 0,
-    hasRun: false,
     lastTime: 0,
     parent: null,
     parentBounds: null,
@@ -15,47 +14,32 @@ export default function emoji() {
     rotation: 0,
     t: [0, 0],
     translateSpeed: 24,
-    vec: [0, 0],
+    vec: [.5, .4],
 
     init() {
       this.parent = this.$el.parentElement;
       this.initConfetti();
+      this.normalizeVector();
 
       this.$watch('showSlideover', show => {
-        if (show && !this.hasRun) {
-          // First run
+        if (show) {
           this.$nextTick(() => {
-            this.run();
-            this.doConfetti();
+            this.reset();
+            this.start();
+            setTimeout(() => this.doConfetti(), 250);
           });
-
-        }
-        else if (show && this.hasRun) {
-          // Resume animation
-          this.lastTime = Date.now();
-          this.raf = window.requestAnimationFrame(() => this.animate());
         }
         else {
           // Pause animation
-          window.cancelAnimationFrame(this.raf);
+          cancelAnimationFrame(this.raf);
         }
       });
     },
 
     initConfetti() {
-      this.confettiCanvas = document.createElement('canvas');
-      this.confettiCanvas.style.position = 'absolute';
-      this.confettiCanvas.style.top = 0;
-      this.confettiCanvas.style.left = 0;
-      this.confettiCanvas.style.width = '100%';
-      this.confettiCanvas.style.height = '100%';
-      this.confettiCanvas.style.pointerEvents = 'none';
-      this.confettiCanvas.style.backgroundColor = 'transparent';
-
-      this.parent.appendChild(this.confettiCanvas);
-
-      this.confettiInstance = confetti.create(this.confettiCanvas, {
+      this.confettiInstance = confetti.create(this.$refs.confettiCanvas, {
         resize: true,
+        disableForReducedMotion: true,
         useWorker: true
       });
     },
@@ -70,11 +54,6 @@ export default function emoji() {
     calcTranslate() {
       this.t[0] += this.vec[0] * (this.delta * this.translateSpeed);
       this.t[1] += this.vec[1] * (this.delta * this.translateSpeed);
-    },
-
-    handleResize() {
-      cancelAnimationFrame(this.raf);
-      this.run();
     },
 
     reflectX() {
@@ -94,11 +73,11 @@ export default function emoji() {
 
     animate() {
       this.now = Date.now();
-      this.delta = (this.now - this.lastTime) / 100;
+      this.delta = Math.min((this.now - this.lastTime), 25) / 100;
       this.lastTime = this.now;
 
       this.calcTranslate();
-      this.rotation += this.rotateSpeed;
+      this.rotation += this.delta * 10;
 
       // Check if transform is out of bounds
       if (this.bounds.top + this.t[1] <= this.parentBounds.top || this.bounds.bottom + this.t[1] >= this.parentBounds.bottom) {
@@ -115,20 +94,27 @@ export default function emoji() {
       this.raf = window.requestAnimationFrame(() => this.animate());
     },
 
-    run() {
-      // Set initial values
-      this.lastTime = Date.now();
+    handleResize() {
+      this.reset();
+      this.start();
+    },
+
+    reset() {
+      cancelAnimationFrame(this.raf);
+      this.now = Date.now();
       this.delta = 0;
-      this.vec = [Math.random() * 2 - 1, Math.random() * 2 - 1];
-      this.normalizeVector();
       this.t = [0, 0];
       this.rotation = 0;
-
+      this.$el.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1) rotate(0deg)`;
       this.parentBounds = this.parent.getBoundingClientRect();
       this.bounds = this.$el.getBoundingClientRect();
+    },
 
+    start() {
+      this.lastTime = Date.now();
+      this.parentBounds = this.parent.getBoundingClientRect();
+      this.bounds = this.$el.getBoundingClientRect();
       this.raf = window.requestAnimationFrame(() => this.animate());
-      this.hasRun = true;
     }
   }
 }
