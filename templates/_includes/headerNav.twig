@@ -1,4 +1,4 @@
-<div class="fixed top-0 inset-x-0 z-10 pointer-events-auto pt-8 md:pt-[52px] 2xl:pt-[60px]">
+<div class="fixed top-0 inset-x-0 z-10 pointer-events-auto pt-8 md:pt-[52px] 2xl:pt-[60px] mix-blend-difference">
   <div class="container">
     <div class="flex justify-end">
       <nav
@@ -8,7 +8,7 @@
         <a
           x-data
           @click.prevent="$dispatch('open-slideover', { name: 'who' })"
-          class="relative font-medium text-[17px] before:absolute before:-bottom-0.5 before:inset-x-0 before:h-1 before:hover:bg-coral-red md:text-[22px] 2xl:text-[28px]"
+          class="relative font-medium text-[17px] text-white before:absolute before:-bottom-0.5 before:inset-x-0 before:h-1 before:hover:bg-white md:text-[22px] 2xl:text-[28px]"
           href="#"
         >
           <span class="relative">{{ "Who?"|t }}</span>
@@ -16,7 +16,7 @@
         <a
           x-data
           @click.prevent="$dispatch('open-slideover', { name: 'sayHello' })"
-          class="relative font-medium text-[17px] before:absolute before:-bottom-0.5 before:inset-x-0 before:h-1 before:hover:bg-coral-red md:text-[22px] 2xl:text-[28px]"
+          class="relative font-medium text-[17px] text-white before:absolute before:-bottom-0.5 before:inset-x-0 before:h-1 before:hover:bg-white md:text-[22px] 2xl:text-[28px]"
           href="#"
         >
           <span class="relative">{{ "Say hello!"|t }}</span>
