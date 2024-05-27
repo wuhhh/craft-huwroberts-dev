@@ -1,14 +1,25 @@
-{% set panelContent %}
-  <div>
-    <article class="grid grid-cols-12 gap-x-16 space-y-16 pt-[84px] pb-12 md:pb-[72px] 2xl:pb-24">
-      <div class="pointer-events-auto col-span-9 col-start-3 space-y-16">
-        <h2
-          x-dialog:title
-          class="font-medium heading1"
-        >Say hello!</h2>
-      </div>
-    </article>
-  </div>
+{% set fixedContent %}
+    <h2
+      x-dialog:title
+      class="sr-only"
+    >Contact me via email</h2>
+
+    {# Email #}
+    <a
+      href="mailto:huw@huwroberts.dev"
+      class="heading0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto hover:underline"
+    >
+      huw@huwroberts.dev
+    </a>
+
+    {# Emoji #}
+    <div
+      x-data="emoji()"
+      @resize.window="handleResize"
+      class="absolute top-1/2 left-1/4 mix-blend-difference"
+    >
+      {{ svg('@webroot/dist/images/icon--wink.svg', true, true)|attr({ class: 'w-[200px] text-white pointer-events-none', 'aria-label': 'winking face emoji' }) }}
+    </div>
 {% endset %}
 
 <div
@@ -33,6 +44,6 @@
     closeButtonPosition: "right",
     showNav: false,
     navStyle: "icon",
-    panelContent: panelContent,
+    fixedContent: fixedContent,
   } %}
 </div>
