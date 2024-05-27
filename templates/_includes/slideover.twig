@@ -83,7 +83,7 @@
                     type="button"
                     @click="$dialog.close()"
                     @keydown.escape.window="$dialog.close()"
-                    class="pointer-events-auto transition hover:rotate-90"
+                    class="pointer-events-auto transition ease-in-out duration-200 hover:text-coral-red hover:rotate-90"
                   >
                     <span>{{ svg('@webroot/dist/images/icon--close.svg', true, true)|attr({ class: 'w-[44px]' }) }}</span>
                   </button>
@@ -108,8 +108,8 @@
                   {% if navStyle == "icon" and showNav %}
 
                     <button
-                      class="pointer-events-auto"
-                      :class="{ 'pointer-events-none text-gray-300': !hasPrev() }"
+                      class="pointer-events-auto transition ease-in-out duration-200 hover:text-coral-red"
+                      :class="{ 'pointer-events-none !text-gray-300': !hasPrev() }"
                       :tabindex="hasPrev() ? 0 : -1"
                       aria-label="Previous project"
                       @click="prev()"
@@ -139,8 +139,8 @@
                   {% if navStyle == "icon" and showNav %}
 
                     <button
-                      class="pointer-events-auto"
-                      :class="{ 'pointer-events-none text-gray-100': !hasNext() }"
+                      class="pointer-events-auto transition ease-in-out duration-200 hover:text-coral-red"
+                      :class="{ 'pointer-events-none !text-gray-100': !hasNext() }"
                       :tabindex="hasNext() ? 0 : -1"
                       aria-label="Next project"
                       @click="next()"
