@@ -19,8 +19,9 @@
   {# Backdrop overlay #}
   <div
     x-dialog:overlay
-    x-transition.opacity.duration.600ms
-    class="fixed inset-0 bg-[#dfdfdf]/65 backdrop-blur-lg"
+    x-transition.opacity.duration.500ms
+    class="fixed inset-0 bg-[#eee] bg-opacity-90 backdrop-blur-[3px] transform-gpu"
+    style="transform: translate3d(0, 0, 0)"
   ></div>
 
   {# Panel background (white fill) #}
