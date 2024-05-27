@@ -5,7 +5,8 @@
     "@alpinejs/focus": "^3.13.10",
     "@alpinejs/intersect": "^3.14.0",
     "@alpinejs/ui": "^3.13.10-beta.0",
-    "alpinejs": "^3.13.10"
+    "alpinejs": "^3.13.10",
+    "canvas-confetti": "^1.9.3"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
