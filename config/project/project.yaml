@@ -1,4 +1,4 @@
-dateModified: 1716300724
+dateModified: 1716806231
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -25,12 +25,15 @@ meta:
     261d41fd-97b6-4906-874d-66df44df7420: Role # Role
     279cfc2e-8324-4a53-aa20-56b80bfebaa7: 'Work Type' # Work Type
     763f00c3-3720-4070-ab7e-910babff9419: Tech # Tech
+    3304bc86-e804-4dc5-8c9b-0907003b0734: Image # Image
     80763c4f-603e-4f78-8e46-e05e80044efe: 'Huw Roberts' # Huw Roberts
     99701ea9-a4da-4fb6-b997-541f0661f9a9: Agency # Agency
+    abca85a2-35fd-471e-88e4-03f192b781dd: Who # Who
     b72f3694-5d2a-478c-badd-08344714d7d0: Agency # Agency
     bd8c65e7-b611-45be-8f4c-658c6cf4a0f7: Simple # Simple
     c0160475-3256-40fc-89bf-3e63d0add54c: Home # Home
     c5b973a9-a07d-4d67-acb9-a3f0cbcb1450: 'Tech Tags' # Tech Tags
+    c300fa12-7356-4389-b8d8-0411927605a8: Who # Who
     d5f87477-e8cd-4d2e-b3b9-c8c97050dadb: Assets # Assets
     e3f4a53d-c1e3-40fc-8be5-5523b72fadd8: Agency # Agency
     ed859a0d-5ce9-4907-931f-8a5f8b76b2b2: 'Card Image' # Card Image
