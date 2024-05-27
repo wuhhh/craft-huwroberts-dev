@@ -51,16 +51,16 @@ fieldLayouts:
             width: 100
           -
             elementCondition: null
-            fieldUid: 9df05e4c-ad18-498a-9fba-144f3ed8f8db # Summary
+            fieldUid: efaad977-8c8a-4ef0-b449-ba859a367e44 # Rich Text
             handle: null
             includeInCards: false
             instructions: null
-            label: null
+            label: Bio
             providesThumbs: false
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
-            uid: bd265961-c581-44a8-b2a1-38f25f5b7387
+            uid: 35986701-0e8f-4876-8765-7901fa816fe1
             userCondition: null
             warning: null
             width: 100

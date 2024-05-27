@@ -1,4 +1,4 @@
-dateModified: 1716806231
+dateModified: 1716807256
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -37,6 +37,7 @@ meta:
     d5f87477-e8cd-4d2e-b3b9-c8c97050dadb: Assets # Assets
     e3f4a53d-c1e3-40fc-8be5-5523b72fadd8: Agency # Agency
     ed859a0d-5ce9-4907-931f-8a5f8b76b2b2: 'Card Image' # Card Image
+    efaad977-8c8a-4ef0-b449-ba859a367e44: 'Rich Text' # Rich Text
     f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae: Work # Work
     f93ff202-7643-4d47-b2cc-126d5595da3f: 'Work Type' # Work Type
 plugins:
