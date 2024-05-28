@@ -10,7 +10,7 @@
   }
 
   .heading1 {
-    @apply font-sans text-[52px] leading-[126%];
+    @apply font-sans text-[26px] md:text-[45px] 2xl:text-[52px] leading-[126%];
   }
 
   .heading2 {
