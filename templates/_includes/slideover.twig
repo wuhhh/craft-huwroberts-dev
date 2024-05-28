@@ -20,13 +20,12 @@
   <div
     x-dialog:overlay
     x-transition.opacity.duration.500ms
-    class="fixed inset-0 bg-[#eee] bg-opacity-90 backdrop-blur-[3px] transform-gpu"
-    style="transform: translate3d(0, 0, 0)"
+    class="hidden md:block fixed inset-0 bg-[#eee] bg-opacity-90 backdrop-blur-[3px]"
   ></div>
 
   {# Panel background (white fill) #}
   <div
-    class="fixed inset-y-0 right-0 bg-white w-[var(--panel-w)] 3xl:w-[var(--3xl-panel-w)]"
+    class="fixed inset-y-0 inset-x-0 bg-white md:left-auto md:right-0 md:w-[var(--panel-w)] 3xl:w-[var(--3xl-panel-w)]"
     x-show="showSlideover"
     x-transition:enter="transition duration-500"
     x-transition:enter-start="translate-x-8 opacity-0"
@@ -72,9 +71,9 @@
     >
       <div class="container">
         <div class="sticky top-0 inset-x-0 pt-8 md:pt-[52px] 2xl:pt-[60px]">
-          <div class="grid grid-cols-12 gap-x-16">
-            <div class="col-span-10 col-start-3">
-              <div class="base-mono flex items-center {% if closeButtonPosition == "left" %} justify-between {% else %} justify-end {% endif %}">
+          <div class="grid grid-cols-12 lg:gap-x-16">
+            <div class="col-span-full lg:col-span-10 lg:col-start-3">
+              <div class="base-mono flex items-center {% if closeButtonPosition == "left" %} gap-x-2 justify-end lg:justify-between {% else %} justify-end {% endif %}">
 
                 {# Close #}
                 {% if navStyle == "icon" and showCloseButton %}
@@ -85,7 +84,7 @@
                     @keydown.escape.window="$dialog.close()"
                     class="pointer-events-auto transition ease-in-out duration-200 hover:text-coral-red hover:rotate-90"
                   >
-                    <span>{{ svg('@webroot/dist/images/icon--close.svg', true, true)|attr({ class: 'w-[44px]' }) }}</span>
+                    <span>{{ svg('@webroot/dist/images/icon--close.svg', true, true)|attr({ class: 'w-[38px] md:w-[44px]' }) }}</span>
                   </button>
 
                 {% elseif showCloseButton %}
@@ -115,7 +114,7 @@
                       @click="prev()"
                       @keydown.left.window="showSlideover && prev()"
                     >
-                      <span>{{ svg('@webroot/dist/images/icon--arrow-right-circ.svg', true, true)|attr({ class: 'w-[44px] rotate-180' }) }}</span>
+                      <span>{{ svg('@webroot/dist/images/icon--arrow-right-circ.svg', true, true)|attr({ class: 'w-[38px] md:w-[44px] rotate-180' }) }}</span>
                     </button>
 
                   {% elseif showNav %}
@@ -146,7 +145,7 @@
                       @click="next()"
                       @keydown.right.window="showSlideover && next()"
                     >
-                      <span>{{ svg('@webroot/dist/images/icon--arrow-right-circ.svg', true, true)|attr({ class: 'w-[44px]' }) }}</span>
+                      <span>{{ svg('@webroot/dist/images/icon--arrow-right-circ.svg', true, true)|attr({ class: 'w-[38px] md:w-[44px]' }) }}</span>
                     </button>
 
                   {% elseif showNav %}
