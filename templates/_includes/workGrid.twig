@@ -112,7 +112,7 @@
             @keydown.space.prevent="setSlideover({{ entry.id }})"
             href="{{ url(entry.uri) }}"
             class="box-link before:focus-visible:outline before:focus-visible:outline-2 before:focus-visible:outline-offset-2 before:focus-visible:outline-blue-700"
-            aria-label="{{ 'View details, opens dialog'|t }}"
+            aria-label="{{ '{0} project details, opens modal'|t([entry.title]) }}"
           ></a>
         </div>
 

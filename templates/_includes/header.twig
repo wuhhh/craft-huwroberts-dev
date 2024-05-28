@@ -7,7 +7,7 @@
     <div class="container">
       <a
         href="{{ siteUrl }}"
-        aria-label="{{ siteUrl }} {{ "home"|t }}"
+        aria-label="{{ siteName }} {{ "home"|t }}"
         class="size-[44px] {% if outlinedLogo %} border-2 border-black md:border-[3px] 2xl:border-4 {% else %} bg-black text-white {% endif %} flex items-center justify-center md:size-14 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-blue-700"
       >
         {{ svg('@webroot/dist/images/h--logomark.svg', true, true)|attr({ class: 'w-[14px] md:w-[18px]' }) }}

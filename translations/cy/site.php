@@ -10,4 +10,6 @@
 		"View Live"	=> "Gweld Yn Fyw",
 		"View live site, opens in new tab" => "Gweld safle byw, yn agor mewn tab newydd",
 		"Main menu" => "Prif ddewislen",
+		"Close modal" => "Cau modal",
+		"{0} project details, opens modal" => "Manylion prosiect {0}, yn agor modal",
 	];
