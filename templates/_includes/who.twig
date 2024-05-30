@@ -9,24 +9,24 @@
 
   {% set panelContent %}
     <div>
-      <article class="grid grid-cols-12 space-y-16 pt-[186px] pb-16 w-full max-w-[736px] ml-auto md:pb-[72px] lg:max-w-none lg:ml-0 lg:gap-x-16 2xl:pb-24">
-        <div class="pointer-events-auto col-span-full lg:col-span-10 lg:col-start-3 lg:grid lg:grid-cols-subgrid">
-            <div class="col-span-full flex flex-col justify-between lg:h-full lg:col-span-6">
+      <article class="grid grid-cols-12 space-y-16 pt-[186px] pb-16 w-full max-w-[736px] ml-auto md:pb-[72px] lg:w-4/5 lg:max-w-none xl:w-auto xl:ml-0 xl:gap-x-16 2xl:pb-24">
+        <div class="pointer-events-auto col-span-full xl:col-span-10 xl:col-start-3 xl:grid xl:grid-cols-subgrid">
+            <div class="col-span-full flex flex-col justify-between md:col-span-4 xl:h-full xl:col-span-6">
               {% if heading %}
                 <h2 x-dialog:title class="sr-only">About me</h2>
                 <h2
                   aria-hidden="true"
-                  class="font-bold heading1 mb-16"
+                  class="font-bold heading1 mb-16 md:w-4/5 xl:w-auto"
                 >{{ heading }}</h2>
               {% endif %}
 
-              <div class="space-y-16">
+              <div class="flex flex-col gap-y-16 md:block xl:flex">
                 {% if richText %}
-                  <div class="heading5 md:heading4 font-medium ckeditor -simple">{{ richText }}</div>
+                  <div class="heading5 md:heading4 font-medium ckeditor -simple md:w-4/5 xl:w-auto">{{ richText }}</div>
                 {% endif %}
 
                 {% if image %}
-                  <div class="lg:hidden">
+                  <div class="md:!-mt-32 md:flex md:justify-end xl:hidden">
                     {% include "_includes/picture" with {
                       image: image,
                       mode: "crop",
@@ -40,14 +40,14 @@
 
                 {# Tags #}
                 {% if tags %}
-                  <div class="w-full max-w-[752px]">
+                  <div class="relative w-full max-w-[752px] md:w-4/5 md:!-mt-32 xl:w-auto xl:!mt-0">
                     {% include "_includes/tags" with { tags: tags } only %}
                   </div>
                 {% endif %}
               </div>
             </div>
 
-            <div class="hidden lg:block col-span-full lg:col-span-4">
+            <div class="hidden xl:block col-span-full xl:col-span-4">
               {% if image %}
                 {% include "_includes/picture" with {
                   image: image,
