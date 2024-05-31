@@ -6,6 +6,7 @@
   {% set liveUrl = entry.liveUrl ?? null %}
   {% set summary = entry.summary ?? null %}
   {% set video = entry.video.one() ?? null %}
+  {% set backdropColour = entry.backdropColour.value|default("bg-slate-50") %}
   {% set role = entry.role ?? null %}
   {% set tags = entry.techTags.all() ?? [] %}
 
@@ -49,25 +50,52 @@
       {% endif %}
 
       {# Video #}
-      {# {% if video %} #}
-        <div class="w-full max-w-[1160px]">
-          <div class="aspect-[1160/680] bg-gray-50 flex items-center justify-center">
-            {# <div class="aspect-[960/576] w-full max-w-[960px] bg-green-500 flex items-center justify-center shadow-sm">
-              <div class="base-mono">VIDEO</div>
-            </div> #}
-            {# <video
-              controls
-              muted
-              playsinline
-              loop
-              class="w-auto h-[576px] shadow-sm"
-            >
-              <source src="{{ video.url }}" type="{{ video.getMimeType() }}">
-              Your browser does not support the video tag.
-            </video> #}
+
+      <div
+        x-data="{
+          showVideo: false,
+          videoLazyLoaded: false,
+
+          handleOpenSlideover(event) {
+            if (event.detail.id != {{ entry.id }}) return;
+            if (this.$refs.video && !this.videoLazyLoaded) {
+              this.$refs.video.querySelector('source').src = this.$refs.video.querySelector('source').dataset.src;
+              this.$refs.video.load();
+              this.videoLazyLoaded = true;
+            }
+          },
+        }"
+        @open-slideover.window="handleOpenSlideover($event)"
+        class="w-full max-w-[1160px]"
+      >
+        <div class="aspect-[1160/680] {{ backdropColour }} flex items-center justify-center">
+          <div class="relative aspect-[960/576] w-full sm:max-w-[clamp(414px,960px,83%)]">
+            {% if video %}
+              <div
+                @click="() => {
+                  $refs.video.paused ? $refs.video.play() : $refs.video.pause();
+                }"
+                class="absolute inset-0"
+              >
+                <video
+                  x-ref="video"
+                  muted
+                  playsinline
+                  class="object-cover w-full h-full rounded-sm"
+                >
+                  <source data-src="{{ video.url }}" type="{{ video.getMimeType() }}">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            {% endif %}
 
             {% if cardImage %}
-              <div class="relative aspect-[960/576] w-full max-w-[960px]">
+              <div
+                @click="showVideo = true; $refs.video.play()"
+                x-show="!showVideo"
+                x-transition.opacity.duration.1000ms
+                class="absolute inset-0 cursor-pointer"
+              >
                 {% include "_includes/picture" with {
                   image: cardImage,
                   mode: "fit",
@@ -81,7 +109,7 @@
             {% endif %}
           </div>
         </div>
-      {# {% endif %} #}
+      </div>
 
       {# Role #}
       {% if role %}
