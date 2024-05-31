@@ -1,0 +1,87 @@
+columnSuffix: null
+handle: backdropColour
+instructions: "Slate 50: rgb(248, 250, 252)\r\nSlate 100: rgb(24, 245, 249)\r\nNeutral 50: rgb(250, 250, 250)\r\nNeutral 100: rgb(245, 245, 245)\r\nNeutral 900: rgb(24, 24, 27)\r\nZinc 900: rgb(23, 23, 23)"
+name: 'Backdrop Colour'
+searchable: false
+settings:
+  options:
+    -
+      __assoc__:
+        -
+          - label
+          - 'Slate 50'
+        -
+          - value
+          - bg-slate-50
+        -
+          - default
+          - ''
+    -
+      __assoc__:
+        -
+          - label
+          - 'Slate 100'
+        -
+          - value
+          - bg-slate-100
+        -
+          - default
+          - ''
+    -
+      __assoc__:
+        -
+          - label
+          - 'Neutral 50'
+        -
+          - value
+          - bg-neutral-50
+        -
+          - default
+          - ''
+    -
+      __assoc__:
+        -
+          - label
+          - 'Neutral 100'
+        -
+          - value
+          - bg-neutral-100
+        -
+          - default
+          - ''
+    -
+      __assoc__:
+        -
+          - label
+          - 'Neutral 900'
+        -
+          - value
+          - bg-neutral-900
+        -
+          - default
+          - ''
+    -
+      __assoc__:
+        -
+          - label
+          - 'Zinc 900'
+        -
+          - value
+          - bg-zinc-900
+        -
+          - default
+          - ''
+    -
+      __assoc__:
+        -
+          - label
+          - Black
+        -
+          - value
+          - bg-black
+        -
+          - default
+          - ''
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Dropdown
