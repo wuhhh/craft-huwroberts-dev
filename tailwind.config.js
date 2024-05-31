@@ -7,6 +7,15 @@ module.exports = {
     "./src/**/*.js",
     "./config/formie.php",
   ],
+  safelist: [
+    "bg-slate-50",
+    "bg-slate-100",
+    "bg-neutral-50",
+    "bg-neutral-100",
+    "bg-neutral-900",
+    "bg-zinc-900",
+    "bg-black",
+  ],
   theme: {
     boxShadow: {
       sm: "0 0 8px 0 rgba(0, 0, 0, 0.05)",
