@@ -16,6 +16,7 @@
       setSlideover: function (id) {
         this.selected = id;
         this.showSlideover = true;
+        $dispatch('open-slideover', { id });
       },
 
       top: function () {
