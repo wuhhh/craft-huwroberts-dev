@@ -25,14 +25,14 @@
 
       prev: function () {
         if (this.hasPrev()) {
-          this.selected = this.workIDs[this.index() - 1];
+          this.setSlideover(this.workIDs[this.index() - 1]);
           this.top();
         }
       },
 
       next: function () {
         if (this.hasNext()) {
-          this.selected = this.workIDs[this.index() + 1];
+          this.setSlideover(this.workIDs[this.index() + 1]);
           this.top();
         }
       },
