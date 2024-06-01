@@ -52,6 +52,10 @@
   .base-mono {
     @apply font-mono text-base leading-normal;
   }
+
+  .sm-mono {
+    @apply font-mono text-[14px];
+  }
 }
 
 .ckeditor {
