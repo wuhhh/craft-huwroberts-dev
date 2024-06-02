@@ -14,13 +14,27 @@ import focus from '@alpinejs/focus';
 import intersect from '@alpinejs/intersect';
 import ui from '@alpinejs/ui';
 
+import core from './parts/core';
 import emoji from './parts/emoji';
+import mediaControls from './parts/mediaControls';
 
 Alpine.plugin(focus);
 Alpine.plugin(intersect);
 Alpine.plugin(ui);
 
+Alpine.data('core', core);
 Alpine.data('emoji', emoji);
+Alpine.data('mediaControls', mediaControls);
+
+Alpine.store('global', {
+	mouseCoords: [0, 0],
+
+  init() {
+    window.addEventListener('mousemove', (e) => {
+      this.mouseCoords = [e.clientX, e.clientY];
+    });
+  }
+})
 
 Alpine.start();
 
