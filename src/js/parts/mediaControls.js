@@ -12,6 +12,7 @@ export default ("mediaControls",
   duration: 0,
   paused: false,
   playing: false,
+  stopped: true,
 
   // Initialise method outside main init so
   // media can be lazy loaded
@@ -48,6 +49,7 @@ export default ("mediaControls",
   handlePlay() {
     this.playing = true;
     this.paused = false;
+    this.stopped = false;
 
     this.$dispatch("event-play-started", { id: this.$id("projectMusic") });
   },
@@ -70,6 +72,6 @@ export default ("mediaControls",
   },
 
   handleEnded() {
-    // this.currentTime = 0;
+    this.stopped = true;
   },
 }));
