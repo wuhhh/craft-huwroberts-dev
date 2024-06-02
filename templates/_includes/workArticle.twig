@@ -15,8 +15,6 @@
 
   <article
     x-show="selected === {{ entry.id }}"
-    {% if prevEntry %} @keydown.left.prevent="setSlideover({{ prevEntry.id }})" {% endif %}
-    {% if nextEntry %} @keydown.right.prevent="setSlideover({{ nextEntry.id }})" {% endif %}
     class="grid grid-cols-12 space-y-16 pt-[186px] pb-16 w-full max-w-[736px] ml-auto md:pb-[72px] lg:max-w-none lg:ml-0 lg:gap-x-16 2xl:pb-24"
   >
     <div class="pointer-events-auto space-y-16 col-span-full lg:col-span-9 lg:col-start-3">
@@ -53,27 +51,20 @@
 
       <div
         x-data="{
-          showVideo: false,
-          paused: true,
-          videoLazyLoaded: false,
+          ...mediaControls(),
+          ...{
+            showVideo: false,
+            videoLazyLoaded: false,
 
-          play() {
-            this.$refs.video.play();
-            this.paused = false;
-          },
-
-          pause() {
-            this.$refs.video.pause();
-            this.paused = true;
-          },
-
-          handleOpenSlideover(event) {
-            if (event.detail.id != {{ entry.id }}) return;
-            if (this.$refs.video && !this.videoLazyLoaded) {
-              this.$refs.video.querySelector('source').src = this.$refs.video.querySelector('source').dataset.src;
-              this.$refs.video.load();
-              this.videoLazyLoaded = true;
-            }
+            handleOpenSlideover(event) {
+              if (event.detail.id != {{ entry.id }}) return;
+              if (this.$refs.video && !this.videoLazyLoaded) {
+                this.$refs.video.querySelector('source').src = this.$refs.video.querySelector('source').dataset.src;
+                this.$refs.video.load();
+                this.initialiseMediaControls(this.$refs.video);
+                this.videoLazyLoaded = true;
+              }
+            },
           },
 
           // TODO: Stop video when closing slideover
@@ -88,7 +79,7 @@
               <div class="absolute inset-0 group">
                 <video
                   x-ref="video"
-                  @click="paused ? play() : pause()"
+                  @click="play()"
                   muted
                   playsinline
                   class="object-cover w-full h-full rounded-sm"
@@ -97,55 +88,95 @@
                   Your browser does not support the video tag.
                 </video>
 
+                {# Controls #}
                 <div class="sr-only">Video controls</div>
                 <div
-                  class="pointer-events-none absolute inset-x-0 bottom-0 h-[72px] bg-zinc-900/90 backdrop-blur-sm opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 duration-200"
-                  :class="{ 'opacity-100 translate-y-0': paused }"
-                ></div>
-                <div
-                  class="absolute inset-x-0 bottom-0 h-[72px] pl-2.5 pr-6 flex items-center opacity-0 group-hover:opacity-100 duration-300"
+                  style="display:none"
+                  x-ref="controls"
+                  x-show="showVideo"
+                  class="absolute inset-x-0 bottom-0 z-10 h-[72px] pl-2.5 pr-6 flex items-center opacity-0 group-hover:opacity-100 duration-200 focus-within:opacity-100 peer"
                   :class="{ 'opacity-100': paused }"
                 >
-                  {# Play #}
+                  {# Play/pause #}
                   <button
-                    x-show="paused"
                     @click="play()"
                     class="size-[44px] flex items-center justify-center"
                   >
-                    {{ svg('@webroot/dist/images/icon--play.svg', true, true)|attr({ class: 'w-auto h-[15px] text-slate-50' }) }}
-                  </button>
-                  {# Pause #}
-                  <button
-                    x-show="!paused"
-                    @click="pause()"
-                    class="size-[44px] flex items-center justify-center"
-                  >
-                    {{ svg('@webroot/dist/images/icon--paused.svg', true, true)|attr({ class: 'w-auto h-[12px] text-slate-50' }) }}
+                    <span x-show="paused">
+                      {{ svg('@webroot/dist/images/icon--play.svg', true, true)|attr({ class: 'w-auto h-[15px] text-slate-50' }) }}
+                    </span>
+                    <span x-show="!paused">
+                      {{ svg('@webroot/dist/images/icon--paused.svg', true, true)|attr({ class: 'w-auto h-[12px] text-slate-50' }) }}
+                    </span>
                   </button>
                   {# Progress #}
-                  <div class="flex-grow h-full ml-2.5">
-                    <div class="relative w-full h-full flex items-center">
+                  <button
+                    x-data="{
+											hover: false,
+											seek: 0,
+										}"
+										x-init="() => {
+											$watch('$store.global.mouseCoords', (state) => {
+												if(hover) {
+													let x = $store.global.mouseCoords[0] - $el.getBoundingClientRect().left
+													let w = $el.getBoundingClientRect().width
+													seek = x / w
+												}
+											})
+											$watch('hover', (state) => {
+												if(!state) seek = 0
+											})
+										}"
+										@mouseenter="hover = true"
+										@mouseleave="hover = false"
+                    @keydown.left.prevent="seek -= 0.01"
+                    @keydown.right.prevent="seek += 0.01"
+										@click="element.currentTime = duration * seek"
+                    data-keydown-priority="ArrowLeft,ArrowRight"
+                    class="flex-grow h-full ml-2.5 cursor-pointer"
+                    aria-label="Seek, use left and right arrow keys"
+                  >
+                    <span class="relative w-full h-full flex items-center">
                       {# Track #}
-                      <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1 bg-neutral-900 rounded-sm"></div>
+                      <span class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1 bg-neutral-900"></span>
                       {# Progress #}
-                      <div class="absolute left-0 top-1/2 -translate-y-1/2 w-28 h-1 bg-slate-50/75 rounded-sm"></div>
-                    </div>
-                  </div>
+                      <span
+                        :style="`transform:scaleX(${currentTime / duration})`"
+                        class="absolute inset-x-0 top-1/2 -mt-0.5 h-1 origin-left bg-coral-red"
+                      ></span>
+                      {# Seek visual #}
+                      <span
+                        x-ref="seekVisual"
+                        :style="`transform:scaleX(${seek})`"
+                        class="absolute inset-x-0 top-1/2 -mt-0.5 h-1 origin-left bg-slate-50/25 mix-blend-lighten"
+                      ></span>
+                    </span>
+                  </button>
                   {# Time #}
                   <div class="ml-6 flex items-center gap-x-1">
-                    <span class="sm-mono text-slate-100/85 leading-none">0:00</span>
+                    <span class="sm-mono text-slate-100/85 leading-none" x-text="formatTime(currentTime)">0:00</span>
                     <span class="sm-mono text-slate-100/85 leading-none">/</span>
-                    <span class="sm-mono text-slate-100/85 leading-none">1:23</span>
+                    <span class="sm-mono text-slate-100/85 leading-none" x-text="formatTime(duration)">1:23</span>
                   </div>
                 </div>
+
+                {# Underlay/background blur #}
+                <div
+                  class="pointer-events-none absolute inset-x-0 bottom-0 h-[72px] bg-zinc-900/90 backdrop-blur-sm opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 duration-200 peer-focus-within:!opacity-100 peer-focus-within:!translate-y-0"
+                  :class="{ 'opacity-100 translate-y-0': paused }"
+                ></div>
               </div>
             {% endif %}
 
             {% if cardImage %}
-              <div
-                @click="showVideo = true; play()"
+              <button
+                @click="() => {
+                  showVideo = true;
+                  play();
+                  $focus.within($refs.controls).first();
+                }"
                 x-show="!showVideo"
-                x-transition.opacity.duration.1000ms
+                x-transition.opacity.duration.500ms
                 class="absolute inset-0 cursor-pointer"
               >
                 {% include "_includes/picture" with {
@@ -157,7 +188,7 @@
                     { "default": [960, null] },
                   ],
                 } only %}
-              </div>
+              </button>
             {% endif %}
           </div>
         </div>

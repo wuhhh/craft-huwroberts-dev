@@ -113,7 +113,7 @@
                       :tabindex="hasPrev() ? 0 : -1"
                       aria-label="Previous project"
                       @click="prev()"
-                      @keydown.left.window="showSlideover && prev()"
+                      @keydown.left.window="wrapKeyDown($event, () => showSlideover && prev())"
                     >
                       <span>{{ svg('@webroot/dist/images/icon--arrow-right-circ.svg', true, true)|attr({ class: 'w-[38px] md:w-[44px] rotate-180' }) }}</span>
                     </button>
@@ -126,7 +126,7 @@
                       :tabindex="hasPrev() ? 0 : -1"
                       aria-label="Previous project"
                       @click="prev()"
-                      @keydown.left.window="showSlideover && prev()"
+                      @keydown.left.window="wrapKeyDown($event, () => showSlideover && prev())"
                       >
                       <span>[&#8592;] <span class="group-hover:underline">Previous</span></span>
                     </button>
@@ -144,7 +144,7 @@
                       :tabindex="hasNext() ? 0 : -1"
                       aria-label="Next project"
                       @click="next()"
-                      @keydown.right.window="showSlideover && next()"
+                      @keydown.right.window="wrapKeyDown($event, () => showSlideover && next())"
                     >
                       <span>{{ svg('@webroot/dist/images/icon--arrow-right-circ.svg', true, true)|attr({ class: 'w-[38px] md:w-[44px]' }) }}</span>
                     </button>
@@ -157,7 +157,7 @@
                       :tabindex="hasNext() ? 0 : -1"
                       aria-label="Next project"
                       @click="next()"
-                      @keydown.right.window="showSlideover && next()"
+                      @keydown.right.window="wrapKeyDown($event, () => showSlideover && next())"
                     >
                       <span><span class="group-hover:underline">Next</span> [&#8594;] </span>
                     </button>

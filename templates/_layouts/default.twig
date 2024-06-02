@@ -19,7 +19,10 @@
   {% set langAlt = lang == "en-GB" ? "cy-GB" : "en-GB" %}
 
   {% block bodyTag %}
- 		<body class="relative flex flex-col min-h-screenh antialiased bg-white">
+ 		<body
+      x-data="core()"
+      class="relative flex flex-col min-h-screenh antialiased bg-white"
+    >
       <a class="skip-link" href="#main" tabindex="1">{{ "Skip to content"|t }}</a>
   {% endblock %}
 
