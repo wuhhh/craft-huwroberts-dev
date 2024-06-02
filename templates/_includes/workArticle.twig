@@ -129,12 +129,12 @@
 										}"
 										@mouseenter="hover = true"
 										@mouseleave="hover = false"
-                    @keydown.left.prevent="seek -= 0.01"
-                    @keydown.right.prevent="seek += 0.01"
-										@click="element.currentTime = duration * seek"
+                    @keydown.left.prevent="media.currentTime -= 5"
+                    @keydown.right.prevent="media.currentTime += 5"
+										@click="media.currentTime = duration * seek"
                     data-keydown-priority="ArrowLeft,ArrowRight"
                     class="flex-grow h-full ml-2.5 cursor-pointer"
-                    aria-label="Seek, use left and right arrow keys"
+                    aria-label="Seek"
                   >
                     <span class="relative w-full h-full flex items-center">
                       {# Track #}

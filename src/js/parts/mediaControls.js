@@ -6,7 +6,7 @@
 
 export default ("mediaControls",
 (element) => ({
-  element: null,
+  media: null,
   canPlay: false,
   currentTime: 0,
   duration: 0,
@@ -16,26 +16,26 @@ export default ("mediaControls",
   // Initialise method outside main init so
   // media can be lazy loaded
   initialiseMediaControls(element) {
-    this.element = element;
-    this.element.addEventListener("play", () => this.handlePlay());
-    this.element.addEventListener("pause", () => this.handlePause());
-    this.element.addEventListener("durationchange", () =>
+    this.media = element;
+    this.media.addEventListener("play", () => this.handlePlay());
+    this.media.addEventListener("pause", () => this.handlePause());
+    this.media.addEventListener("durationchange", () =>
       this.handleDurationChange()
     );
-    this.element.addEventListener("canplay", () => this.handleCanPlay());
-    this.element.addEventListener("timeupdate", () => this.handleTimeUpdate());
-    this.element.addEventListener("ended", () => this.handleEnded());
+    this.media.addEventListener("canplay", () => this.handleCanPlay());
+    this.media.addEventListener("timeupdate", () => this.handleTimeUpdate());
+    this.media.addEventListener("ended", () => this.handleEnded());
   },
 
   play() {
     if (
-      this.element.readyState &&
-      this.element.played.length > 0 &&
-      !this.element.paused
+      this.media.readyState &&
+      this.media.played.length > 0 &&
+      !this.media.paused
     ) {
-      this.element.pause();
+      this.media.pause();
     } else {
-      this.element.play();
+      this.media.play();
     }
   },
 
@@ -62,11 +62,11 @@ export default ("mediaControls",
   },
 
   handleDurationChange() {
-    this.duration = this.element.duration;
+    this.duration = this.media.duration;
   },
 
   handleTimeUpdate() {
-    this.currentTime = this.element.currentTime;
+    this.currentTime = this.media.currentTime;
   },
 
   handleEnded() {
