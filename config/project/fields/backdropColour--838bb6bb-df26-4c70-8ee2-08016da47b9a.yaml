@@ -9,6 +9,17 @@ settings:
       __assoc__:
         -
           - label
+          - ''
+        -
+          - value
+          - ''
+        -
+          - default
+          - '1'
+    -
+      __assoc__:
+        -
+          - label
           - 'Slate 50'
         -
           - value

@@ -1,4 +1,4 @@
-dateModified: 1717171887
+dateModified: 1717422088
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -8,9 +8,9 @@ fs:
     hasUrls: true
     name: Local
     settings:
-      path: '@webroot'
+      path: '@webroot/volumes/local'
     type: craft\fs\Local
-    url: '@web'
+    url: '@web/volumes/local'
 meta:
   __names__:
     4e5f4410-fe03-41d3-a103-8619a3dee7de: 'Live URL' # Live URL
