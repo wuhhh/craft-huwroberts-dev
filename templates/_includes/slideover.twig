@@ -13,6 +13,7 @@
 <div
   x-dialog
   x-model="showSlideover"
+  x-init="$watch('showSlideover', (state) => { if (!state) { $dispatch('slideover-close') } })"
   style="display: none"
   class="fixed inset-0 z-10"
 >
@@ -80,7 +81,7 @@
 
                   <button
                     type="button"
-                    @click="$dialog.close()"
+                    @click="$dialog.close();"
                     @keydown.escape.window="$dialog.close()"
                     class="pointer-events-auto transition ease-in-out duration-200 hover:text-coral-red hover:rotate-90"
                     aria-label="Close modal"

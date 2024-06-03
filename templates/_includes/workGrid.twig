@@ -16,7 +16,7 @@
       setSlideover: function (id) {
         this.selected = id;
         this.showSlideover = true;
-        $dispatch('open-slideover', { id });
+        $dispatch('slideover-change', { id });
       },
 
       top: function () {

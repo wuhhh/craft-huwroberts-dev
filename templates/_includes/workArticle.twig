@@ -56,21 +56,27 @@
             showVideo: false,
             videoLazyLoaded: false,
 
-            handleOpenSlideover(event) {
-              if (event.detail.id != {{ entry.id }}) return;
-              if (this.$refs.video && !this.videoLazyLoaded) {
+            handleSlideoverChange(event) {
+              if (event.detail.id != {{ entry.id }} && this.$refs.video && this.showVideo) {
+                this.pause();
+              }
+              else if (event.detail.id == {{ entry.id }} && this.$refs.video && !this.videoLazyLoaded) {
                 this.$refs.video.querySelector('source').src = this.$refs.video.querySelector('source').dataset.src;
                 this.$refs.video.load();
                 this.initialiseMediaControls(this.$refs.video);
                 this.videoLazyLoaded = true;
               }
             },
-          },
 
-          // TODO: Stop video when closing slideover
-          // or navigating to another work entry
+            handleSlideoverClose() {
+              if (this.$refs.video && this.showVideo) {
+                this.pause();
+              }
+            },
+          },
         }"
-        @open-slideover.window="handleOpenSlideover($event)"
+        @slideover-change.window="handleSlideoverChange($event)"
+        @slideover-close.window="handleSlideoverClose()"
         class="w-full max-w-[1160px]"
       >
         <div class="aspect-[1160/680] {{ backdropColour }} flex items-center justify-center">
@@ -84,7 +90,7 @@
                   @click="play()"
                   muted
                   playsinline
-                  class="object-cover w-full h-full rounded-sm"
+                  class="cursor-pointer object-cover w-full h-full rounded-sm"
                 >
                   <source data-src="{{ video.url }}" type="{{ video.getMimeType() }}">
                   Your browser does not support the video tag.

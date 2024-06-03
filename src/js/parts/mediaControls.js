@@ -40,6 +40,12 @@ export default ("mediaControls",
     }
   },
 
+  pause() {
+    this.media.pause();
+    this.playing = false;
+    this.paused = true;
+  },
+
   formatTime(time) {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time - minutes * 60);
