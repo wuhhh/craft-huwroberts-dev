@@ -56,6 +56,10 @@
   .sm-mono {
     @apply font-mono text-[14px];
   }
+
+  .xs-mono {
+    @apply font-mono text-[12px];
+  }
 }
 
 .ckeditor {

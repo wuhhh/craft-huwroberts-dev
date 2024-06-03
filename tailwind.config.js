@@ -19,6 +19,7 @@ module.exports = {
   theme: {
     boxShadow: {
       sm: "0 0 8px 0 rgba(0, 0, 0, 0.05)",
+      none: "none",
     },
     fontFamily: {
       mono: ["bm", "monospace"],
@@ -26,17 +27,19 @@ module.exports = {
     },
     screens: {
       sm: "640px",
+      "sm-down": { max: "639px" },
       md: "834px",
       lg: "1024px",
       xl: "1280px",
       "2xl": "1536px",
       "3xl": "1728px",
+      "hover-none": { raw: "(hover: none)" },
     },
     extend: {
       colors: {
-        'coral-red': {
+        "coral-red": {
           DEFAULT: "#F36855",
-        }
+        },
       },
       minHeight: {
         screenh: "100vh",

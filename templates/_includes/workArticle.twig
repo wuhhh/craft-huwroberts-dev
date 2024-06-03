@@ -79,7 +79,7 @@
         @slideover-close.window="handleSlideoverClose()"
         class="w-full max-w-[1160px]"
       >
-        <div class="aspect-[1160/680] {{ backdropColour }} flex items-center justify-center">
+        <div class="aspect-[1160/680] {{ backdropColour }} flex items-center justify-center sm-down:bg-transparent">
           <div class="relative aspect-[960/576] w-full sm:max-w-[clamp(414px,960px,83%)] group">
             {% if video %}
               <div class="absolute inset-0">
@@ -90,7 +90,7 @@
                   @click="play()"
                   muted
                   playsinline
-                  class="cursor-pointer object-cover w-full h-full rounded-sm"
+                  class="cursor-pointer object-cover w-full h-full rounded-sm shadow-sm sm:shadow-none"
                 >
                   <source data-src="{{ video.url }}" type="{{ video.getMimeType() }}">
                   Your browser does not support the video tag.
@@ -100,8 +100,10 @@
                 <div class="sr-only">Video controls</div>
                 <div
                   x-ref="controls"
-                  class="absolute inset-x-0 bottom-0 z-20 h-[72px] pl-2.5 pr-6 flex items-center opacity-0 group-hover:opacity-100 duration-200 focus-within:opacity-100 peer"
-                  :class="{ 'opacity-100': paused }"
+                  class="absolute inset-x-0 bottom-0 z-20 h-12 md:h-[72px] pl-[2px] md:pl-2.5 pr-4 md:pr-6 flex items-center opacity-0 group-hover:opacity-100 duration-200 focus-within:opacity-100 peer"
+                  :class="{
+                    'opacity-100': paused,
+                  }"
                 >
 
                   {# == Play/pause == #}
@@ -111,10 +113,10 @@
                     :aria-label="paused ? 'Play' : 'Pause'"
                   >
                     <span x-show="paused || stopped">
-                      {{ svg('@webroot/dist/images/icon--play.svg', true, true)|attr({ class: 'w-auto h-[15px] text-slate-50' }) }}
+                      {{ svg('@webroot/dist/images/icon--play.svg', true, true)|attr({ class: 'w-auto h-2.5 md:h-[15px] text-slate-50' }) }}
                     </span>
                     <span x-show="!paused && !stopped">
-                      {{ svg('@webroot/dist/images/icon--paused.svg', true, true)|attr({ class: 'w-auto h-[12px] text-slate-50' }) }}
+                      {{ svg('@webroot/dist/images/icon--paused.svg', true, true)|attr({ class: 'w-auto h-2 md:h-3 text-slate-50' }) }}
                     </span>
                   </button>
 
@@ -142,7 +144,7 @@
                     @keydown.right.prevent="media.currentTime += 5"
 										@click="media.currentTime = duration * seek"
                     data-keydown-priority="ArrowLeft,ArrowRight"
-                    class="flex-grow h-full ml-2.5 cursor-pointer"
+                    class="flex-grow h-full ml-[3px] md:ml-2.5 cursor-pointer"
                     aria-label="Seek"
                   >
                     <span class="relative w-full h-full flex items-center">
@@ -167,16 +169,16 @@
                   </button>
 
                   {# == Time == #}
-                  <div class="ml-6 flex items-center gap-x-1">
-                    <span class="sm-mono text-slate-100/85 leading-none" x-text="formatTime(currentTime)">0:00</span>
-                    <span aria-hidden class="sm-mono text-slate-100/85 leading-none">/</span>
-                    <span class="sm-mono text-slate-100/85 leading-none" x-text="formatTime(duration)">1:23</span>
+                  <div class="ml-4 md:ml-6 flex items-center gap-x-[6px]">
+                    <span class="xs-mono md:sm-mono text-slate-100/85 leading-none" x-text="formatTime(currentTime)">0:00</span>
+                    <span aria-hidden class="xs-mono md:sm-mono text-slate-100/85 leading-none">/</span>
+                    <span class="xs-mono md:sm-mono text-slate-100/85 leading-none" x-text="formatTime(duration)">1:23</span>
                   </div>
                 </div>
 
                 {# == Underlay/background blur == #}
                 <div
-                  class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[72px] bg-zinc-900/90 backdrop-blur-sm opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 duration-200 peer-focus-within:!opacity-100 peer-focus-within:!translate-y-0"
+                  class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 md:h-[72px] bg-zinc-900/90 backdrop-blur-sm opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 duration-200 peer-focus-within:!opacity-100 peer-focus-within:!translate-y-0"
                   :class="{ '!opacity-100 !translate-y-0': paused }"
                 ></div>
               </div>
@@ -204,10 +206,13 @@
                       { "default": [960, null] },
                     ],
                   } only %}
-                  <span class="transition duration-200 ease-in-out opacity-0 group-hover:opacity-100">
-                  <span style="background: radial-gradient(rgba(255,255,255,1.0), rgba(255,255,255,0));" class="absolute inset-0 opacity-5"></span>
-                  <span class="size-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-centre justify-center bg-zinc-900/90 rounded-full transition group-hover:scale-105 duration-300 ease-in-out"></span>
-                  {{ svg('@webroot/dist/images/icon--play.svg', true, true)|attr({ class: 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5 text-white ml-[3px]' }) }}
+                  <span
+                    class="transition duration-200 ease-in-out opacity-0 group-hover:opacity-100"
+                    :class="{ 'hover-none:opacity-100': !showVideo }"
+                  >
+                    <span style="background: radial-gradient(rgba(255,255,255,1.0), rgba(255,255,255,0));" class="absolute inset-0 opacity-5"></span>
+                    <span class="size-12 md:size-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-centre justify-center bg-zinc-900/90 rounded-full transition group-hover:scale-105 duration-300 ease-in-out"></span>
+                    {{ svg('@webroot/dist/images/icon--play.svg', true, true)|attr({ class: 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 md:w-5 text-white ml-px md:ml-[3px]' }) }}
                   </span>
                 </button>
               {% endif %}
