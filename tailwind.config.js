@@ -42,7 +42,7 @@ module.exports = {
         },
       },
       minHeight: {
-        screenh: "100vh",
+        screenh: "100dvh",
       },
     },
   },
