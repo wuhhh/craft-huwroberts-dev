@@ -88,8 +88,8 @@
         @slideover-close.window="handleSlideoverClose()"
         class="w-full max-w-[1160px]"
       >
-        <div class="aspect-[1160/680] {{ backdropColour }} flex items-center justify-center sm-down:bg-transparent">
-          <div class="relative aspect-[960/576] w-full sm:max-w-[clamp(414px,960px,83%)] group">
+        <div class="aspect-[1160/680] {{ backdropColour }} flex items-center justify-center shadow-sm sm:shadow-none sm-down:bg-transparent">
+          <div class="relative aspect-[960/576] w-full sm:max-w-[clamp(414px,960px,83%)] overflow-hidden group">
             {% if video %}
               <div class="absolute inset-0">
 
@@ -99,7 +99,7 @@
                   @click="play()"
                   muted
                   playsinline
-                  class="cursor-pointer object-cover w-full h-full rounded-sm shadow-sm sm:shadow-none"
+                  class="cursor-pointer object-cover w-full h-full rounded-sm"
                 >
                   <source data-src="{{ video.url }}" type="{{ video.getMimeType() }}">
                   Your browser does not support the video tag.
