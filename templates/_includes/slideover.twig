@@ -71,10 +71,10 @@
       class="absolute inset-0 pointer-events-none -ml-[var(--panel-away-w)] 3xl:-ml-[calc(100vw-var(--3xl-panel-w))]"
     >
       <div class="container">
-        <div class="sticky top-0 inset-x-0 pt-8 md:pt-[52px] 2xl:pt-[60px]">
+        <div class="sticky top-0 inset-x-0 bg-white/90 backdrop-blur-sm md:backdrop-blur-0 md:bg-transparent py-8 md:py-[52px] 2xl:py-[60px]">
           <div class="grid grid-cols-12 lg:gap-x-16">
             <div class="col-span-full lg:col-span-10 lg:col-start-3">
-              <div class="base-mono flex items-center {% if closeButtonPosition == "left" %} gap-x-2 justify-end lg:justify-between {% else %} justify-end {% endif %}">
+              <div class="base-mono flex items-center h-[44px] md:h-auto {% if closeButtonPosition == "left" %} gap-x-2 justify-end lg:justify-between {% else %} justify-end {% endif %}">
 
                 {# Close #}
                 {% if navStyle == "icon" and showCloseButton %}
@@ -89,16 +89,8 @@
                     <span>{{ svg('@webroot/dist/images/icon--close.svg', true, true)|attr({ class: 'w-[38px] md:w-[44px]' }) }}</span>
                   </button>
 
-                {% elseif showCloseButton %}
-
-                  <button
-                    type="button"
-                    @click="$dialog.close()"
-                    @keydown.escape.window="$dialog.close()"
-                    class="pointer-events-auto group"
-                  >
-                    <span>[Esc] <span class="group-hover:underline">Close</span></span>
-                  </button>
+                  {# Divider #}
+                  <span class="md:hidden w-6 h-full relative before:absolute before:left-1/2 before:inset-y-0 before:w-px before:-translate-x-px before:bg-black/10"></span>
 
                 {% endif %}
 
@@ -119,21 +111,6 @@
                       <span>{{ svg('@webroot/dist/images/icon--arrow-right-circ.svg', true, true)|attr({ class: 'w-[38px] md:w-[44px] rotate-180' }) }}</span>
                     </button>
 
-                  {% elseif showNav %}
-
-                    <button
-                      class="pointer-events-auto group"
-                      :class="{ 'pointer-events-none text-gray-100': !hasPrev() }"
-                      :tabindex="hasPrev() ? 0 : -1"
-                      aria-label="Previous project"
-                      @click="prev()"
-                      @keydown.left.window="wrapKeyDown($event, () => showSlideover && prev())"
-                      >
-                      <span>[&#8592;] <span class="group-hover:underline">Previous</span></span>
-                    </button>
-
-                    <span class="text-gray-100"> / </span>
-
                   {% endif %}
 
                   {# Next #}
@@ -148,19 +125,6 @@
                       @keydown.right.window="wrapKeyDown($event, () => showSlideover && next())"
                     >
                       <span>{{ svg('@webroot/dist/images/icon--arrow-right-circ.svg', true, true)|attr({ class: 'w-[38px] md:w-[44px]' }) }}</span>
-                    </button>
-
-                  {% elseif showNav %}
-
-                    <button
-                      class="pointer-events-auto group"
-                      :class="{ 'pointer-events-none text-gray-400': !hasNext() }"
-                      :tabindex="hasNext() ? 0 : -1"
-                      aria-label="Next project"
-                      @click="next()"
-                      @keydown.right.window="wrapKeyDown($event, () => showSlideover && next())"
-                    >
-                      <span><span class="group-hover:underline">Next</span> [&#8594;] </span>
                     </button>
 
                   {% endif %}
