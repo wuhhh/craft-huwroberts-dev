@@ -30,7 +30,7 @@
   }
 
   .base-sans {
-    @apply font-sans font-light text-[24px] leading-[140%];
+    @apply font-sans font-light text-[20px] leading-[140%];
   }
 
   .sm-sans {

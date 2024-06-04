@@ -24,14 +24,14 @@
   {% block bodyTag %}
  		<body
       x-data="core()"
-      class="relative flex flex-col min-h-screenh antialiased bg-white"
+      class="relative flex flex-col min-h-screenh antialiased bg-zinc-50"
     >
       <a class="skip-link" href="#main" tabindex="1">{{ "Skip to content"|t }}</a>
   {% endblock %}
 
     {% include "_includes/followerDot" only %}
     {% include "_includes/followerHex" only %}
-    {% include "_includes/headerNav" only %}
+    {# {% include "_includes/headerNav" only %} #}
 
     <main id="main">{% block content %}{% endblock %}</main>
 
@@ -42,5 +42,7 @@
     {% include "_includes/sayHello" only %}
 
     {% include "_includes/fixedLogomark" only %}
+
+    <div data-noise class="noise-overlay"></div>
   </body>
 </html>

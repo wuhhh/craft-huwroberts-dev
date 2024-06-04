@@ -82,14 +82,14 @@
 
     {# Nav and close buttons #}
     <div
-      x-show="showSlideover"
+      x-show="false"
       x-transition.opacity.duration.500ms
       class="absolute inset-0 z-10 pointer-events-none -ml-[var(--panel-away-w)] 3xl:-ml-[calc(100vw-var(--3xl-panel-w))]"
     >
       <div class="container">
         <div class="sticky top-0 inset-x-0 bg-white/90 backdrop-blur-sm md:backdrop-blur-0 md:bg-transparent py-8 md:py-[52px] 2xl:py-[60px]">
           <div class="grid grid-cols-12 lg:gap-x-16">
-            <div class="col-span-full lg:col-span-10 lg:col-start-3">
+            <div class="col-span-full lg:col-span-7 lg:col-start-5">
               <div class="base-mono flex items-center h-[44px] flex-row-reverse justify-items-end gap-x-2 lg:flex-row lg:justify-between">
 
                 {# Close #}
@@ -155,7 +155,7 @@
   {# Click away region #}
   <div
     @click="$dialog.close()"
-    class="cursor-w-resize fixed left-0 inset-y-0 w-[var(--panel-away-w)] 3xl:w-[var(--3xl-panel-away-w)]"
+    class="fixed left-0 inset-y-0 w-[var(--panel-away-w)] 3xl:w-[var(--3xl-panel-away-w)]"
   ></div>
 
 </div> {# /Slideover #}

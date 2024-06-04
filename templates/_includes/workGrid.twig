@@ -7,7 +7,7 @@
     <h2 class="sr-only">Recent work</h2>
 
     {# Work card grid #}
-    <div class="grid grid-cols-12 gap-y-24 lg:gap-x-16">
+    <div class="grid grid-cols-12 gap-y-24 lg:gap-x-10 pl-32">
       {% for entry in workEntries %}
 
         {% set image = entry.cardImage.one() ?? null %}
@@ -38,10 +38,10 @@
         {% endif %}
 
         <div class="relative group col-span-full space-y-5 w-full max-w-[480px] lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
-          <h2 class="heading3-mono">{{ entry.title }}</h2>
+          {# <h2 class="base-mono">{{ entry.title }}</h2> #}
 
           {% if image %}
-            <div class="relative aspect-[480/288] shadow-sm group-hover:shadow-none transition-all duration-200">
+            <div class="relative aspect-[480/288] {# shadow-sm group-hover:shadow-none #} transition-all duration-200">
               {% include "_includes/picture" with {
                 disableAlt: true,
                 image: image,
@@ -54,15 +54,19 @@
                 ],
               } only %}
 
-              <div class="absolute inset-0 bg-slate-50/90 backdrop-saturate-0 backdrop-brightness-125 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></div>
+              <div class="absolute inset-0 bg-zinc-100/90 backdrop-saturate-0 backdrop-brightness-125 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></div>
             </div>
           {% endif %}
 
-          {% include "_includes/workCardMeta" with {
-            type: entry.workType,
-            year: entry.year,
-            agency: entry.agency,
-          } %}
+          <div>
+            <h2 class="base-mono mb-0">{{ entry.title }}</h2>
+            {% include "_includes/workCardMeta" with {
+              type: entry.workType,
+              year: entry.year,
+              agency: entry.agency,
+            } %}
+          </div>
+
 
           <a
             x-data="{ open() { $dispatch('open-slideover', { id: {{ entry.id }} }) } }"
