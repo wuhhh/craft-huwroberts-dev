@@ -36,7 +36,7 @@
     <li>
       <a
         href="{{ url }}"
-        class="{% if lang.id == craft.app.sites.currentSite.id %}underline{% endif %}"
+        class="decoration-coral-red decoration-from-font hover:bg-coral-red/20 {% if lang.id == craft.app.sites.currentSite.id %}underline bg-transparent{% endif %}"
       >{{ locale.getDisplayName(locale.id) }}</a>
       {% if not loop.last %}<span> / </span>{% endif %}
     </li>
