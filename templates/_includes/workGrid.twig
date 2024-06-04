@@ -83,11 +83,11 @@
           <div class="hidden xl:block xl:col-span-4">{# blank grid space #}</div>
         {% endif %}
 
-        <div class="relative col-span-full space-y-5 w-full max-w-[480px] lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
+        <div class="relative group col-span-full space-y-5 w-full max-w-[480px] lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
           <h2 class="heading3-mono">{{ entry.title }}</h2>
 
           {% if image %}
-            <div class="aspect-[480/288] shadow-sm">
+            <div class="relative aspect-[480/288] shadow-sm group-hover:shadow-none transition-all duration-200">
               {% include "_includes/picture" with {
                 disableAlt: true,
                 image: image,
@@ -99,6 +99,8 @@
                   { "default": [414, null] },
                 ],
               } only %}
+
+              <div class="absolute inset-0 bg-slate-50/90 backdrop-saturate-0 backdrop-brightness-125 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></div>
             </div>
           {% endif %}
 
@@ -109,6 +111,7 @@
           } %}
 
           <a
+            data-follower="more"
             @click.prevent="setSlideover({{ entry.id }})"
             @keydown.space.prevent="setSlideover({{ entry.id }})"
             href="{{ url(entry.uri) }}"
