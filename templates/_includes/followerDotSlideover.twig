@@ -1,0 +1,14 @@
+{# Dot : Slideover open #}
+<div
+  data-name="followerDotSlideover"
+	x-data="follower({ speed: 15 })"
+  x-show="$store.global.slideoverOpen"
+	class="hidden fixed z-10 lg:block pointer-events-none"
+>
+  <div x-ref="move" style="transform: translate(0, 0)">
+    <div
+      class="size-4 -translate-x-1/2 -translate-y-1/2 transition duration-100 ease-in-out rounded-full bg-coral-red"
+      :class="{ 'opacity-0': isHot }"
+    ></div>
+  </div>
+</div>

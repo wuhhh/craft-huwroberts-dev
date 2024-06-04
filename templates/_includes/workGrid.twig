@@ -1,55 +1,9 @@
 {% set work = craft.entries.section('work') %}
 {% set workEntries = work.all() ?? [] %}
-{% set navStyle = "icon" %} {# "icon" or "text" #}
 
 {% if workEntries|length %}
 
-  {% set workIDs = work.collect().pluck('id') %}
-
-  <section
-    x-cloak
-    x-data="{
-      showSlideover: false,
-      selected: null,
-      workIDs: {{ workIDs|json_encode|raw }},
-
-      setSlideover: function (id) {
-        this.selected = id;
-        this.showSlideover = true;
-        $dispatch('slideover-change', { id });
-      },
-
-      top: function () {
-        this.$refs['panel-content'].scrollTo({ top: 0, behavior: 'instant' });
-      },
-
-      prev: function () {
-        if (this.hasPrev()) {
-          this.setSlideover(this.workIDs[this.index() - 1]);
-          this.top();
-        }
-      },
-
-      next: function () {
-        if (this.hasNext()) {
-          this.setSlideover(this.workIDs[this.index() + 1]);
-          this.top();
-        }
-      },
-
-      hasPrev: function () {
-        return this.workIDs.indexOf(this.selected) > 0;
-      },
-
-      hasNext: function () {
-        return this.workIDs.indexOf(this.selected) < this.workIDs.length - 1;
-      },
-
-      index: function () {
-        return this.workIDs.indexOf(this.selected);
-      },
-    }"
-  >
+  <section>
     <h2 class="sr-only">Recent work</h2>
 
     {# Work card grid #}
@@ -111,9 +65,10 @@
           } %}
 
           <a
+            x-data="{ open() { $dispatch('open-slideover', { id: {{ entry.id }} }) } }"
+            @click.prevent="open()"
+            @keydown.space.prevent="open()"
             data-follower="more"
-            @click.prevent="setSlideover({{ entry.id }})"
-            @keydown.space.prevent="setSlideover({{ entry.id }})"
             href="{{ url(entry.uri) }}"
             class="box-link before:focus-visible:outline before:focus-visible:outline-2 before:focus-visible:outline-offset-2 before:focus-visible:outline-blue-700"
             aria-label="{{ '{0} project details, opens modal'|t([entry.title]) }}"
@@ -122,22 +77,6 @@
 
       {% endfor %}
     </div>
-
-    {% set panelContent %}
-      {% for entry in workEntries %}
-        {% include "_includes/workArticle" with {
-          entry: entry,
-        } only %}
-      {% endfor %}
-    {% endset %}
-
-    {% include "_includes/slideover" with {
-      showCloseButton: true,
-      showNav: true,
-      navStyle: "icon",
-      panelContent: panelContent,
-    } only %}
-
   </section>
 
 {% endif %}

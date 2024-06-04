@@ -30,6 +30,7 @@ Alpine.data('mediaControls', mediaControls);
 
 Alpine.store('global', {
 	mouseCoords: [0, 0],
+  slideoverOpen: false,
 
   init() {
     window.addEventListener('mousemove', (e) => {

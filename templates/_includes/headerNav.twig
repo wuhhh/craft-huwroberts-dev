@@ -1,4 +1,15 @@
-<div class="fixed top-0 inset-x-0 z-10 pointer-events-auto pt-8 md:pt-[52px] 2xl:pt-[60px] mix-blend-difference">
+<div class="fixed top-0 inset-x-0 bg-white/90 backdrop-blur-sm h-[108px] md:hidden"></div>
+<div
+  x-data
+  x-show="!$store.global.slideoverOpen"
+  x-transition:enter="transition delay-300 duration-300"
+  x-transition:enter-start="opacity-0"
+  x-transition:enter-end="opacity-100"
+  x-transition:leave="transition duration-300"
+  x-transition:leave-start="opacity-100"
+  x-transition:leave-end="opacity-0"
+  class="fixed top-0 inset-x-0 z-10 pointer-events-auto pt-8 md:pt-[52px] 2xl:pt-[60px] mix-blend-difference"
+>
   <div class="container">
     <div class="flex justify-end">
       <nav
@@ -9,7 +20,7 @@
           x-data
           @click.prevent="$dispatch('slideover-open', { name: 'who' })"
           @keydown.space.prevent="$dispatch('slideover-open', { name: 'who' })"
-          class="relative font-medium text-[17px] text-white hover:underline md:text-[22px] 2xl:text-[28px]"
+          class="relative font-medium text-[17px] text-white md:text-[22px] 2xl:text-[28px]"
           href="#"
         >
           <span data-follower="hex" class="relative">{{ "Who?"|t }}</span>
@@ -18,7 +29,7 @@
           x-data
           @click.prevent="$dispatch('slideover-open', { name: 'sayHello' })"
           @keydown.space.prevent="$dispatch('slideover-open', { name: 'sayHello' })"
-          class="relative font-medium text-[17px] text-white hover:underline md:text-[22px] 2xl:text-[28px]"
+          class="relative font-medium text-[17px] text-white md:text-[22px] 2xl:text-[28px]"
           href="#"
         >
           <span data-follower="hi" class="relative">{{ "Say hello!"|t }}</span>

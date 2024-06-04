@@ -1,23 +1,28 @@
-export default ("follower", () => ({
+export default ("follower", (opts) => ({
   followerType: null,
   isHot: false,
   now: 0,
+  opts: {
+    speed: 10,
+  },
   target: null,
 
   init() {
+    if (!this.$refs.move) return
+    this.opts = { ...this.opts, ...opts }
     window.requestAnimationFrame((elapsed) => this.frame(elapsed))
   },
 
-  frame(elapsed) {
+  frame() {
     let delta = -this.now + (this.now = Date.now())
-    delta *= 0.01
-    this.update(this.now, delta)
-    window.requestAnimationFrame((elapsed) => this.frame(elapsed))
+    delta *= 0.001
+    delta = Math.min(delta, 1/20)
+    this.update(delta)
+    window.requestAnimationFrame(() => this.frame())
   },
 
-  update(now, delta) {
-    this.moveElement(this.$refs.primary, delta * 2)
-    this.moveElement(this.$refs.secondary, delta)
+  update(delta) {
+    this.moveElement(this.$refs.move, delta * this.opts.speed)
     this.trackMouse();
   },
 

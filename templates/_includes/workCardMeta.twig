@@ -2,6 +2,7 @@
 {% set isAgency = false %}
 {% set agencyTitle = null %}
 {% set agencyUrl = null %}
+{% set class = class ?? "" %}
 
 {# Safe to use slug because it is not translatable #}
 {% if type.slug == "agency" %}
@@ -18,7 +19,7 @@
 
 {% if type and year and ((isAgency and agencyTitle) or not isAgency) %}
 
-  <div class="base-mono">
+  <div class="{{ class }} base-mono">
     <p>
       <span>{{ "Type"|t }}: {{ type }}</span>
       {% if isAgency %}

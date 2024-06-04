@@ -16,17 +16,17 @@
                 <h2 x-dialog:title class="sr-only">About me</h2>
                 <h2
                   aria-hidden="true"
-                  class="font-bold heading1 mb-16 md:w-4/5 xl:w-auto"
+                  class="relative z-10 font-bold heading1 mb-16 md:w-4/5 xl:w-auto"
                 >{{ heading }}</h2>
               {% endif %}
 
               <div class="flex flex-col gap-y-16 md:block xl:flex">
                 {% if richText %}
-                  <div class="heading5 md:heading4 font-medium ckeditor -simple md:w-4/5 xl:w-auto">{{ richText }}</div>
+                  <div class="relative z-10 heading5 md:heading4 font-medium ckeditor -simple md:w-4/5 xl:w-auto">{{ richText }}</div>
                 {% endif %}
 
                 {% if image %}
-                  <div class="md:!-mt-32 md:flex md:justify-end xl:hidden">
+                  <div class="relative z-10 md:!-mt-32 md:flex md:justify-end xl:hidden">
                     {% include "_includes/picture" with {
                       image: image,
                       mode: "crop",

@@ -1,0 +1,72 @@
+{% set work = craft.entries.section('work') %}
+{% set workEntries = work.all() ?? [] %}
+{% set navStyle = "icon" %} {# "icon" or "text" #}
+
+{% if workEntries|length %}
+
+  {% set workIDs = work.collect().pluck('id') %}
+
+  <div
+    x-cloak
+    x-data="{
+      showSlideover: false,
+      selected: null,
+      workIDs: {{ workIDs|json_encode|raw }},
+
+      setSlideover: function (id) {
+        this.selected = id;
+        this.showSlideover = true;
+        $dispatch('slideover-change', { id });
+      },
+
+      top: function () {
+        this.$refs['panel-content'].scrollTo({ top: 0, behavior: 'instant' });
+      },
+
+      prev: function () {
+        if (this.hasPrev()) {
+          this.setSlideover(this.workIDs[this.index() - 1]);
+          this.top();
+        }
+      },
+
+      next: function () {
+        if (this.hasNext()) {
+          this.setSlideover(this.workIDs[this.index() + 1]);
+          this.top();
+        }
+      },
+
+      hasPrev: function () {
+        return this.workIDs.indexOf(this.selected) > 0;
+      },
+
+      hasNext: function () {
+        return this.workIDs.indexOf(this.selected) < this.workIDs.length - 1;
+      },
+
+      index: function () {
+        return this.workIDs.indexOf(this.selected);
+      },
+    }"
+    @open-slideover.window="setSlideover($event.detail.id)"
+  >
+    {% set panelContent %}
+      {% for entry in workEntries %}
+        {% include "_includes/workArticle" with {
+          entry: entry,
+        } only %}
+      {% endfor %}
+    {% endset %}
+
+    {% include "_includes/slideover" with {
+      showCloseButton: true,
+      showNav: true,
+      navStyle: "icon",
+      panelContent: panelContent,
+    } only %}
+
+  </div>
+
+{% endif %}
+

@@ -36,6 +36,9 @@ module.exports = {
       "hover-none": { raw: "(hover: none)" },
     },
     extend: {
+      animation: {
+        "spin-slow": "spin 3s linear infinite",
+      },
       colors: {
         "coral-red": {
           DEFAULT: "#F36855",

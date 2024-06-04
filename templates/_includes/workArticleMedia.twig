@@ -37,7 +37,7 @@
     class="w-full max-w-[1160px]"
   >
     <div class="aspect-[1160/680] {{ backdropColour }} flex items-center justify-center shadow-sm sm:shadow-none sm-down:bg-transparent">
-      <div class="relative aspect-[960/576] w-full sm:max-w-[clamp(414px,960px,83%)] overflow-hidden group">
+      <div class="relative aspect-[960/576] w-full sm:max-w-[clamp(414px,960px,83%)] overflow-hidden group/frame">
         {% if video %}
           <div class="absolute inset-0">
 
@@ -57,7 +57,7 @@
             <div class="sr-only">Video controls</div>
             <div
               x-ref="controls"
-              class="absolute inset-x-0 bottom-0 z-20 h-12 md:h-[72px] pl-[2px] md:pl-2.5 pr-4 md:pr-6 flex items-center opacity-0 group-hover:opacity-100 duration-200 focus-within:opacity-100 peer"
+              class="absolute inset-x-0 bottom-0 z-30 h-12 md:h-[72px] pl-[2px] md:pl-2.5 pr-4 md:pr-6 flex items-center opacity-0 group-hover/frame:opacity-100 duration-200 focus-within:opacity-100 peer"
               :class="{
                 'opacity-100': paused,
               }"
@@ -135,7 +135,7 @@
 
             {# == Underlay/background blur == #}
             <div
-              class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 md:h-[72px] bg-zinc-900/90 backdrop-blur-sm opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 duration-200 peer-focus-within:!opacity-100 peer-focus-within:!translate-y-0"
+              class="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-12 md:h-[72px] bg-zinc-900/90 backdrop-blur-sm opacity-0 translate-y-4 group-hover/frame:opacity-100 group-hover/frame:translate-y-0 duration-200 peer-focus-within:!opacity-100 peer-focus-within:!translate-y-0"
               :class="{ '!opacity-100 !translate-y-0': paused }"
             ></div>
           </div>
@@ -163,13 +163,14 @@
                   { "default": [960, null] },
                 ],
               } only %}
+
+              <span style="background: radial-gradient(rgba(255,255,255,1.0), rgba(255,255,255,0));" class="absolute inset-0 z-10 opacity-5"></span>
               <span
-                class="transition duration-200 ease-in-out opacity-0 group-hover:opacity-100"
+                class="group/btn absolute left-1/2 top-1/2 z-10 size-12 md:size-20 -translate-x-1/2 -translate-y-1/2 transition duration-200 ease-in-out opacity-0 group-hover/frame:opacity-100"
                 :class="{ 'hover-none:opacity-100': !showVideo }"
               >
-                <span style="background: radial-gradient(rgba(255,255,255,1.0), rgba(255,255,255,0));" class="absolute inset-0 opacity-5"></span>
-                <span class="size-12 md:size-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-centre justify-center bg-zinc-900/90 rounded-full transition group-hover:scale-105 duration-300 ease-in-out"></span>
-                {{ svg('@webroot/dist/images/icon--play.svg', true, true)|attr({ class: 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 md:w-5 text-white ml-px md:ml-[3px]' }) }}
+                <span class="absolute inset-0 bg-zinc-900/90 group-hover/btn:bg-coral-red rounded-full transition group-hover/btn:scale-105 duration-200 ease-in-out"></span>
+                {{ svg('@webroot/dist/images/icon--play.svg', true, true)|attr({ class: 'absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 w-3 md:w-5 text-white ml-px md:ml-[3px]' }) }}
               </span>
             </button>
           {% endif %}

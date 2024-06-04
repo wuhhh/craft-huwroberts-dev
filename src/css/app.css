@@ -10,3 +10,7 @@
   --3xl-panel-w: calc(((100vw - var(--3xl-w)) / 2) + (var(--3xl-w) / 100 * 87));
   --3xl-panel-away-w: calc(((100vw - var(--3xl-w)) / 2) + (var(--3xl-w) / 100 * 13));
 }
+
+::selection {
+  @apply bg-coral-red/20;
+}

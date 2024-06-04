@@ -20,7 +20,7 @@
     <div class="pointer-events-auto space-y-12 bg-white pb-16 md:pb-[72px] 2xl:pb-24 md:space-y-16 col-span-full lg:col-span-9 lg:col-start-3">
 
       {# Head #}
-      <div class="w-full max-w-[752px] -mb-3">
+      <div class="relative z-10 w-full max-w-[752px] -mb-3">
         {# Back to work / close slideover #}
         <button
           @click="showSlideover = false"
@@ -51,7 +51,7 @@
 
       {# Summary #}
       {% if summary %}
-        <p class="w-full max-w-[752px]">
+        <p class="relative z-10 w-full max-w-[752px]">
           {{ summary }}
         </p>
       {% endif %}
@@ -67,7 +67,7 @@
 
       {# Role #}
       {% if role %}
-        <div class="w-full max-w-[752px]">
+        <div class="relative z-10 w-full max-w-[752px]">
           <div>{{ role|nl2br }}</div>
         </div>
       {% endif %}
@@ -84,6 +84,7 @@
         type: entry.workType,
         year: entry.year,
         agency: entry.agency,
+        class: "relative z-10",
       } %}
 
     </div> {# /.col-span-9 #}
