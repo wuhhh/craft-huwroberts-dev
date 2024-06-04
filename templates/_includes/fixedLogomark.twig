@@ -9,3 +9,28 @@
     </a>
   </div>
 </div>
+
+<div class="fixed top-0 right-0 animate-spin-very-slow">
+  {{ svg('@webroot/dist/images/illy--sun.svg', true, true)|attr({ class: 'w-[300px]' }) }}
+</div>
+
+<div class="fixed top-[164px] left-0 z-10">
+  <div class="container flex flex-row gap-x-9" style="writing-mode: vertical-lr">
+    <div
+      data-follower="hex"
+      @click.prevent="$dispatch('slideover-open', { name: 'who' })"
+      style="text-orientation: upright"
+      class="base-mono uppercase flex flex-col mx-4 pt-1 pb-2 leading-none bg-coral-red/20 rounded-sm"
+    >
+      ?about¿
+    </div>
+    <div
+      data-follower="hex"
+      @click.prevent="$dispatch('slideover-open', { name: 'who' })"
+      style="text-orientation: upright"
+      class="base-mono uppercase flex flex-col mx-4 pt-1 pb-2 leading-none bg-coral-red/20 rounded-sm"
+    >
+      !contact¡
+    </div>
+  </div>
+</div>

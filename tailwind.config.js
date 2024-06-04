@@ -38,6 +38,7 @@ module.exports = {
     extend: {
       animation: {
         "spin-slow": "spin 3s linear infinite",
+        "spin-very-slow": "spin 20s linear infinite",
       },
       colors: {
         "coral-red": {

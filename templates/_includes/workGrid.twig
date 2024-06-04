@@ -41,12 +41,12 @@
           {# <h2 class="base-mono">{{ entry.title }}</h2> #}
 
           {% if image %}
-            <div class="relative aspect-[480/288] {# shadow-sm group-hover:shadow-none #} transition-all duration-200">
+            <div class="relative aspect-[480/288] border-x border-[#f0edea] {# shadow-sm group-hover:shadow-none #} transition-all duration-200">
               {% include "_includes/picture" with {
                 disableAlt: true,
                 image: image,
                 mode: "crop",
-                classes: "object-cover w-full h-full rounded-sm",
+                classes: "object-cover w-full h-full rounded-none",
                 ratio: [480, 288],
                 pictureSets: [
                   { "467": [560, null] },
@@ -81,6 +81,13 @@
 
       {% endfor %}
     </div>
+
+    <div class="pointer-events-none absolute inset-y-0 -z-10 w-full max-w-[1568px] grid grid-cols-12 gap-y-24 lg:gap-x-10 pl-32">
+      <div class="col-span-4 border-x border-[#f0edea]"></div>
+      <div class="col-span-4 border-x border-[#f0edea]"></div>
+      <div class="col-span-4 border-x border-[#f0edea]"></div>
+    </div>
+
   </section>
 
 {% endif %}
