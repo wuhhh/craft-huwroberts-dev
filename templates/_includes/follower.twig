@@ -1,0 +1,38 @@
+<div
+	x-data="follower()"
+	class="hidden lg:block fixed top-0 left-0 pointer-events-none z-10"
+>
+	<div x-ref="secondary" style="transform: translate(0, 0)">
+		<div
+			class="absolute size-20 -translate-x-1/2 -translate-y-1/2 transition duration-500 ease-in-out rounded-full bg-coral-red"
+			:class="{
+				'scale-100 bg-transparent border-2 border-coral-red': followerType === 'more',
+        'scale-[0.2]': followerType !== 'more',
+			}"
+		></div>
+	</div>
+	<div x-ref="primary" style="transform: translate(0, 0)">
+		<div
+			class="absolute size-20 -translate-x-1/2 -translate-y-1/2 transition duration-300 ease-bounce rounded-full bg-coral-red text-white flex items-center justify-center"
+			:class="{
+				'opacity-0 scale-50': followerType !== 'more',
+				'opacity-90 scale-100': followerType === 'more',
+			}"
+		>
+			<span class="font-sans font-bold text-[12px] uppercase">{{ "More"|t }}</span>
+		</div>
+		<div
+			class="absolute size-20 -translate-x-1/2 -translate-y-1/2 transition duration-300 ease-bounce flex items-center justify-center"
+			:class="{
+      'opacity-0 scale-50': followerType !== 'hex',
+				'opacity-100 scale-100': followerType === 'hex',
+			}"
+		>
+			<svg class="animate-spin size-64 text-coral-red" viewbox="0 0 88 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M44 0L87.3013 25V75L44 100L0.69873 75V25L44 0Z" fill="currentColor"/>
+      </svg>
+		</div>
+	</div>
+</div>
+
+
