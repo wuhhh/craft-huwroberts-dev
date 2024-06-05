@@ -1,12 +1,16 @@
 <div class="fixed top-0 inset-x-0 pointer-events-none {# invert mix-blend-difference #}">
   <div class="container h-40 flex items-center">
-    <a
+    {# <a
       href="{{ siteUrl }}"
       aria-label="{{ siteName }} {{ "home"|t }}"
       class="size-[44px] bg-black rounded-full flex items-center justify-center md:size-14 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-blue-700"
     >
       {{ svg('@webroot/dist/images/h--logomark.svg', true, true)|attr({ class: 'text-white w-[14px] md:w-[18px]' }) }}
-    </a>
+    </a> #}
+
+    <div class="size-[44px] bg-coral-red rounded-full flex items-center justify-center md:size-14 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-blue-700">
+      {{ svg('@webroot/dist/images/h--logomark-alt.svg', true, true)|attr({ class: 'w-12 h-auto' }) }}
+    </div>
   </div>
 </div>
 
