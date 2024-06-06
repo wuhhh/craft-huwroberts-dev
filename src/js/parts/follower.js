@@ -35,7 +35,6 @@ export default ("follower", (opts) => ({
   trackMouse() {
     const elementFromPoint = document.elementFromPoint(this.$store.global.mouseCoords[0], this.$store.global.mouseCoords[1])
     if(elementFromPoint && 'follower' in elementFromPoint.dataset) {
-      console.log(elementFromPoint.dataset.follower)
       this.isHot = true
       this.followerType = elementFromPoint.dataset.follower
     }
