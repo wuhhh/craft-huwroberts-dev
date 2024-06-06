@@ -1,1 +1,11 @@
 @import 'tailwindcss/utilities';
+
+@layer utilities {
+  .text-vertical {
+    writing-mode: vertical-lr;
+  }
+
+  .text-upright {
+    text-orientation: upright;
+  }
+}
