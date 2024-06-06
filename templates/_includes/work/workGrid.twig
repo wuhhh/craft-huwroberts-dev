@@ -3,11 +3,10 @@
 
 {% if workEntries|length %}
 
-  <section>
     <h2 class="sr-only">Recent work</h2>
 
     {# Work card grid #}
-    <div class="grid grid-cols-12 gap-y-24 lg:gap-x-10 pl-32">
+    <div class="col-span-full grid grid-cols-subgrid gap-y-24">
       {% for entry in workEntries %}
 
         {% set image = entry.cardImage.one() ?? null %}
@@ -60,7 +59,7 @@
 
           <div>
             <h2 class="base-mono mb-0">{{ entry.title }}</h2>
-            {% include "_includes/workCardMeta" with {
+            {% include "_includes/work/workCardMeta" with {
               type: entry.workType,
               year: entry.year,
               agency: entry.agency,
@@ -81,14 +80,6 @@
 
       {% endfor %}
     </div>
-
-    <div class="pointer-events-none absolute inset-y-0 -z-10 w-full max-w-[1568px] grid grid-cols-12 gap-y-24 lg:gap-x-10 pl-32">
-      <div class="col-span-4 border-x border-[#f0edea]"></div>
-      <div class="col-span-4 border-x border-[#f0edea]"></div>
-      <div class="col-span-4 border-x border-[#f0edea]"></div>
-    </div>
-
-  </section>
 
 {% endif %}
 

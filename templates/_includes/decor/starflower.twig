@@ -1,0 +1,28 @@
+<div
+  x-data="{
+    velocity: 0,
+  }"
+  x-init="() => {
+    // get scroll velocity
+    let lastScrollY = window.scrollY;
+    let lastTimestamp = performance.now();
+
+    window.addEventListener('scroll', () => {
+      let now = performance.now();
+      let delta = now - lastTimestamp;
+      let deltaY = window.scrollY - lastScrollY;
+      lastTimestamp = now;
+      lastScrollY = window.scrollY;
+      velocity = deltaY / delta;
+
+      $refs.r.style.transform = `rotate(${velocity * 10}deg)`;
+    });
+  }"
+  class="container relative"
+>
+  <div class="fixed inset-y-0 flex items-end justify-center w-14 pb-12">
+    <div x-ref="r">
+      {{ svg('@webroot/dist/images/icon--starflower.svg', true, true)|attr({ class: 'w-[30px]' }) }}
+    </div>
+  </div>
+</div>

@@ -53,7 +53,7 @@
   >
     {% set panelContent %}
       {% for entry in workEntries %}
-        {% include "_includes/workArticle" with {
+        {% include "_includes/work/workArticle" with {
           entry: entry,
         } only %}
       {% endfor %}

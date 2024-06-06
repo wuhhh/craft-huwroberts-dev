@@ -57,7 +57,7 @@
       {% endif %}
 
       {# Media #}
-      {% include "_includes/workArticleMedia" with {
+      {% include "_includes/work/workArticleMedia" with {
         backdropColour: backdropColour,
         cardImage: cardImage,
         entryId: entry.id,
@@ -80,7 +80,7 @@
       {% endif %}
 
       {# Meta #}
-      {% include "_includes/workCardMeta" with {
+      {% include "_includes/work/workCardMeta" with {
         type: entry.workType,
         year: entry.year,
         agency: entry.agency,
