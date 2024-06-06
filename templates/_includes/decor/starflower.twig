@@ -1,27 +1,51 @@
 <div
   x-data="{
-    velocity: 0,
+    now: 0,
+    rotationCurrent: 0,
+    rotationMax: 720,
+    rotationTarget: 0,
+    scrollY: window.scrollY,
+
+    handleScroll() {
+      this.scrollY = window.scrollY
+
+      // get rotation from matrix
+      let matrix = new DOMMatrix($el.style.transform)
+      let angle = Math.atan2(matrix.b, matrix.a) * (180 / Math.PI)
+
+      // Get scroll position as a percentage of the total scrollable height
+      let scrollPercent = this.scrollY / (document.documentElement.scrollHeight - window.innerHeight)
+
+      this.rotationTarget = scrollPercent * this.rotationMax
+    },
+
+    frame() {
+      let delta = -this.now + (this.now = Date.now())
+      delta *= 0.001
+      delta = Math.min(delta, 1/20)
+      this.update(delta)
+      window.requestAnimationFrame(() => this.frame())
+    },
+
+    update(delta) {
+      let diff = this.rotationTarget - this.rotationCurrent
+      if (Math.abs(diff) < 0.1) {
+        this.rotationCurrent = this.rotationTarget
+      } else {
+        this.rotationCurrent += diff * delta * 5
+      }
+      $refs.r.style.transform = `rotate(${this.rotationCurrent}deg)`
+    },
   }"
   x-init="() => {
-    // get scroll velocity
-    let lastScrollY = window.scrollY;
-    let lastTimestamp = performance.now();
-
-    window.addEventListener('scroll', () => {
-      let now = performance.now();
-      let delta = now - lastTimestamp;
-      let deltaY = window.scrollY - lastScrollY;
-      lastTimestamp = now;
-      lastScrollY = window.scrollY;
-      velocity = deltaY / delta;
-
-      $refs.r.style.transform = `rotate(${velocity * 10}deg)`;
-    });
+    if (!$refs.r) return
+    window.requestAnimationFrame((elapsed) => frame(elapsed))
   }"
   class="container relative"
+  @scroll.window="handleScroll"
 >
   <div class="fixed inset-y-0 flex items-end justify-center w-14 pb-12">
-    <div x-ref="r">
+    <div x-ref="r" :style="`transform: rotate(0deg)`">
       {{ svg('@webroot/dist/images/icon--starflower.svg', true, true)|attr({ class: 'w-[30px]' }) }}
     </div>
   </div>
