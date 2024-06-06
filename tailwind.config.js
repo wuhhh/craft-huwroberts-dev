@@ -44,6 +44,12 @@ module.exports = {
         "coral-red": {
           DEFAULT: "#F36855",
         },
+        "seabed-indigo": {
+          50: '#E6E3FA',
+          100: '#E0DDF3',
+          400: '#3F26DD',
+          DEFAULT: '#3F26DD'
+        },
       },
       minHeight: {
         screenh: "100dvh",
