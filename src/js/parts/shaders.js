@@ -78,6 +78,6 @@ export const fragment = `
 
     vec4 texture = texture2D(uTexture, uv);
 
-		gl_FragColor = vec4(texture.rgb, min(texture.a, .9));
+		gl_FragColor = texture;
 	}
 `;
