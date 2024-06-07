@@ -36,14 +36,13 @@ export default ("canvas",
     this.resize();
 
     // plane geometry
-    const geometry = new Plane(this.gl, { width: .5, height: .5 });
+    const geometry = new Plane(this.gl, { width: .4, height: .4 });
 
     // shader
     this.program = new Program(this.gl, {
       vertex,
       fragment,
       uniforms: {
-        uColor: { value: [0, 0, 0, 1] },
         uTexture: { value: new Texture(this.gl) },
         uTime: { value: 0 },
       },
@@ -58,7 +57,7 @@ export default ("canvas",
 
     // mesh
     this.mesh = new Mesh(this.gl, { geometry, program: this.program });
-    this.mesh.position.set(1, .5, 0);
+    this.mesh.position.set(1.05, .57, 0);
     this.mesh.setParent(this.scene);
 
     // start draw loop
