@@ -21,6 +21,8 @@ export default ("canvas",
       canvas: this.$refs.canvas,
       dpr: Math.min(2, window.devicePixelRatio),
       premultipliedAlpha: true,
+      width: window.innerWidth,
+      height: window.innerHeight,
     });
 
     // render target
@@ -71,6 +73,7 @@ export default ("canvas",
     // this.program.uniforms.uTransitionMix.value = Math.sin(t * 0.001) + 1 * 0.5;
     requestAnimationFrame((t) => this.update(t));
     this.program.uniforms.uTime.value = t * 0.001;
+    this.camera.position.y = window.scrollY * -0.001;
     this.renderer.render({ scene: this.scene, camera: this.camera });
   },
 

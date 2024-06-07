@@ -71,8 +71,8 @@ export const fragment = `
     vec2 uv = vUv;
     uv = ripple(uv, 32., 16., 0.01, 1.8);
     uv = ripple(uv, 32., 4., 0.01, 1.5);
-    uv = biTwirl(uv, vec2(0.5), .2, 3.6);
-    uv = twirl(uv, .1, 8.);
+    // uv = biTwirl(uv, vec2(0.5), .2, 3.6);
+    uv = twirl(uv, 1.5, 8.);
     uv.y += sin(uv.x * 32. + uTime * 5.) * 0.006;
     uv.x += sin(uv.y * 16. + uTime * 2.5) * 0.004;
 
