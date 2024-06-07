@@ -37,7 +37,7 @@ export default ("canvas",
 
     // plane geometry
     // const geometry = new Plane(this.gl, { width: .4, height: .4 });
-    const geometry = new Plane(this.gl, { width: 1, height: 1 });
+    const geometry = new Plane(this.gl, { width: .75, height: .75 });
 
     // shader
     this.program = new Program(this.gl, {
@@ -51,15 +51,15 @@ export default ("canvas",
     });
 
     // load texture
-    const texture = await loadTexture('/dist/images/texture--sun-alt@2x.png', this.program.gl);
+    const texture = await loadTexture('/dist/images/texture--sun-alt12@2x.png', this.program.gl);
     this.program.uniforms.uTexture.value = texture;
 
     this.scene = new Transform();
 
     // mesh
     this.mesh = new Mesh(this.gl, { geometry, program: this.program });
-    // this.mesh.position.set(1.05, .57, 0);
-    this.mesh.position.set(0, 0, 0);
+    this.mesh.position.set(.8, .35, 0);
+    // this.mesh.position.set(0, 0, 0);
     this.mesh.setParent(this.scene);
 
     // start draw loop

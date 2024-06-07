@@ -26,7 +26,7 @@ export const fragment = `
     vec2 twirlUv = uv - 0.5;
     float a = atan(twirlUv.y, twirlUv.x);
     float r = length(twirlUv);
-    a += uTime * .06; // This is how you rotate the whole thing
+    a += uTime * 0.1; // This is how you rotate the whole thing
     a -= pow(r * distort, power);
     twirlUv = vec2(cos(a), sin(a)) * r;
     twirlUv += 0.5;
@@ -57,30 +57,27 @@ export const fragment = `
   }
 
   // Ripple effect
-  vec2 ripple(vec2 uv) {
-    float freq = 32.;
-    float speed = 20.;
-    float strength = 0.01;
-
+  vec2 ripple(vec2 uv, float freq, float speed, float strength, float gravity) {
     // from -1 to 1 in x and y
     vec2 cpos = -1.0 + 2.0 * uv;
 
     // cpos len
-    float clen = pow(length(cpos), 1.2); // adjust center point of effect
+    float clen = pow(length(cpos), gravity); // adjust center point of effect
     uv += (cpos*clen) * sin(clen * freq - (uTime * speed)) * strength;
     return uv;
   }
 
 	void main() {
     vec2 uv = vUv;
-    uv = ripple(uv);
-    uv = biTwirl(uv, vec2(0.5), .2, 3.5);
+    uv = ripple(uv, 32., 16., 0.01, 1.8);
+    uv = ripple(uv, 32., 4., 0.01, 1.5);
+    uv = biTwirl(uv, vec2(0.5), .2, 3.6);
     uv = twirl(uv, .1, 8.);
-    uv.y += sin(uv.x * 16. + uTime * 1.25) * 0.005;
-    uv.x += sin(uv.y * 16. + uTime * 2.5) * 0.005;
+    uv.y += sin(uv.x * 32. + uTime * 5.) * 0.006;
+    uv.x += sin(uv.y * 16. + uTime * 2.5) * 0.004;
 
     vec4 texture = texture2D(uTexture, uv);
 
-		gl_FragColor = texture;
+		gl_FragColor = vec4(texture.rgb, min(texture.a, .9));
 	}
 `;
