@@ -12,8 +12,6 @@ export default ("canvas",
   scene: null,
 
   async init() {
-    console.log("canvas init");
-
     this.aspectRatio = window.innerWidth / window.innerHeight;
 
     // renderer
@@ -31,9 +29,6 @@ export default ("canvas",
     this.camera = new Camera(this.gl, { fov: 35 });
     this.camera.position.set(0, 0, 2.5);
     this.camera.lookAt([0, 0, 0]);
-
-    window.addEventListener('resize', () => this.resize(), false)
-    this.resize();
 
     // plane geometry
     // const geometry = new Plane(this.gl, { width: .4, height: .4 });
@@ -59,8 +54,10 @@ export default ("canvas",
     // mesh
     this.mesh = new Mesh(this.gl, { geometry, program: this.program });
     this.mesh.position.set(.8, .35, 0);
-    // this.mesh.position.set(0, 0, 0);
     this.mesh.setParent(this.scene);
+
+    window.addEventListener('resize', () => this.resize(), false)
+    this.resize();
 
     // start draw loop
     requestAnimationFrame((t) => this.update(t));
