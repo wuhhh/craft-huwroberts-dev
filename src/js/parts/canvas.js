@@ -48,11 +48,10 @@ export default ("canvas",
 
     console.log("this.camera", this.camera);
 
-    // plane geometry
-    // const geometry = new Plane(this.gl, { width: .4, height: .4 });
+    // plane geometry for sun
     const geometry = new Plane(this.gl, { width: this.sunScale, height: this.sunScale });
 
-    // shader
+    // sun shader
     this.sunShader = new Program(this.gl, {
       vertex,
       fragment,
@@ -63,7 +62,7 @@ export default ("canvas",
       transparent: true,
     });
 
-    // load texture
+    // load sun texture
     const texture = await loadTexture(
       "/dist/images/texture--sun-alt12@2x.png",
       this.sunShader.gl
