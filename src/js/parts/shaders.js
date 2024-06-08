@@ -14,7 +14,7 @@ export const vertex = `
 	}
 `;
 
-export const fragment = `
+export const sunFrag = `
 	precision highp float;
 
   uniform sampler2D uTexture;
