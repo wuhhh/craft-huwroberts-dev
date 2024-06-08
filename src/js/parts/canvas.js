@@ -13,13 +13,13 @@ import { vertex, fragment } from "./shaders";
 export default ("canvas",
 () => ({
   aspectRatio: 1,
-  mesh: null,
-  program: null,
   renderer: null,
   retainScaleOnResize: false,
   scene: null,
+  sunMesh: null,
   sunPosition: { x: 1.1, y: 0.35 },
   sunScale: 1,
+  sunShader: null,
   tanFOV: null,
 
   async init() {
@@ -53,7 +53,7 @@ export default ("canvas",
     const geometry = new Plane(this.gl, { width: this.sunScale, height: this.sunScale });
 
     // shader
-    this.program = new Program(this.gl, {
+    this.sunShader = new Program(this.gl, {
       vertex,
       fragment,
       uniforms: {
@@ -66,16 +66,20 @@ export default ("canvas",
     // load texture
     const texture = await loadTexture(
       "/dist/images/texture--sun-alt12@2x.png",
-      this.program.gl
+      this.sunShader.gl
     );
-    this.program.uniforms.uTexture.value = texture;
+    this.sunShader.uniforms.uTexture.value = texture;
 
     this.scene = new Transform();
 
-    // mesh
-    this.mesh = new Mesh(this.gl, { geometry, program: this.program });
-    this.mesh.position.set(this.sunPosition.x, this.sunPosition.y, 0);
-    this.mesh.setParent(this.scene);
+    // sun
+    this.sunMesh = new Mesh(this.gl, { geometry, program: this.sunShader });
+    this.sunMesh.position.set(this.sunPosition.x, this.sunPosition.y, 0);
+    this.sunMesh.setParent(this.scene);
+
+    // full width test plane
+    const plane = new Plane(this.gl, { width: 1, height: 1 });
+
 
     window.addEventListener("resize", () => this.resize(), false);
     this.resize();
@@ -91,7 +95,7 @@ export default ("canvas",
   update(t) {
     // this.program.uniforms.uTransitionMix.value = Math.sin(t * 0.001) + 1 * 0.5;
     requestAnimationFrame((t) => this.update(t));
-    this.program.uniforms.uTime.value = t * 0.001;
+    this.sunShader.uniforms.uTime.value = t * 0.001;
     this.camera.position.y = window.scrollY * -0.001;
     this.renderer.render({ scene: this.scene, camera: this.camera });
   },
@@ -100,15 +104,15 @@ export default ("canvas",
     const scale =
       (Math.min(this.gl.canvas.width, 1568) / this.gl.canvas.height) * this.sunScale;
 
-    this.mesh.position.x = this.sunPosition.x * scale;
-    this.mesh.position.y = this.sunPosition.y * scale;
+    this.sunMesh.position.x = this.sunPosition.x * scale;
+    this.sunMesh.position.y = this.sunPosition.y * scale;
   },
 
   setSunScale() {
     const scale =
       (Math.min(this.gl.canvas.width, 1568) / this.gl.canvas.height) * this.sunScale;
-    this.mesh.scale.x = scale;
-    this.mesh.scale.y = scale;
+    this.sunMesh.scale.x = scale;
+    this.sunMesh.scale.y = scale;
   },
 
   /**
