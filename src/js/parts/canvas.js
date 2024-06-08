@@ -64,7 +64,7 @@ export default ("canvas",
 
     // load sun texture
     const texture = await loadTexture(
-      "/dist/images/texture--sun-alt12@2x.png",
+      "/dist/images/texture--sun@2x.png",
       this.sunShader.gl
     );
     this.sunShader.uniforms.uTexture.value = texture;
