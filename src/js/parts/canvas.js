@@ -18,6 +18,7 @@ export default ("canvas",
   renderer: null,
   retainScaleOnResize: false,
   scene: null,
+  sunPosition: { x: 1.1, y: 0.35 },
   sunScale: 1,
   tanFOV: null,
 
@@ -73,7 +74,7 @@ export default ("canvas",
 
     // mesh
     this.mesh = new Mesh(this.gl, { geometry, program: this.program });
-    this.mesh.position.set(0.8, 0.35, 0);
+    this.mesh.position.set(this.sunPosition.x, this.sunPosition.y, 0);
     this.mesh.setParent(this.scene);
 
     window.addEventListener("resize", () => this.resize(), false);
@@ -99,8 +100,8 @@ export default ("canvas",
     const scale =
       (Math.min(this.gl.canvas.width, 1568) / this.gl.canvas.height) * this.sunScale;
 
-    this.mesh.position.x = 0.8 * scale;
-    this.mesh.position.y = 0.35 * scale;
+    this.mesh.position.x = this.sunPosition.x * scale;
+    this.mesh.position.y = this.sunPosition.y * scale;
   },
 
   setSunScale() {
