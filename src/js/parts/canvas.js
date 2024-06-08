@@ -42,14 +42,14 @@ export default ("canvas",
     this.camera = new Camera(this.gl, { fov: 35 });
     this.camera.position.set(0, 0, 2.5);
     this.camera.lookAt([0, 0, 0]);
-
     this.tanFOV = Math.tan(((Math.PI / 180) * this.camera.fov) / 2);
     this.windowHeight = window.innerHeight;
 
-    console.log("this.camera", this.camera);
-
     // plane geometry for sun
-    const geometry = new Plane(this.gl, { width: this.sunScale, height: this.sunScale });
+    const geometry = new Plane(this.gl, {
+      width: this.sunScale,
+      height: this.sunScale,
+    });
 
     // sun shader
     this.sunShader = new Program(this.gl, {
@@ -79,7 +79,6 @@ export default ("canvas",
     // full width test plane
     const plane = new Plane(this.gl, { width: 1, height: 1 });
 
-
     window.addEventListener("resize", () => this.resize(), false);
     this.resize();
 
@@ -92,7 +91,6 @@ export default ("canvas",
    * @param {number} t
    */
   update(t) {
-    // this.program.uniforms.uTransitionMix.value = Math.sin(t * 0.001) + 1 * 0.5;
     requestAnimationFrame((t) => this.update(t));
     this.sunShader.uniforms.uTime.value = t * 0.001;
     this.camera.position.y = window.scrollY * -0.001;
@@ -101,7 +99,8 @@ export default ("canvas",
 
   setSunPosition() {
     const scale =
-      (Math.min(this.gl.canvas.width, 1568) / this.gl.canvas.height) * this.sunScale;
+      (Math.min(this.gl.canvas.width, 1568) / this.gl.canvas.height) *
+      this.sunScale;
 
     this.sunMesh.position.x = this.sunPosition.x * scale;
     this.sunMesh.position.y = this.sunPosition.y * scale;
@@ -109,7 +108,8 @@ export default ("canvas",
 
   setSunScale() {
     const scale =
-      (Math.min(this.gl.canvas.width, 1568) / this.gl.canvas.height) * this.sunScale;
+      (Math.min(this.gl.canvas.width, 1568) / this.gl.canvas.height) *
+      this.sunScale;
     this.sunMesh.scale.x = scale;
     this.sunMesh.scale.y = scale;
   },
