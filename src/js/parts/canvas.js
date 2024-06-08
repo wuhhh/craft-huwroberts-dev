@@ -104,7 +104,7 @@ export default ("canvas",
      * Load textures
      */
     const texture = await loadTexture(
-      "/dist/images/texture--sun@2x.png",
+      "/dist/images/texture--sun@2x.webp",
       this.objects.sun.shader.gl
     );
     this.objects.sun.shader.uniforms.uTexture.value = texture;
@@ -138,7 +138,7 @@ export default ("canvas",
       program: this.objects.testPlane.shader,
     });
 
-    this.objects.testPlane.mesh.setParent(this.scene);
+    // this.objects.testPlane.mesh.setParent(this.scene);
 
     /**
      * Event listeners
