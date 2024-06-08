@@ -95,6 +95,14 @@ export default ("canvas",
     this.renderer.render({ scene: this.scene, camera: this.camera });
   },
 
+  setSunPosition() {
+    const scale =
+      (Math.min(this.gl.canvas.width, 1568) / this.gl.canvas.height) * this.sunScale;
+
+    this.mesh.position.x = 0.8 * scale;
+    this.mesh.position.y = 0.35 * scale;
+  },
+
   setSunScale() {
     const scale =
       (Math.min(this.gl.canvas.width, 1568) / this.gl.canvas.height) * this.sunScale;
@@ -111,6 +119,7 @@ export default ("canvas",
       this.camera.perspective({
         aspect: this.gl.canvas.width / this.gl.canvas.height,
       });
+      this.setSunPosition();
       this.setSunScale();
     } else {
       this.camera.perspective({
