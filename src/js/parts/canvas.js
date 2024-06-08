@@ -140,6 +140,9 @@ export default ("canvas",
 
     // this.objects.testPlane.mesh.setParent(this.scene);
 
+    // Incidental objects
+    this.createIncidentals(12, 0.5);
+
     /**
      * Event listeners
      */
@@ -213,6 +216,58 @@ export default ("canvas",
       });
       this.camera.lookAt(this.scene.position);
       this.renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+  },
+
+  /**
+   * Create incidental objects
+   */
+  createIncidentals(count, verticalSpacing = 0.5) {
+    let vertOffset = 0;
+
+    for (let i = 0; i < count; i++) {
+      const geometry = new Plane(this.gl, {
+        width: 0.1,
+        height: 0.1,
+      });
+
+      const shader = new Program(this.gl, {
+        vertex,
+        fragment: `
+          precision highp float;
+
+          varying vec2 vUv;
+
+          void main() {
+            // circle with anti-aliasing
+            vec2 center = vec2(0.5, 0.5);
+            float radius = 0.5;
+            float distance = length(vUv - center);
+            float alpha = smoothstep(radius, radius - 0.01, distance);
+
+            gl_FragColor = vec4(0.0, 1.0, 0.0, alpha);
+          }
+        `,
+        alpha: true,
+        depthTest: false,
+        depthWrite: false,
+        transparent: true,
+      });
+
+      const mesh = new Mesh(this.gl, {
+        geometry,
+        program: shader,
+      });
+
+      mesh.position.set(
+        Math.random() * 2 - 1,
+        Math.random() * 2 - 1 - vertOffset,
+        (Math.random() * 2 - 1) * 0.5
+      );
+
+      vertOffset += verticalSpacing;
+
+      mesh.setParent(this.scene);
     }
   },
 }));
