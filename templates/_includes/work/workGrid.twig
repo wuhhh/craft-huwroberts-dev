@@ -40,7 +40,7 @@
           {# <h2 class="base-mono">{{ entry.title }}</h2> #}
 
           {% if image %}
-            <div class="relative aspect-[480/288] border-x border-[#f0edea] {# shadow-sm group-hover:shadow-none #} transition-all duration-200">
+            <div class="relative aspect-[480/288] lg:border-x border-[#f0edea] {# shadow-sm group-hover:shadow-none #} transition-all duration-200">
               {% include "_includes/picture" with {
                 disableAlt: true,
                 image: image,
@@ -65,7 +65,6 @@
               agency: entry.agency,
             } %}
           </div>
-
 
           <a
             x-data="{ open() { $dispatch('open-slideover', { id: {{ entry.id }} }) } }"

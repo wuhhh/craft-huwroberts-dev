@@ -14,19 +14,19 @@ export default ("canvas",
 () => ({
   aspectRatio: 1,
   maxContainerWidth: 1568,
+  maxScroll: 0,
   objects: {
     sun: {
+      breakpoints: {
+        1280: {
+          position: { x: 2, y: 0.75, z: -2 },
+          scale: 1.5,
+        },
+      },
       geometry: null,
       mesh: null,
-      position: { x: 2, y: 0.75, z: -2 },
-      scale: 2,
-      shader: null,
-    },
-    testPlane: {
-      geometry: null,
-      mesh: null,
-      position: { x: 0, y: 0 },
-      scale: 1,
+      position: { x: 1.2, y: 0.5, z: -2 },
+      scale: 1.25,
       shader: null,
     },
   },
@@ -42,6 +42,7 @@ export default ("canvas",
      * Setup
      */
     this.aspectRatio = window.innerWidth / window.innerHeight;
+    this.maxScroll = document.body.scrollHeight;
 
     // renderer
     this.renderer = new Renderer({
@@ -72,11 +73,6 @@ export default ("canvas",
       height: this.objects.sun.scale,
     });
 
-    this.objects.testPlane.geometry = new Plane(this.gl, {
-      width: 2.5,
-      height: 0.02,
-    });
-
     /**
      * Create shader programs
      */
@@ -88,17 +84,6 @@ export default ("canvas",
         uTime: { value: 0 },
       },
       transparent: true,
-    });
-
-    this.objects.testPlane.shader = new Program(this.gl, {
-      vertex,
-      fragment: `
-        precision highp float;
-
-        void main() {
-          gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-        }
-      `,
     });
 
     /**
@@ -165,14 +150,6 @@ export default ("canvas",
 
     this.objects.sun.mesh.setParent(this.scene);
 
-    // Test plane
-    this.objects.testPlane.mesh = new Mesh(this.gl, {
-      geometry: this.objects.testPlane.geometry,
-      program: this.objects.testPlane.shader,
-    });
-
-    // this.objects.testPlane.mesh.setParent(this.scene);
-
     // Incidental objects
     this.createIncidentals();
 
@@ -193,10 +170,9 @@ export default ("canvas",
   update(t) {
     // Ease camera position on scroll
     const scrollY = window.scrollY;
-    const maxScroll = document.body.scrollHeight;
     const cameraTravel = -2;
 
-    const cameraDestination = (scrollY / maxScroll) * cameraTravel;
+    const cameraDestination = (scrollY / this.maxScroll) * cameraTravel;
     const cameraPosition = this.camera.position.clone();
     cameraPosition.y = cameraDestination;
     this.camera.position.lerp(cameraPosition, 0.1);
@@ -208,13 +184,38 @@ export default ("canvas",
   },
 
   /**
+   * Find nearest breakpoint in object
+   */
+  getBreakpoint(object) {
+    // Set values from outside breakpoints object initially
+    let defaultBreakpoint = {
+      position: object.position,
+      scale: object.scale,
+    };
+
+    // Sort breakpoint keys
+    const breakpoints = Object.keys(object.breakpoints).sort((a, b) => a - b);
+
+    // Find matching breakpoint
+    breakpoints.forEach((breakpoint) => {
+      if (window.innerWidth >= breakpoint) {
+        defaultBreakpoint = object.breakpoints[breakpoint];
+      }
+    });
+
+    return defaultBreakpoint;
+  },
+
+  /**
    * Set object position in relative units
    */
-  setRelativePosition(object, position, scale) {
+  setRelativePosition(object, scale) {
     const relativeScale =
       (Math.min(this.gl.canvas.width, this.maxContainerWidth) /
         this.gl.canvas.height) *
       scale;
+
+    const position = this.getBreakpoint(object).position;
 
     object.mesh.position.x = position.x * relativeScale;
     object.mesh.position.y = position.y * relativeScale;
@@ -225,11 +226,14 @@ export default ("canvas",
    */
   setRelativeScale(object, scale) {
     const relativeScale =
-      (Math.min(this.gl.canvas.width, this.maxContainerWidth) /
-        this.gl.canvas.height) *
-      scale;
-    object.mesh.scale.x = relativeScale;
-    object.mesh.scale.y = relativeScale;
+    (Math.min(this.gl.canvas.width, this.maxContainerWidth) /
+    this.gl.canvas.height) *
+    scale;
+
+    const scaleValue = this.getBreakpoint(object).scale;
+
+    object.mesh.scale.x = relativeScale * scaleValue;
+    object.mesh.scale.y = relativeScale * scaleValue;
   },
 
   /**
@@ -242,14 +246,8 @@ export default ("canvas",
         aspect: this.gl.canvas.width / this.gl.canvas.height,
       });
 
-      this.setRelativePosition(this.objects.sun, this.objects.sun.position, 1);
+      this.setRelativePosition(this.objects.sun, 1);
       this.setRelativeScale(this.objects.sun, 1);
-      this.setRelativePosition(
-        this.objects.testPlane,
-        this.objects.testPlane.position,
-        1
-      );
-      this.setRelativeScale(this.objects.testPlane, 1);
     } else {
       this.camera.perspective({
         aspect: window.innerWidth / window.innerHeight,
@@ -271,59 +269,59 @@ export default ("canvas",
     const placements = [
       {
         type: "dmndIndigoLg",
-        position: { x: .2, y: 0.6, z: -1 },
+        position: { x: 0.2, y: 0.6, z: -1 },
         scale: 1,
         floatIntensity: 0.1,
         floatSpeed: 0.1,
       },
       {
         type: "dmndCoralBlurLg",
-        position: { x: -0.6, y: 0.6, z: -0.5},
+        position: { x: -0.6, y: 0.6, z: -0.5 },
         scale: 2,
         floatIntensity: 0.1,
         floatSpeed: 0.1,
       },
       {
         type: "dmndCoralBlurLg",
-        position: { x: -0.1, y: 0.5, z: -2.1},
+        position: { x: -0.1, y: 0.5, z: -2.1 },
         scale: 4,
         floatIntensity: 0.1,
         floatSpeed: 0.1,
       },
       {
         type: "dmndCoralSm",
-        position: { x: .8, y: -0.4, z: .2 },
-        scale: .5,
+        position: { x: 0.8, y: -0.4, z: 0.2 },
+        scale: 0.5,
         floatIntensity: 0.1,
         floatSpeed: 0.1,
       },
       {
         type: "dmndIndigoLg",
-        position: { x: -0.6, y: -0.6, z: .4 },
+        position: { x: -0.6, y: -0.6, z: 0.4 },
         scale: 1.5,
         floatIntensity: 0.1,
         floatSpeed: 0.1,
       },
       {
         type: "dmndCoralBlurLg",
-        position: { x: 0, y: -1, z: .3 },
+        position: { x: 0, y: -1, z: 0.3 },
         scale: 1.5,
         floatIntensity: 0.1,
         floatSpeed: 0.1,
       },
       {
         type: "dmndIndigoSm",
-        position: { x: 0.65, y: -1.5, z: .5 },
-        scale: .33,
+        position: { x: 0.65, y: -1.5, z: 0.5 },
+        scale: 0.33,
         floatIntensity: 0.1,
         floatSpeed: 0.1,
-      }
+      },
     ];
 
     placements.forEach((placement) => {
       const geometry = new Plane(this.gl, {
-        width: .1,
-        height: .1,
+        width: 0.1,
+        height: 0.1,
       });
 
       const mesh = new Mesh(this.gl, {
