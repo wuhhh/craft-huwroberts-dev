@@ -33,3 +33,20 @@ export async function loadTexture(imageUrl, gl) {
 
 	return texture;
 }
+
+/**
+ * Takes an array of objects with urls and names and returns an object with the names as keys and the loaded images as values.
+ * @param {Array<{url: string, name: string}>} images - An array of objects with urls and names.
+ * @param {import("ogl").OGLRenderingContext} gl - The WebGL context to create the textures in.
+ * @returns {Promise<{[key: string]: Texture}>} - A promise that resolves to an object with the names as keys and the loaded textures as values.
+ */
+export async function loadTextures(images, gl) {
+  const textures = {};
+
+  await Promise.all(images.map(async ({ url, name }) => {
+    textures[name] = await loadTexture(url, gl);
+  }));
+
+  return textures;
+}
+

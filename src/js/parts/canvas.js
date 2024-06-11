@@ -7,8 +7,8 @@ import {
   Texture,
   Transform,
 } from "ogl";
-import { loadTexture } from "./loaders";
-import { vertex, sunFrag } from "./shaders";
+import { loadTextures } from "./loaders";
+import { vertex, dmndFrag, sunFrag } from "./shaders";
 
 export default ("canvas",
 () => ({
@@ -18,8 +18,8 @@ export default ("canvas",
     sun: {
       geometry: null,
       mesh: null,
-      position: { x: 1.1, y: 0.35 },
-      scale: 1,
+      position: { x: 2, y: 0.75, z: -2 },
+      scale: 2,
       shader: null,
     },
     testPlane: {
@@ -35,6 +35,7 @@ export default ("canvas",
   scene: null,
   tanFOV: null,
   testMesh: null,
+  textures: {},
 
   async init() {
     /**
@@ -103,11 +104,43 @@ export default ("canvas",
     /**
      * Load textures
      */
-    const texture = await loadTexture(
-      "/dist/images/texture--sun@2x.webp",
-      this.objects.sun.shader.gl
+    const textures = await loadTextures(
+      [
+        {
+          url: "/dist/images/texture--sun@2x.webp",
+          name: "sun",
+        },
+        {
+          url: "/dist/images/texture--dmnd-coral-blur-lg.webp",
+          name: "dmndCoralBlurLg",
+        },
+        {
+          url: "/dist/images/texture--dmnd-coral-lg.webp",
+          name: "dmndCoralLg",
+        },
+        {
+          url: "/dist/images/texture--dmnd-coral-sm.webp",
+          name: "dmndCoralSm",
+        },
+        {
+          url: "/dist/images/texture--dmnd-indigo-blur-lg.webp",
+          name: "dmndIndigoBlurLg",
+        },
+        {
+          url: "/dist/images/texture--dmnd-indigo-lg.webp",
+          name: "dmndIndigoLg",
+        },
+        {
+          url: "/dist/images/texture--dmnd-indigo-sm.webp",
+          name: "dmndIndigoSm",
+        },
+      ],
+      this.renderer.gl
     );
-    this.objects.sun.shader.uniforms.uTexture.value = texture;
+
+    Object.assign(this.textures, textures);
+
+    this.objects.sun.shader.uniforms.uTexture.value = this.textures.sun;
 
     /**
      * Create scene
@@ -127,7 +160,7 @@ export default ("canvas",
     this.objects.sun.mesh.position.set(
       this.objects.sun.position.x,
       this.objects.sun.position.y,
-      0
+      this.objects.sun.position.z
     );
 
     this.objects.sun.mesh.setParent(this.scene);
@@ -141,7 +174,7 @@ export default ("canvas",
     // this.objects.testPlane.mesh.setParent(this.scene);
 
     // Incidental objects
-    this.createIncidentals(12, 0.5);
+    this.createIncidentals();
 
     /**
      * Event listeners
@@ -222,10 +255,94 @@ export default ("canvas",
   /**
    * Create incidental objects
    */
-  createIncidentals(count, verticalSpacing = 0.5) {
+  createIncidentals() {
     let vertOffset = 0;
 
-    for (let i = 0; i < count; i++) {
+    const placements = [
+      {
+        type: "dmndIndigoLg",
+        position: { x: .2, y: 0.6, z: -1 },
+        scale: 1,
+        floatIntensity: 0.1,
+        floatSpeed: 0.1,
+      },
+      {
+        type: "dmndCoralBlurLg",
+        position: { x: -0.6, y: 0.6, z: -0.5},
+        scale: 2,
+        floatIntensity: 0.1,
+        floatSpeed: 0.1,
+      },
+      {
+        type: "dmndCoralBlurLg",
+        position: { x: -0.1, y: 0.5, z: -2.1},
+        scale: 4,
+        floatIntensity: 0.1,
+        floatSpeed: 0.1,
+      },
+      {
+        type: "dmndCoralSm",
+        position: { x: .8, y: -0.4, z: .2 },
+        scale: .5,
+        floatIntensity: 0.1,
+        floatSpeed: 0.1,
+      },
+      {
+        type: "dmndIndigoLg",
+        position: { x: -0.6, y: -0.6, z: .4 },
+        scale: 1.5,
+        floatIntensity: 0.1,
+        floatSpeed: 0.1,
+      },
+      {
+        type: "dmndCoralBlurLg",
+        position: { x: 0, y: -1, z: .3 },
+        scale: 1.5,
+        floatIntensity: 0.1,
+        floatSpeed: 0.1,
+      },
+      {
+        type: "dmndIndigoSm",
+        position: { x: 0.65, y: -1.5, z: .5 },
+        scale: .33,
+        floatIntensity: 0.1,
+        floatSpeed: 0.1,
+      }
+    ];
+
+    placements.forEach((placement) => {
+      const geometry = new Plane(this.gl, {
+        width: .1,
+        height: .1,
+      });
+
+      const mesh = new Mesh(this.gl, {
+        geometry,
+        program: new Program(this.gl, {
+          vertex,
+          fragment: dmndFrag,
+          uniforms: {
+            uTexture: { value: this.textures[placement.type] },
+            uTime: { value: 0 },
+          },
+          transparent: true,
+          depthTest: false,
+          depthWrite: false,
+        }),
+      });
+
+      mesh.scale.set(placement.scale, placement.scale, 1);
+
+      mesh.position.set(
+        placement.position.x,
+        placement.position.y,
+        placement.position.z
+      );
+
+      mesh.setParent(this.scene);
+    });
+
+    /* for (let i = 0; i < count; i++) {
       const geometry = new Plane(this.gl, {
         width: 0.1,
         height: 0.1,
@@ -268,6 +385,6 @@ export default ("canvas",
       vertOffset += verticalSpacing;
 
       mesh.setParent(this.scene);
-    }
+    } */
   },
 }));

@@ -81,3 +81,15 @@ export const sunFrag = `
 		gl_FragColor = texture;
 	}
 `;
+
+export const dmndFrag = `
+  precision highp float;
+
+  uniform sampler2D uTexture;
+
+  varying vec2 vUv;
+
+  void main() {
+    gl_FragColor = texture2D(uTexture, vUv);
+  }
+`;
