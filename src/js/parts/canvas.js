@@ -191,10 +191,20 @@ export default ("canvas",
    * @param {number} t
    */
   update(t) {
-    requestAnimationFrame((t) => this.update(t));
+    // Ease camera position on scroll
+    const scrollY = window.scrollY;
+    const maxScroll = document.body.scrollHeight;
+    const cameraTravel = -2;
+
+    const cameraDestination = (scrollY / maxScroll) * cameraTravel;
+    const cameraPosition = this.camera.position.clone();
+    cameraPosition.y = cameraDestination;
+    this.camera.position.lerp(cameraPosition, 0.1);
+
+    // Update uniforms, render, repeat
     this.objects.sun.shader.uniforms.uTime.value = t * 0.001;
-    this.camera.position.y = window.scrollY * -0.001;
     this.renderer.render({ scene: this.scene, camera: this.camera });
+    requestAnimationFrame((t) => this.update(t));
   },
 
   /**
