@@ -1,37 +1,37 @@
-<!DOCTYPE html>
-<html
-	class="no-js"
-  lang="{{ currentSite.language }}"
-  dir="{{craft.app.i18n.getLocaleById(currentSite.id).getOrientation()}}"
->
-  <head>
-    <style>[x-cloak] { display: none !important; }</style>
-    <script>(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement)</script>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="origin-when-cross-origin" />
-    <title>{{ siteName }}</title>
-    {% include "_includes/scripts.twig" %}
-  </head>
+{% extends "_layouts/base" %}
 
-  {% set lang = currentSite.language %}
-  {% set langAlt = lang == "en-GB" ? "cy-GB" : "en-GB" %}
+{% block base %}
 
-  {% block bodyTag %}
- 		<body
-      x-data="core()"
-      class="relative flex flex-col min-h-screenh antialiased bg-white"
-    >
-      <a class="skip-link" href="#main" tabindex="1">{{ "Skip to content"|t }}</a>
-  {% endblock %}
+  <div x-data="canvas()">
+    <canvas x-ref="canvas" class="pointer-events-none fixed inset-0" aria-hidden="true"></canvas>
+  </div>
 
-    {% include "_includes/header" only %}
+  {# <div class="h-[4000px]"></div> #}
 
-    <main id="main">{% block content %}{% endblock %}</main>
+  {% include "_includes/followers/followerDot" only %}
+  {% include "_includes/followers/followerHex" only %}
+  {% include "_includes/decor/starflower" only %}
 
-    {% include "_includes/footer" only %}
-    {% include "_includes/who" only %}
-    {% include "_includes/sayHello" only %}
-  </body>
-</html>
+  <div class="container flex gap-x-[68px]">
+
+    {# Obi #}
+    {% include "_includes/obi" only %}
+
+    {# Grid #}
+    <div class="relative flex-grow grid grid-cols-12 gap-x-10">
+      {% block content %}{% endblock %}
+      {% include "_includes/footer" only %}
+      {% include "_includes/decor/gridDecor" only %}
+    </div>
+
+  </div>
+
+  {% include "_includes/followers/followerMore" only %}
+  {% include "_includes/work/workArticles" only %}
+  {% include "_includes/slideoverAbout" only %}
+  {% include "_includes/slideoverContact" only %}
+  {# {% include "_includes/decor/sun" only %} #}
+
+
+
+{% endblock %}

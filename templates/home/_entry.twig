@@ -2,11 +2,8 @@
 
 {% block content %}
 
-  <div
-    x-data
-    class="container"
-  >
-    <div class="pt-[200px] pb-[124px] md:pt-[264px] md:pb-[156px] 2xl:pt-[288px] 2xl:pb-[172px]">
+  <div class="col-span-full">
+    <div class="py-[200px] md:py-[264px] 2xl:pt-48 2xl:pb-32">
 
       {% include "_includes/langSelect" %}
 
@@ -15,9 +12,8 @@
       </h1>
 
     </div>
-
-    {% include "_includes/workGrid" with { lang: lang, langAlt: langAlt } only %}
-
   </div>
+
+  {% include "_includes/work/workGrid" with { lang: lang, langAlt: langAlt } only %}
 
 {% endblock %}

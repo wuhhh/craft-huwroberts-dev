@@ -1,0 +1,95 @@
+{% set entry = entry ?? null %}
+
+{% if entry %}
+
+  {% set cardImage = entry.cardImage.one() ?? null %}
+  {% set liveUrl = entry.liveUrl ?? null %}
+  {% set summary = entry.summary ?? null %}
+  {% set video = entry.video.one() ?? null %}
+  {% set backdropColour = entry.backdropColour.value|default("bg-slate-50") %}
+  {% set role = entry.role ?? null %}
+  {% set tags = entry.techTags.all() ?? [] %}
+
+  {% set prevEntry = craft.entries.section('work').prevSiblingOf(entry).one() ?? null %}
+  {% set nextEntry = craft.entries.section('work').nextSiblingOf(entry).one() ?? null %}
+
+  <article
+    x-show="selected === {{ entry.id }}"
+    class="grid grid-cols-12 space-y-16 pt-24 w-full max-w-[736px] ml-auto lg:max-w-none lg:ml-0 lg:gap-x-16"
+  >
+    <div class="pointer-events-auto space-y-12 bg-white pb-16 md:pb-[72px] 2xl:pb-24 md:space-y-12 col-span-full lg:col-span-7 lg:col-start-5">
+
+      {# Head #}
+      <div class="relative z-10 w-full max-w-[752px] -mb-3">
+        {# Back to work / close slideover #}
+        <button
+          @click="showSlideover = false"
+          class="lg:hidden sm-mono hover:underline flex items-baseline gap-x-2 mb-6 leading-none"
+        >
+          {{ svg('@webroot/dist/images/icon--arrow-left.svg', true, true)|attr({ class: 'w-auto h-[9px] flex-shrink-0' }) }}
+          <span>All Work</span>
+        </button>
+
+        <div class="flex flex-wrap items-baseline gap-4">
+          {# Title #}
+          <h2
+            x-dialog:title
+            class="font-medium heading3 md:heading1 leading-none"
+            aria-label="{{ '{0} project details'|t([entry.title]) }}"
+          >
+            {{ entry.title }}
+          </h2>
+
+          {% if entry.liveUrl %}
+            <span class="-translate-y-[2px]">
+              {% include "_includes/liveLink" with { url: entry.liveUrl } only %}
+            </span>
+          {% endif %}
+        </div>
+
+      </div>
+
+      {# Summary #}
+      {% if summary %}
+        <p class="relative z-10 w-full max-w-[752px]">
+          {{ summary }}
+        </p>
+      {% endif %}
+
+      {# Media #}
+      {% include "_includes/work/workArticleMedia" with {
+        backdropColour: backdropColour,
+        cardImage: cardImage,
+        entryId: entry.id,
+        entryTitle: entry.title,
+        video: video,
+      } only %}
+
+      {# Role #}
+      {% if role %}
+        <div class="relative z-10 w-full max-w-[752px]">
+          <div>{{ role|nl2br }}</div>
+        </div>
+      {% endif %}
+
+      {# Tags #}
+      {% if tags %}
+        <div class="w-full max-w-[752px]">
+          {% include "_includes/tags" with { tags: tags } only %}
+        </div>
+      {% endif %}
+
+      {# Meta #}
+      {% include "_includes/work/workCardMeta" with {
+        type: entry.workType,
+        year: entry.year,
+        agency: entry.agency,
+        class: "relative z-10",
+      } %}
+
+    </div> {# /.col-span-9 #}
+
+  </article>
+
+
+{% endif %}

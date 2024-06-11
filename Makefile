@@ -21,6 +21,12 @@ up:
         ddev auth ssh; \
         ddev start; \
     fi
+push-assets-stage:
+	rsync -avz --progress web/volumes/local/assets/ rootsy-forge:/home/forge/stage.huwroberts.dev/web/volumes/local/assets/
+
+push-assets-prod:
+	rsync -avz --progress web/volumes/local/assets/ rootsy-forge:/home/forge/huwroberts.dev/web/volumes/local/assets/
+
 %:
 	@:
 # ref: https://stackoverflow.com/questions/6273608/how-to-pass-argument-to-makefile-from-command-line

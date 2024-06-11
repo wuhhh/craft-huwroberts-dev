@@ -19,5 +19,3 @@ prepros-6.config
 /node_modules/*
 /vendor
 /web/dist
-/web/images
-/web/videos

@@ -1,0 +1,85 @@
+{% set work = craft.entries.section('work') %}
+{% set workEntries = work.all() ?? [] %}
+
+{% if workEntries|length %}
+
+    <h2 class="sr-only">Recent work</h2>
+
+    {# Work card grid #}
+    <div class="col-span-full grid grid-cols-subgrid gap-y-24">
+      {% for entry in workEntries %}
+
+        {% set image = entry.cardImage.one() ?? null %}
+        {% set cls = "" %}
+
+        {# Vertical stacking #}
+        {% if ((loop.index0 % 6) + 1 == 2)
+          or ((loop.index0 % 6) + 1 == 5)
+          or ((loop.index0 % 6) + 1 == 6)
+        %}
+          {% set cls = "ml-auto lg:ml-0" %}
+        {% endif %}
+
+        {# Three to a row with blanks #}
+        {% if ((loop.index0 % 10) + 1) == 3
+          or ((loop.index0 % 12) + 1) == 9
+        %}
+          <div class="hidden xl:block xl:col-span-4">{# blank grid space #}</div>
+        {% endif %}
+
+        {# Three to a row with blanks #}
+        {% if ((loop.index0 % 12) + 1) == 3
+          or ((loop.index0 % 12) + 1) == 6
+          or ((loop.index0 % 12) + 1) == 9
+          or ((loop.index0 % 12) + 1) == 13
+        %}
+          <div class="hidden xl:block xl:col-span-4">{# blank grid space #}</div>
+        {% endif %}
+
+        <div class="relative group col-span-full space-y-5 w-full max-w-[480px] lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
+          {# <h2 class="base-mono">{{ entry.title }}</h2> #}
+
+          {% if image %}
+            <div class="relative aspect-[480/288] border-x border-[#f0edea] {# shadow-sm group-hover:shadow-none #} transition-all duration-200">
+              {% include "_includes/picture" with {
+                disableAlt: true,
+                image: image,
+                mode: "crop",
+                classes: "object-cover w-full h-full rounded-none",
+                ratio: [480, 288],
+                pictureSets: [
+                  { "467": [560, null] },
+                  { "default": [414, null] },
+                ],
+              } only %}
+
+              <div class="absolute inset-0 bg-zinc-100/90 backdrop-saturate-0 backdrop-brightness-125 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></div>
+            </div>
+          {% endif %}
+
+          <div>
+            <h2 class="base-mono mb-0">{{ entry.title }}</h2>
+            {% include "_includes/work/workCardMeta" with {
+              type: entry.workType,
+              year: entry.year,
+              agency: entry.agency,
+            } %}
+          </div>
+
+
+          <a
+            x-data="{ open() { $dispatch('open-slideover', { id: {{ entry.id }} }) } }"
+            @click.prevent="open()"
+            @keydown.space.prevent="open()"
+            data-follower="more"
+            href="{{ url(entry.uri) }}"
+            class="box-link before:focus-visible:outline before:focus-visible:outline-2 before:focus-visible:outline-offset-2 before:focus-visible:outline-blue-700"
+            aria-label="{{ '{0} project details, opens modal'|t([entry.title]) }}"
+          ></a>
+        </div>
+
+      {% endfor %}
+    </div>
+
+{% endif %}
+

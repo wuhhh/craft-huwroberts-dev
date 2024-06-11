@@ -30,7 +30,7 @@
   }
 
   .base-sans {
-    @apply font-sans font-light text-[24px] leading-[140%];
+    @apply font-sans font-light text-[20px] leading-[140%];
   }
 
   .sm-sans {
@@ -65,7 +65,7 @@
 .ckeditor {
   &.-simple {
     a {
-      @apply decoration-from-font decoration-coral-red underline hover:no-underline hover:bg-yellow-100;
+      @apply decoration-from-font decoration-coral-red underline hover:no-underline hover:bg-coral-red/20;
     }
   }
 }

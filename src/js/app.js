@@ -2,7 +2,7 @@
 import "@js/parts/css";
 
 /* Non-alpine JS */
-//
+
 
 /**
  * Alpine JS
@@ -14,20 +14,25 @@ import focus from '@alpinejs/focus';
 import intersect from '@alpinejs/intersect';
 import ui from '@alpinejs/ui';
 
+import canvas from './parts/canvas';
 import core from './parts/core';
 import emoji from './parts/emoji';
+import follower from './parts/follower';
 import mediaControls from './parts/mediaControls';
 
 Alpine.plugin(focus);
 Alpine.plugin(intersect);
 Alpine.plugin(ui);
 
+Alpine.data('canvas', canvas);
 Alpine.data('core', core);
+Alpine.data('follower', follower);
 Alpine.data('emoji', emoji);
 Alpine.data('mediaControls', mediaControls);
 
 Alpine.store('global', {
 	mouseCoords: [0, 0],
+  slideoverOpen: false,
 
   init() {
     window.addEventListener('mousemove', (e) => {

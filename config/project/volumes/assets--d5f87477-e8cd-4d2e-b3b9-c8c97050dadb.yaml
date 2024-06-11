@@ -42,8 +42,8 @@ fs: local
 handle: assets
 name: Assets
 sortOrder: 1
-subpath: ''
+subpath: assets
 titleTranslationKeyFormat: null
 titleTranslationMethod: none
-transformFs: ''
-transformSubpath: ''
+transformFs: local
+transformSubpath: asset-transforms

@@ -1,0 +1,18 @@
+<div
+  x-data="follower({ speed: 20 })"
+  class="hidden fixed -z-10 lg:block pointer-events-none"
+>
+  <div x-ref="move" style="transform: translate(0, 0)">
+    <div
+      class="size-12 -translate-x-1/2 -translate-y-1/2 transition duration-300 ease-bounce flex items-center justify-center"
+      :class="{
+        'opacity-0 scale-50': followerType !== 'hex',
+          'opacity-100 scale-100': followerType === 'hex',
+        }"
+      >
+      <svg class="animate-spin-slow size-64 text-coral-red" viewbox="0 0 88 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M44 0L87.3013 25V75L44 100L0.69873 75V25L44 0Z" fill="currentColor"/>
+      </svg>
+    </div>
+  </div>
+</div>
