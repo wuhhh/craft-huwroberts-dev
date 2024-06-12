@@ -12,13 +12,13 @@
   {% include "_includes/followers/followerHex" only %}
   {% include "_includes/decor/starflower" only %}
 
-  <div class="container flex gap-x-[68px]">
+  <div class="container flex flex-col gap-x-[68px] sm:flex-row">
 
     {# Obi #}
     {% include "_includes/obi" only %}
 
     {# Grid #}
-    <div class="relative flex-grow grid grid-cols-12 gap-x-10">
+    <div class="relative flex-grow grid grid-cols-12 lg:gap-x-10">
       {% block content %}{% endblock %}
       {% include "_includes/footer" only %}
       {% include "_includes/decor/gridDecor" only %}
@@ -30,8 +30,5 @@
   {% include "_includes/work/workArticles" only %}
   {% include "_includes/slideoverAbout" only %}
   {% include "_includes/slideoverContact" only %}
-  {# {% include "_includes/decor/sun" only %} #}
-
-
 
 {% endblock %}
