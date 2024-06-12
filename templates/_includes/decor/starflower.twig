@@ -44,7 +44,7 @@
   class="container relative"
   @scroll.window="handleScroll"
 >
-  <div class="fixed inset-y-0 flex items-end justify-center w-14 pb-12">
+  <div class="hidden fixed inset-y-0 sm:flex items-end justify-center w-14 pb-12">
     <div x-ref="r" :style="`transform: rotate(0deg)`">
       {{ svg('@webroot/dist/images/icon--starflower.svg', true, true)|attr({ class: 'w-[30px]' }) }}
     </div>
