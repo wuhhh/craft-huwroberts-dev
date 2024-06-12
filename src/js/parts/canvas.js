@@ -18,6 +18,10 @@ export default ("canvas",
   objects: {
     sun: {
       breakpoints: {
+        640: {
+          position: { x: 1.2, y: 0.5, z: -2 },
+          scale: 1.5,
+        },
         1280: {
           position: { x: 2, y: 0.75, z: -2 },
           scale: 1.5,
@@ -25,8 +29,8 @@ export default ("canvas",
       },
       geometry: null,
       mesh: null,
-      position: { x: 1.2, y: 0.5, z: -2 },
-      scale: 1.25,
+      position: { x: .8, y: 0.5, z: -2 },
+      scale: 1.5,
       shader: null,
     },
   },
