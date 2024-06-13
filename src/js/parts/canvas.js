@@ -5,7 +5,7 @@ import {
   Program,
   Renderer,
   Texture,
-  Transform,
+  Transform
 } from "ogl";
 import { loadTextures } from "./loaders";
 import { vertex, dmndFrag, sunFrag } from "./shaders";
@@ -16,23 +16,48 @@ export default ("canvas",
   maxContainerWidth: 1568,
   maxScroll: 0,
   objects: {
+    incidentals: {
+      type: "group",
+      position: { x: 0, y: 0, z: 0 },
+      scale: 1,
+      group: null,
+    },
     sun: {
+      type: "mesh",
       breakpoints: {
         640: {
           position: { x: 1.2, y: 0.5, z: -2 },
           scale: 1.5,
         },
         1280: {
-          position: { x: 2, y: 0.75, z: -2 },
-          scale: 1.5,
+          position: { x: 2, y: 1, z: -2 },
+          scale: 1.3,
         },
       },
       geometry: null,
       mesh: null,
-      position: { x: .8, y: 0.5, z: -2 },
+      position: { x: 0.8, y: 0.5, z: -2 },
       scale: 1.5,
       shader: null,
     },
+    testPlane: {
+      type: "mesh",
+      breakpoints: {
+        640: {
+          position: { x: 0.5, y: 0.5, z: -1 },
+          scale: 1,
+        },
+        1280: {
+          position: { x: 0.5, y: 0.5, z: -1 },
+          scale: 1,
+        },
+      },
+      geometry: null,
+      mesh: null,
+      position: { x: 0, y: 0, z: -0.2 },
+      scale: 1,
+      shader: null,
+    }
   },
   renderer: null,
   retainScaleOnResize: false,
@@ -154,6 +179,36 @@ export default ("canvas",
 
     this.objects.sun.mesh.setParent(this.scene);
 
+    // Test plane
+    /* this.objects.testPlane.geometry = new Plane(this.gl, {
+      width: 1,
+      height: 1,
+    });
+
+    this.objects.testPlane.shader = new Program(this.gl, {
+      vertex,
+      fragment: `
+        precision highp float;
+
+        void main() {
+          gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        }
+      `,
+    });
+
+    this.objects.testPlane.mesh = new Mesh(this.gl, {
+      geometry: this.objects.testPlane.geometry,
+      program: this.objects.testPlane.shader,
+    });
+
+    this.objects.testPlane.mesh.position.set(
+      this.objects.testPlane.position.x,
+      this.objects.testPlane.position.y,
+      this.objects.testPlane.position.z
+    ); */
+
+    // this.objects.testPlane.mesh.setParent(this.scene);
+
     // Incidental objects
     this.createIncidentals();
 
@@ -197,6 +252,10 @@ export default ("canvas",
       scale: object.scale,
     };
 
+    if (!object.breakpoints) {
+      return defaultBreakpoint;
+    }
+
     // Sort breakpoint keys
     const breakpoints = Object.keys(object.breakpoints).sort((a, b) => a - b);
 
@@ -221,8 +280,8 @@ export default ("canvas",
 
     const position = this.getBreakpoint(object).position;
 
-    object.mesh.position.x = position.x * relativeScale;
-    object.mesh.position.y = position.y * relativeScale;
+    object[object.type].position.x = position.x * relativeScale;
+    object[object.type].position.y = position.y * relativeScale;
   },
 
   /**
@@ -230,14 +289,14 @@ export default ("canvas",
    */
   setRelativeScale(object, scale) {
     const relativeScale =
-    (Math.min(this.gl.canvas.width, this.maxContainerWidth) /
-    this.gl.canvas.height) *
-    scale;
+      (Math.min(this.gl.canvas.width, this.maxContainerWidth) /
+        this.gl.canvas.height) *
+      scale;
 
     const scaleValue = this.getBreakpoint(object).scale;
 
-    object.mesh.scale.x = relativeScale * scaleValue;
-    object.mesh.scale.y = relativeScale * scaleValue;
+    object[object.type].scale.x = relativeScale * scaleValue;
+    object[object.type].scale.y = relativeScale * scaleValue;
   },
 
   /**
@@ -250,8 +309,12 @@ export default ("canvas",
         aspect: this.gl.canvas.width / this.gl.canvas.height,
       });
 
+      // Set object positions and scales
       this.setRelativePosition(this.objects.sun, 1);
       this.setRelativeScale(this.objects.sun, 1);
+
+      this.setRelativePosition(this.objects.incidentals, 1);
+      this.setRelativeScale(this.objects.incidentals, 1);
     } else {
       this.camera.perspective({
         aspect: window.innerWidth / window.innerHeight,
@@ -268,7 +331,8 @@ export default ("canvas",
    * Create incidental objects
    */
   createIncidentals() {
-    let vertOffset = 0;
+    this.objects.incidentals.group = new Transform();
+    this.objects.incidentals.group.setParent(this.scene);
 
     const placements = [
       {
@@ -351,52 +415,7 @@ export default ("canvas",
         placement.position.z
       );
 
-      mesh.setParent(this.scene);
+      mesh.setParent(this.objects.incidentals.group);
     });
-
-    /* for (let i = 0; i < count; i++) {
-      const geometry = new Plane(this.gl, {
-        width: 0.1,
-        height: 0.1,
-      });
-
-      const shader = new Program(this.gl, {
-        vertex,
-        fragment: `
-          precision highp float;
-
-          varying vec2 vUv;
-
-          void main() {
-            // circle with anti-aliasing
-            vec2 center = vec2(0.5, 0.5);
-            float radius = 0.5;
-            float distance = length(vUv - center);
-            float alpha = smoothstep(radius, radius - 0.01, distance);
-
-            gl_FragColor = vec4(0.0, 1.0, 0.0, alpha);
-          }
-        `,
-        alpha: true,
-        depthTest: false,
-        depthWrite: false,
-        transparent: true,
-      });
-
-      const mesh = new Mesh(this.gl, {
-        geometry,
-        program: shader,
-      });
-
-      mesh.position.set(
-        Math.random() * 2 - 1,
-        Math.random() * 2 - 1 - vertOffset,
-        (Math.random() * 2 - 1) * 0.5
-      );
-
-      vertOffset += verticalSpacing;
-
-      mesh.setParent(this.scene);
-    } */
   },
 }));
