@@ -1,7 +1,7 @@
- <div class="fixed top-0 inset-x-0 h-24 z-10 bg-zinc-50/95 backdrop-blur-sm"></div>
+{# Mobile backdrop #}
+<div class="sm:hidden fixed top-0 inset-x-0 h-24 z-10 bg-zinc-50/95 backdrop-blur-sm"></div>
 
- <div class="sticky top-0 w-full h-24 flex-shrink-0 flex items-center z-10 sm:z-auto sm:pt-12 sm:items-start sm:pb-0 sm:w-14">
-
+<div class="sticky top-0 w-full h-24 flex-shrink-0 flex items-center z-10 sm:z-auto sm:pt-12 sm:items-start sm:pb-0 sm:w-14">
   <div class=" flex flex-row items-center justify-between w-full gap-y-8 sm:sticky sm:top-12 sm:w-auto sm:flex-col">
     <div class="size-12 sm:size-14 bg-coral-red text-seabed-indigo rounded-full flex items-center justify-center">
       {{ svg('@webroot/dist/images/h--logomark-alt.svg', true, true)|attr({ class: 'w-10 sm:w-12 h-auto' }) }}
