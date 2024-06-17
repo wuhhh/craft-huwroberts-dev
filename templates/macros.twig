@@ -1,0 +1,24 @@
+{% macro navButton(slideover, label) %}
+
+  <button
+    data-follower="hex"
+    @click.prevent="$dispatch('slideover-open', { name: '{{ slideover }}' })"
+    class="base-mono uppercase flex flex-col px-4 leading-none text-seabed-indigo rounded-sm group sm:text-upright"
+  >
+    <span
+      data-follower="hex"
+      class="flex transition-colors duration-300 group-hover:bg-transparent"
+      aria-label="{{ label }}"
+    >
+      {% for ch in "•#{label}•"|split("") %}
+        <span
+          data-follower="hex"
+          class="transition-transform duration-200 {% if loop.index is even %} group-hover:translate-x-1 {% else %} group-hover:-translate-x-1 {% endif %}"
+        >
+          {{ ch }}
+        </span>
+      {% endfor %}
+    </span>
+  </button>
+
+{% endmacro %}

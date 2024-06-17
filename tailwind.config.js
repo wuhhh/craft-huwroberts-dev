@@ -8,8 +8,7 @@ module.exports = {
     "./config/formie.php",
   ],
   safelist: [
-    "bg-slate-50",
-    "bg-slate-100",
+    "bg-zinc-100",
     "bg-neutral-50",
     "bg-neutral-100",
     "bg-neutral-900",

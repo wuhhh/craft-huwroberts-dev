@@ -6,7 +6,7 @@
   {% set liveUrl = entry.liveUrl ?? null %}
   {% set summary = entry.summary ?? null %}
   {% set video = entry.video.one() ?? null %}
-  {% set backdropColour = entry.backdropColour.value|default("bg-slate-50") %}
+  {% set backdropColour = entry.backdropColour.value|default("bg-zinc-100") %}
   {% set role = entry.role ?? null %}
   {% set tags = entry.techTags.all() ?? [] %}
 
@@ -15,9 +15,9 @@
 
   <article
     x-show="selected === {{ entry.id }}"
-    class="grid grid-cols-12 space-y-16 pt-24 w-full max-w-[736px] ml-auto lg:max-w-none lg:ml-0 lg:gap-x-16"
+    class="grid grid-cols-12 space-y-16 pt-24 w-full max-w-[736px] ml-auto lg:max-w-none lg:ml-0 lg:gap-x-10"
   >
-    <div class="pointer-events-auto space-y-12 bg-white pb-16 md:pb-[72px] 2xl:pb-24 md:space-y-12 col-span-full lg:col-span-7 lg:col-start-5">
+    <div class="pointer-events-auto col-span-full space-y-12 pb-16 md:pb-[72px] lg:col-span-7 lg:col-start-5 2xl:pb-24">
 
       {# Head #}
       <div class="relative z-10 w-full max-w-[752px] -mb-3">

@@ -1,53 +1,24 @@
 {# Mobile backdrop #}
 <div class="sm:hidden fixed top-0 inset-x-0 h-24 z-10 bg-zinc-50/95 backdrop-blur-sm"></div>
 
-<div class="sticky top-0 w-full h-24 flex-shrink-0 flex items-center z-10 sm:z-auto sm:pt-12 sm:items-start sm:pb-0 sm:w-14">
-  <div class=" flex flex-row items-center justify-between w-full gap-y-8 sm:sticky sm:top-12 sm:w-auto sm:flex-col">
-    <div class="size-12 sm:size-14 bg-coral-red text-seabed-indigo rounded-full flex items-center justify-center">
-      {{ svg('@webroot/dist/images/h--logomark-alt.svg', true, true)|attr({ class: 'w-10 sm:w-12 h-auto' }) }}
-    </div>
+<div class="sm:hidden sticky top-0 h-24 flex-shrink-0 flex items-center justify-between z-10">
+  {% include "_includes/logomark" only %}
+  {% include "_includes/nav" only %}
+</div>
 
-    <div class="flex gap-5 sm:text-vertical">
-      <button
-        data-follower="hex"
-        @click.prevent="$dispatch('slideover-open', { name: 'who' })"
-        class="base-mono uppercase flex flex-col px-4 leading-none text-seabed-indigo rounded-sm group sm:text-upright"
-      >
-        <span
-          data-follower="hex"
-          class="flex transition-colors duration-300 group-hover:bg-transparent"
-          aria-label="About"
-        >
-          {% for ch in "•about•"|split("") %}
-            <span
-              data-follower="hex"
-              class="transition-transform duration-200 {% if loop.index is even %} group-hover:translate-x-1 {% else %} group-hover:-translate-x-1 {% endif %}"
-            >
-              {{ ch }}
-            </span>
-          {% endfor %}
-        </span>
-      </button>
-      <button
-        data-follower="hex"
-        @click.prevent="$dispatch('slideover-open', { name: 'who' })"
-        class="base-mono uppercase flex flex-col px-4 leading-none text-seabed-indigo rounded-sm group sm:text-upright"
-      >
-        <span
-          data-follower="hex"
-          class="flex transition-colors duration-300 group-hover:bg-transparent"
-          aria-label="Contact"
-        >
-          {% for ch in "•contact•"|split("") %}
-            <span
-              data-follower="hex"
-              class="transition-transform duration-200 {% if loop.index is even %} group-hover:translate-x-1 {% else %} group-hover:-translate-x-1 {% endif %}"
-            >
-              {{ ch }}
-            </span>
-          {% endfor %}
-        </span>
-      </button>
-    </div>
+<div class="hidden sm:block">
+  <div class="sticky top-0 w-full h-24 flex-shrink-0 flex items-center justify-between z-10 pt-12">
+    {% include "_includes/logomark" only %}
+  </div>
+  <div class="sticky top-[132px]">
+    {% include "_includes/nav" only %}
   </div>
 </div>
+
+{# <div class="sticky top-0 w-full h-24 flex-shrink-0 flex items-center z-10 sm:z-auto sm:pt-12 sm:items-start sm:pb-0 sm:w-14">
+  <div class="flex flex-row items-center justify-between w-full gap-y-8 sm:sticky sm:top-12 sm:w-auto sm:flex-col">
+
+
+    {% include "_includes/nav" only %}
+  </div>
+</div> #}
