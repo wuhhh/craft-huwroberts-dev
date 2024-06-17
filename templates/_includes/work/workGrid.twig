@@ -36,7 +36,7 @@
           <div class="hidden xl:block xl:col-span-4">{# blank grid space #}</div>
         {% endif %}
 
-        <div class="relative group col-span-full space-y-5 w-full max-w-[480px] lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
+        <div class="relative group col-span-full space-y-4 w-full max-w-[480px] lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
           {# <h2 class="base-mono">{{ entry.title }}</h2> #}
 
           {% if image %}
@@ -57,9 +57,10 @@
             </div>
           {% endif %}
 
-          <div>
-            <h2 class="base-mono mb-0">{{ entry.title }}</h2>
+          <div class="flex flex-col gap-y-2">
+            <h2 class="base-sans">{{ entry.title }}</h2>
             {% include "_includes/work/workCardMeta" with {
+              class: "sm-mono leading-tight",
               type: entry.workType,
               year: entry.year,
               agency: entry.agency,

@@ -19,16 +19,16 @@
 
 {% if type and year and ((isAgency and agencyTitle) or not isAgency) %}
 
-  <div class="{{ class }} base-mono">
-    <p>
+  <div class="flex flex-col gap-y-2 {{ class }}">
+    <div>
       <span>{{ "Type"|t }}: {{ type }}</span>
       {% if isAgency %}
         <span>
           ({{ agencyTitle }})
         </span>
       {% endif %}
-    </p>
-    <p>{{ year }}</p>
+    </div>
+    <div>{{ year }}</div>
   </div>
 
 {% endif %}

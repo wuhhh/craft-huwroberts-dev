@@ -15,14 +15,14 @@
 
   <article
     x-show="selected === {{ entry.id }}"
-    class="grid grid-cols-12 space-y-16 pt-16 w-full max-w-[736px] ml-auto lg:max-w-none lg:ml-0 lg:gap-x-10"
+    class="grid grid-cols-12 pt-32 w-full max-w-[736px] ml-auto lg:pt-16 lg:max-w-none lg:ml-0 lg:gap-x-10"
   >
     <div class="pointer-events-auto col-span-full pb-16 md:pb-[72px] lg:col-span-7 lg:col-start-5 2xl:pb-24">
 
-      <div class="relative z-10 space-y-12">
+      <div class="space-y-8 sm:space-y-12">
 
         {# Work nav #}
-        <div class="sm-mono leading-none flex gap-x-4 items-center">
+        <div class="relative z-10 sm-mono leading-none flex items-center gap-x-4">
           {# Back to work / close slideover #}
           <button
             @click="showSlideover = false"
@@ -34,9 +34,9 @@
 
           {# Nav #}
 
-          <div class="w-12 h-px bg-black/10 mt-0.5"></div>
+          <div class="hidden w-12 h-px bg-black/10 mt-0.5 sm:block"></div>
 
-          <section class="flex items-center gap-x-4">
+          <section class="hidden sm:flex items-center gap-x-4">
             <button
               class="pointer-events-auto hover:bg-coral-red/20"
               :class="{ 'pointer-events-none opacity-30 !cursor-default': !hasPrev() }"
@@ -62,7 +62,7 @@
         </div>
 
 
-        <div class="flex flex-wrap items-baseline gap-4">
+        <div class="relative z-10 flex flex-wrap items-baseline gap-4">
           {# Title #}
           <h2
             x-dialog:title
@@ -90,7 +90,7 @@
 
         {# Summary #}
         {% if summary %}
-          <p class="w-full max-w-[752px]">
+          <p class="relative z-10 w-full max-w-[752px]">
             {{ summary }}
           </p>
         {% endif %}
@@ -104,6 +104,7 @@
 
         {# Meta #}
         {% include "_includes/work/workCardMeta" with {
+          class: "relative z-10 sm-mono leading-tight",
           type: entry.workType,
           year: entry.year,
           agency: entry.agency,
