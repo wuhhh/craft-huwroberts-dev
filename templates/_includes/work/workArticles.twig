@@ -1,6 +1,5 @@
 {% set work = craft.entries.section('work') %}
 {% set workEntries = work.all() ?? [] %}
-{% set navStyle = "icon" %} {# "icon" or "text" #}
 
 {% if workEntries|length %}
 
@@ -49,6 +48,8 @@
         return this.workIDs.indexOf(this.selected);
       },
     }"
+    @keydown.left.window="wrapKeyDown($event, () => showSlideover && prev())"
+    @keydown.right.window="wrapKeyDown($event, () => showSlideover && next())"
     @open-slideover.window="setSlideover($event.detail.id)"
   >
     {% set panelContent %}
@@ -61,8 +62,7 @@
 
     {% include "_includes/slideover" with {
       showCloseButton: true,
-      showNav: true,
-      navStyle: "icon",
+      showWorkNav: true,
       panelContent: panelContent,
     } only %}
 
