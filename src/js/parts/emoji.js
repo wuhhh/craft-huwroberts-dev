@@ -45,10 +45,8 @@ export default function emoji() {
     },
 
     doConfetti() {
-
-
       this.confettiInstance({
-        colors: ['#F36855'],
+        colors: ['#F36855', '#3F26DD'],
         decay: 0.9,
         gravity: 1,
         origin: { x: 0.5, y: 0.7 },

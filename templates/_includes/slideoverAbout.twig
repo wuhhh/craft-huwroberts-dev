@@ -9,56 +9,55 @@
 
   {% set panelContent %}
     {# <div> #}
-      <article class="grid grid-cols-12 space-y-16 pt-[186px] w-full max-w-[736px] ml-auto lg:w-4/5 lg:max-w-none xl:w-auto xl:ml-0 xl:gap-x-16">
+      <article class="grid grid-cols-12 pt-32 w-full max-w-[736px] ml-auto lg:pt-16 lg:w-4/5 lg:max-w-none xl:w-auto xl:ml-0 xl:gap-x-16">
         <div class="pointer-events-auto bg-zinc-50 col-span-full pb-16 md:pb-[72px] 2xl:pb-24 xl:col-span-7 xl:col-start-5 xl:grid xl:grid-cols-subgrid">
-            <div class="col-span-full flex flex-col justify-between md:col-span-4 xl:h-full xl:col-span-6">
+
+          <div class="col-span-full md:col-span-4 xl:h-full xl:col-span-6">
+            <div class="space-y-8 sm:space-y-12">
+              <div class="relative z-10 sm-mono leading-none flex items-center gap-x-4">
+                {# Back to work / close slideover #}
+                <button
+                  @click="showSlideover = false"
+                  class="flex items-baseline gap-x-2 hover:bg-coral-red/20"
+                >
+                  {{ svg('@webroot/dist/images/icon--arrow-left.svg', true, true)|attr({ class: 'w-auto h-[9px] flex-shrink-0' }) }}
+                  <span>{{ "Work"|t }}</span>
+                </button>
+              </div>
+
               {% if heading %}
-                <h2 x-dialog:title class="sr-only">About me</h2>
                 <h2
-                  aria-hidden="true"
-                  class="relative z-10 font-bold heading1 mb-16 md:w-4/5 xl:w-auto"
+                  x-dialog:title
+                  class="relative z-10 font-medium heading1 leading-none md:w-4/5 xl:w-auto"
                 >{{ heading }}</h2>
               {% endif %}
 
-              <div class="flex flex-col gap-y-16 md:block xl:flex">
-                {% if richText %}
-                  <div class="relative z-10 heading5 md:heading4 font-medium ckeditor -simple md:w-4/5 xl:w-auto">{{ richText }}</div>
-                {% endif %}
-
-                {% if image %}
-                  <div class="relative z-10 md:!-mt-32 md:flex md:justify-end xl:hidden">
-                    {% include "_includes/picture" with {
-                      image: image,
-                      mode: "crop",
-                      classes: "opacity-25",
-                      pictureSets: [
-                        { "default": [480, 700] },
-                      ],
-                    } only %}
-                  </div>
-                {% endif %}
-
-                {# Tags #}
-                {% if tags %}
-                  <div class="relative w-full max-w-[752px] md:w-4/5 md:!-mt-32 xl:w-auto xl:!mt-0">
-                    {% include "_includes/tags" with { tags: tags } only %}
-                  </div>
-                {% endif %}
-              </div>
-            </div>
-
-            <div class="hidden xl:block col-span-full xl:col-span-4">
               {% if image %}
-                {% include "_includes/picture" with {
-                  image: image,
-                  mode: "crop",
-                  classes: "opacity-25",
-                  pictureSets: [
-                    { "default": [480, 700] },
-                  ],
-                } only %}
+                <div class="relative z-10 aspect-[764/350]">
+                  {% include "_includes/picture" with {
+                    image: image,
+                    mode: "crop",
+                    classes: "object-cover w-full h-full opacity-25",
+                    pictureSets: [
+                      { "default": [764, 350] },
+                    ],
+                  } only %}
+                </div>
+              {% endif %}
+
+              {% if richText %}
+                <div class="relative z-10 heading5 font-medium ckeditor -simple">{{ richText }}</div>
+              {% endif %}
+
+              {# Tags #}
+              {% if tags %}
+                <div class="relative w-full max-w-[752px] md:w-4/5 xl:w-auto">
+                  {% include "_includes/tags" with { tags: tags } only %}
+                </div>
               {% endif %}
             </div>
+          </div>
+
         </div>
       </article>
     {# </div> #}

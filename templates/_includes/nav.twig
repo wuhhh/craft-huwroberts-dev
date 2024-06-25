@@ -1,8 +1,8 @@
-{% from "macros" import navButton %}
+{% from "macros" import navButton, navLink %}
 
 <div class="flex gap-8 sm:gap-5 sm:text-vertical">
 
   {{ navButton('who', 'About') }}
-  {{ navButton('who', 'Contact') }}
+  {{ navLink('#contact', 'Contact') }}
 
 </div>

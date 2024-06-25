@@ -16,7 +16,7 @@ import ui from '@alpinejs/ui';
 
 import canvas from './parts/canvas';
 import core from './parts/core';
-import emoji from './parts/emoji';
+// import emoji from './parts/emoji';
 import follower from './parts/follower';
 import mediaControls from './parts/mediaControls';
 
@@ -27,7 +27,7 @@ Alpine.plugin(ui);
 Alpine.data('canvas', canvas);
 Alpine.data('core', core);
 Alpine.data('follower', follower);
-Alpine.data('emoji', emoji);
+// Alpine.data('emoji', emoji);
 Alpine.data('mediaControls', mediaControls);
 
 Alpine.store('global', {
@@ -36,7 +36,7 @@ Alpine.store('global', {
 
   init() {
     window.addEventListener('mousemove', (e) => {
-      this.mouseCoords = [e.clientX, e.clientY];
+      this.mouseCoords = [e.clientX, e.clientY]
     });
   }
 })

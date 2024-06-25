@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html
-	class="no-js"
+	class="no-js scroll-smooth"
   lang="{{ currentSite.language }}"
   dir="{{craft.app.i18n.getLocaleById(currentSite.id).getOrientation()}}"
 >
@@ -24,7 +24,7 @@
   {% block bodyTag %}
  		<body
       x-data="core()"
-      class="relative flex flex-col min-h-screenh antialiased bg-zinc-50"
+      class="relative flex flex-col min-h-screenh antialiased bg-zinc-50 scroll-smooth"
     >
       <a class="skip-link" href="#main" tabindex="1">{{ "Skip to content"|t }}</a>
   {% endblock %}

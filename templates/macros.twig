@@ -12,6 +12,7 @@
     >
       {% for ch in "•#{label}•"|split("") %}
         <span
+          aria-hidden="true"
           data-follower="hex"
           class="transition-transform duration-200 {% if loop.index is even %} group-hover:translate-x-1 {% else %} group-hover:-translate-x-1 {% endif %}"
         >
@@ -20,5 +21,31 @@
       {% endfor %}
     </span>
   </button>
+
+{% endmacro %}
+
+{% macro navLink(link, label) %}
+
+  <a
+    data-follower="hex"
+    href="{{ link }}"
+    class="base-mono uppercase flex flex-col leading-none text-seabed-indigo rounded-sm group sm:px-4 sm:text-upright"
+  >
+    <span
+      data-follower="hex"
+      class="flex transition-colors duration-300 group-hover:bg-transparent"
+      aria-label="{{ label }}"
+    >
+      {% for ch in "•#{label}•"|split("") %}
+        <span
+          aria-hidden="true"
+          data-follower="hex"
+          class="transition-transform duration-200 {% if loop.index is even %} group-hover:translate-x-1 {% else %} group-hover:-translate-x-1 {% endif %}"
+        >
+          {{ ch }}
+        </span>
+      {% endfor %}
+    </span>
+  </a>
 
 {% endmacro %}
