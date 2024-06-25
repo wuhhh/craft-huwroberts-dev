@@ -26,7 +26,7 @@
           {# Back to work / close slideover #}
           <button
             @click="showSlideover = false"
-            class="flex items-baseline gap-x-2 hover:bg-coral-red/20"
+            class="flex items-baseline gap-x-2 hover:bg-coral-red/20 flex-shrink-0"
           >
             {{ svg('@webroot/dist/images/icon--arrow-left.svg', true, true)|attr({ class: 'w-auto h-[9px] flex-shrink-0' }) }}
             <span>{{ "All work"|t }}</span>
@@ -34,9 +34,9 @@
 
           {# Nav #}
 
-          <div class="hidden w-12 h-px bg-black/10 mt-0.5 sm:block"></div>
+          <div class=" w-12 h-px bg-black/10 mt-0.5 sm:block"></div>
 
-          <section class="hidden sm:flex items-center gap-x-4">
+          <section class="flex items-center gap-x-4">
             <button
               class="pointer-events-auto hover:bg-coral-red/20"
               :class="{ 'pointer-events-none opacity-30 !cursor-default': !hasPrev() }"
