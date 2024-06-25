@@ -12,6 +12,7 @@ import "@js/parts/css";
 import Alpine from 'alpinejs';
 import focus from '@alpinejs/focus';
 import intersect from '@alpinejs/intersect';
+import swipePlugin from "alpinejs-swipe";
 import ui from '@alpinejs/ui';
 
 import canvas from './parts/canvas';
@@ -22,7 +23,9 @@ import mediaControls from './parts/mediaControls';
 
 Alpine.plugin(focus);
 Alpine.plugin(intersect);
+Alpine.plugin(swipePlugin);
 Alpine.plugin(ui);
+
 
 Alpine.data('canvas', canvas);
 Alpine.data('core', core);

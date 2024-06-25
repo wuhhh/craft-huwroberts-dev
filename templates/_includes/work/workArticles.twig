@@ -50,6 +50,8 @@
     }"
     @keydown.left.window="wrapKeyDown($event, () => showSlideover && prev())"
     @keydown.right.window="wrapKeyDown($event, () => showSlideover && next())"
+    x-swipe:left="showSlideover && next()"
+    x-swipe:right="showSlideover && prev()"
     @open-slideover.window="setSlideover($event.detail.id)"
   >
     {% set panelContent %}
