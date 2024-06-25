@@ -33,20 +33,21 @@
               {% endif %}
 
               {% if image %}
-                <div class="relative z-10 aspect-[764/350]">
+                <div class="relative z-10 aspect-square sm:aspect-[764/350]">
                   {% include "_includes/picture" with {
                     image: image,
                     mode: "crop",
                     classes: "object-cover w-full h-full opacity-25",
                     pictureSets: [
-                      { "default": [764, 350] },
+                      { "640": [764, 350] },
+                      { "default": [362, 362] },
                     ],
                   } only %}
                 </div>
               {% endif %}
 
               {% if richText %}
-                <div class="relative z-10 heading5 font-medium ckeditor -simple">{{ richText }}</div>
+                <div class="relative z-10 sm-sans sm:heading5 font-medium ckeditor -simple">{{ richText }}</div>
               {% endif %}
 
               {# Tags #}
