@@ -26,7 +26,6 @@ Alpine.plugin(intersect);
 Alpine.plugin(swipePlugin);
 Alpine.plugin(ui);
 
-
 Alpine.data('canvas', canvas);
 Alpine.data('core', core);
 Alpine.data('follower', follower);
