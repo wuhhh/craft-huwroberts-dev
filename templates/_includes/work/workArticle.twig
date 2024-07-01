@@ -25,7 +25,7 @@
         <div class="relative z-10 sm-mono leading-none flex items-center gap-x-4">
           {# Back to work / close slideover #}
           <button
-            @click="showSlideover = false"
+            @click="close()"
             class="flex items-baseline gap-x-2 hover:bg-coral-red/20 flex-shrink-0"
           >
             {{ svg('@webroot/dist/images/icon--arrow-left.svg', true, true)|attr({ class: 'w-auto h-[9px] flex-shrink-0' }) }}

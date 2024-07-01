@@ -47,14 +47,8 @@
         this.showSlideover = true
       }
     },
-    handleCloseEvent(event) {
-      if (event.detail.name === 'sayHello') {
-        this.showSlideover = false
-      }
-    },
   }"
   @slideover-open.window="handleOpenEvent($event)"
-  @close-slideover.window="handleCloseEvent($event)"
 >
   {% include "_includes/slideover" with {
     showCloseButton: true,

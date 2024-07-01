@@ -8,6 +8,10 @@
     </a>
   </div>
   <div class="absolute inset-x-0 bottom-4 flex justify-center">
-    <span class="xs-mono">This website is <a href="#" class="decoration-coral-red underline hover:bg-coral-red/20">open source</a>.</span>
+    {% set classes = "decoration-coral-red underline hover:bg-coral-red/20" %}
+
+    {% if footer.footerWords %}
+      <span class="xs-mono footer-words ckeditor -simple">{{ footer.footerWords }}</span>
+    {% endif %}
   </div>
 </footer>

@@ -1,0 +1,27 @@
+fieldLayouts:
+  dc7c88bd-37d2-40c6-94a9-452d0eaf7ecc:
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            elementCondition: null
+            fieldUid: 4824e26e-358e-48a3-8ff0-7e2517806ba0 # Footer Words
+            handle: null
+            includeInCards: false
+            instructions: null
+            label: null
+            providesThumbs: false
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: e5389980-9603-463d-8aac-68948ddbe554
+            userCondition: null
+            warning: null
+            width: 100
+        name: Main
+        uid: d6fe4080-c673-4e26-b11b-fa6355016b16
+        userCondition: null
+handle: footer
+name: Footer
+sortOrder: 1

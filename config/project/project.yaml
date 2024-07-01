@@ -1,4 +1,4 @@
-dateModified: 1718631311
+dateModified: 1719848953
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -27,6 +27,7 @@ meta:
     763f00c3-3720-4070-ab7e-910babff9419: Tech # Tech
     838bb6bb-df26-4c70-8ee2-08016da47b9a: 'Backdrop Colour' # Backdrop Colour
     3304bc86-e804-4dc5-8c9b-0907003b0734: Image # Image
+    4824e26e-358e-48a3-8ff0-7e2517806ba0: 'Footer Words' # Footer Words
     80763c4f-603e-4f78-8e46-e05e80044efe: 'Huw Roberts' # Huw Roberts
     99701ea9-a4da-4fb6-b997-541f0661f9a9: Agency # Agency
     abca85a2-35fd-471e-88e4-03f192b781dd: Who # Who
@@ -41,6 +42,7 @@ meta:
     efaad977-8c8a-4ef0-b449-ba859a367e44: 'Rich Text' # Rich Text
     f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae: Work # Work
     f93ff202-7643-4d47-b2cc-126d5595da3f: 'Work Type' # Work Type
+    fe297c93-bf96-40ca-94ed-936d23f5fb1c: Footer # Footer
 plugins:
   ckeditor:
     edition: standard

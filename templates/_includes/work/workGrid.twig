@@ -12,32 +12,26 @@
         {% set image = entry.cardImage.one() ?? null %}
         {% set cls = "" %}
 
-        {# Vertical stacking #}
-        {% if ((loop.index0 % 6) + 1 == 2)
-          or ((loop.index0 % 6) + 1 == 5)
-          or ((loop.index0 % 6) + 1 == 6)
-        %}
+        {% set base6Index0 = loop.index0 % 6 %}
+
+        {# Vertical spacing #}
+        {% if base6Index0 == 1 or base6Index0 == 4 or base6Index0 == 5 %}
           {% set cls = "ml-auto lg:ml-0" %}
         {% endif %}
 
-        {# Three to a row with blanks #}
-        {% if ((loop.index0 % 10) + 1) == 3
-          or ((loop.index0 % 12) + 1) == 9
-        %}
-          <div class="hidden xl:block xl:col-span-4">{# blank grid space #}</div>
+        {# Horizontal spacing #}
+        {% set blank %}
+          <div class="hidden xl:block xl:col-span-4"></div>
+        {% endset %}
+
+        {% if base6Index0 == 2 %}
+          {{ blank }}{{ blank }}
+        {% elseif base6Index0 == 5 %}
+          {{ blank }}
         {% endif %}
 
-        {# Three to a row with blanks #}
-        {% if ((loop.index0 % 12) + 1) == 3
-          or ((loop.index0 % 12) + 1) == 6
-          or ((loop.index0 % 12) + 1) == 9
-          or ((loop.index0 % 12) + 1) == 13
-        %}
-          <div class="hidden xl:block xl:col-span-4">{# blank grid space #}</div>
-        {% endif %}
 
         <div class="relative group col-span-full space-y-4 w-full max-w-[480px] lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
-          {# <h2 class="base-mono">{{ entry.title }}</h2> #}
 
           {% if image %}
             <div class="relative aspect-[480/288] lg:border-x border-[#f0edea] {# shadow-sm group-hover:shadow-none #} transition-all duration-200">

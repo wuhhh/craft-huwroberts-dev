@@ -5,7 +5,7 @@
 {% set class = class ?? "" %}
 
 {# Safe to use slug because it is not translatable #}
-{% if type.slug == "agency" %}
+{% if type and type.slug == "agency" %}
   {% set isAgency = true %}
   {% set agency = agency.one() ?? null %}
 

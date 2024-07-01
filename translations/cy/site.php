@@ -1,7 +1,9 @@
 <?php
 	return [
+		"About" => "Am",
 		"All work" => "Holl waith",
 		"Close modal" => "Cau modal",
+		"Contact" => "Cyswllt",
 		"home" => "cartref",
 		"Main menu" => "Prif ddewislen",
 		"More" => "Mwy",
@@ -9,6 +11,7 @@
 		"Previous" => "Blaenorol",
 		"Say hello!" => "Dweud helo!",
 		"Skip to content" => "Neidio i gynnwys",
+		"This website is open source" => "Mae'r wefan hon yn ffynhonnell agored",
 		"Type" => "Math",
 		"View details, opens dialog" => "Gweld manylion, yn agor deialog",
 		"View Live"	=> "Gweld Yn Fyw",

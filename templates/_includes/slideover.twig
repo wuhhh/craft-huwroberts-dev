@@ -10,6 +10,11 @@
 <div
   x-dialog
   x-model="showSlideover"
+  x-data="{
+    close() {
+      this.$dialog.close()
+    }
+  }"
   x-init="() => {
     $watch('showSlideover', (state) => {
       if (!state) {
@@ -21,6 +26,7 @@
       }
     })
   }"
+  @click.away="close()"
   style="display: none"
   class="fixed inset-0"
 >
