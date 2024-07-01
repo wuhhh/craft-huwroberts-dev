@@ -21,14 +21,14 @@ propagationMethod: all
 siteSettings:
   5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: # Huw Roberts | Datblygwr Gwe Llawrydd
     enabledByDefault: true
-    hasUrls: true
+    hasUrls: false
     template: null
-    uriFormat: 'work/{slug}'
+    uriFormat: null
   25a33ae6-3901-458a-8998-5f63d864a3f3: # Huw Roberts | Freelance Web Developer
     enabledByDefault: true
-    hasUrls: true
+    hasUrls: false
     template: null
-    uriFormat: 'work/{slug}'
+    uriFormat: null
 structure:
   maxLevels: null
   uid: 2713f40e-930c-43e0-963f-bc9700f8d487
