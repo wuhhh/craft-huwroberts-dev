@@ -61,15 +61,15 @@
             } %}
           </div>
 
-          <a
+          <button
             x-data="{ open() { $dispatch('open-slideover', { id: {{ entry.id }} }) } }"
-            @click.prevent="open()"
+            @click="open()"
             @keydown.space.prevent="open()"
             data-follower="more"
-            href="{{ url(entry.uri) }}"
             class="box-link before:focus-visible:outline before:focus-visible:outline-2 before:focus-visible:outline-offset-2 before:focus-visible:outline-blue-700"
             aria-label="{{ '{0} project details, opens modal'|t([entry.title]) }}"
-          ></a>
+          >
+          </button>
         </div>
 
       {% endfor %}
