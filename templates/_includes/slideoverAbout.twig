@@ -8,7 +8,6 @@
   {% set image = entry.image.one() ?? null %}
 
   {% set panelContent %}
-    {# <div> #}
       <article class="grid grid-cols-12 pt-32 w-full max-w-[736px] ml-auto lg:pt-16 lg:w-4/5 lg:max-w-none xl:w-auto xl:ml-0 xl:gap-x-16">
         <div class="pointer-events-auto bg-zinc-50 col-span-full pb-16 md:pb-[72px] 2xl:pb-24 xl:col-span-7 xl:col-start-5 xl:grid xl:grid-cols-subgrid">
 
@@ -17,7 +16,7 @@
               <div class="relative z-10 sm-mono leading-none flex items-center gap-x-4">
                 {# Back to work / close slideover #}
                 <button
-                  @click="showSlideover = false"
+                  @click="close()"
                   class="flex items-baseline gap-x-2 hover:bg-coral-red/20"
                 >
                   {{ svg('@webroot/dist/images/icon--arrow-left.svg', true, true)|attr({ class: 'w-auto h-[9px] flex-shrink-0' }) }}
@@ -61,7 +60,6 @@
 
         </div>
       </article>
-    {# </div> #}
   {% endset %}
 
   <div
@@ -69,17 +67,11 @@
       showSlideover: false,
       handleOpenEvent(event) {
         if (event.detail.name === 'who') {
-          this.showSlideover = true
-        }
-      },
-      handleCloseEvent(event) {
-        if (event.detail.name === 'who') {
-          this.showSlideover = false
+          $nextTick(() => this.showSlideover = true)
         }
       },
     }"
     @slideover-open.window="handleOpenEvent($event)"
-    @close-slideover.window="handleCloseEvent($event)"
   >
     {% include "_includes/slideover" with {
       showCloseButton: true,

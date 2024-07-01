@@ -10,17 +10,19 @@
 <div
   x-dialog
   x-model="showSlideover"
+  x-data="{
+    close() {
+      this.$dialog.close()
+    }
+  }"
   x-init="() => {
     $watch('showSlideover', (state) => {
       if (!state) {
         $dispatch('slideover-close')
-        $store.global.slideoverOpen = false
-      }
-      else {
-        $store.global.slideoverOpen = true
       }
     })
   }"
+  @click.away="close()"
   style="display: none"
   class="fixed inset-0"
 >
