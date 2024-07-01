@@ -19,6 +19,10 @@
     $watch('showSlideover', (state) => {
       if (!state) {
         $dispatch('slideover-close')
+        $store.global.slideoverOpen = false
+      }
+      else {
+        $store.global.slideoverOpen = true
       }
     })
   }"
