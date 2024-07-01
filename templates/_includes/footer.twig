@@ -7,11 +7,30 @@
       huw@huwroberts.dev
     </a>
   </div>
-  <div class="absolute inset-x-0 bottom-4 flex justify-center">
-    {% set classes = "decoration-coral-red underline hover:bg-coral-red/20" %}
+  <div class="absolute bottom-12 inset-x-0 flex flex-col-reverse items-center gap-y-4 sm:contents">
+    <div class="sm:absolute inset-x-0 bottom-12 flex justify-center">
+      {% set classes = "decoration-coral-red underline hover:bg-coral-red/20" %}
 
-    {% if footer.footerWords %}
-      <span class="xs-mono footer-words ckeditor -simple">{{ footer.footerWords }}</span>
-    {% endif %}
+      {% if footer.footerWords %}
+        <div class="xs-mono footer-words ckeditor -simple leading-none">{{ footer.footerWords }}</div>
+      {% endif %}
+
+    </div>
+    <div class="sm:absolute right-0 bottom-10 flex items-center">
+      <a
+        href="https://x.com/{{ seomatic.site.twitterHandle }}"
+        rel="noopener noreferrer nofollow"
+        class="hover:text-seabed-indigo transition duration-100"
+      >
+        {{ svg('@webroot/dist/images/social--x.svg', true, true)|attr({ class: "h-[34px]" }) }}
+      </a>
+      <a
+        href="{{ seomatic.site.sameAsLinks["github"]["url"] }}"
+        rel="noopener noreferrer nofollow"
+        class="hover:text-seabed-indigo transition duration-100"
+      >
+        {{ svg('@webroot/dist/images/social--github.svg', true, true)|attr({ class: "h-[38px]" }) }}
+      </a>
+    </div>
   </div>
 </footer>
