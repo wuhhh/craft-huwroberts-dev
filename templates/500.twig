@@ -1,4 +1,4 @@
-{% extends "_layouts/default.twig" %}
+{% extends "_layouts/base.twig" %}
 
 {% block bodyTag %}
   {{ parent()|attr({
@@ -6,7 +6,7 @@
   }) }}
 {% endblock %}
 
-{% block content %}
+{% block base %}
   <div class="w-full h-full flex items-center justify-center text-center">
 		<div>
 			<h1 class="font-mono text-2xl">500</h1>
