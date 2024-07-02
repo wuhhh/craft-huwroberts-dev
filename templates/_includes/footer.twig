@@ -17,22 +17,30 @@
 
     </div>
     <div class="sm:absolute right-0 bottom-10 flex items-center">
-      <a
-        href="https://x.com/{{ seomatic.site.twitterHandle }}"
-        rel="noopener noreferrer nofollow"
-        class="hover:text-seabed-indigo transition duration-100"
-        aria-label="Huw Roberts on Twitter/X"
-      >
-        {{ svg('@webroot/dist/images/social--x.svg', true, true)|attr({ class: "h-[34px]" }) }}
-      </a>
-      <a
-        href="{{ seomatic.site.sameAsLinks["github"]["url"] }}"
-        rel="noopener noreferrer nofollow"
-        class="hover:text-seabed-indigo transition duration-100"
-        aria-label="Huw Roberts on GitHub"
-      >
-        {{ svg('@webroot/dist/images/social--github.svg', true, true)|attr({ class: "h-[38px]" }) }}
-      </a>
+      {% if seo.twitterHandle %}
+        <a
+          href="https://x.com/{{ seo.twitterHandle }}"
+          rel="noopener noreferrer nofollow"
+          class="hover:text-seabed-indigo transition duration-100"
+          aria-label="Huw Roberts on Twitter/X"
+        >
+          {{ svg('@webroot/dist/images/social--x.svg', true, true)|attr({ class: "h-[34px]" }) }}
+        </a>
+      {% endif %}
+
+      {% set seeAlso = seo.seeAlso %}
+      {% set github = seeAlso|filter(row => row.name == 'github') %}
+
+      {% if github %}
+        <a
+          href="{{ github[0]['url'] }}"
+          rel="noopener noreferrer nofollow"
+          class="hover:text-seabed-indigo transition duration-100"
+          aria-label="Huw Roberts on GitHub"
+        >
+          {{ svg('@webroot/dist/images/social--github.svg', true, true)|attr({ class: "h-[38px]" }) }}
+        </a>
+      {% endif %}
     </div>
   </div>
 </footer>

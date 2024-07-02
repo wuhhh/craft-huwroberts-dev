@@ -1,4 +1,4 @@
-dateModified: 1719875374
+dateModified: 1719916667
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -13,10 +13,12 @@ fs:
     url: '@web/volumes/local'
 meta:
   __names__:
+    2cf30ae5-5268-4df7-8be9-54b1dc6e9a88: 'SEO Keywords' # SEO Keywords
     4e5f4410-fe03-41d3-a103-8619a3dee7de: 'Live URL' # Live URL
     5c24cd7c-3d48-44f0-831a-3abc4d6b54ff: Work # Work
     5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: Cymraeg # Cymraeg
     6c0338fc-c096-4d7d-bef5-22406ee8bbe6: Heading # Heading
+    6e9cca5e-e4eb-416d-a05c-8fdf191de744: 'See Also' # See Also
     7d71bee4-9355-40e3-8514-ee80a2a15c2f: Home # Home
     7e3c30a7-fdc1-41a8-af20-5e6a20bd61ac: Video # Video
     9df05e4c-ad18-498a-9fba-144f3ed8f8db: Summary # Summary
@@ -24,16 +26,21 @@ meta:
     52ecdaa0-e78c-4b23-a67b-b2de241c25ac: Year # Year
     261d41fd-97b6-4906-874d-66df44df7420: Role # Role
     279cfc2e-8324-4a53-aa20-56b80bfebaa7: 'Work Type' # Work Type
+    360e369c-1909-4b4d-8abf-f505ce7b2da4: 'Twitter Handle' # Twitter Handle
+    728cc643-ad89-4b24-bdf4-46d3459574ef: SEO # SEO
     763f00c3-3720-4070-ab7e-910babff9419: Tech # Tech
     838bb6bb-df26-4c70-8ee2-08016da47b9a: 'Backdrop Colour' # Backdrop Colour
     3304bc86-e804-4dc5-8c9b-0907003b0734: Image # Image
     4824e26e-358e-48a3-8ff0-7e2517806ba0: 'Footer Words' # Footer Words
+    42776a61-f5ef-4385-8543-fb5867a46711: 'SEO Description' # SEO Description
     80763c4f-603e-4f78-8e46-e05e80044efe: 'Huw Roberts' # Huw Roberts
+    98303f8e-dbcf-40b8-9c2b-cd5955798bd5: 'Site Name' # Site Name
     99701ea9-a4da-4fb6-b997-541f0661f9a9: Agency # Agency
     abca85a2-35fd-471e-88e4-03f192b781dd: Who # Who
     b72f3694-5d2a-478c-badd-08344714d7d0: Agency # Agency
     bd8c65e7-b611-45be-8f4c-658c6cf4a0f7: Simple # Simple
     c0160475-3256-40fc-89bf-3e63d0add54c: Home # Home
+    c3d4eba5-b940-4c5b-a4cd-6f3d86f6d410: 'SEO Title' # SEO Title
     c5b973a9-a07d-4d67-acb9-a3f0cbcb1450: 'Tech Tags' # Tech Tags
     c300fa12-7356-4389-b8d8-0411927605a8: Who # Who
     d5f87477-e8cd-4d2e-b3b9-c8c97050dadb: Assets # Assets
@@ -42,6 +49,8 @@ meta:
     efaad977-8c8a-4ef0-b449-ba859a367e44: 'Rich Text' # Rich Text
     f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae: Work # Work
     f93ff202-7643-4d47-b2cc-126d5595da3f: 'Work Type' # Work Type
+    f29101bc-2a09-4e37-b901-3c67d4c79056: 'SEO Twitter Image' # SEO Twitter Image
+    fa84d361-5db4-4ada-aa90-57a291b972c7: 'SEO Image' # SEO Image
     fe297c93-bf96-40ca-94ed-936d23f5fb1c: Footer # Footer
 plugins:
   ckeditor:
@@ -61,9 +70,13 @@ plugins:
     edition: standard
     enabled: true
     schemaVersion: 1.1.1
-  seomatic:
+  seomate:
     edition: standard
     enabled: true
+    schemaVersion: 1.0.0
+  seomatic:
+    edition: standard
+    enabled: false
     licenseKey: LXIUM7N8HL6R4M4ER2B2DXEK
     schemaVersion: 3.0.12
   vite:
