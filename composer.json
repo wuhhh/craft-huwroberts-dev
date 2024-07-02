@@ -17,7 +17,7 @@
     "sort-packages": true
   },
   "require": {
-    "craftcms/ckeditor": "4.0.6",
+    "craftcms/ckeditor": "4.1.0",
     "craftcms/cms": "5.2.4.1",
     "mmikkel/cp-field-inspect": "^2.0",
     "nystudio107/craft-vite": "^5.0",
