@@ -19,12 +19,12 @@ previewTargets:
         - '1'
 propagationMethod: all
 siteSettings:
-  5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: # Huw Roberts | Datblygwr Gwe Llawrydd
+  5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: # Cymraeg
     enabledByDefault: true
     hasUrls: true
     template: home/_entry
     uriFormat: __home__
-  25a33ae6-3901-458a-8998-5f63d864a3f3: # Huw Roberts | Freelance Web Developer
+  25a33ae6-3901-458a-8998-5f63d864a3f3: # English
     enabledByDefault: true
     hasUrls: true
     template: home/_entry
