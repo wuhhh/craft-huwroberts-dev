@@ -3,5 +3,5 @@
 use craft\helpers\App;
 
 return [
-	'environment' => (bool) App::env('ENVIRONMENT'),
+	'plausibleEnabled' => (bool) App::env('PLAUSIBLE_ENABLED'),
 ];
