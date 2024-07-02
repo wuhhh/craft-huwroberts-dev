@@ -1,4 +1,4 @@
-dateModified: 1719916667
+dateModified: 1719917442
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -74,11 +74,6 @@ plugins:
     edition: standard
     enabled: true
     schemaVersion: 1.0.0
-  seomatic:
-    edition: standard
-    enabled: false
-    licenseKey: LXIUM7N8HL6R4M4ER2B2DXEK
-    schemaVersion: 3.0.12
   vite:
     edition: standard
     enabled: true

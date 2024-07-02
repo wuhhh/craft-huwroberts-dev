@@ -20,7 +20,6 @@
     "craftcms/ckeditor": "^4.0",
     "craftcms/cms": "^5.1.2",
     "mmikkel/cp-field-inspect": "^2.0",
-    "nystudio107/craft-seomatic": "^5.0",
     "nystudio107/craft-vite": "^5.0",
     "vaersaagod/seomate": "^3.0.0-beta.6",
     "verbb/hyper": "^2.0.0-beta.8",
