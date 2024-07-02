@@ -17,8 +17,8 @@
     "sort-packages": true
   },
   "require": {
-    "craftcms/ckeditor": "^4.0",
-    "craftcms/cms": "^5.1.2",
+    "craftcms/ckeditor": "4.0.6",
+    "craftcms/cms": "5.2.4.1",
     "mmikkel/cp-field-inspect": "^2.0",
     "nystudio107/craft-vite": "^5.0",
     "vaersaagod/seomate": "^3.0.0-beta.6",
@@ -33,8 +33,7 @@
       "@pre-craft-update",
       "@post-craft-update"
     ],
-    "pre-craft-update": [
-    ],
+    "pre-craft-update": [],
     "post-craft-update": [
       "@php craft install/check && php craft up --interactive=0 || exit 0",
       "@php craft install/check && php craft clear-caches/all --interactive=0 || exit 0",
@@ -50,5 +49,12 @@
     "pre-install-cmd": "@pre-craft-update",
     "post-update-cmd": "@post-craft-update",
     "post-install-cmd": "@post-craft-update"
-  }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://composer.craftcms.com",
+      "canonical": false
+    }
+  ]
 }
