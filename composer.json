@@ -21,6 +21,7 @@
     "craftcms/cms": "5.2.4.1",
     "mmikkel/cp-field-inspect": "^2.0",
     "nystudio107/craft-vite": "^5.0",
+    "putyourlightson/craft-blitz": "^5.7.1",
     "vaersaagod/seomate": "^3.0.0-beta.6",
     "verbb/knock-knock": "^3.0",
     "vlucas/phpdotenv": "^5.6.0"
