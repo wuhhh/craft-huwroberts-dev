@@ -5,6 +5,7 @@ fieldLayouts:
         elementCondition: null
         elements:
           -
+            dateAdded: '2024-09-02T07:51:17+00:00'
             elementCondition: null
             fieldUid: 4824e26e-358e-48a3-8ff0-7e2517806ba0 # Footer Words
             handle: null

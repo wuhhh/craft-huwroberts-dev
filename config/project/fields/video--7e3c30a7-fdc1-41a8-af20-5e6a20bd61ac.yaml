@@ -12,7 +12,6 @@ settings:
   branchLimit: null
   defaultUploadLocationSource: 'volume:d5f87477-e8cd-4d2e-b3b9-c8c97050dadb' # Assets
   defaultUploadLocationSubpath: 'videos/{slug}'
-  localizeRelations: false
   maintainHierarchy: false
   maxRelations: 1
   minRelations: null
@@ -32,5 +31,5 @@ settings:
   validateRelatedElements: false
   viewMode: large
 translationKeyFormat: null
-translationMethod: site
+translationMethod: none
 type: craft\fields\Assets

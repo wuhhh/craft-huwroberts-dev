@@ -1,4 +1,4 @@
-dateModified: 1725227055
+dateModified: 1725263537
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -11,6 +11,10 @@ fs:
       path: '@webroot/volumes/local'
     type: craft\fs\Local
     url: '@web/volumes/local'
+graphql:
+  publicToken:
+    enabled: false
+    expiryDate: null
 meta:
   __names__:
     2cf30ae5-5268-4df7-8be9-54b1dc6e9a88: 'SEO Keywords' # SEO Keywords
@@ -80,10 +84,3 @@ system:
   retryDuration: null
   schemaVersion: 5.3.0.2
   timeZone: Europe/London
-users:
-  allowPublicRegistration: false
-  defaultGroup: null
-  photoSubpath: null
-  photoVolumeUid: null
-  require2fa: false
-  requireEmailVerification: true

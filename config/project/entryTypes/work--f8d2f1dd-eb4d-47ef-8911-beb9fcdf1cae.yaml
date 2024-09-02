@@ -10,6 +10,7 @@ fieldLayouts:
             autocomplete: false
             autocorrect: true
             class: null
+            dateAdded: '2024-09-02T07:51:17+00:00'
             disabled: false
             elementCondition: null
             id: null
@@ -35,6 +36,7 @@ fieldLayouts:
             warning: null
             width: 100
           -
+            dateAdded: '2024-09-02T07:51:17+00:00'
             elementCondition: null
             fieldUid: ed859a0d-5ce9-4907-931f-8a5f8b76b2b2 # Card Image
             handle: null
@@ -50,6 +52,7 @@ fieldLayouts:
             warning: null
             width: 100
           -
+            dateAdded: '2024-09-02T07:51:17+00:00'
             elementCondition: null
             fieldUid: 4e5f4410-fe03-41d3-a103-8619a3dee7de # Live URL
             handle: null
@@ -65,6 +68,7 @@ fieldLayouts:
             warning: null
             width: 100
           -
+            dateAdded: '2024-09-02T07:51:17+00:00'
             elementCondition: null
             fieldUid: 9df05e4c-ad18-498a-9fba-144f3ed8f8db # Summary
             handle: null
@@ -80,6 +84,7 @@ fieldLayouts:
             warning: null
             width: 100
           -
+            dateAdded: '2024-09-02T07:51:17+00:00'
             elementCondition: null
             fieldUid: 7e3c30a7-fdc1-41a8-af20-5e6a20bd61ac # Video
             handle: null
@@ -95,6 +100,7 @@ fieldLayouts:
             warning: null
             width: 100
           -
+            dateAdded: '2024-09-02T07:51:17+00:00'
             elementCondition: null
             fieldUid: 838bb6bb-df26-4c70-8ee2-08016da47b9a # Backdrop Colour
             handle: null
@@ -116,6 +122,7 @@ fieldLayouts:
         elementCondition: null
         elements:
           -
+            dateAdded: '2024-09-02T07:51:17+00:00'
             elementCondition: null
             fieldUid: f93ff202-7643-4d47-b2cc-126d5595da3f # Work Type
             handle: null
@@ -131,6 +138,7 @@ fieldLayouts:
             warning: null
             width: 100
           -
+            dateAdded: '2024-09-02T07:51:17+00:00'
             elementCondition: null
             fieldUid: 99701ea9-a4da-4fb6-b997-541f0661f9a9 # Agency
             handle: null
@@ -146,6 +154,7 @@ fieldLayouts:
             warning: null
             width: 100
           -
+            dateAdded: '2024-09-02T07:51:17+00:00'
             elementCondition: null
             fieldUid: c5b973a9-a07d-4d67-acb9-a3f0cbcb1450 # Tech Tags
             handle: null
@@ -161,6 +170,7 @@ fieldLayouts:
             warning: null
             width: 100
           -
+            dateAdded: '2024-09-02T07:51:17+00:00'
             elementCondition: null
             fieldUid: 52ecdaa0-e78c-4b23-a67b-b2de241c25ac # Year
             handle: null
@@ -184,8 +194,8 @@ icon: alien
 name: Work
 showSlugField: true
 showStatusField: true
-slugTranslationKeyFormat: ''
+slugTranslationKeyFormat: null
 slugTranslationMethod: none
-titleFormat: ''
-titleTranslationKeyFormat: ''
+titleFormat: null
+titleTranslationKeyFormat: null
 titleTranslationMethod: none
