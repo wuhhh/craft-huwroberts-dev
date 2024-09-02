@@ -231,9 +231,9 @@ return [
 		//'injectScriptEvent' => 'DOMContentLoaded',
 	],
 
-	'stage' => [
+	/* 'stage' => [
 		'cachingEnabled' => true,
-	],
+	], */
 
 	'production' => [
 		'cachingEnabled' => true,
