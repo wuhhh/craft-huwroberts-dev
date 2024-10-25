@@ -32,7 +32,7 @@
     {% if craft.app.config.custom.plausibleEnabled == 1 %}
       <script defer data-domain="huwroberts.dev" src="https://analytics.thenumberstation.net/js/script.js"></script>
     {% endif %}
-
+    {% include "_includes/scripts.twig" %}
   </head>
 
   {% set lang = currentSite.language %}
@@ -49,6 +49,5 @@
     {% block base %}{% endblock %}
 
     <div data-noise class="noise-overlay z-50"></div>
-    {% include "_includes/scripts.twig" %}
   </body>
 </html>
