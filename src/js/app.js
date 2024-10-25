@@ -15,7 +15,7 @@ import intersect from '@alpinejs/intersect';
 import swipePlugin from "alpinejs-swipe";
 import ui from '@alpinejs/ui';
 
-// import canvas from './parts/canvas';
+import canvas from './parts/canvas';
 import core from './parts/core';
 // import emoji from './parts/emoji';
 import follower from './parts/follower';
@@ -26,7 +26,7 @@ Alpine.plugin(intersect);
 Alpine.plugin(swipePlugin);
 Alpine.plugin(ui);
 
-// Alpine.data('canvas', canvas);
+Alpine.data('canvas', canvas);
 Alpine.data('core', core);
 Alpine.data('follower', follower);
 // Alpine.data('emoji', emoji);
