@@ -118,6 +118,9 @@ export default ("canvas",
     /**
      * Load textures
      */
+    // await an artifical delay to simulate loading
+    await new Promise((resolve) => setTimeout(resolve, 10000));
+
     const textures = await loadTextures(
       [
         {
