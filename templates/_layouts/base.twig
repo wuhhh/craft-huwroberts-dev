@@ -1,9 +1,10 @@
-{% do craft.app.elements.eagerLoadElements(
-    className(entry),
-    [entry],
-    ['seoImage', 'seoTwitterImage']
-) %}
-
+{% if entry is defined %}
+  {% do craft.app.elements.eagerLoadElements(
+      className(entry),
+      [entry],
+      ['seoImage', 'seoTwitterImage']
+  ) %}
+{% endif %}
 <!DOCTYPE html>
 <html
 	class="no-js scroll-smooth"
