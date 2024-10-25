@@ -4,8 +4,8 @@
 
   {% set heading = entry.heading ?? null %}
   {% set richText = entry.richText ?? null %}
-  {% set tags = entry.techTags.all() ?? [] %}
-  {% set image = entry.image.one() ?? null %}
+  {% set tags = entry.techTags.eagerly().all() ?? [] %}
+  {% set image = entry.image.eagerly().one() ?? null %}
 
   {% set panelContent %}
       <article class="grid grid-cols-12 pt-32 w-full max-w-[736px] ml-auto lg:pt-16 lg:w-4/5 lg:max-w-none xl:w-auto xl:ml-0 xl:gap-x-16">

@@ -1,4 +1,4 @@
-{% set type = type.one() ?? null %}
+{% set type = type.workType.eagerly().one() ?? null %}
 {% set isAgency = false %}
 {% set agencyTitle = null %}
 {% set agencyUrl = null %}

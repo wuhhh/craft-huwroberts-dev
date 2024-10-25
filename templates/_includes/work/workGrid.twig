@@ -1,5 +1,5 @@
-{% set work = craft.entries.section('work') %}
-{% set workEntries = work.all() ?? [] %}
+{% set work = craft.entries.section('work').with(['cardImage']).all() %}
+{% set workEntries = work ?? [] %}
 
 {% if workEntries|length %}
 

@@ -1,3 +1,9 @@
+{% do craft.app.elements.eagerLoadElements(
+    className(entry),
+    [entry],
+    ['seoImage', 'seoTwitterImage']
+) %}
+
 <!DOCTYPE html>
 <html
 	class="no-js scroll-smooth"

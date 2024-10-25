@@ -2,13 +2,13 @@
 
 {% if entry %}
 
-  {% set cardImage = entry.cardImage.one() ?? null %}
+  {% set cardImage = entry.cardImage.eagerly().one() ?? null %}
   {% set liveUrl = entry.liveUrl ?? null %}
   {% set summary = entry.summary ?? null %}
-  {% set video = entry.video.one() ?? null %}
+  {% set video = entry.video.eagerly().one() ?? null %}
   {% set backdropColour = entry.backdropColour.value|default("bg-zinc-100") %}
   {% set role = entry.role ?? null %}
-  {% set tags = entry.techTags.all() ?? [] %}
+  {% set tags = entry.techTags.eagerly().all() ?? [] %}
 
   {% set prevEntry = craft.entries.section('work').prevSiblingOf(entry).one() ?? null %}
   {% set nextEntry = craft.entries.section('work').nextSiblingOf(entry).one() ?? null %}
