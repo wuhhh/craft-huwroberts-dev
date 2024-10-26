@@ -1,0 +1,10 @@
+isPublic: true
+name: 'Public Schema'
+scope:
+  - 'sites.25a33ae6-3901-458a-8998-5f63d864a3f3:read' # English
+  - 'sites.5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c:read' # Cymraeg
+  - 'sections.abca85a2-35fd-471e-88e4-03f192b781dd:read' # Who
+  - 'sections.5c24cd7c-3d48-44f0-831a-3abc4d6b54ff:read' # Work
+  - 'volumes.d5f87477-e8cd-4d2e-b3b9-c8c97050dadb:read' # Assets
+  - 'categorygroups.279cfc2e-8324-4a53-aa20-56b80bfebaa7:read' # Work Type
+  - 'taggroups.763f00c3-3720-4070-ab7e-910babff9419:read' # Tech

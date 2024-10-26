@@ -17,9 +17,11 @@ import ui from '@alpinejs/ui';
 
 import canvas from './parts/canvas';
 import core from './parts/core';
-// import emoji from './parts/emoji';
 import follower from './parts/follower';
 import mediaControls from './parts/mediaControls';
+
+import global from './stores/global';
+import work from './stores/work';
 
 Alpine.plugin(focus);
 Alpine.plugin(intersect);
@@ -29,19 +31,10 @@ Alpine.plugin(ui);
 Alpine.data('canvas', canvas);
 Alpine.data('core', core);
 Alpine.data('follower', follower);
-// Alpine.data('emoji', emoji);
 Alpine.data('mediaControls', mediaControls);
 
-Alpine.store('global', {
-	mouseCoords: [0, 0],
-  slideoverOpen: false,
-
-  init() {
-    window.addEventListener('mousemove', (e) => {
-      this.mouseCoords = [e.clientX, e.clientY]
-    });
-  }
-})
+Alpine.store('global', global());
+Alpine.store('work', work());
 
 Alpine.start();
 

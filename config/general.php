@@ -28,7 +28,7 @@ return [
     'defaultTokenDuration' => 'P1W',
     'defaultWeekStartDay' => 0,
     'devMode' => (bool) App::env('DEV_MODE'),
-    'enableGql' => false,
+    'enableGql' => true,
     'enableTemplateCaching' => (bool) App::env('ENABLE_TEMPLATE_CACHING'),
     'imageDriver' => App::env('IMAGE_DRIVER'),
     'isSystemLive' => (bool) App::env('IS_SYSTEM_LIVE'),

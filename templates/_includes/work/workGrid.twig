@@ -62,9 +62,11 @@
           </div>
 
           <button
-            x-data="{ open() { $dispatch('open-slideover', { id: {{ entry.id }} }) } }"
+            {# x-data="{ open() { $dispatch('open-slideover', { id: {{ entry.id }} }) } }"
             @click="open()"
-            @keydown.space.prevent="open()"
+            @keydown.space.prevent="open()" #}
+            @click="$store.work.setWork({{ entry.id }})"
+            @mouseenter="$store.work.fetchWork({{ entry.id }})"
             data-follower="more"
             class="box-link before:focus-visible:outline before:focus-visible:outline-2 before:focus-visible:outline-offset-2 before:focus-visible:outline-blue-700"
             aria-label="{{ '{0} project details, opens modal'|t([entry.title]) }}"
