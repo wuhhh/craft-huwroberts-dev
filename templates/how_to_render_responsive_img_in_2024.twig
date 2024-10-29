@@ -1,0 +1,37 @@
+{% extends "_layouts/base.twig" %}
+
+{% block bodyTag %}
+	{{ parent()|attr({
+    class: 'bg-gray-200 h-screen'
+  }) }}
+{% endblock %}
+
+{% set asset = craft.assets.id(256).one() %}
+
+{% block base %}
+	<div class="w-full h-full flex items-center justify-center text-center">
+    {{ asset.getImg(
+      { width: 480, height: 288, format: "avif" },
+      ["480w", "960w", "1440w"]
+    )|attr({ sizes: "(max-width: 480px) 100vw, (min-width: 1280px) 700px, 480px" }) }}
+
+    {% do asset.setTransform({ width: 480, height: 288, format: "avif" }) %}
+    {{ tag('img', {
+      src: asset.url,
+      width: asset.width,
+      height: asset.height,
+      srcset: asset.getSrcset(["480w", "960w", "1440w"]),
+      alt: asset.title,
+    }) }}
+
+
+		{# <img
+      src="https://huwrobertsdev.ddev.site/volumes/local/asset-transforms/images/clearbank/_480x288_crop_center-center_none/256/card-clearbank@4x.webp"
+      sizes="(max-width: 480px) 100vw, (min-width: 1280px) 700px, 480px"
+      srcset="https://huwrobertsdev.ddev.site/volumes/local/asset-transforms/images/clearbank/_480x288_crop_center-center_none/256/card-clearbank@4x.webp 480w,
+        https://huwrobertsdev.ddev.site/volumes/local/asset-transforms/images/clearbank/_960x576_crop_center-center_none/256/card-clearbank@4x.webp 960w,
+        https://huwrobertsdev.ddev.site/volumes/local/asset-transforms/images/clearbank/_1440x864_crop_center-center_none/256/card-clearbank@4x.webp 1440w"
+      alt="Description of the image"
+    > #}
+	</div>
+{% endblock %}

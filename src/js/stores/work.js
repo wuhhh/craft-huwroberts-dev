@@ -1,6 +1,7 @@
 import Alpine from 'alpinejs';
 
 export default () => ({
+  language: 'en-GB',
   loading: false,
   endpoint: '/api',
   entries: [],
@@ -15,26 +16,59 @@ export default () => ({
     if(this.getEntryById(id)) return;
 
     this.loading = setLoading;
+    this.language = document.documentElement.lang;
 
     const query = `
-      query work($id:[QueryArgument]) {
-        entry(id:$id) {
-          id
-          slug
-          title
+      query work($id: [QueryArgument], $language: [String]) {
+        entry(id: $id, language: $language) {
+          ... on work_Entry {
+            id
+            slug
+            title
+            liveUrl
+            summary
+            backdropColour
+            cardImage @transform(width: 480, height: 288, format: "webp") {
+              id
+              url
+              width
+              height
+              srcset(sizes: ["600w", "900w", "1200w"])
+            }
+            video {
+              url
+              mimeType
+            }
+            next(section: "work") {
+              id
+              slug
+              title
+            }
+            prev(section: "work") {
+              id
+              slug
+              title
+            }
+          }
         }
       }
     `;
 
     try {
       // synthetic delay
-      await new Promise((resolve) => setTimeout(resolve, 2300));
+      // await new Promise((resolve) => setTimeout(resolve, 2300));
       const response = await fetch(this.endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ query, variables: { id } })
+        body: JSON.stringify({
+          query,
+          variables: {
+            id,
+            language: this.language,
+          }
+        })
       });
 
       const { data } = await response.json();
@@ -78,6 +112,56 @@ export default () => ({
     else {
       this.selectedId = id;
       this.selected = this.getEntryById(id);
+    }
+  },
+
+  /**
+   * hasPrev
+   */
+  hasPrev() {
+    return this.selected?.prev !== null;
+  },
+
+  /**
+   * hasNext
+   */
+  hasNext() {
+    return this.selected?.next !== null;
+  },
+
+  /**
+   * next
+   */
+  async next() {
+    if(this.hasNext()) {
+      this.setWork(this.selected.next.id);
+    }
+  },
+
+  /**
+   * prev
+   */
+  async prev() {
+    if(this.hasPrev()) {
+      this.setWork(this.selected.prev.id);
+    }
+  },
+
+  /**
+   * Fetch prev
+   */
+  async fetchPrev() {
+    if(this.hasPrev()) {
+      this.fetchWork(this.selected.prev.id);
+    }
+  },
+
+  /**
+   * Fetch next
+   */
+  async fetchNext() {
+    if(this.hasNext()) {
+      this.fetchWork(this.selected.next.id);
     }
   },
 });
