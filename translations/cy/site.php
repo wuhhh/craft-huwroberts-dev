@@ -1,23 +1,3 @@
 <?php
-	return [
-		"About" => "Am",
-		"All work" => "Holl waith",
-		"Close modal" => "Cau modal",
-		"Contact" => "Cyswllt",
-		"home" => "cartref",
-		"Main menu" => "Prif ddewislen",
-		"More" => "Mwy",
-		"Next" => "Nesaf",
-		"Previous" => "Blaenorol",
-		"Say hello!" => "Dweud helo!",
-		"Skip to content" => "Neidio i gynnwys",
-		"This website is open source" => "Mae'r wefan hon yn ffynhonnell agored",
-		"Type" => "Math",
-		"View details, opens dialog" => "Gweld manylion, yn agor deialog",
-		"View Live"	=> "Gweld Yn Fyw",
-		"View live site, opens in new tab" => "Gweld safle byw, yn agor mewn tab newydd",
-		"Who?" => "Pwy?",
-		"Work" => "Gwaith",
-		"{0} project details" => "Manylion prosiect {0}",
-		"{0} project details, opens modal" => "Manylion prosiect {0}, yn agor modal",
-	];
+	$cy = Craft::$app->config->getConfigFromFile('custom');
+	return $cy;

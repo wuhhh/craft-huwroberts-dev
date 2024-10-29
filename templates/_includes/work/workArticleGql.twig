@@ -49,7 +49,7 @@
             x-dialog:title
             x-text="$store.work.selected?.title"
             class="font-medium heading3 md:heading1 leading-none"
-            {# aria-label="{{ '{0} project details'|t([entry.title]) }}" #}
+            :aria-label="t('{0} project details', [$store.work.selected?.title])"
           ></h2>
 
           <template x-if="$store.work.selected?.liveUrl">
