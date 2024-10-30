@@ -5,7 +5,8 @@
  */
 
 export default ("mediaControls",
-(element) => ({
+(config = {}) => ({
+  config: {},
   media: null,
   canPlay: false,
   currentTime: 0,
@@ -16,8 +17,8 @@ export default ("mediaControls",
 
   // Initialise method outside main init so
   // media can be lazy loaded
-  initialiseMediaControls(element) {
-    this.media = element;
+  initialiseMediaControls(el) {
+    this.media = el;
     this.media.addEventListener("play", () => this.handlePlay());
     this.media.addEventListener("pause", () => this.handlePause());
     this.media.addEventListener("durationchange", () =>
@@ -26,6 +27,26 @@ export default ("mediaControls",
     this.media.addEventListener("canplay", () => this.handleCanPlay());
     this.media.addEventListener("timeupdate", () => this.handleTimeUpdate());
     this.media.addEventListener("ended", () => this.handleEnded());
+  },
+
+  init() {
+    this.$nextTick(() => {
+      this.config = config;
+
+      if(this.config.lazy === false && this.config.el) {
+
+        if (this.config.el instanceof Element) {
+          this.initialiseMediaControls(this.config.el)
+        }
+        else {
+          const el = this.$el.querySelector(this.config.el);
+
+          if (el) {
+            this.initialiseMediaControls(el);
+          }
+        }
+      }
+    })
   },
 
   play() {

@@ -1,81 +1,116 @@
-<template x-if="$store.global.slideoverTemplate === 'work'">
+<template
+  x-if="$store.global.slideoverTemplate === 'work'"
+  x-data="{
+    {# map store to local variables #}
+    entry: $store.work.selected,
+    hasPrev: () => $store.work.hasPrev(),
+    hasNext: () => $store.work.hasNext(),
+    prev: () => $store.work.prev(),
+    next: () => $store.work.next(),
+    fetchPrev: () => $store.work.fetchPrev(),
+    fetchNext: () => $store.work.fetchNext(),
+
+    init() {
+      this.$watch('$store.work.selected', value => this.entry = value);
+    },
+  }"
+  :key="entry.id"
+>
+
   <article class="grid grid-cols-12 pt-32 w-full max-w-[736px] ml-auto lg:pt-16 lg:max-w-none lg:ml-0 lg:gap-x-10">
     <div class="pointer-events-auto bg-zinc-50 col-span-full pb-16 md:pb-[72px] lg:col-span-7 lg:col-start-5 2xl:pb-24">
       <div class="space-y-8 sm:space-y-12">
 
         {# Nav #}
+
         <div class="relative z-10 sm-mono leading-none flex items-center gap-x-4">
+
           {# Back to work / close slideover #}
+
           <button
             @click="close()"
             class="flex items-baseline gap-x-2 hover:bg-coral-red/20 flex-shrink-0"
           >
             {{ svg('@webroot/dist/images/icon--arrow-left.svg', true, true)|attr({ class: 'w-auto h-[9px] flex-shrink-0' }) }}
-            <span>{{ "All work"|t }}</span>
+            <span x-text="t('All work')"></span>
           </button>
 
           {# Adjacent entries #}
+
           <div class=" w-12 h-px bg-black/10 mt-0.5 sm:block"></div>
+
           <section class="flex items-center gap-x-4">
+
             <button
               class="pointer-events-auto hover:bg-coral-red/20"
-              :class="{ 'pointer-events-none opacity-30 !cursor-default': !$store.work.hasPrev() }"
-              :tabindex="$store.work.hasPrev() ? 0 : -1"
+              :class="{ 'pointer-events-none opacity-30 !cursor-default': !hasPrev() }"
+              :tabindex="hasPrev() ? 0 : -1"
               aria-label="Previous project"
-              @mouseenter="$store.work.fetchPrev()"
-              @click="$store.work.prev()"
-            >
-              {{ "Previous"|t }}
-            </button>
+              @mouseenter="fetchPrev()"
+              @click="prev()"
+              x-text="t('Previous')"
+            ></button>
 
             <span class="w-px h-5 bg-black/10 mt-px -skew-x-12"></span>
 
             <button
               class="pointer-events-auto hover:bg-coral-red/20"
-              :class="{ 'pointer-events-none opacity-30 !cursor-default': !$store.work.hasNext() }"
-              :tabindex="$store.work.hasNext() ? 0 : -1"
+              :class="{ 'pointer-events-none opacity-30 !cursor-default': !hasNext() }"
+              :tabindex="hasNext() ? 0 : -1"
               aria-label="Next project"
-              @mouseenter="$store.work.fetchNext()"
-              @click="$store.work.next()"
-            >
-              {{ "Next"|t }}
-            </button>
+              @mouseenter="fetchNext()"
+              @click="next()"
+              x-text="t('Next')"
+            ></button>
+
           </section>
+
         </div>
 
         <div class="relative z-10 flex flex-wrap items-baseline gap-4">
+
           {# Title #}
+
           <h2
             x-dialog:title
-            x-text="$store.work.selected?.title"
+            x-text="entry.title"
             class="font-medium heading3 md:heading1 leading-none"
-            :aria-label="t('{0} project details', [$store.work.selected?.title])"
+            :aria-label="t('{0} project details', [entry.title])"
           ></h2>
 
-          <template x-if="$store.work.selected?.liveUrl">
-            <a
-              class="bg-gray-200 rounded-full p-1 pr-3 flex gap-x-[9px] items-center transition-colors duration-200 hover:bg-transparent"
-              :href="$store.work.selected?.liveUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="{{ "View live site, opens in new tab"|t }}"
-            >
-              {{ svg('@webroot/dist/images/icon--arrow-diagonal-circ.svg', true, true)|attr({ class: "w-[23px]" }) }}
-              <span class="xs-sans md:sm-sans !font-medium">{{ "View Live"|t }}</span>
-            </a>
+          {# Live url #}
+
+          <template x-if="entry.liveUrl">
+            <span class="-translate-y-[2px]">
+              <a
+                class="bg-gray-200 rounded-full p-1 pr-3 flex gap-x-[9px] items-center transition-colors duration-200 hover:bg-transparent"
+                :href="entry.liveUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="{{ "View live site, opens in new tab"|t }}"
+              >
+                {{ svg('@webroot/dist/images/icon--arrow-diagonal-circ.svg', true, true)|attr({ class: "w-[23px]" }) }}
+                <span class="xs-sans md:sm-sans !font-medium" x-text="t('View Live')"></span>
+              </a>
+            </span>
           </template>
         </div>
 
-        <template x-if="$store.work.selected?.summary">
+        {# Media #}
+
+        {% include "_includes/work/workArticleMediaGql" only %}
+
+        {# Summary #}
+
+        <template x-if="entry.summary">
           <p
-            x-text="$store.work.selected?.summary"
+            x-text="entry.summary"
             class="relative z-10 w-full max-w-[752px]"
           ></p>
         </template>
 
-
       </div>
     </div>
   </article>
-</template>
 
+</template>

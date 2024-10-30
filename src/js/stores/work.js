@@ -33,7 +33,7 @@ export default () => ({
               url
               width
               height
-              srcset(sizes: ["600w", "900w", "1200w"])
+              srcset(sizes: ["600w", "800w", "1250w", "1900w"])
             }
             video {
               url
@@ -132,8 +132,8 @@ export default () => ({
   /**
    * next
    */
-  async next() {
-    if(this.hasNext()) {
+  next() {
+    if(this.selected && this.hasNext()) {
       this.setWork(this.selected.next.id);
     }
   },
@@ -141,8 +141,8 @@ export default () => ({
   /**
    * prev
    */
-  async prev() {
-    if(this.hasPrev()) {
+  prev() {
+    if(this.selected && this.hasPrev()) {
       this.setWork(this.selected.prev.id);
     }
   },
@@ -150,8 +150,8 @@ export default () => ({
   /**
    * Fetch prev
    */
-  async fetchPrev() {
-    if(this.hasPrev()) {
+  fetchPrev() {
+    if(this.selected && this.hasPrev()) {
       this.fetchWork(this.selected.prev.id);
     }
   },
@@ -159,8 +159,8 @@ export default () => ({
   /**
    * Fetch next
    */
-  async fetchNext() {
-    if(this.hasNext()) {
+  fetchNext() {
+    if(this.selected && this.hasNext()) {
       this.fetchWork(this.selected.next.id);
     }
   },
