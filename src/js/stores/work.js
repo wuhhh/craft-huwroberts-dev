@@ -23,11 +23,21 @@ export default () => ({
         entry(id: $id, language: $language) {
           ... on work_Entry {
             id
-            slug
-            title
-            liveUrl
-            summary
             backdropColour
+            liveUrl
+            slug
+            summary
+            title
+            agency {
+              id
+              title
+            }
+            year
+            workType {
+              id
+              slug
+              title
+            }
             cardImage @transform(width: 480, height: 288, format: "webp") {
               id
               url
@@ -38,6 +48,10 @@ export default () => ({
             video {
               url
               mimeType
+            }
+            techTags {
+              id
+              title
             }
             next(section: "work") {
               id
@@ -112,6 +126,8 @@ export default () => ({
     else {
       this.selectedId = id;
       this.selected = this.getEntryById(id);
+      console.log('setWork', this.selected);
+
     }
   },
 
