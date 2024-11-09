@@ -1,0 +1,21 @@
+<div
+  x-data="{
+    {# map store to local variables #}
+    entry: $store.work.selected,
+    tags: entry.techTags,
+
+    init() {
+      this.$watch('$store.work.selected', value => this.entry = value);
+    },
+  }"
+>
+  <div class="sr-only">{{ "Tags"|t }}:</div>
+  <ul class="flex flex-wrap gap-3 md:gap-4">
+    <template x-for="tag in tags" :key="tag.id">
+      <li class="font-sans font-medium h-[45px] text-base bg-black text-white rounded-full flex items-center justify-center px-5 whitespace-nowrap flex-shrink-0 md:font-bold md:px-6 md:text-[18px] md:h-14">
+        <span class="relative z-10" x-text="tag.title"></span>
+      </li>
+    </template>
+  </ul>
+</div>
+
