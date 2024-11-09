@@ -17,6 +17,7 @@ return [
 			"Previous" => "Blaenorol",
 			"Say hello!" => "Dweud helo!",
 			"Skip to content" => "Neidio i gynnwys",
+			"Tags" => "Tagiau",
 			"This website is open source" => "Mae'r wefan hon yn ffynhonnell agored",
 			"Type" => "Math",
 			"View details, opens dialog" => "Gweld manylion, yn agor deialog",
