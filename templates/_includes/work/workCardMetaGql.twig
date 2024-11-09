@@ -1,0 +1,32 @@
+<template
+  x-if="type && year && ((isAgency && agencyTitle) || !isAgency)"
+  x-data="{
+    {# map store to local variables #}
+    entry: $store.work.selected,
+    get type() {
+      return entry.workType.length ? entry.workType[0] : null
+    },
+    get isAgency() {
+      return entry.workType.length && entry.workType[0].slug === 'agency'
+    },
+    get agencyTitle() {
+      return entry.agency.length ? entry.agency[0].title : null
+    },
+    agencyUrl: null,
+    year: entry.year,
+
+    init() {
+      this.$watch('$store.work.selected', value => this.entry = value);
+    },
+  }"
+>
+  <div class="flex flex-col gap-y-2 {{ class }}">
+    <div>
+      <span>{{ "Type"|t }}: <span x-text="type.title"></span></span>
+      <template x-if="isAgency">
+        <span x-text="`(${agencyTitle})`"></span>
+      </template>
+    </div>
+    <div x-text="year"></div>
+  </div>
+</template>
