@@ -109,6 +109,18 @@
           ></p>
         </template>
 
+        {# Tags #}
+        <template x-if="entry.techTags.length">
+          <div>
+            {% include "_includes/tagsGql" only %}
+          </div>
+        </template>
+
+        {# Meta #}
+        {% include "_includes/work/workCardMetaGql" with {
+          class: "relative z-10 sm-mono leading-tight",
+        } only %}
+
       </div>
     </div>
   </article>
