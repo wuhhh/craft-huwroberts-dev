@@ -1,4 +1,4 @@
-{% set type = type.workType.eagerly().one() ?? null %}
+{% set type = type.eagerly().one() ?? null %}
 {% set isAgency = false %}
 {% set agencyTitle = null %}
 {% set agencyUrl = null %}
@@ -15,7 +15,6 @@
 {% endif %}
 
 {% set year = year ?? null %}
-
 
 {% if type and year and ((isAgency and agencyTitle) or not isAgency) %}
 
