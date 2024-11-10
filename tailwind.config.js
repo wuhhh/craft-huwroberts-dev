@@ -36,6 +36,7 @@ module.exports = {
     },
     extend: {
       animation: {
+        "spin-slowish": "spin 2s linear infinite",
         "spin-slow": "spin 3s linear infinite",
         "spin-very-slow": "spin 20s linear infinite",
       },

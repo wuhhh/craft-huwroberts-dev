@@ -3,6 +3,7 @@
   x-data="{
     {# map store to local variables #}
     entry: $store.work.selected,
+    loading: () => $store.work.loading,
     hasPrev: () => $store.work.hasPrev(),
     hasNext: () => $store.work.hasNext(),
     prev: () => $store.work.prev(),
@@ -17,7 +18,10 @@
   :key="entry.id"
 >
 
-  <article class="grid grid-cols-12 pt-32 w-full max-w-[736px] ml-auto lg:pt-16 lg:max-w-none lg:ml-0 lg:gap-x-10">
+  <article
+    class="group/l grid grid-cols-12 pt-32 w-full max-w-[736px] ml-auto lg:pt-16 lg:max-w-none lg:ml-0 lg:gap-x-10"
+    :data-l="loading"
+  >
     <div class="pointer-events-auto bg-zinc-50 col-span-full pb-16 md:pb-[72px] lg:col-span-7 lg:col-start-5 2xl:pb-24">
       <div class="space-y-8 sm:space-y-12">
 
@@ -63,6 +67,11 @@
               x-text="t('Next')"
             ></button>
 
+            <div class="hidden group-data-[l]/l:block size-4 relative animate-spin-slowish">
+              <span class="absolute inset-0 bg-coral-red"></span>
+              <span class="absolute inset-0 rotate-45 bg-coral-red"></span>
+            </div>
+
           </section>
 
         </div>
@@ -74,7 +83,7 @@
           <h2
             x-dialog:title
             x-text="entry.title"
-            class="font-medium heading3 md:heading1 leading-none"
+            class="relative font-medium heading3 md:heading1 leading-none"
             :aria-label="t('{0} project details', [entry.title])"
           ></h2>
 
