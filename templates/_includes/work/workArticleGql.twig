@@ -3,13 +3,15 @@
   x-data="{
     {# map store to local variables #}
     entry: $store.work.selected,
-    loading: () => $store.work.loading,
+    loadingIndicator: () => $store.work.loadingIndicator,
     hasPrev: () => $store.work.hasPrev(),
     hasNext: () => $store.work.hasNext(),
     prev: () => $store.work.prev(),
     next: () => $store.work.next(),
     fetchPrev: () => $store.work.fetchPrev(),
     fetchNext: () => $store.work.fetchNext(),
+    setLoading: (state) => $store.work.setLoading(state),
+    toggleLoading: () => $store.work.toggleLoading(),
 
     init() {
       this.$watch('$store.work.selected', value => this.entry = value);
@@ -19,8 +21,8 @@
 >
 
   <article
-    class="group/l grid grid-cols-12 pt-32 w-full max-w-[736px] ml-auto lg:pt-16 lg:max-w-none lg:ml-0 lg:gap-x-10"
-    :data-l="loading"
+    class="work-article group/l grid grid-cols-12 pt-32 w-full max-w-[736px] ml-auto lg:pt-16 lg:max-w-none lg:ml-0 lg:gap-x-10"
+    :data-l="loadingIndicator"
   >
     <div class="pointer-events-auto bg-zinc-50 col-span-full pb-16 md:pb-[72px] lg:col-span-7 lg:col-start-5 2xl:pb-24">
       <div class="space-y-8 sm:space-y-12">
@@ -43,7 +45,7 @@
 
           <div class=" w-12 h-px bg-black/10 mt-0.5 sm:block"></div>
 
-          <section class="flex items-center gap-x-4">
+          <section class="flex items-center gap-x-4 w-full">
 
             <button
               class="pointer-events-auto hover:bg-coral-red/20"
@@ -67,10 +69,13 @@
               x-text="t('Next')"
             ></button>
 
-            <div class="hidden group-data-[l]/l:block size-4 relative animate-spin-slowish">
+            <div class="work-article__loading-spinner hidden size-4 relative animate-spin-slowish">
               <span class="absolute inset-0 bg-coral-red"></span>
               <span class="absolute inset-0 rotate-45 bg-coral-red"></span>
             </div>
+
+            {# ONLY FOR TESTING #}
+            {# <button @click="toggleLoading" class="ml-auto uppercase text-[11px] tracking-wide px-2 py-1 border">Toggle Loading</button> #}
 
           </section>
 
@@ -83,7 +88,8 @@
           <h2
             x-dialog:title
             x-text="entry.title"
-            class="relative font-medium heading3 md:heading1 leading-none"
+            data-loading-indicator
+            class="work-article__title relative font-medium heading3 md:heading1 leading-none"
             :aria-label="t('{0} project details', [entry.title])"
           ></h2>
 
@@ -92,7 +98,8 @@
           <template x-if="entry.liveUrl">
             <span class="-translate-y-[2px]">
               <a
-                class="bg-gray-200 rounded-full p-1 pr-3 flex gap-x-[9px] items-center transition-colors duration-200 hover:bg-transparent"
+                data-loading-indicator
+                class="work-article__live-url bg-gray-200 rounded-full p-1 pr-3 flex gap-x-[9px] items-center transition-colors duration-200 hover:bg-transparent"
                 :href="entry.liveUrl"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -114,7 +121,8 @@
         <template x-if="entry.summary">
           <p
             x-text="entry.summary"
-            class="relative z-10 w-full max-w-[752px]"
+            data-loading-indicator
+            class="work-article__summary relative z-10 w-full max-w-[752px]"
           ></p>
         </template>
 
@@ -127,7 +135,7 @@
 
         {# Meta #}
         {% include "_includes/work/workCardMetaGql" with {
-          class: "relative z-10 sm-mono leading-tight",
+          class: "work-article__meta relative z-10 sm-mono leading-tight",
         } only %}
 
       </div>

@@ -3,6 +3,9 @@ import Alpine from 'alpinejs';
 export default () => ({
   language: 'en-GB',
   loading: false,
+  loadingIndicator: false,
+  loadingIndicatorDelay: 250,
+  loadingIndicatorTimeout: null,
   endpoint: '/api',
   entries: [],
   selected : null,
@@ -15,7 +18,14 @@ export default () => ({
 
     if(this.getEntryById(id)) return;
 
-    this.loading = setLoading;
+    this.loading = setLoading === true ? true : this.loading;
+
+    if(this.loading) {
+      this.loadingIndicatorTimeout = setTimeout(() => {
+        this.loadingIndicator = true;
+      }, this.loadingIndicatorDelay);
+    }
+
     this.language = document.documentElement.lang;
 
     const query = `
@@ -100,6 +110,11 @@ export default () => ({
     }
     finally {
       this.loading = setLoading ? false : this.loading;
+      this.loadingIndicator = false;
+
+      if(this.loadingIndicatorTimeout) {
+        clearTimeout(this.loadingIndicatorTimeout);
+      }
     }
   },
 
@@ -179,5 +194,33 @@ export default () => ({
     if(this.selected && this.hasNext()) {
       this.fetchWork(this.selected.next.id);
     }
+  },
+
+  /**
+   * Set loading
+   */
+  setLoading(value) {
+    if(value) {
+      this.loadingStart = Date.now();
+    }
+    else {
+      this.loadingEnd = Date.now();
+    }
+    this.loading = value;
+  },
+
+  /**
+   * Toggle loading
+   */
+  toggleLoading() {
+    this.setLoading(!this.loading);
+    this.loadingIndicator = this.loading;
+  },
+
+  /**
+   * loadingDelayed
+   */
+  loadingDelayed() {
+    return this.loading && (Date.now() - this.loadingStart) > this.loadingIndicatorDelay;
   },
 });

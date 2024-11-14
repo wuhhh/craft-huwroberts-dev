@@ -20,13 +20,17 @@
     },
   }"
 >
-  <div class="flex flex-col gap-y-2 {{ class }}">
+  <div data-loading-indicator class="flex flex-col gap-y-2 {{ class }}">
     <div>
-      <span>{{ "Type"|t }}: <span x-text="type.title"></span></span>
-      <template x-if="isAgency">
-        <span x-text="`(${agencyTitle})`"></span>
-      </template>
+      <span data-loading-indicator class="work-article__meta-type inline-block">
+        <span>{{ "Type"|t }}: <span x-text="type.title"></span></span>
+        <template x-if="isAgency">
+          <span x-text="`(${agencyTitle})`"></span>
+        </template>
+      </span>
     </div>
-    <div x-text="year"></div>
+    <div>
+      <span data-loading-indicator class="work-article__meta-year inline-block" x-text="year"></span>
+    </div>
   </div>
 </template>

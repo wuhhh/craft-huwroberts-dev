@@ -1,0 +1,38 @@
+.work-article[data-l] {
+  [data-loading-indicator] {
+    @apply relative overflow-hidden before:absolute before:inset-x-0 before:bg-zinc-100 after:absolute after:-skew-x-12 after:bg-gradient-to-r after:from-zinc-100 after:via-white after:to-zinc-100 after:animate-travel-x;
+  }
+
+  .work-article__loading-spinner {
+    @apply block;
+  }
+
+  .work-article__title {
+    @apply text-black/0 before:inset-x-0 before:inset-y-2 after:inset-x-0 after:inset-y-2;
+  }
+
+  .work-article__live-url {
+    @apply before:inset-0 after:inset-0;
+  }
+
+  .work-article__media-backdrop {
+    @apply bg-zinc-100;
+  }
+
+  .work-article__media-loading {
+    @apply absolute inset-0 bg-zinc-100 after:inset-0 after:animate-travel-x-slow;
+  }
+
+  .work-article__summary {
+    @apply text-black/0 before:inset-x-0 before:inset-y-1 after:inset-x-0 after:inset-y-1 after:animate-travel-x-slow;
+  }
+
+  .work-article__tag {
+    @apply bg-white text-black/0 before:inset-0 after:inset-0 after:animate-travel-x-slower;
+  }
+
+  .work-article__meta-type,
+  .work-article__meta-year {
+    @apply text-black/0 before:inset-0 after:inset-0;
+  }
+}

@@ -39,6 +39,9 @@ module.exports = {
         "spin-slowish": "spin 2s linear infinite",
         "spin-slow": "spin 3s linear infinite",
         "spin-very-slow": "spin 20s linear infinite",
+        "travel-x": "travel-x 0.5s linear infinite",
+        "travel-x-slow": "travel-x 1s linear infinite",
+        "travel-x-slower": "travel-x 2s linear infinite",
       },
       colors: {
         "coral-red": {
@@ -49,6 +52,12 @@ module.exports = {
           100: '#E0DDF3',
           400: '#3F26DD',
           DEFAULT: '#3F26DD'
+        },
+      },
+      keyframes: {
+        "travel-x": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
         },
       },
       minHeight: {
