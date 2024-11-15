@@ -1,3 +1,3 @@
 <?php
-	$cy = Craft::$app->config->getConfigFromFile('custom');
+	$cy = Craft::$app->getConfig()->getCustom()->translations['cy'];
 	return $cy;
