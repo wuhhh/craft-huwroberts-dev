@@ -18,6 +18,7 @@ import core from './parts/core';
 import follower from './parts/follower';
 import mediaControls from './parts/mediaControls';
 
+import about from './stores/about';
 import global from './stores/global';
 import work from './stores/work';
 
@@ -31,6 +32,7 @@ Alpine.data('core', core);
 Alpine.data('follower', follower);
 Alpine.data('mediaControls', mediaControls);
 
+Alpine.store('about', about());
 Alpine.store('global', global());
 Alpine.store('work', work());
 

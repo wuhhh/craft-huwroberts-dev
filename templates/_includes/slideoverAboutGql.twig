@@ -1,0 +1,81 @@
+<template
+  x-if="$store.about.entry"
+  x-data="{
+    {# map state #}
+    entry: $store.about.entry,
+
+    init() {
+      this.$watch('$store.about.entry', (entry) => {
+        this.entry = entry
+      })
+    },
+  }"
+>
+  <article class="grid grid-cols-12 pt-32 w-full max-w-[736px] ml-auto lg:pt-16 lg:w-4/5 lg:max-w-none xl:w-auto xl:ml-0 xl:gap-x-16">
+    <div class="pointer-events-auto bg-zinc-50 col-span-full pb-16 md:pb-[72px] 2xl:pb-24 xl:col-span-7 xl:col-start-5 xl:grid xl:grid-cols-subgrid">
+
+      <div class="col-span-full md:col-span-4 xl:h-full xl:col-span-6">
+        <div class="space-y-8 sm:space-y-12">
+          <div class="relative z-10 sm-mono leading-none flex items-center gap-x-4">
+            {# Back to work / close slideover #}
+            <button
+              @click="close()"
+              class="flex items-baseline gap-x-2 hover:bg-coral-red/20"
+            >
+              {{ svg('@webroot/dist/images/icon--arrow-left.svg', true, true)|attr({ class: 'w-auto h-[9px] flex-shrink-0' }) }}
+              <span x-text="t('Work')"></span>
+            </button>
+          </div>
+
+          <template x-if="entry.heading">
+            <h2
+              x-dialog:title
+              class="relative z-10 font-medium heading1 leading-none md:w-4/5 xl:w-auto"
+              x-text="entry.heading"
+            ></h2>
+          </template>
+
+          <template x-if="entry.portraitImage[0]?.url && entry.landscapeImage[0]?.url">
+            <div class="relative z-10 aspect-square sm:aspect-[764/350]">
+              <picture>
+                <source
+                  :srcset="entry.landscapeImage[0]?.srcset"
+                  sizes="
+                    (min-width: 640px) 588w,
+                    (min-width:768px) 716w,
+                    (min-width:1024px) 743w,
+                    (min-width:1280px) 560w,
+                    (min-width:1440px) 640w,
+                    (min-width:1728px) 752w
+                  "
+                  media="(min-width: 640px)"
+                />
+                <img
+                  class="object-cover w-full h-full opacity-25"
+                  :src="entry.portraitImage[0]?.url"
+                  :srcset="entry.portraitImage[0]?.srcset"
+                  sizes="100vw"
+                  alt=""
+                />
+              </picture>
+
+            </div>
+          </template>
+
+          <template x-if="entry.richText">
+            <div class="relative z-10 sm-sans sm:heading5 sm:!font-medium ckeditor -simple" x-html="entry.richText"></div>
+          </template>
+
+          {# Tags #}
+          <template x-if="entry.techTags.length">
+            <div class="relative w-full max-w-[752px] md:w-4/5 xl:w-auto">
+              {% include "_includes/tagsGql" only %}
+            </div>
+          </template>
+
+        </div>
+      </div>
+
+    </div>
+  </article>
+</template>
