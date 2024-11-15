@@ -129,11 +129,11 @@ export default () => ({
    * Set selected work
    */
   setWork(id) {
+    Alpine.store('global').slideoverTemplate = 'work';
+
     if(!Alpine.store('global').slideoverOpen) {
       Alpine.store('global').slideoverOpen = true;
     }
-
-    Alpine.store('global').slideoverTemplate = 'work';
 
     if(!this.getEntryById(id)) {
       this.fetchWork(id, true, true);
@@ -141,8 +141,6 @@ export default () => ({
     else {
       this.selectedId = id;
       this.selected = this.getEntryById(id);
-      console.log('setWork', this.selected);
-
     }
   },
 
