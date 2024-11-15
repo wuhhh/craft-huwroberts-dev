@@ -62,9 +62,6 @@
           </div>
 
           <button
-            {# x-data="{ open() { $dispatch('open-slideover', { id: {{ entry.id }} }) } }"
-            @click="open()"
-            @keydown.space.prevent="open()" #}
             @click="$store.work.setWork({{ entry.id }})"
             @mouseenter="$store.work.fetchWork({{ entry.id }})"
             data-follower="more"
