@@ -1,13 +1,13 @@
 import Alpine from 'alpinejs';
 
 export default () => ({
+  endpoint: '/api',
+  entries: [],
   language: 'en-GB',
   loading: false,
   loadingIndicator: false,
   loadingIndicatorDelay: 250,
   loadingIndicatorTimeout: null,
-  endpoint: '/api',
-  entries: [],
   selected : null,
   selectedId: null,
 
