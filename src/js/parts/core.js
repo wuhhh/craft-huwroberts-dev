@@ -37,6 +37,7 @@ export default ("core",
    * @description Js equivalent of twig's t function
    * @param {string} template
    * @param {array} values
+   * @example t('Hello {0}', ['World']) => 'Hello World'
    */
   t(template, values) {
     const translation = this.translations[this.lang] && this.translations[this.lang][template];
