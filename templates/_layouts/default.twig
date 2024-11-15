@@ -26,15 +26,7 @@
 
   </div>
 
-
   {% include "_includes/followers/followerMore" only %}
-  {% include "_includes/slideover2" only %}
-
-  {# {% include "_includes/work/workArticles" only %} #}
-  {# {% include "_includes/slideoverAbout" only %} #}
-
-  <div class="fixed inset-x-0 bottom-0 p-8 flex gap-2 font-mono">
-    <button @click="$store.global.slideoverOpen = true" class="bg-slate-500 text-white text-sm p-2 rounded-sm">Open Slideover</button>
-  </div>
+  {% include "_includes/slideoverGql" only %}
 
 {% endblock %}
