@@ -54,6 +54,9 @@
         <template x-if="$store.global.slideoverTemplate === 'work'">
           {% include "_includes/work/workArticleGql" only %}
         </template>
+        <template x-if="$store.global.slideoverTemplate === 'about'">
+          {% include "_includes/slideoverAboutGql" only %}
+        </template>
       </div>
     </div>
   </div> {# /Panel #}
