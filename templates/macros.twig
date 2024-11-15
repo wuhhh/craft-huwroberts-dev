@@ -2,7 +2,8 @@
 
   <button
     data-follower="hex"
-    @click.prevent="$dispatch('slideover-open', { name: '{{ slideover }}' })"
+    @click="$store.about.show()"
+    @mouseenter="$store.about.fetch()"
     class="base-mono uppercase flex flex-col leading-none text-seabed-indigo rounded-sm group sm:px-4 sm:text-upright"
   >
     <span
