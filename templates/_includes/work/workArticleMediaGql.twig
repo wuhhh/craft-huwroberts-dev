@@ -165,6 +165,15 @@
                 aria-label="Play video"
               >
                 <img
+                  x-data
+                  x-init="$watch('entry.cardImage[0]', () => {
+                    $el.src = entry.cardImage[0].blurhashUri
+                    $el.srcset = ''
+                    $nextTick(() => {
+                      $el.src = entry.cardImage[0]?.url
+                      $el.srcset = entry.cardImage[0]?.srcset
+                    })
+                  })"
                   :src="entry.cardImage[0]?.url"
                   :srcset="entry.cardImage[0]?.srcset"
                   :alt="$store.work.selected?.title + ' video poster image'"
@@ -187,9 +196,18 @@
         <template x-if="!entry.video[0]?.url && entry.cardImage[0]?.url">
           {# == Image == #}
           <img
+            x-data
+            x-init="$watch('entry.cardImage[0]', () => {
+              $el.src = entry.cardImage[0].blurhashUri
+              $el.srcset = ''
+              $nextTick(() => {
+                $el.src = entry.cardImage[0]?.url
+                $el.srcset = entry.cardImage[0]?.srcset
+              })
+            })"
             :src="entry.cardImage[0]?.url"
             :srcset="entry.cardImage[0]?.srcset"
-            :alt="$store.work.selected?.title + ' video poster image'"
+            :alt="$store.work.selected?.title + ' image'"
             sizes="(min-width: 1024px) 746px, (min-width: 640px) 611px, (max-width: 639px) 90vw"
             class="object-cover w-full h-full rounded-sm"
           />

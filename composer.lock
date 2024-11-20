@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3dd72dfddb091d9c815a316fd73fab06",
+    "content-hash": "7c7a2f2b384119af6309b115accd47a8",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1582,6 +1582,64 @@
             "time": "2024-02-05T11:56:58+00:00"
         },
         {
+            "name": "dodecastudio/craft-blurhash",
+            "version": "3.0.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dodecastudio/craft-blurhash/zipball/ec37023f9a7bcb5cd9d38eefb1549d0d73917567",
+                "reference": "ec37023f9a7bcb5cd9d38eefb1549d0d73917567",
+                "shasum": ""
+            },
+            "require": {
+                "craftcms/cms": "^3.0|^4.0|^5.0",
+                "kornrunner/blurhash": "^1.2",
+                "php": ">=7.4",
+                "treeware/plant": "^0.1.0"
+            },
+            "type": "craft-plugin",
+            "extra": {
+                "treeware": [],
+                "name": "BlurHash",
+                "handle": "blur-hash",
+                "developer": "Dodeca Studio",
+                "developerUrl": "https://dodeca.studio",
+                "documentationUrl": "https://github.com/dodecastudio/craft-blurhash/blob/main/README.md",
+                "changelogUrl": "https://github.com/dodecastudio/craft-blurhash/blob/main/CHANGELOG.md",
+                "class": "dodecastudio\\blurhash\\BlurHash",
+                "components": {
+                    "services": "dodecastudio\\blurhash\\services\\BlurHashService"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "dodecastudio\\blurhash\\": "src/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Dodeca Studio",
+                    "homepage": "https://dodeca.studio"
+                }
+            ],
+            "description": "Render a BlurHash from a given image.",
+            "keywords": [
+                "blurhash",
+                "cms",
+                "craft",
+                "craft-plugin",
+                "craftcms"
+            ],
+            "support": {
+                "source": "https://github.com/dodecastudio/craft-blurhash",
+                "docs": "https://github.com/dodecastudio/craft-blurhash/blob/main/README.md",
+                "issues": "https://github.com/dodecastudio/craft-blurhash/issues"
+            },
+            "time": "2024-11-18T12:33:11+00:00"
+        },
+        {
             "name": "egulias/email-validator",
             "version": "4.0.2",
             "dist": {
@@ -2209,6 +2267,37 @@
                 "x509"
             ],
             "time": "2023-02-03T21:26:53+00:00"
+        },
+        {
+            "name": "kornrunner/blurhash",
+            "version": "v1.2.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kornrunner/php-blurhash/zipball/bc8a4596cb0a49874f0158696a382ab3933fefe4",
+                "reference": "bc8a4596cb0a49874f0158696a382ab3933fefe4",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "kornrunner\\Blurhash\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Boris Momčilović",
+                    "email": "boris.momcilovic@gmail.com"
+                }
+            ],
+            "description": "Pure PHP implementation of Blurhash",
+            "homepage": "https://github.com/kornrunner/php-blurhash",
+            "time": "2022-07-13T19:38:39+00:00"
         },
         {
             "name": "lcobucci/clock",
@@ -5547,6 +5636,29 @@
             ],
             "description": "PHP library for parsing a string containing a full name into its parts",
             "time": "2019-11-14T14:08:48+00:00"
+        },
+        {
+            "name": "treeware/plant",
+            "version": "0.1.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TreewareEarth/plant/zipball/bc1ff8eb350ce74b3fe0bd7ab80bc332d1096599",
+                "reference": "bc1ff8eb350ce74b3fe0bd7ab80bc332d1096599",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0|^2.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Treeware\\Plant\\Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Treeware\\Plant\\": "src/"
+                }
+            },
+            "time": "2021-05-04T17:17:46+00:00"
         },
         {
             "name": "twig/twig",

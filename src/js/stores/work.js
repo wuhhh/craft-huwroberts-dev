@@ -9,7 +9,6 @@ export default () => ({
   loadingIndicatorDelay: 250,
   loadingIndicatorTimeout: null,
   selected : null,
-  selectedId: null,
 
   /**
    * Fetch work entry by id
@@ -54,6 +53,7 @@ export default () => ({
               width
               height
               srcset(sizes: ["600w", "800w", "1250w", "1900w"])
+              blurhashUri: url @assetToBlurHash
             }
             video {
               url
@@ -100,7 +100,6 @@ export default () => ({
       if(data.entry) {
         this.entries.push(data.entry);
         if(setSelected) {
-          this.selectedId = data.entry.id;
           this.selected = data.entry;
         }
       }
@@ -139,7 +138,6 @@ export default () => ({
       this.fetchWork(id, true, true);
     }
     else {
-      this.selectedId = id;
       this.selected = this.getEntryById(id);
     }
   },

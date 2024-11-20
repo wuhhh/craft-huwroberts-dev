@@ -19,6 +19,7 @@
   "require": {
     "craftcms/ckeditor": "4.1.0",
     "craftcms/cms": "5.3.6",
+    "dodecastudio/craft-blurhash": "^3.0.2",
     "mmikkel/cp-field-inspect": "2.0.2",
     "nystudio107/craft-vite": "5.0.0",
     "putyourlightson/craft-blitz": "^5.7.1",
