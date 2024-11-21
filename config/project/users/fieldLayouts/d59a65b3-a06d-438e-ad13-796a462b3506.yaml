@@ -8,7 +8,7 @@ tabs:
         autocomplete: false
         autocorrect: true
         class: null
-        dateAdded: '2024-09-02T07:51:17+00:00'
+        dateAdded: '2024-11-21T17:57:31+00:00'
         disabled: false
         elementCondition: null
         id: null
@@ -30,12 +30,12 @@ tabs:
         tip: null
         title: null
         type: craft\fieldlayoutelements\users\FullNameField
-        uid: 4d1655ef-f60e-4298-8e0e-f6b1f18329bd
+        uid: 9cc1f9a2-82d3-4517-b462-d885f76e7cab
         userCondition: null
         warning: null
         width: 100
       -
-        dateAdded: '2024-09-02T07:51:17+00:00'
+        dateAdded: '2024-11-21T17:57:31+00:00'
         elementCondition: null
         id: null
         includeInCards: false
@@ -46,7 +46,7 @@ tabs:
         requirable: false
         tip: null
         type: craft\fieldlayoutelements\users\PhotoField
-        uid: 4369b04a-4968-4d45-8dbb-2cce673c9a5e
+        uid: 3a801cc6-5a41-4c91-8671-dc655a5db9ac
         userCondition: null
         warning: null
         width: 100
@@ -55,7 +55,7 @@ tabs:
         autocomplete: false
         autocorrect: true
         class: null
-        dateAdded: '2024-09-02T07:51:17+00:00'
+        dateAdded: '2024-11-21T17:57:31+00:00'
         disabled: false
         elementCondition: null
         id: null
@@ -76,9 +76,9 @@ tabs:
         tip: null
         title: null
         type: craft\fieldlayoutelements\users\EmailField
-        uid: ac8da572-66f6-4f66-97e2-10d77c51f23f
+        uid: 14177875-e013-41d1-82d1-aa779668edd1
         userCondition: null
         width: 100
     name: Content
-    uid: 4822de62-29d9-4336-802d-4d110a8b70c7
+    uid: f263dd52-d067-4b6f-ba33-6ea34e5e5d4d
     userCondition: null
