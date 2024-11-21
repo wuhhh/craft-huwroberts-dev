@@ -15,6 +15,9 @@ module.exports = {
     "bg-zinc-900",
     "bg-black",
   ],
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     boxShadow: {
       sm: "0 0 8px 0 rgba(0, 0, 0, 0.05)",
