@@ -1,5 +1,5 @@
 <template
-  x-if="$store.global.slideoverTemplate === 'work'"
+  x-if="$store.global.slideoverTemplate === 'work' && entry"
   x-data="{
     {# map store to local variables #}
     entry: $store.work.selected,
