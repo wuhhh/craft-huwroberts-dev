@@ -1,4 +1,4 @@
-dateModified: 1732211911
+dateModified: 1732212129
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -58,7 +58,7 @@ plugins:
     edition: standard
     enabled: true
     licenseKey: V5GQI2XADRE5RM7O3YR61FVC
-    schemaVersion: 5.7.0.1
+    schemaVersion: 5.9.0
   blur-hash:
     edition: standard
     enabled: true
