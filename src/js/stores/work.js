@@ -131,6 +131,10 @@ export default () => ({
     Alpine.store('global').slideoverTemplate = 'work';
 
     if(!Alpine.store('global').slideoverOpen) {
+      // Unset the current entry to avoid flash of previous content
+      this.selected = null;
+
+      // Open the slideover
       Alpine.store('global').slideoverOpen = true;
     }
 
