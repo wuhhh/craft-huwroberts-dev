@@ -51,11 +51,12 @@ module.exports = {
           DEFAULT: "#F36855",
         },
         "seabed-indigo": {
-          50: '#E6E3FA',
-          100: '#E0DDF3',
-          400: '#3F26DD',
-          DEFAULT: '#3F26DD'
+          50: "#E6E3FA",
+          100: "#E0DDF3",
+          400: "#3F26DD",
+          DEFAULT: "#3F26DD",
         },
+        stone: "#EBEFF4",
       },
       keyframes: {
         "travel-x": {
@@ -67,7 +68,7 @@ module.exports = {
         screenh: "100dvh",
       },
       transitionTimingFunction: {
-        "bounce": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+        bounce: "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
       },
     },
   },
