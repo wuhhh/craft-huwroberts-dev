@@ -5,6 +5,8 @@ name: 'Live URL'
 searchable: false
 settings:
   maxLength: 255
+  showLabelField: false
+  showTargetField: false
   types:
     - url
 translationKeyFormat: null

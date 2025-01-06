@@ -4,6 +4,7 @@ instructions: "Slate 50: rgb(248, 250, 252)\r\nSlate 100: rgb(24, 245, 249)\r\nN
 name: 'Backdrop Colour'
 searchable: false
 settings:
+  customOptions: false
   options:
     -
       __assoc__:
