@@ -17,8 +17,8 @@
     "sort-packages": true
   },
   "require": {
-    "craftcms/ckeditor": "4.3.1",
-    "craftcms/cms": "5.5.7",
+    "craftcms/ckeditor": "4.4.0",
+    "craftcms/cms": "5.5.8",
     "dodecastudio/craft-blurhash": "3.0.3",
     "mmikkel/cp-field-inspect": "2.0.2",
     "nystudio107/craft-vite": "5.0.1",
