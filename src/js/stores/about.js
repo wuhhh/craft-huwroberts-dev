@@ -110,9 +110,16 @@ export default () => ({
       this.fetch(true);
     }
 
-    Alpine.store('global').slideoverTemplate = 'about';
-
-    if(!Alpine.store('global').slideoverOpen) {
+    if(Alpine.store('global').slideoverOpen) {
+      // Close the slideover if it's already open and manufacture a delay
+      Alpine.store('global').slideoverOpen = false;
+      setTimeout(() => {
+        Alpine.store('global').slideoverTemplate = 'about';
+        Alpine.store('global').slideoverOpen = true;
+      }, 500);
+    }
+    else {
+      Alpine.store('global').slideoverTemplate = 'about';
       Alpine.store('global').slideoverOpen = true;
     }
   },
