@@ -1,5 +1,5 @@
 <template
-  x-if="$store.about.entry"
+  x-if="$store.global.slideoverTemplate === 'about' && entry"
   x-data="{
     {# map state #}
     entry: $store.about.entry,
