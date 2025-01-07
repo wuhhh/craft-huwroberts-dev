@@ -57,8 +57,12 @@
     @apply font-mono text-[14px];
   }
 
-  .xs-mono {
+  .xs-mono, .xs-mono-capped {
     @apply font-mono text-[12px];
+  }
+
+  .xs-mono-capped {
+    @apply leading-none;
   }
 }
 
