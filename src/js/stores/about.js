@@ -111,7 +111,9 @@ export default () => ({
     }
 
     if(Alpine.store('global').slideoverOpen) {
-      // Close the slideover if it's already open and manufacture a delay
+      // Fix mobile edge case where it's possible to trigger `about` while
+      // a work entry is open. Close the drawer, wait, open the drawer
+      // with the new template.
       Alpine.store('global').slideoverOpen = false;
       setTimeout(() => {
         Alpine.store('global').slideoverTemplate = 'about';
