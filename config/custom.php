@@ -8,6 +8,7 @@ return [
 		'cy' => [
 			"About" => "Am",
 			"All work" => "Holl waith",
+			"Close" => "Cau",
 			"Close modal" => "Cau modal",
 			"Contact" => "Cyswllt",
 			"home" => "cartref",
