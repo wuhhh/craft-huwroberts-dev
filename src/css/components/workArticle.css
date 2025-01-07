@@ -3,10 +3,6 @@
     @apply relative overflow-hidden before:absolute before:inset-x-0 before:bg-zinc-100 after:absolute after:-skew-x-12 after:bg-gradient-to-r after:from-zinc-100 after:via-white after:to-zinc-100 after:animate-travel-x;
   }
 
-  .work-article__loading-spinner {
-    @apply block;
-  }
-
   .work-article__title {
     @apply text-black/0 before:inset-x-0 before:inset-y-2 after:inset-x-0 after:inset-y-2;
   }
