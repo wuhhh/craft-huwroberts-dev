@@ -1,4 +1,5 @@
 import Alpine from 'alpinejs';
+import { slideoverPostUpdate } from '../helpers';
 
 export default () => ({
   endpoint: '/api',
@@ -124,5 +125,9 @@ export default () => ({
       Alpine.store('global').slideoverTemplate = 'about';
       Alpine.store('global').slideoverOpen = true;
     }
+
+    slideoverPostUpdate({
+      id: 'about',
+    });
   },
 })
