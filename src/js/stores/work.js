@@ -136,7 +136,8 @@ export default () => ({
       this.selected = null;
 
       // Open the slideover
-      Alpine.store('global').slideoverOpen = true;
+      Alpine.store('global').openSlideover();
+
     }
 
     if(!this.getEntryById(id)) {
