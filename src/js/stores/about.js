@@ -111,19 +111,21 @@ export default () => ({
       this.fetch(true);
     }
 
-    if(Alpine.store('global').slideoverOpen) {
+    if(Alpine.store('global').slideoverOpen && window.location.hash === '#slideover') {
       // Fix mobile edge case where it's possible to trigger `about` while
       // a work entry is open. Close the drawer, wait, open the drawer
       // with the new template.
-      Alpine.store('global').slideoverOpen = false;
+
+      window.history.back();
+
       setTimeout(() => {
         Alpine.store('global').slideoverTemplate = 'about';
-        Alpine.store('global').slideoverOpen = true;
+        Alpine.store('global').openSlideover();
       }, 500);
     }
     else {
       Alpine.store('global').slideoverTemplate = 'about';
-      Alpine.store('global').slideoverOpen = true;
+      Alpine.store('global').openSlideover();
     }
 
     slideoverPostUpdate({
