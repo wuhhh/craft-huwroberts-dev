@@ -1,4 +1,5 @@
 import Alpine from 'alpinejs';
+import { slideoverPostUpdate } from '../helpers';
 
 export default () => ({
   endpoint: '/api',
@@ -8,7 +9,7 @@ export default () => ({
   loadingIndicator: false,
   loadingIndicatorDelay: 250,
   loadingIndicatorTimeout: null,
-  selected : null,
+  selected: null,
 
   /**
    * Fetch work entry by id
@@ -144,6 +145,10 @@ export default () => ({
     else {
       this.selected = this.getEntryById(id);
     }
+
+    slideoverPostUpdate({
+      id,
+    });
   },
 
   /**
