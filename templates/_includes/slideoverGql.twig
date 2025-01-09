@@ -5,10 +5,16 @@
   x-model="$store.global.slideoverOpen"
   x-data="{
     close() {
-      this.$dialog.close()
-    }
+      if ($store.global.slideoverOpen && window.location.hash === '#slideover') {
+        window.history.back()
+      }
+      else {
+        $store.global.slideoverOpen = false
+      }
+    },
   }"
   @click.away="close()"
+  @hashchange.window="window.location.hash !== '#slideover' && $store.global.slideoverOpen && close()"
   style="display: none"
   class="fixed inset-0"
 >
@@ -64,7 +70,7 @@
 
   {# Click away region #}
   <div
-    @click="$dialog.close()"
+    @click="close()"
     class="fixed left-0 inset-y-0 w-[var(--panel-away-w)] 3xl:w-[var(--3xl-panel-away-w)]"
   ></div>
 
