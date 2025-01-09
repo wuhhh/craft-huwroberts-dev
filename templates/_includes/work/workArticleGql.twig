@@ -21,67 +21,70 @@
 >
 
   <article
-    class="work-article group/l grid grid-cols-12 pt-32 w-full max-w-[736px] ml-auto lg:pt-16 lg:max-w-none lg:ml-0 lg:gap-x-10"
+    class="work-article group/l grid grid-cols-12 w-full max-w-[736px] ml-auto lg:pt-16 lg:max-w-none lg:ml-0 lg:gap-x-10"
     :data-l="loadingIndicator"
   >
-    <div class="pointer-events-auto bg-zinc-50 col-span-full pb-16 md:pb-[72px] lg:col-span-7 lg:col-start-5 2xl:pb-24">
-      <div class="space-y-8 sm:space-y-12">
+    <div class="pointer-events-auto bg-zinc-50 col-span-full pb-16 sm:pt-[152px] md:pb-[72px] lg:pt-0 lg:col-span-7 lg:col-start-5 2xl:pb-24">
 
-        {# Nav #}
+      {# Nav #}
 
-        <div class="relative z-10 sm-mono leading-none flex items-center gap-x-4">
+      <nav class="sticky top-24 z-20 sm:relative sm:top-auto sm:z-10 sm:mb-14 xs-mono-capped flex justify-between h-[39px]">
 
-          {# Back to work / close slideover #}
+        {# Fill background to viewport edges #}
+        <div class="absolute -inset-x-[26px] bg-stone/95 backdrop-blur-sm inset-y-0 sm:hidden"></div>
 
+        {# Close slideover #}
+
+        <button
+          @click="close()"
+          class="relative flex items-center gap-x-2 group h-full"
+        >
+          <span class="relative flex h-full items-center text-slate-50">
+            <span class="size-[13px] rounded-full bg-seabed-indigo-400 flex items-center justify-center transition duration-100 group-hover:scale-125"></span>
+            <svg class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L6 6M6 1L1 6" stroke="currentColor"/>
+            </svg>
+          </span>
+          <span x-text="t('Close')" class="text-seabed-indigo-400 group-hover:underline"></span>
+        </button>
+
+        {# Adjacent entries #}
+
+        <div class="relative flex items-center gap-x-5 h-full">
           <button
-            @click="close()"
-            class="flex items-baseline gap-x-2 hover:bg-coral-red/20 flex-shrink-0"
+            class="flex gap-x-[6px] h-full items-center pointer-events-auto text-seabed-indigo-400 group"
+            :class="{ 'pointer-events-none opacity-30 !cursor-default': !hasPrev() }"
+            :tabindex="hasPrev() ? 0 : -1"
+            aria-label="Previous project"
+            @mouseenter="fetchPrev()"
+            @click="prev()"
           >
-            {{ svg('@webroot/dist/images/icon--arrow-left.svg', true, true)|attr({ class: 'w-auto h-[9px] flex-shrink-0' }) }}
-            <span x-text="t('All work')"></span>
+            <svg class="transition duration-200 ease-in-out translate-y-px group-hover:-translate-x-0.5" width="5" height="7" viewBox="0 0 5 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 6.5L1 3.5L4 0.5" stroke="currentColor"/>
+            </svg>
+            <span x-text="t('Previous')" class="group-hover:underline"></span>
           </button>
 
-          {# Adjacent entries #}
-
-          <div class=" w-12 h-px bg-black/10 mt-0.5 sm:block"></div>
-
-          <section class="flex items-center gap-x-4 w-full">
-
-            <button
-              class="pointer-events-auto hover:bg-coral-red/20"
-              :class="{ 'pointer-events-none opacity-30 !cursor-default': !hasPrev() }"
-              :tabindex="hasPrev() ? 0 : -1"
-              aria-label="Previous project"
-              @mouseenter="fetchPrev()"
-              @click="prev()"
-              x-text="t('Previous')"
-            ></button>
-
-            <span class="w-px h-5 bg-black/10 mt-px -skew-x-12"></span>
-
-            <button
-              class="pointer-events-auto hover:bg-coral-red/20"
-              :class="{ 'pointer-events-none opacity-30 !cursor-default': !hasNext() }"
-              :tabindex="hasNext() ? 0 : -1"
-              aria-label="Next project"
-              @mouseenter="fetchNext()"
-              @click="next()"
-              x-text="t('Next')"
-            ></button>
-
-            <div class="work-article__loading-spinner hidden size-4 relative animate-spin-slowish">
-              <span class="absolute inset-0 bg-coral-red"></span>
-              <span class="absolute inset-0 rotate-45 bg-coral-red"></span>
-            </div>
-
-            {# ONLY FOR TESTING #}
-            {# <button @click="toggleLoading" class="ml-auto uppercase text-[11px] tracking-wide px-2 py-1 border">Toggle Loading</button> #}
-
-          </section>
-
+          <button
+            class="flex gap-x-[6px] h-full items-center pointer-events-auto text-seabed-indigo-400 group"
+            :class="{ 'pointer-events-none opacity-30 !cursor-default': !hasNext() }"
+            :tabindex="hasNext() ? 0 : -1"
+            aria-label="Next project"
+            @mouseenter="fetchNext()"
+            @click="next()"
+          >
+            <span x-text="t('Next')" class="group-hover:underline"></span>
+            <svg class="transition duration-200 ease-in-out translate-y-px group-hover:translate-x-0.5" width="5" height="7" viewBox="0 0 5 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 6.5L4 3.5L1 0.5" stroke="currentColor"/>
+            </svg>
+          </button>
         </div>
 
-        <div class="relative z-10 flex flex-wrap items-baseline gap-4">
+      </nav>
+
+      <div class="pt-[160px] space-y-10 sm:pt-0 sm:space-y-14">
+
+        <div class="relative z-10 space-y-10 lg:space-y-0 lg:flex lg:flex-wrap lg:items-start lg:gap-4">
 
           {# Title #}
 
@@ -89,26 +92,25 @@
             x-dialog:title
             x-text="entry.title"
             data-loading-indicator
-            class="work-article__title relative font-medium heading3 md:heading1 leading-none"
+            class="work-article__title relative font-medium heading3 md:heading1 !leading-none"
             :aria-label="t('{0} project details', [entry.title])"
           ></h2>
 
           {# Live url #}
 
           <template x-if="entry.liveUrl">
-            <span class="-translate-y-[2px]">
-              <a
-                data-loading-indicator
-                class="work-article__live-url bg-gray-200 rounded-full p-1 pr-3 flex gap-x-[9px] items-center transition-colors duration-200 hover:bg-transparent"
-                :href="entry.liveUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                :aria-label="t('View live site, opens in new tab')"
-              >
-                {{ svg('@webroot/dist/images/icon--arrow-diagonal-circ.svg', true, true)|attr({ class: "w-[23px]" }) }}
-                <span class="xs-sans md:sm-sans !font-medium" x-text="t('View Live')"></span>
-              </a>
-            </span>
+            <a
+              data-loading-indicator
+              class="work-article__live-url bg-stone text-black rounded-full py-[6px] pl-3 pr-4 inline-flex gap-x-[7px] items-center transition-colors duration-200 hover:bg-transparent -translate-y-0.5 lg:translate-y-0 lg:mt-1"
+              :href="entry.liveUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              :aria-label="t('View live site, opens in new tab')"
+            >
+              <span class="rounded-full size-[11px] bg-coral-red mr-[2px]"></span>
+              <span class="font-mono text-[13px] leading-normal uppercase" x-text="t('View Live')"></span>
+              {{ svg('@webroot/dist/images/icon--external-link.svg', true, true)|attr({ class: "size-3" }) }}
+            </a>
           </template>
         </div>
 
