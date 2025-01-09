@@ -7,7 +7,7 @@ export default () => ({
   language: 'en-GB',
   loading: false,
   loadingIndicator: false,
-  loadingIndicatorDelay: 250,
+  loadingIndicatorDelay: 0,
   loadingIndicatorTimeout: null,
   selected: null,
 
@@ -81,7 +81,8 @@ export default () => ({
 
     try {
       // synthetic delay
-      // await new Promise((resolve) => setTimeout(resolve, 2300));
+      // await new Promise((resolve) => setTimeout(resolve, 250));
+
       const response = await fetch(this.endpoint, {
         method: 'POST',
         headers: {
