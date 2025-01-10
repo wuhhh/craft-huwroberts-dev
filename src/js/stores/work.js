@@ -14,7 +14,7 @@ export default () => ({
   /**
    * Fetch work entry by id
    */
-  async fetchWork(id, setSelected = false, setLoading = false) {
+  async fetchWork(id, setLoading = false) {
 
     if(this.getEntryById(id)) return;
 
@@ -101,9 +101,6 @@ export default () => ({
 
       if(data.entry) {
         this.entries.push(data.entry);
-        if(setSelected) {
-          this.selected = data.entry;
-        }
       }
     }
     catch(error) {
@@ -129,7 +126,7 @@ export default () => ({
   /**
    * Set selected work
    */
-  setWork(id) {
+  async setWork(id) {
     Alpine.store('global').slideoverTemplate = 'work';
 
     if(!Alpine.store('global').slideoverOpen) {
@@ -138,15 +135,13 @@ export default () => ({
 
       // Open the slideover
       Alpine.store('global').openSlideover();
-
     }
 
     if(!this.getEntryById(id)) {
-      this.fetchWork(id, true, true);
+      await this.fetchWork(id, true);
     }
-    else {
-      this.selected = this.getEntryById(id);
-    }
+
+    this.selected = this.getEntryById(id);
 
     slideoverPostUpdate({
       id,
