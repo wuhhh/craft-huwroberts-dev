@@ -127,25 +127,26 @@ export default () => ({
    * Set selected work
    */
   async setWork(id) {
-    Alpine.store('global').slideoverTemplate = 'work';
+    try {
+      Alpine.store('global').slideoverTemplate = 'work';
 
-    if(!Alpine.store('global').slideoverOpen) {
-      // Unset the current entry to avoid flash of previous content
-      this.selected = null;
+      if(!Alpine.store('global').slideoverOpen) {
+        this.selected = null;
+        Alpine.store('global').openSlideover();
+      }
 
-      // Open the slideover
-      Alpine.store('global').openSlideover();
+      if(!this.getEntryById(id)) {
+        await this.fetchWork(id, true);
+      }
+
+      this.selected = this.getEntryById(id);
+
+      slideoverPostUpdate({
+        id,
+      });
+    } catch (error) {
+      console.error('Error setting work:', error);
     }
-
-    if(!this.getEntryById(id)) {
-      await this.fetchWork(id, true);
-    }
-
-    this.selected = this.getEntryById(id);
-
-    slideoverPostUpdate({
-      id,
-    });
   },
 
   /**
@@ -165,18 +166,18 @@ export default () => ({
   /**
    * next
    */
-  next() {
+  async next() {
     if(this.selected && this.hasNext()) {
-      this.setWork(this.selected.next.id);
+      await this.setWork(this.selected.next.id);
     }
   },
 
   /**
    * prev
    */
-  prev() {
+  async prev() {
     if(this.selected && this.hasPrev()) {
-      this.setWork(this.selected.prev.id);
+      await this.setWork(this.selected.prev.id);
     }
   },
 
