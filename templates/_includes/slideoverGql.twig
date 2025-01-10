@@ -5,16 +5,10 @@
   x-model="$store.global.slideoverOpen"
   x-data="{
     close() {
-      if ($store.global.slideoverOpen && window.location.hash === '#slideover') {
-        window.history.back()
-      }
-      else {
-        $store.global.slideoverOpen = false
-      }
+      $store.global.slideoverOpen = false
     },
   }"
   @click.away="close()"
-  @hashchange.window="window.location.hash !== '#slideover' && $store.global.slideoverOpen && close()"
   style="display: none"
   class="fixed inset-0"
 >

@@ -15,6 +15,5 @@ export default () => ({
 
   openSlideover() {
     this.slideoverOpen = true;
-    window.location.hash = "slideover";
   },
 });
