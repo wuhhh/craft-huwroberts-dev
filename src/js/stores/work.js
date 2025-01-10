@@ -12,11 +12,11 @@ export default () => ({
   selected: null,
 
   /**
-   * Fetch work entry by id
+   * Fetch work entry by slug
    */
-  async fetchWork(id, setLoading = false) {
+  async fetchWork(slug, setLoading = false) {
 
-    if(this.getEntryById(id)) return;
+    if(this.getEntryBySlug(slug)) return;
 
     this.loading = setLoading === true ? true : this.loading;
 
@@ -29,8 +29,8 @@ export default () => ({
     this.language = document.documentElement.lang;
 
     const query = `
-      query work($id: [QueryArgument], $language: [String]) {
-        entry(id: $id, language: $language) {
+      query work($slug: [String], $language: [String]) {
+        entry(slug: $slug, section: "work", language: $language) {
           ... on work_Entry {
             id
             backdropColour
@@ -38,6 +38,7 @@ export default () => ({
             slug
             summary
             title
+            url
             agency {
               id
               title
@@ -91,7 +92,7 @@ export default () => ({
         body: JSON.stringify({
           query,
           variables: {
-            id,
+            slug,
             language: this.language,
           }
         })
@@ -119,33 +120,39 @@ export default () => ({
   /**
    * Get entry by ID
    */
-  getEntryById(id) {
-    return this.entries.find(entry => entry.id == id);
+  getEntryBySlug(slug) {
+    return this.entries.find(entry => entry.slug == slug);
   },
 
   /**
    * Set selected work
    */
-  async setWork(id) {
+  async setWork(slug, dispatch = true) {
     try {
       Alpine.store('global').slideoverTemplate = 'work';
+      this.setLoading(true);
 
       if(!Alpine.store('global').slideoverOpen) {
         this.selected = null;
         Alpine.store('global').openSlideover();
       }
 
-      if(!this.getEntryById(id)) {
-        await this.fetchWork(id, true);
+      if(!this.getEntryBySlug(slug)) {
+        await this.fetchWork(slug, true);
       }
 
-      this.selected = this.getEntryById(id);
+      this.selected = this.getEntryBySlug(slug);
 
       slideoverPostUpdate({
-        id,
+        dispatch,
+        url: `/work/${this.selected.slug}`,
+        slug: this.selected.slug,
+        type: 'work',
       });
     } catch (error) {
       console.error('Error setting work:', error);
+    } finally {
+      this.setLoading(false);
     }
   },
 
@@ -168,7 +175,7 @@ export default () => ({
    */
   async next() {
     if(this.selected && this.hasNext()) {
-      await this.setWork(this.selected.next.id);
+      await this.setWork(this.selected.next.slug);
     }
   },
 
@@ -177,7 +184,7 @@ export default () => ({
    */
   async prev() {
     if(this.selected && this.hasPrev()) {
-      await this.setWork(this.selected.prev.id);
+      await this.setWork(this.selected.prev.slug);
     }
   },
 
@@ -186,7 +193,7 @@ export default () => ({
    */
   fetchPrev() {
     if(this.selected && this.hasPrev()) {
-      this.fetchWork(this.selected.prev.id);
+      this.fetchWork(this.selected.prev.slug);
     }
   },
 
@@ -195,7 +202,7 @@ export default () => ({
    */
   fetchNext() {
     if(this.selected && this.hasNext()) {
-      this.fetchWork(this.selected.next.id);
+      this.fetchWork(this.selected.next.slug);
     }
   },
 

@@ -2,6 +2,10 @@
 
 {% block content %}
 
+  {% if entry is not defined %}
+    {% set entry = craft.entries.section('home').one() %}
+  {% endif %}
+
   <div class="col-span-full">
     <div class="pt-56 pb-32 md:py-[264px] 2xl:pt-48 2xl:pb-32">
 

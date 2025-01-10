@@ -1,13 +1,9 @@
-{# Slideover #}
 <div
   id="slideover"
   x-dialog
   x-model="$store.global.slideoverOpen"
-  x-data="{
-    close() {
-      $store.global.slideoverOpen = false
-    },
-  }"
+  x-data="slideover()"
+  x-bind="bindings"
   @click.away="close()"
   style="display: none"
   class="fixed inset-0"

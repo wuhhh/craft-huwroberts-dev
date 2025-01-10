@@ -13,6 +13,18 @@ export default () => ({
     );
   },
 
+  getLang() {
+    return document.documentElement.lang;
+  },
+
+  getLangCode() {
+    return this.getLang().split("-")[0];
+  },
+
+  getLangRegion() {
+    return this.getLang().split("-")[1];
+  },
+
   openSlideover() {
     this.slideoverOpen = true;
   },

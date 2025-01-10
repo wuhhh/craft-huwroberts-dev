@@ -17,6 +17,7 @@ import canvas from './parts/canvas';
 import core from './parts/core';
 import follower from './parts/follower';
 import mediaControls from './parts/mediaControls';
+import slideover from './parts/slideover';
 
 import about from './stores/about';
 import global from './stores/global';
@@ -31,6 +32,7 @@ Alpine.data('canvas', canvas);
 Alpine.data('core', core);
 Alpine.data('follower', follower);
 Alpine.data('mediaControls', mediaControls);
+Alpine.data('slideover', slideover);
 
 Alpine.store('about', about());
 Alpine.store('global', global());

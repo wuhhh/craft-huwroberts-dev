@@ -62,8 +62,8 @@
           </div>
 
           <button
-            @click="$store.work.setWork({{ entry.id }})"
-            @mouseenter="$store.work.fetchWork({{ entry.id }})"
+            @click="$store.work.setWork('{{ entry.slug }}')"
+            @mouseenter="$store.work.fetchWork('{{ entry.slug }}')"
             data-follower="more"
             class="box-link before:focus-visible:outline before:focus-visible:outline-2 before:focus-visible:outline-offset-2 before:focus-visible:outline-blue-700"
             aria-label="{{ '{0} project details, opens modal'|t([entry.title]) }}"
