@@ -19,9 +19,21 @@ export default ("slideover", () => ({
 
     if (workSegment) {
       this.$store.work.setWork(workSegment, false)
+      history.replaceState({
+        slideover: true,
+        url: this.buildPushStateUrl(`/work/${workSegment}`),
+        type: 'work',
+        slug: workSegment
+      }, '', '')
     }
     else if (aboutSegmentIndex > -1) {
       this.$store.about.show(false)
+      history.replaceState({
+        slideover: true,
+        url: this.buildPushStateUrl(`/about`),
+        type: 'about',
+        slug: null
+      }, '', '')
     }
     else {
       history.replaceState({ slideover: false, slug: null }, '', '')
@@ -80,6 +92,19 @@ export default ("slideover", () => ({
       let langCode = this.$store.global.getLangCode()
       langCode = langCode === 'en' ? '' : langCode
       history.pushState({ slideover: false }, '', `${window.location.origin}/${langCode}`)
+    },
+    ['@keyup.left.window']($event) {
+      if (this.$store.global.slideoverOpen && this.$store.global.slideoverTemplate === "work") {
+        this.$store.work.prev()
+      }
+    },
+    ['@keyup.right.window']($event) {
+      if (this.$store.global.slideoverOpen && this.$store.global.slideoverTemplate === "work") {
+        this.$store.work.next()
+      }
+    },
+    ['@keyup.esc.window']($event) {
+      this.close(true)
     }
   }
 }));
