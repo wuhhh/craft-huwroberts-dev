@@ -1,20 +1,19 @@
-import Alpine from 'alpinejs';
-import { slideoverPostUpdate } from '../helpers';
+import Alpine from "alpinejs";
+import { slideoverPostUpdate } from "../helpers";
 
 export default () => ({
-  endpoint: '/api',
+  endpoint: "/api",
   entry: null,
-  language: 'en-GB',
+  language: "en-GB",
   loading: false,
   loadingIndicator: false,
   loadingIndicatorDelay: 250,
   loadingIndicatorTimeout: null,
 
   async fetch(setLoading = false) {
-
     if (this.entry) return;
 
-    if(this.loading) {
+    if (this.loading) {
       this.loadingIndicatorTimeout = setTimeout(() => {
         this.loadingIndicator = true;
       }, this.loadingIndicatorDelay);
@@ -57,17 +56,17 @@ export default () => ({
       // synthetic delay
       // await new Promise((resolve) => setTimeout(resolve, 2300));
       const response = await fetch(this.endpoint, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           query,
           variables: {
             id: 193,
             language: this.language,
-          }
-        })
+          },
+        }),
       });
 
       const { data } = await response.json();
@@ -75,16 +74,13 @@ export default () => ({
       if (data.entry) {
         this.entry = data.entry;
       }
-
-    }
-    catch(error) {
+    } catch (error) {
       console.error(error);
-    }
-    finally {
+    } finally {
       this.loading = setLoading ? false : this.loading;
       this.loadingIndicator = false;
 
-      if(this.loadingIndicatorTimeout) {
+      if (this.loadingIndicatorTimeout) {
         clearTimeout(this.loadingIndicatorTimeout);
       }
     }
@@ -94,10 +90,9 @@ export default () => ({
    * Set loading
    */
   setLoading(value) {
-    if(value) {
+    if (value) {
       this.loadingStart = Date.now();
-    }
-    else {
+    } else {
       this.loadingEnd = Date.now();
     }
     this.loading = value;
@@ -106,30 +101,30 @@ export default () => ({
   /**
    * Set about active/open
    */
-  show() {
-    if(!this.entry) {
-      this.fetch(true);
+  async show(dispatch = true) {
+    try {
+      this.setLoading(true);
+
+      if (!this.entry) {
+        await this.fetch(true);
+      }
+
+      Alpine.store("global").slideoverTemplate = "about";
+
+      if (!Alpine.store("global").slideoverOpen) {
+        Alpine.store("global").openSlideover();
+      }
+
+      slideoverPostUpdate({
+        dispatch,
+        url: '/about',
+        slug: 'about',
+        type: 'about',
+      });
+    } catch (error) {
+      console.error("Error setting about:", error);
+    } finally {
+      this.setLoading(false);
     }
-
-    if(Alpine.store('global').slideoverOpen && window.location.hash === '#slideover') {
-      // Fix mobile edge case where it's possible to trigger `about` while
-      // a work entry is open. Close the drawer, wait, open the drawer
-      // with the new template.
-
-      window.history.back();
-
-      setTimeout(() => {
-        Alpine.store('global').slideoverTemplate = 'about';
-        Alpine.store('global').openSlideover();
-      }, 500);
-    }
-    else {
-      Alpine.store('global').slideoverTemplate = 'about';
-      Alpine.store('global').openSlideover();
-    }
-
-    slideoverPostUpdate({
-      id: 'about',
-    });
   },
-})
+});

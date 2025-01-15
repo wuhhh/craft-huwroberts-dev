@@ -5,12 +5,13 @@ export default ("slideover", () => ({
   },
 
   /**
-   * Set the work state from the URL on page load
+   * Set slideover state from URL on page load
    */
   setStateFromUrl() {
     const pathSegments = window.location.pathname.split("/")
     let workSegment = null
     let workSegmentIndex = pathSegments.findIndex(seg => seg == "work")
+    let aboutSegmentIndex = pathSegments.findIndex(seg => seg == "about")
 
     if(workSegmentIndex > -1 && pathSegments[workSegmentIndex + 1]) {
       workSegment = pathSegments[workSegmentIndex + 1]
@@ -18,6 +19,9 @@ export default ("slideover", () => ({
 
     if (workSegment) {
       this.$store.work.setWork(workSegment, false)
+    }
+    else if (aboutSegmentIndex > -1) {
+      this.$store.about.show(false)
     }
     else {
       history.replaceState({ slideover: false, slug: null }, '', '')
@@ -34,6 +38,7 @@ export default ("slideover", () => ({
       }
       if (state.slug && state.type) {
         if(state.type === 'work') this.$store.work.setWork(state.slug, false)
+        if(state.type === 'about') this.$store.about.show(false)
       }
     })
   },

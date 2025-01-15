@@ -1,0 +1,59 @@
+{% set context = context ?? [] %}
+
+<nav class="sticky top-24 z-20 sm:relative sm:top-auto sm:z-10 sm:mb-14 xs-mono-capped flex justify-between h-[45px] lg:h-[39px]">
+
+  {# Fill background to viewport edges #}
+  <div class="absolute -inset-x-[26px] bg-stone/95 backdrop-blur-sm inset-y-0 sm:hidden"></div>
+
+  {# Close slideover #}
+
+  <button
+    @click="close()"
+    class="relative flex items-center gap-x-2 group h-full"
+  >
+    <span class="relative flex h-full items-center text-slate-50">
+      <span class="size-[13px] rounded-full bg-seabed-indigo-400 flex items-center justify-center transition duration-100 group-hover:scale-125"></span>
+      <svg class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 1L6 6M6 1L1 6" stroke="currentColor"/>
+      </svg>
+    </span>
+    <span x-text="t('Close')" class="text-seabed-indigo-400 group-hover:underline"></span>
+  </button>
+
+  {# Adjacent entries #}
+
+  {% if "work" in context %}
+
+    <div class="relative flex items-center gap-x-5 h-full">
+      <button
+        class="flex gap-x-[6px] h-full items-center pointer-events-auto text-seabed-indigo-400 group"
+        :class="{ 'pointer-events-none opacity-30 !cursor-default': !hasPrev() }"
+        :tabindex="hasPrev() ? 0 : -1"
+        aria-label="Previous project"
+        @mouseenter="fetchPrev()"
+        @click="prev()"
+      >
+        <svg class="transition duration-200 ease-in-out translate-y-px group-hover:-translate-x-0.5" width="5" height="7" viewBox="0 0 5 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6.5L1 3.5L4 0.5" stroke="currentColor"/>
+        </svg>
+        <span x-text="t('Previous')" class="group-hover:underline"></span>
+      </button>
+
+      <button
+        class="flex gap-x-[6px] h-full items-center pointer-events-auto text-seabed-indigo-400 group"
+        :class="{ 'pointer-events-none opacity-30 !cursor-default': !hasNext() }"
+        :tabindex="hasNext() ? 0 : -1"
+        aria-label="Next project"
+        @mouseenter="fetchNext()"
+        @click="next()"
+      >
+        <span x-text="t('Next')" class="group-hover:underline"></span>
+        <svg class="transition duration-200 ease-in-out translate-y-px group-hover:translate-x-0.5" width="5" height="7" viewBox="0 0 5 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 6.5L4 3.5L1 0.5" stroke="currentColor"/>
+        </svg>
+      </button>
+    </div>
+
+  {% endif %}
+
+</nav>

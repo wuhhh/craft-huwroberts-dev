@@ -15,16 +15,10 @@
     <div class="pointer-events-auto bg-zinc-50 col-span-full pb-16 md:pb-[72px] lg:col-span-7 lg:col-start-5 2xl:pb-24">
 
         <div class="space-y-8 sm:space-y-12">
-          <div class="relative z-10 sm-mono leading-none flex items-center gap-x-4">
-            {# Back to work / close slideover #}
-            <button
-              @click="close()"
-              class="flex items-baseline gap-x-2 hover:bg-coral-red/20"
-            >
-              {{ svg('@webroot/dist/images/icon--arrow-left.svg', true, true)|attr({ class: 'w-auto h-[9px] flex-shrink-0' }) }}
-              <span x-text="t('Work')"></span>
-            </button>
-          </div>
+
+          {# Nav #}
+
+          {% include "_includes/slideoverNav" with { context: ["about"] } only %}
 
           <template x-if="entry.heading">
             <h2
