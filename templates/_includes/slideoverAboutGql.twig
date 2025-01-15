@@ -11,22 +11,24 @@
     },
   }"
 >
-  <article class="grid grid-cols-12 pt-32 w-full max-w-[736px] ml-auto lg:pt-16 lg:max-w-none lg:ml-0 lg:gap-x-10">
-    <div class="pointer-events-auto bg-zinc-50 col-span-full pb-16 md:pb-[72px] lg:col-span-7 lg:col-start-5 2xl:pb-24">
+  <article class="grid grid-cols-12 w-full max-w-[736px] ml-auto lg:pt-16 lg:max-w-none lg:ml-0 lg:gap-x-10">
+    <div class="pointer-events-auto bg-zinc-50 col-span-full pb-16 sm:pt-[152px] md:pb-[72px] lg:pt-0 lg:col-span-7 lg:col-start-5 2xl:pb-24">
 
-        <div class="space-y-8 sm:space-y-12">
+        {# Nav #}
 
-          {# Nav #}
+        {% include "_includes/slideoverNav" with { context: ["about"] } only %}
 
-          {% include "_includes/slideoverNav" with { context: ["about"] } only %}
+        <div class="pt-[160px] sm:pt-0 space-y-10 sm:space-y-14">
 
-          <template x-if="entry.heading">
-            <h2
-              x-dialog:title
-              class="relative z-10 font-medium heading1 leading-none md:w-4/5 xl:w-auto"
-              x-text="entry.heading"
-            ></h2>
-          </template>
+          <div>
+            <template x-if="entry.heading">
+              <h2
+                x-dialog:title
+                class="relative z-10 font-medium heading3 md:heading1 !leading-none md:w-4/5 xl:w-auto"
+                x-text="entry.heading"
+              ></h2>
+            </template>
+          </div>
 
           <template x-if="entry.portraitImage[0]?.url && entry.landscapeImage[0]?.url">
             <div class="relative z-10 aspect-square sm:aspect-[764/350]">
