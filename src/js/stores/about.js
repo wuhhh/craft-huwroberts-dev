@@ -103,24 +103,31 @@ export default () => ({
    */
   async show(dispatch = true) {
     try {
-      this.setLoading(true);
+      let requireTimeout = false
 
       if (!this.entry) {
         await this.fetch(true);
       }
 
-      Alpine.store("global").slideoverTemplate = "about";
-
-      if (!Alpine.store("global").slideoverOpen) {
-        Alpine.store("global").openSlideover();
+      if (Alpine.store("global").slideoverOpen) {
+        requireTimeout = true
       }
 
-      slideoverPostUpdate({
-        dispatch,
-        url: '/about',
-        slug: 'about',
-        type: 'about',
-      });
+      setTimeout(() => {
+        Alpine.store("global").slideoverTemplate = "about";
+
+        if (!Alpine.store("global").slideoverOpen) {
+          this.setLoading(true);
+          Alpine.store("global").openSlideover();
+        }
+
+        slideoverPostUpdate({
+          dispatch,
+          url: '/about',
+          slug: 'about',
+          type: 'about',
+        });
+      }, requireTimeout ? 500 : 0);
     } catch (error) {
       console.error("Error setting about:", error);
     } finally {
