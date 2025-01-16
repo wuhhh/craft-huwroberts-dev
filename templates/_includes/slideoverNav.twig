@@ -9,15 +9,15 @@
 
   <button
     @click="close()"
-    class="relative flex items-center gap-x-2 group h-full"
+    class="relative flex items-center gap-x-2 group h-full focus-visible:outline-none group"
   >
     <span class="relative flex h-full items-center text-slate-50">
-      <span class="size-[13px] rounded-full bg-seabed-indigo-400 flex items-center justify-center transition duration-100 group-hover:scale-125"></span>
+      <span class="size-[13px] rounded-full bg-seabed-indigo-400 flex items-center justify-center transition duration-100 group-hover:scale-125 group-focus-visible:scale-125"></span>
       <svg class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M1 1L6 6M6 1L1 6" stroke="currentColor"/>
       </svg>
     </span>
-    <span x-text="t('Close')" class="text-seabed-indigo-400 group-hover:underline"></span>
+    <span x-text="t('Close')" class="text-seabed-indigo-400 group-hover:underline group-focus-visible:underline"></span>
   </button>
 
   {# Adjacent entries #}
