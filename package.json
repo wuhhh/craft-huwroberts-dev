@@ -3,10 +3,10 @@
   "author": "wuhhh",
   "version": "0.0.1",
   "dependencies": {
-    "@alpinejs/focus": "^3.14.1",
-    "@alpinejs/intersect": "^3.14.1",
-    "@alpinejs/ui": "^3.14.1-beta.0",
-    "alpinejs": "^3.14.1",
+    "@alpinejs/focus": "^3.14.8",
+    "@alpinejs/intersect": "^3.14.8",
+    "@alpinejs/ui": "^3.14.8",
+    "alpinejs": "^3.14.8",
     "alpinejs-swipe": "^1.0.2",
     "ogl": "^1.0.7"
   },
