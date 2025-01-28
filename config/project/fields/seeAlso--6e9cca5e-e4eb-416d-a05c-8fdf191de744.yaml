@@ -48,14 +48,6 @@ settings:
         -
           - col2
           - ''
-    -
-      __assoc__:
-        -
-          - col1
-          - x
-        -
-          - col2
-          - ''
   maxRows: null
   minRows: null
   staticRows: true
