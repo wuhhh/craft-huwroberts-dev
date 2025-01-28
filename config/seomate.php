@@ -21,10 +21,6 @@ return [
         'og:type' => 'website',
         'twitter:card' => 'summary_large_image',
 
-        'twitter:site' => '@{{ seo.twitterHandle }}',
-        'twitter:author' => '@{{ seo.twitterHandle }}',
-        'twitter:creator' => '@{{ seo.twitterHandle }}',
-
         'og:see_also' => function ($context) {
             $seeAlsoLinks = [];
             $seeAlso = $context['seo']->seeAlso;

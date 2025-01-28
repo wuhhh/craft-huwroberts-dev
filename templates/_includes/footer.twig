@@ -17,19 +17,20 @@
 
     </div>
     <div class="sm:absolute right-0 bottom-10 flex items-center">
-      {% if seo.twitterHandle %}
+      {% set seeAlso = seo.seeAlso %}
+      {% set bluesky = seeAlso|filter(row => row.name == 'bluesky') %}
+      {% set github = seeAlso|filter(row => row.name == 'github') %}
+
+      {% if bluesky %}
         <a
-          href="https://x.com/{{ seo.twitterHandle }}"
+          href="{{ bluesky[1]['url'] }}"
           rel="noopener noreferrer nofollow"
           class="hover:text-seabed-indigo transition duration-100"
-          aria-label="Huw Roberts on Twitter/X"
+          aria-label="Huw Roberts on Bluesky"
         >
-          {{ svg('@webroot/dist/images/social--x.svg', true, true)|attr({ class: "h-[34px]" }) }}
+          {{ svg('@webroot/dist/images/social--bluesky.svg', true, true)|attr({ class: "h-[38px]" }) }}
         </a>
       {% endif %}
-
-      {% set seeAlso = seo.seeAlso %}
-      {% set github = seeAlso|filter(row => row.name == 'github') %}
 
       {% if github %}
         <a

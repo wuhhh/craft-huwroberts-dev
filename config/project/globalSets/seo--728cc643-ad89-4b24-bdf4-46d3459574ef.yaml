@@ -103,7 +103,7 @@ fieldLayouts:
           -
             dateAdded: '2025-01-06T11:47:32+00:00'
             elementCondition: null
-            fieldUid: 360e369c-1909-4b4d-8abf-f505ce7b2da4 # Twitter Handle
+            fieldUid: 360e369c-1909-4b4d-8abf-f505ce7b2da4
             handle: null
             includeInCards: false
             instructions: null

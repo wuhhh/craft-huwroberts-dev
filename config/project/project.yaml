@@ -1,4 +1,4 @@
-dateModified: 1736520684
+dateModified: 1738058684
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -26,7 +26,6 @@ meta:
     52ecdaa0-e78c-4b23-a67b-b2de241c25ac: Year # Year
     261d41fd-97b6-4906-874d-66df44df7420: Role # Role
     279cfc2e-8324-4a53-aa20-56b80bfebaa7: 'Work Type' # Work Type
-    360e369c-1909-4b4d-8abf-f505ce7b2da4: 'Twitter Handle' # Twitter Handle
     728cc643-ad89-4b24-bdf4-46d3459574ef: SEO # SEO
     763f00c3-3720-4070-ab7e-910babff9419: Tech # Tech
     838bb6bb-df26-4c70-8ee2-08016da47b9a: 'Backdrop Colour' # Backdrop Colour
