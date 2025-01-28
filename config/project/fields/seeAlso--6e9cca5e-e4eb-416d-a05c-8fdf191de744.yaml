@@ -50,7 +50,7 @@ settings:
           - ''
   maxRows: null
   minRows: null
-  staticRows: true
+  staticRows: false
 translationKeyFormat: null
 translationMethod: none
 type: craft\fields\Table
