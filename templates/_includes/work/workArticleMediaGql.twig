@@ -1,6 +1,11 @@
 <template
   x-if="entry.video[0]?.url || entry.cardImage[0]?.url"
   x-data="{
+    hasImage: entry.cardImage[0]?.url,
+    hasVideo: entry.video[0]?.url,
+    imgLoaded: false,
+    videoLoaded: false,
+
     {# map store to local variables #}
     entry: $store.work.selected,
     backdropColour: () => {
@@ -42,7 +47,8 @@
         },
       },
     }"
-    class="w-full max-w-[1160px]"
+    class="work-article__media w-full max-w-[1160px]"
+    :data-l="(hasImage && !imgLoaded) || (hasVideo && !videoLoaded)"
   >
     <div
       class="work-article__media-backdrop aspect-[1160/680] rounded-sm flex items-center justify-center shadow-sm sm:shadow-none sm-down:bg-transparent"
@@ -57,6 +63,11 @@
               {# == Video == #}
               <video
                 x-ref="video"
+                x-init="$el.addEventListener('loadstart', () => videoLoaded = true)"
+                @slideover-post-update.window="() => {
+                  videoLoaded = false;
+                  $el.src = ''
+                }"
                 @click="play()"
                 muted
                 playsinline
@@ -165,8 +176,12 @@
                 aria-label="Play video"
               >
                 <img
-                  x-data
-                  @slideover-post-update.window="$el.src = ''; $el.srcset = '';"
+                  x-init="$el.addEventListener('load', () => imgLoaded = true)"
+                  @slideover-post-update.window="() => {
+                    imgLoaded = false;
+                    $el.src = ''
+                    $el.srcset = ''
+                  }"
                   :src="entry.cardImage[0]?.url"
                   :srcset="entry.cardImage[0]?.srcset"
                   :alt="$store.work.selected?.title + ' video poster image'"
@@ -189,8 +204,12 @@
         <template x-if="!entry.video[0]?.url && entry.cardImage[0]?.url">
           {# == Image == #}
           <img
-            x-data
-            @slideover-post-update.window="$el.src = ''; $el.srcset = '';"
+            x-init="$el.addEventListener('load', () => imgLoaded = true)"
+            @slideover-post-update.window="() => {
+              imgLoaded = false;
+              $el.src = ''
+              $el.srcset = ''
+            }"
             :src="entry.cardImage[0]?.url"
             :srcset="entry.cardImage[0]?.srcset"
             :alt="$store.work.selected?.title + ' image'"

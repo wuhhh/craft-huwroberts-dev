@@ -19,12 +19,7 @@ export default () => ({
     if(this.getEntryBySlug(slug)) return;
 
     this.loading = setLoading === true ? true : this.loading;
-
-    if(this.loading) {
-      this.loadingIndicatorTimeout = setTimeout(() => {
-        this.loadingIndicator = true;
-      }, this.loadingIndicatorDelay);
-    }
+    this.setLoadingIndicator(true);
 
     this.language = document.documentElement.lang;
 
@@ -107,12 +102,8 @@ export default () => ({
       console.error(error);
     }
     finally {
-      this.loading = setLoading ? false : this.loading;
-      this.loadingIndicator = false;
-
-      if(this.loadingIndicatorTimeout) {
-        clearTimeout(this.loadingIndicatorTimeout);
-      }
+      this.setLoading(false);
+      this.setLoadingIndicator(false);
     }
   },
 
@@ -128,8 +119,15 @@ export default () => ({
    */
   async setWork(slug, dispatch = true) {
     try {
-      Alpine.store('global').slideoverTemplate = 'work';
       this.setLoading(true);
+      this.setLoadingIndicator(true);
+
+      // synthetic delay when navigating between work
+      if (Alpine.store('global').slideoverOpen) {
+        await new Promise((resolve) => setTimeout(resolve, 250));
+      }
+
+      Alpine.store('global').slideoverTemplate = 'work';
 
       if(!Alpine.store('global').slideoverOpen) {
         this.selected = null;
@@ -152,6 +150,7 @@ export default () => ({
       console.error('Error setting work:', error);
     } finally {
       this.setLoading(false);
+      this.setLoadingIndicator(false);
     }
   },
 
@@ -216,6 +215,23 @@ export default () => ({
       this.loadingEnd = Date.now();
     }
     this.loading = value;
+  },
+
+  /**
+   * Set loading indicator
+   */
+  setLoadingIndicator(value) {
+    if(value) {
+      this.loadingIndicatorTimeout = setTimeout(() => {
+        this.loadingIndicator = true;
+      }, this.loadingIndicatorDelay);
+    }
+    else {
+      this.loadingIndicator = false;
+      if(this.loadingIndicatorTimeout) {
+        clearTimeout(this.loadingIndicatorTimeout);
+      }
+    }
   },
 
   /**
