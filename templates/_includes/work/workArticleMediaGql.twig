@@ -166,14 +166,7 @@
               >
                 <img
                   x-data
-                  x-init="$watch('entry.cardImage[0]', () => {
-                    $el.src = entry.cardImage[0].blurhashUri
-                    $el.srcset = ''
-                    $nextTick(() => {
-                      $el.src = entry.cardImage[0]?.url
-                      $el.srcset = entry.cardImage[0]?.srcset
-                    })
-                  })"
+                  @slideover-post-update.window="$el.src = ''; $el.srcset = '';"
                   :src="entry.cardImage[0]?.url"
                   :srcset="entry.cardImage[0]?.srcset"
                   :alt="$store.work.selected?.title + ' video poster image'"
@@ -197,6 +190,7 @@
           {# == Image == #}
           <img
             x-data
+            @slideover-post-update.window="$el.src = ''; $el.srcset = '';"
             :src="entry.cardImage[0]?.url"
             :srcset="entry.cardImage[0]?.srcset"
             :alt="$store.work.selected?.title + ' image'"
