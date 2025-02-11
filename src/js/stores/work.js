@@ -49,7 +49,7 @@ export default () => ({
               slug
               title
             }
-            cardImage @transform(width: 480, height: 288, format: "webp") {
+            cardImage @transform(width: 480, height: 288, format: "avif") {
               id
               url
               width

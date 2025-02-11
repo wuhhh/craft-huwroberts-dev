@@ -35,18 +35,14 @@
 
           {% if image %}
             <div class="relative aspect-[480/288] lg:border-x border-[#f0edea] {# shadow-sm group-hover:shadow-none #} transition-all duration-200">
-              {% include "_includes/picture" with {
-                disableAlt: true,
-                image: image,
-                mode: "crop",
-                classes: "object-cover w-full h-full rounded-sm sm:rounded-none",
-                ratio: [480, 288],
-                pictureSets: [
-                  { "467": [560, null] },
-                  { "default": [414, null] },
-                ],
-              } only %}
-
+              {{ image.getImg(
+                { width: 480, height: 288, format: "avif", mode: "crop" },
+                ["480w", "960w", "1440w"]
+              )|attr({
+                sizes: "(max-width: 480px) 100vw, (min-width: 1280px) 700px, 480px",
+                class: "object-cover w-full h-full rounded-sm sm:rounded-none",
+                alt: "",
+              }) }}
               <div class="absolute inset-0 bg-zinc-100/90 backdrop-saturate-0 backdrop-brightness-125 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></div>
             </div>
           {% endif %}

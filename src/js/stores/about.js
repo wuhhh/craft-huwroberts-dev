@@ -33,14 +33,14 @@ export default () => ({
               id
               title
             }
-            portraitImage: image @transform(width: 362, height: 362, format: "webp") {
+            portraitImage: image @transform(width: 362, height: 362, format: "avif") {
               id
               url
               width
               height
               srcset(sizes: ["362w", "724w", "1174w"])
             }
-            landscapeImage: image @transform(width: 588, height: 270, format: "webp") {
+            landscapeImage: image @transform(width: 588, height: 270, format: "avif") {
               id
               url
               width
