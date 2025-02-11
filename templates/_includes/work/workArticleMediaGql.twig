@@ -197,7 +197,6 @@
           {# == Image == #}
           <img
             x-data
-            @slideover-post-update.window="entry.cardImage = null"
             :src="entry.cardImage[0]?.url"
             :srcset="entry.cardImage[0]?.srcset"
             :alt="$store.work.selected?.title + ' image'"
