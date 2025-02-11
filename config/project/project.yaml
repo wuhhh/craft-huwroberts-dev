@@ -1,4 +1,4 @@
-dateModified: 1738059085
+dateModified: 1739274853
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -53,10 +53,6 @@ meta:
     fa84d361-5db4-4ada-aa90-57a291b972c7: 'SEO Image' # SEO Image
     fe297c93-bf96-40ca-94ed-936d23f5fb1c: Footer # Footer
 plugins:
-  blur-hash:
-    edition: standard
-    enabled: true
-    schemaVersion: 1.0.0
   ckeditor:
     edition: standard
     enabled: true

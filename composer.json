@@ -19,7 +19,6 @@
   "require": {
     "craftcms/ckeditor": "4.4.0",
     "craftcms/cms": "5.5.8",
-    "dodecastudio/craft-blurhash": "3.0.3",
     "mmikkel/cp-field-inspect": "2.0.2",
     "nystudio107/craft-vite": "5.0.1",
     "vaersaagod/seomate": "3.1.1",

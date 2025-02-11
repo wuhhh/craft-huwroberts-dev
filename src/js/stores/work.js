@@ -49,13 +49,12 @@ export default () => ({
               slug
               title
             }
-            cardImage @transform(width: 480, height: 288, format: "png", immediately: true) {
+            cardImage @transform(width: 480, height: 288, format: "avif", immediately: false) {
               id
               url
               width
               height
               srcset(sizes: ["600w", "800w", "1250w", "1900w"])
-              blurhashUri: url @assetToBlurHash
             }
             video {
               url
