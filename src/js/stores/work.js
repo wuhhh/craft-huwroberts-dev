@@ -1,10 +1,10 @@
-import Alpine from 'alpinejs';
-import { slideoverPostUpdate } from '../helpers';
+import Alpine from "alpinejs";
+import { slideoverPostUpdate } from "../helpers";
 
 export default () => ({
-  endpoint: '/api',
+  endpoint: "/api",
   entries: [],
-  language: 'en-GB',
+  language: "en-GB",
   loading: false,
   loadingIndicator: false,
   loadingIndicatorDelay: 0,
@@ -15,11 +15,10 @@ export default () => ({
    * Fetch work entry by slug
    */
   async fetchWork(slug, setLoading = false) {
-
-    if(this.getEntryBySlug(slug)) return;
+    if (this.getEntryBySlug(slug)) return;
 
     this.loading = setLoading === true ? true : this.loading;
-    this.setLoadingIndicator(true);
+    this.setLoadingIndicator(setLoading);
 
     this.language = document.documentElement.lang;
 
@@ -79,29 +78,27 @@ export default () => ({
       // await new Promise((resolve) => setTimeout(resolve, 250));
 
       const response = await fetch(this.endpoint, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           query,
           variables: {
             slug,
             language: this.language,
-          }
-        })
+          },
+        }),
       });
 
       const { data } = await response.json();
 
-      if(data.entry) {
+      if (data.entry) {
         this.entries.push(data.entry);
       }
-    }
-    catch(error) {
+    } catch (error) {
       console.error(error);
-    }
-    finally {
+    } finally {
       this.setLoading(false);
       this.setLoadingIndicator(false);
     }
@@ -111,7 +108,7 @@ export default () => ({
    * Get entry by ID
    */
   getEntryBySlug(slug) {
-    return this.entries.find(entry => entry.slug == slug);
+    return this.entries.find((entry) => entry.slug == slug);
   },
 
   /**
@@ -123,31 +120,34 @@ export default () => ({
       this.setLoadingIndicator(true);
 
       // synthetic delay when navigating between work
-      if (Alpine.store('global').slideoverOpen) {
+      if (Alpine.store("global").slideoverOpen) {
         await new Promise((resolve) => setTimeout(resolve, 250));
       }
 
-      Alpine.store('global').slideoverTemplate = 'work';
+      Alpine.store("global").slideoverTemplate = "work";
 
-      if(!Alpine.store('global').slideoverOpen) {
-        this.selected = null;
-        Alpine.store('global').openSlideover();
+      if (!Alpine.store("global").slideoverOpen) {
+        if (this.selected?.slug !== slug) {
+          this.selected = null;
+        }
+        Alpine.store("global").openSlideover();
       }
 
-      if(!this.getEntryBySlug(slug)) {
+      if (!this.getEntryBySlug(slug)) {
         await this.fetchWork(slug, true);
       }
 
-      this.selected = this.getEntryBySlug(slug);
-
-      slideoverPostUpdate({
-        dispatch,
-        url: `/work/${this.selected.slug}`,
-        slug: this.selected.slug,
-        type: 'work',
-      });
+      if (this.selected?.slug !== slug) {
+        this.selected = this.getEntryBySlug(slug);
+        slideoverPostUpdate({
+          dispatch,
+          url: `/work/${this.selected.slug}`,
+          slug: this.selected.slug,
+          type: "work",
+        });
+      }
     } catch (error) {
-      console.error('Error setting work:', error);
+      console.error("Error setting work:", error);
     } finally {
       this.setLoading(false);
       this.setLoadingIndicator(false);
@@ -172,7 +172,7 @@ export default () => ({
    * next
    */
   async next() {
-    if(this.selected && this.hasNext()) {
+    if (this.selected && this.hasNext()) {
       await this.setWork(this.selected.next.slug);
     }
   },
@@ -181,7 +181,7 @@ export default () => ({
    * prev
    */
   async prev() {
-    if(this.selected && this.hasPrev()) {
+    if (this.selected && this.hasPrev()) {
       await this.setWork(this.selected.prev.slug);
     }
   },
@@ -190,7 +190,7 @@ export default () => ({
    * Fetch prev
    */
   fetchPrev() {
-    if(this.selected && this.hasPrev()) {
+    if (this.selected && this.hasPrev()) {
       this.fetchWork(this.selected.prev.slug);
     }
   },
@@ -199,7 +199,7 @@ export default () => ({
    * Fetch next
    */
   fetchNext() {
-    if(this.selected && this.hasNext()) {
+    if (this.selected && this.hasNext()) {
       this.fetchWork(this.selected.next.slug);
     }
   },
@@ -208,10 +208,9 @@ export default () => ({
    * Set loading
    */
   setLoading(value) {
-    if(value) {
+    if (value) {
       this.loadingStart = Date.now();
-    }
-    else {
+    } else {
       this.loadingEnd = Date.now();
     }
     this.loading = value;
@@ -221,14 +220,13 @@ export default () => ({
    * Set loading indicator
    */
   setLoadingIndicator(value) {
-    if(value) {
+    if (value) {
       this.loadingIndicatorTimeout = setTimeout(() => {
         this.loadingIndicator = true;
       }, this.loadingIndicatorDelay);
-    }
-    else {
+    } else {
       this.loadingIndicator = false;
-      if(this.loadingIndicatorTimeout) {
+      if (this.loadingIndicatorTimeout) {
         clearTimeout(this.loadingIndicatorTimeout);
       }
     }
@@ -246,6 +244,9 @@ export default () => ({
    * loadingDelayed
    */
   loadingDelayed() {
-    return this.loading && (Date.now() - this.loadingStart) > this.loadingIndicatorDelay;
+    return (
+      this.loading &&
+      Date.now() - this.loadingStart > this.loadingIndicatorDelay
+    );
   },
 });
