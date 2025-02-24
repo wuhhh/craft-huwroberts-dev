@@ -8,7 +8,7 @@ This is the open source repository for my website at [huwroberts.dev](https://hu
 
 Huw Roberts
 
-- X [@huwrobertsnet](https://x.com/huwroberts.net)
+- Bluesky [@huwroberts.net](https://bsky.app/profile/huwroberts.net)
 - Github [@wuhhh](https://github.com/wuhhh)
 - [huwroberts.dev [creative & commercial work]](https://huwroberts.dev)
 - [huwroberts.net [creative work only]](https://huwroberts.net)
