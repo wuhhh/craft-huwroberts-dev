@@ -2,7 +2,9 @@
   x-data="{
     {# map store to local variables #}
     entry: $store.work.selected,
-    tags: entry.techTags,
+    get tags() {
+      return this.entry.techTags;
+    },
 
     init() {
       this.$watch('$store.work.selected', value => this.entry = value);
