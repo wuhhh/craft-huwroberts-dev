@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  web:
+    environment:
+      # Production environment settings
+      ENVIRONMENT: production
+      DEV_MODE: false
+      ALLOW_ADMIN_CHANGES: false
+      DISALLOW_ROBOTS: false
+
+      # Higher resource limits for production
+      PHP_MEMORY_LIMIT: 512M
+      PHP_MAX_EXECUTION_TIME: 300
+
+      # These variables would be injected by Coolify
+      # and not stored in the repository
+      # DB_PASSWORD: ${DB_PASSWORD}
+      # SECURITY_KEY: ${SECURITY_KEY}
+      # PRIMARY_SITE_URL: ${PRIMARY_SITE_URL}
+      # REDIS_HOST: redis
+      # REDIS_PORT: 6379
+
+    # Optional: Add deployment-specific labels
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COOLIFY_APP_ID}.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.${COOLIFY_APP_ID}.entrypoints=websecure"
+      - "traefik.http.routers.${COOLIFY_APP_ID}.tls=true"
+
+  db:
+    environment:
+      # These would be injected by Coolify
+      # MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      # MYSQL_PASSWORD: ${DB_PASSWORD}
+
+    # Production database optimizations
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --innodb-buffer-pool-size=256M
+      --max-connections=100
+
+  queue:
+    environment:
+      # Production environment settings
+      ENVIRONMENT: production
+      DEV_MODE: false
+      ALLOW_ADMIN_CHANGES: false
+      DISALLOW_ROBOTS: false
+
+      # These variables would be inherited from the web service in Coolify
