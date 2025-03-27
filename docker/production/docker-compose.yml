@@ -1,0 +1,122 @@
+version: "3"
+
+services:
+  web:
+    image: craftcms/nginx:8.2
+    restart: unless-stopped
+    depends_on:
+      - db
+      - redis
+    environment:
+      # Database settings
+      DB_DRIVER: mysql
+      DB_SERVER: db
+      DB_USER: craft
+      DB_DATABASE: craft
+      DB_PORT: 3306
+      DB_SCHEMA: public
+      DB_TABLE_PREFIX: ""
+
+      # PHP settings - higher limits for production
+      PHP_MAX_EXECUTION_TIME: 300
+      PHP_MEMORY_LIMIT: 512M
+      PHP_POST_MAX_SIZE: 100M
+      PHP_UPLOAD_MAX_FILESIZE: 100M
+
+      # Nginx settings
+      NGINX_CLIENT_MAX_BODY_SIZE: 100m
+
+      # Craft basic settings
+      CP_TRIGGER: admin
+
+      # Production environment settings
+      ENVIRONMENT: production
+      DEV_MODE: false
+      ALLOW_ADMIN_CHANGES: false
+      DISALLOW_ROBOTS: false
+
+      # These variables would be injected by Coolify
+      # DB_PASSWORD: ${DB_PASSWORD}
+      # SECURITY_KEY: ${SECURITY_KEY}
+      # PRIMARY_SITE_URL: ${PRIMARY_SITE_URL}
+      # REDIS_HOST: redis
+      # REDIS_PORT: 6379
+    volumes:
+      - ..:/app:rw
+      - craft_production_storage:/app/storage
+      - craft_production_cpresources:/app/web/cpresources
+
+    # Optional: Add deployment-specific labels
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COOLIFY_APP_ID}.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.${COOLIFY_APP_ID}.entrypoints=websecure"
+      - "traefik.http.routers.${COOLIFY_APP_ID}.tls=true"
+
+  db:
+    image: mariadb:10.3
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: craft
+      MYSQL_USER: craft
+      # These would be injected by Coolify
+      # MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      # MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - craft_production_db_data:/var/lib/mysql
+    # Production database optimizations
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --innodb-buffer-pool-size=256M
+      --max-connections=100
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - craft_production_redis_data:/data
+
+  queue:
+    image: craftcms/nginx:8.2
+    restart: unless-stopped
+    depends_on:
+      - web
+      - db
+      - redis
+    environment:
+      # Database settings (same as web)
+      DB_DRIVER: mysql
+      DB_SERVER: db
+      DB_USER: craft
+      DB_DATABASE: craft
+      DB_PORT: 3306
+      DB_SCHEMA: public
+      DB_TABLE_PREFIX: ""
+
+      # Craft basic settings
+      CP_TRIGGER: admin
+
+      # Production environment settings
+      ENVIRONMENT: production
+      DEV_MODE: false
+      ALLOW_ADMIN_CHANGES: false
+      DISALLOW_ROBOTS: false
+
+      # These variables would be injected by Coolify (same as web)
+      # DB_PASSWORD: ${DB_PASSWORD}
+      # SECURITY_KEY: ${SECURITY_KEY}
+      # PRIMARY_SITE_URL: ${PRIMARY_SITE_URL}
+      # REDIS_HOST: redis
+      # REDIS_PORT: 6379
+    volumes:
+      - ..:/app:rw
+      - craft_production_storage:/app/storage
+    # Override the default command to run the queue
+    command: php /app/craft queue/listen --verbose
+
+volumes:
+  craft_production_storage:
+  craft_production_cpresources:
+  craft_production_db_data:
+  craft_production_redis_data:
