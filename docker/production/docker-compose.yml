@@ -113,7 +113,7 @@ services:
       - ..:/app:rw
       - craft_production_storage:/app/storage
     # Override the default command to run the queue
-    command: php /app/craft queue/listen --verbose
+    command: ["php", "/app/craft", "queue/listen", "--verbose"]
 
 volumes:
   craft_production_storage:
