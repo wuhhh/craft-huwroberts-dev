@@ -1,4 +1,4 @@
-dateModified: 1744734417
+dateModified: 1744734525
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -82,5 +82,5 @@ system:
   live: true
   name: 'Huw Roberts'
   retryDuration: null
-  schemaVersion: 5.5.0.0
+  schemaVersion: 5.6.0.2
   timeZone: Europe/London
