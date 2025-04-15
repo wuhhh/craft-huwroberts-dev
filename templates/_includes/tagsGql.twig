@@ -1,13 +1,14 @@
 <div
   x-data="{
     {# map store to local variables #}
-    entry: $store.work.selected,
+    entry: $store.global.slideoverTemplate === 'work' ? $store.work.selected : $store.about.entry,
     get tags() {
       return this.entry.techTags;
     },
 
     init() {
       this.$watch('$store.work.selected', value => this.entry = value);
+      this.$watch('$store.about.entry', value => this.entry = value);
     },
   }"
 >
@@ -20,4 +21,3 @@
     </template>
   </ul>
 </div>
-
