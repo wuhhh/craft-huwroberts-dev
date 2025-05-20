@@ -27,6 +27,12 @@ push-assets-stage:
 push-assets-prod:
 	rsync -avz --progress web/volumes/local/assets/ rootsy-forge:/home/forge/huwroberts.dev/web/volumes/local/assets/
 
+pull-assets-stage:
+  rsync -avz --progress rootsy-forge:/home/forge/stage.huwroberts.dev/web/volumes/local/assets/ web/volumes/local/assets/
+
+pull-assets-prod:
+  rsync -avz --progress rootsy-forge:/home/forge/huwroberts.dev/web/volumes/local/assets/ web/volumes/local/assets/
+
 %:
 	@:
 # ref: https://stackoverflow.com/questions/6273608/how-to-pass-argument-to-makefile-from-command-line
