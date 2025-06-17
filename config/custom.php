@@ -3,7 +3,7 @@
 use craft\helpers\App;
 
 return [
-	'trackingEnabled' => (bool) App::env('PLAUSIBLE_ENABLED'),
+	'trackingEnabled' => (bool) App::env('TRACKING_ENABLED'),
 	'translations' => [
 		'cy' => [
 			"About" => "Am",
