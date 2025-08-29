@@ -30,7 +30,8 @@
     <meta name="theme-color" content="#ffffff">
     {% hook 'seomateMeta' %}
     {% if craft.app.config.custom.trackingEnabled == 1 %}
-      <script defer src="https://cloud.umami.is/script.js" data-website-id="24662d1e-364d-4ec6-8a6c-914ddaa9ba23"></script>
+      <script defer data-domain="huwroberts.dev" src="https://analytics.thenumberstation.net/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
+      <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
     {% endif %}
     {% include "_includes/scripts.twig" %}
   </head>
