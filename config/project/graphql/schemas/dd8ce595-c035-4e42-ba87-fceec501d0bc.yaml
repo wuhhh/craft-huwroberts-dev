@@ -9,3 +9,5 @@ scope:
   - 'volumes.d5f87477-e8cd-4d2e-b3b9-c8c97050dadb:read' # Assets
   - 'categorygroups.279cfc2e-8324-4a53-aa20-56b80bfebaa7:read' # Work Type
   - 'taggroups.763f00c3-3720-4070-ab7e-910babff9419:read' # Tech
+  - 'directive:parseRefs'
+  - 'directive:transform'

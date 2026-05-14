@@ -1,22 +1,17 @@
 defaultPlacement: end
 enableVersioning: true
 entryTypes:
-  - c0160475-3256-40fc-89bf-3e63d0add54c # Home
+  -
+    uid: c0160475-3256-40fc-89bf-3e63d0add54c # Home
 handle: home
 maxAuthors: 1
+minAuthors: 1
 name: Home
 previewTargets:
   -
-    __assoc__:
-      -
-        - label
-        - 'Primary entry page'
-      -
-        - urlFormat
-        - '{url}'
-      -
-        - refresh
-        - '1'
+    label: 'Primary entry page'
+    refresh: '1'
+    urlFormat: '{url}'
 propagationMethod: all
 siteSettings:
   5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: # Cymraeg

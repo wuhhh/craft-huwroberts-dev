@@ -1,22 +1,17 @@
 defaultPlacement: end
 enableVersioning: true
 entryTypes:
-  - f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae # Work
+  -
+    uid: f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae # Work
 handle: work
 maxAuthors: 1
+minAuthors: 1
 name: Work
 previewTargets:
   -
-    __assoc__:
-      -
-        - label
-        - 'Primary entry page'
-      -
-        - urlFormat
-        - '{url}'
-      -
-        - refresh
-        - '1'
+    label: 'Primary entry page'
+    refresh: '1'
+    urlFormat: '{url}'
 propagationMethod: all
 siteSettings:
   5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: # Cymraeg
