@@ -19,7 +19,6 @@
   "require": {
     "craftcms/ckeditor": "4.11.4",
     "craftcms/cms": "5.10.0",
-    "mmikkel/cp-field-inspect": "2.0.4",
     "nystudio107/craft-vite": "5.0.1",
     "vaersaagod/seomate": "3.3.0",
     "verbb/knock-knock": "3.0.5",
