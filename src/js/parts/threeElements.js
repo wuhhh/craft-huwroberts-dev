@@ -7,20 +7,70 @@ let canvas, renderer;
 const scenes = [];
 let canvas_rect = null;
 
+const geometries = [
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.SphereGeometry(0.5, 12, 8),
+  new THREE.DodecahedronGeometry(0.5),
+  new THREE.CylinderGeometry(0.5, 0.5, 1, 12),
+];
+
 init();
+
+function big_scene(element) {
+  const scene = new THREE.Scene();
+  scene.userData.element = element;
+
+  const camera = new THREE.PerspectiveCamera(50, 1, 1, 10);
+  camera.position.z = 3;
+  scene.userData.camera = camera;
+
+  const controls = new OrbitControls(
+    scene.userData.camera,
+    scene.userData.element,
+  );
+  controls.minDistance = 2;
+  controls.maxDistance = 5;
+  controls.enablePan = false;
+  controls.enableZoom = false;
+  scene.userData.controls = controls;
+
+  // add one random mesh to each scene
+  const geometry = geometries[(geometries.length * Math.random()) | 0];
+
+  const material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color().setHSL(
+      Math.random(),
+      1,
+      0.75,
+      THREE.SRGBColorSpace,
+    ),
+    roughness: 0.5,
+    metalness: 0,
+    flatShading: true,
+  });
+
+  scene.add(new THREE.Mesh(geometry, material));
+
+  scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444, 3));
+
+  const light = new THREE.DirectionalLight(0xffffff, 1.5);
+  light.position.set(1, 1, 1);
+  scene.add(light);
+
+  scenes.push(scene);
+}
 
 function init() {
   canvas = document.getElementById("c");
   canvas_rect = canvas.getBoundingClientRect();
 
-  const geometries = [
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.SphereGeometry(0.5, 12, 8),
-    new THREE.DodecahedronGeometry(0.5),
-    new THREE.CylinderGeometry(0.5, 0.5, 1, 12),
-  ];
-
   const content = document.getElementById("content");
+
+  // scene1
+  big_scene(document.getElementById("scene1"));
+
+  // scene2
+  big_scene(document.getElementById("scene2"));
 
   for (let i = 0; i < 40; i++) {
     const scene = new THREE.Scene();
