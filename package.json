@@ -8,7 +8,8 @@
     "@alpinejs/ui": "^3.14.8",
     "alpinejs": "^3.14.8",
     "alpinejs-swipe": "^1.0.2",
-    "ogl": "^1.0.7"
+    "ogl": "^1.0.7",
+    "three": "^0.184.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

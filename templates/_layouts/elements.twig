@@ -1,0 +1,71 @@
+{% extends "_layouts/base" %}
+
+{% block base %}
+
+  <div id="top"></div>
+
+  {% include "_includes/followers/followerDot" only %}
+  {% include "_includes/followers/followerHex" only %}
+  {% include "_includes/decor/starflower" only %}
+
+  <div class="container flex flex-col gap-x-[68px] sm:flex-row">
+
+    {# Obi #}
+    {% include "_includes/obi" only %}
+
+    {# Grid #}
+    <div class="relative h-screen flex-grow grid grid-cols-12 lg:gap-x-10">
+
+      <canvas id="c"></canvas>
+
+      <div id="content">
+        {% include "_includes/decor/gridDecor.twig" only %}
+        {% block content %}{% endblock %}
+      </div>
+
+    </div>
+
+  </div>
+
+  {% include "_includes/followers/followerMore" only %}
+  {% include "_includes/slideoverGql" only %}
+
+  <style>
+    html, body {
+      {# == needed as quick hack to fix safari bug on the translated canvas == #}
+      overscroll-behavior: none;
+    }
+
+    #content {
+      position: absolute;
+      top: 0; width: 100%;
+    }
+
+    #c {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .list-item {
+      display: inline-block;
+      margin: 1em;
+      padding: 1em;
+    }
+
+    .list-item > div:nth-child(1) {
+      width: 200px;
+      height: 200px;
+    }
+
+    .list-item > div:nth-child(2) {
+      color: #888;
+      font-family: sans-serif;
+      font-size: large;
+      width: 200px;
+      margin-top: 0.5em;
+    }
+  </style>
+
+{% endblock %}
