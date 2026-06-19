@@ -1,4 +1,4 @@
-dateModified: 1781893206
+dateModified: 1781893530
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -37,7 +37,6 @@ meta:
     99701ea9-a4da-4fb6-b997-541f0661f9a9: Agency # Agency
     abca85a2-35fd-471e-88e4-03f192b781dd: Who # Who
     b72f3694-5d2a-478c-badd-08344714d7d0: Agency # Agency
-    bd8c65e7-b611-45be-8f4c-658c6cf4a0f7: Simple # Simple
     c0160475-3256-40fc-89bf-3e63d0add54c: Home # Home
     c3d4eba5-b940-4c5b-a4cd-6f3d86f6d410: 'SEO Title' # SEO Title
     c5b973a9-a07d-4d67-acb9-a3f0cbcb1450: 'Tech Tags' # Tech Tags
@@ -56,7 +55,7 @@ plugins:
   ckeditor:
     edition: standard
     enabled: true
-    schemaVersion: 3.0.0.0
+    schemaVersion: 5.6.0.0
   knock-knock:
     edition: standard
     enabled: true
