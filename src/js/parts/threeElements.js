@@ -191,8 +191,8 @@ function animate() {
 
     const camera = scene.userData.camera;
 
-    //camera.aspect = width / height; // not changing in this example
-    //camera.updateProjectionMatrix();
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
 
     //scene.userData.controls.update();
 

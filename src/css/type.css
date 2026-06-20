@@ -1,0 +1,136 @@
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 1.125rem;
+    line-height: 1.35;
+
+    @media (min-width: 834px) {
+      font-size: 1.25rem;
+      line-height: 1.4;
+    }
+  }
+}
+
+@utility heading0 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 4rem;
+  line-height: 1.26;
+  letter-spacing: 0.02em;
+}
+
+@utility heading1 {
+  font-family: var(--font-sans);
+  font-size: 1.625rem;
+  line-height: 1.26;
+
+  @media (min-width: 834px) {
+    font-size: 2.8125rem;
+  }
+
+  @media (min-width: 1536px) {
+    font-size: 3.25rem;
+  }
+}
+
+@utility heading2 {
+  font-family: var(--font-sans);
+  font-size: 2.8125rem;
+  line-height: 1.26;
+}
+
+@utility heading3 {
+  font-family: var(--font-sans);
+  font-size: 2.5rem;
+  line-height: 1.26;
+}
+
+@utility heading4 {
+  font-family: var(--font-sans);
+  font-size: 2.3125rem;
+  line-height: 1.26;
+}
+
+@utility heading5 {
+  font-family: var(--font-sans);
+  font-size: 1.625rem;
+  line-height: 1.26;
+  letter-spacing: -0.01em;
+}
+
+@utility base-sans {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+@utility sm-sans {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 1.125rem;
+  line-height: 1.35;
+}
+
+@utility xs-sans {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@utility heading2-mono {
+  font-family: var(--font-mono);
+  font-size: 1.3125rem;
+  line-height: 1.4;
+}
+
+@utility heading3-mono {
+  font-family: var(--font-mono);
+  font-size: 1.1875rem;
+  line-height: 1.5;
+}
+
+@utility base-mono {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@utility sm-mono {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+@utility xs-mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+@utility xs-mono-capped {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.ckeditor {
+  &.-simple {
+    a {
+      text-decoration-line: underline;
+      text-decoration-thickness: from-font;
+      text-decoration-color: var(--color-coral-red);
+
+      &:hover {
+        text-decoration-line: none;
+        background-color: color-mix(
+          in oklab,
+          var(--color-coral-red) 20%,
+          transparent
+        );
+      }
+    }
+  }
+}

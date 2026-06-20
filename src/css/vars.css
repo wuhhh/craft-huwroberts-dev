@@ -1,0 +1,74 @@
+@theme {
+  /**
+   * Fonts
+   */
+  --font-*: initial;
+  --font-sans: "gs", sans-serif;
+  --font-mono: "bm", monospace;
+
+  /**
+   * Breakpoints
+   */
+  --breakpoint-md: 834px;
+  --breakpoint-3xl: 1728px;
+
+  /**
+   * Colors
+   */
+  --color-coral-red: #f36855;
+  --color-seabed-indigo: #3f26dd;
+  --color-seabed-indigo-50: #e6e3fa;
+  --color-seabed-indigo-100: #e0ddf3;
+  --color-seabed-indigo-400: #3f26dd;
+  --color-stone: #ebeff4;
+
+  /**
+   * Shadows
+   */
+  --shadow-*: initial;
+  --shadow-sm: 0 0 8px 0 rgb(0 0 0 / 0.05);
+
+  /**
+   * Animations
+   */
+  --animate-spin-slowish: spin 2s linear infinite;
+  --animate-spin-slow: spin 3s linear infinite;
+  --animate-spin-very-slow: spin 20s linear infinite;
+  --animate-travel-x: travel-x 0.5s linear infinite;
+  --animate-travel-x-slow: travel-x 1s linear infinite;
+  --animate-travel-x-slower: travel-x 2s linear infinite;
+
+  @keyframes travel-x {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /**
+   * Easing
+   */
+  --ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/**
+ * Custom variants (replaces the old screens with `max`/`raw` media)
+ */
+@custom-variant sm-down (@media (max-width: 639px));
+@custom-variant hover-none (@media (hover: none));
+
+/**
+ * Layout custom properties
+ */
+:root {
+  --3xl-w: 1728px;
+  --3xl-px: 80px;
+  --panel-w: clamp(818px, 1200px, 70vw);
+  --panel-away-w: calc(100vw - var(--panel-w));
+  --3xl-panel-w: calc(((100vw - var(--3xl-w)) / 2) + (var(--3xl-w) / 100 * 70));
+  --3xl-panel-away-w: calc(
+    ((100vw - var(--3xl-w)) / 2) + (var(--3xl-w) / 100 * 30)
+  );
+}

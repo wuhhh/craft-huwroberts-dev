@@ -1,36 +1,33 @@
 {
-  "name": "huwrobertsdev",
-  "author": "wuhhh",
-  "version": "0.0.1",
-  "dependencies": {
-    "@alpinejs/focus": "^3.14.8",
-    "@alpinejs/intersect": "^3.14.8",
-    "@alpinejs/ui": "^3.14.8",
-    "alpinejs": "^3.14.8",
-    "alpinejs-swipe": "^1.0.2",
-    "ogl": "^1.0.7",
-    "three": "^0.184.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.21.0",
-    "autoprefixer": "^10.4.14",
-    "eslint": "^9.21.0",
-    "globals": "^16.0.0",
-    "postcss": "^8.4.21",
-    "postcss-import": "^15.1.0",
-    "postcss-pxtorem": "^6.0.0",
-    "tailwindcss": "^3.4.3",
-    "vite": "^4.2.1",
-    "vite-plugin-compression": "^0.5.1",
-    "vite-plugin-copy-smartly": "^0.1.0-alpha",
-    "vite-plugin-manifest-sri": "^0.1.0",
-    "vite-plugin-restart": "^0.3.1"
-  },
-  "engines": {
-    "node": "^20"
-  },
+  "name": "hrdev",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "This is the open source repository for my website at [huwroberts.dev](https://huwroberts.dev). This is probably only of interest to you if you're considering hiring me, having said that, you might find something useful here if you're building something similar and you enjoy working with things like [Craft CMS](https://craftcms.com), [Tailwind](https://tailwindcss.com/), [Alpine](https://alpinejs.dev/) and [OGL](https://oframe.github.io/ogl/).",
   "scripts": {
     "build": "NODE_ENV=production vite build",
     "serve": "NODE_ENV=dev vite"
+  },
+  "author": "wuhhh",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.1",
+    "@types/node": "^26.0.0",
+    "@types/three": "^0.184.1",
+    "eslint": "^10.5.0",
+    "globals": "^17.6.0",
+    "jiti": "^2.7.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.1",
+    "vite": "^7.3.5",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-manifest-sri": "^0.2.0",
+    "vite-plugin-restart": "^2.0.0",
+    "vite-plugin-static-copy": "^4.1.1"
+  },
+  "dependencies": {
+    "lit": "^3.3.3",
+    "three": "^0.184.0"
   }
 }

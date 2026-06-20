@@ -1,0 +1,25 @@
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1.625rem;
+  max-width: 108rem;
+
+  @media (min-width: 834px) {
+    padding-inline: 3rem;
+  }
+
+  @media (min-width: 1536px) {
+    padding-inline: 5rem;
+  }
+}
+
+@utility text-vertical {
+  writing-mode: vertical-lr;
+}
+
+@utility text-upright {
+  text-orientation: upright;
+}
+
+@utility min-h-screenh {
+  min-height: 100dvh;
+}

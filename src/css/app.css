@@ -1,22 +1,20 @@
-@import 'base/index.css';
-@import 'components/index.css';
-@import 'utilities/index.css';
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "@css/common.css";
+@import "@css/fonts.css";
+@import "@css/vars.css";
+@import "@css/type.css";
+@import "@css/utilities.css";
 
-:root {
-  --3xl-w: 1728px;
-  --3xl-px: 80px;
-  --panel-w: clamp(818px, 1200px, 70vw);
-  --panel-away-w: calc(100vw - var(--panel-w));
-  --3xl-panel-w: calc(((100vw - var(--3xl-w)) / 2) + (var(--3xl-w) / 100 * 70));
-  --3xl-panel-away-w: calc(((100vw - var(--3xl-w)) / 2) + (var(--3xl-w) / 100 * 30));
-}
+/* Safelisted classes applied dynamically (formerly tailwind.config safelist) */
+@source inline("bg-{zinc,neutral}-{50,100,900} bg-black");
 
-.noise-overlay {
-	@apply fixed inset-0 pointer-events-none z-10;
-	background: url('/dist/images/bg--noise-texture@2x.png');
-	background-size: 50px 50px;
-	background-attachment: fixed;
-}
+/* .noise-overlay { */
+/*   @apply fixed inset-0 pointer-events-none z-10; */
+/*   background: url("/dist/images/bg--noise-texture@2x.png"); */
+/*   background-size: 50px 50px; */
+/*   background-attachment: fixed; */
+/* } */
 
 ::selection {
   @apply bg-coral-red/20;
