@@ -1,14 +1,11 @@
 {% extends '_layouts/elements.twig' %}
 
 {% block content %}
-
-  {# == scenes are squished - need to fix using whatever that trick is.. == #}
-
-  <div class="w-full h-screen" id="scene1"></div>
+  <intro-scene class="w-full h-screen [--intro-scene-color:var(--color-coral-red)]"></intro-scene>
   <div class="w-full h-screen grid place-content-center">
-    <div>Some other content</div>
+    <div><a href="/">home</a></div>
   </div>
-  <div class="w-full h-screen" id="scene2"></div>
+  <intro-scene class="w-full h-screen [--intro-scene-color:var(--color-seabed-indigo)]"></intro-scene>
 
 {% endblock %}
 

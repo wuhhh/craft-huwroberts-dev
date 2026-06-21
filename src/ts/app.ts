@@ -2,5 +2,6 @@
 import "@css/app.css";
 
 // Import Lit components
+import "./components/intro-scene.ts";
 import "./components/mouse-follower.ts";
-import "./components/emoji-rotator.ts";
+import "./components/scene-canvas.ts";
