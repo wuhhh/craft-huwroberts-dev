@@ -5,3 +5,4 @@ import "@css/app.css";
 import "./components/intro-scene.ts";
 import "./components/mouse-follower.ts";
 import "./components/scene-canvas.ts";
+import "./components/star-flower.ts";

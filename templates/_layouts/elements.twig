@@ -11,8 +11,9 @@
     <span class="block size-3 rounded-full bg-coral-red"></span>
   </mouse-follower>
 
-  <emoji-rotator></emoji-rotator>
-  {% include "_includes/decor/starflower" only %}
+  <star-flower class="container relative">
+    {{ svg('@webroot/dist/images/icon--starflower.svg', true, true)|attr({ class: 'w-[30px]' }) }}
+  </star-flower>
 
   <div class="container flex flex-col gap-x-17 sm:flex-row">
 
