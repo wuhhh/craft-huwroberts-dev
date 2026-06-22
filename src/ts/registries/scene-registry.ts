@@ -1,12 +1,12 @@
-import type { SceneEntry } from "../types.d.ts";
+import type { SceneRegistryEntry } from "../types.d.ts";
 
 class SceneRegistry {
-  #entries = new Set<SceneEntry>();
+  #entries = new Set<SceneRegistryEntry>();
 
-  register(entry: SceneEntry) {
+  register(entry: SceneRegistryEntry) {
     this.#entries.add(entry);
   }
-  unregister(entry: SceneEntry) {
+  unregister(entry: SceneRegistryEntry) {
     this.#entries.delete(entry);
   }
   get entries() {
@@ -14,4 +14,4 @@ class SceneRegistry {
   }
 }
 
-export const scenes = new SceneRegistry();
+export const sceneRegistry = new SceneRegistry();

@@ -1,42 +1,21 @@
-import type { Scene, PerspectiveCamera } from "three";
-import {
-  LitElement,
-  type ReactiveController,
-  type ReactiveControllerHost,
-} from "lit";
-import { scenes } from "../registries/scene-registry";
-import type { SceneDrawCallback, SceneEntry } from "../types";
+import { type ReactiveController, type ReactiveControllerHost } from "lit";
+import { sceneRegistry } from "../registries/scene-registry";
+import type { SceneRegistryEntry } from "../types";
 
 export class SceneController implements ReactiveController {
   host: ReactiveControllerHost;
-  entry?: SceneEntry;
+  entry?: SceneRegistryEntry;
 
-  constructor(
-    host: ReactiveControllerHost & LitElement,
-    build: () => Promise<{
-      scene: Scene;
-      camera: PerspectiveCamera;
-      draw: SceneDrawCallback;
-    }>,
-  ) {
-    (this.host = host).addController(this);
-    build()
-      .then((result) => {
-        this.entry = { ...result, el: host };
-
-        // build is async, if host connected first, register here
-        if (host.isConnected) scenes.register(this.entry);
-      })
-      .catch((err) => {
-        console.error("[SceneController] build failed, err: ", err);
-      });
+  constructor(entry: SceneRegistryEntry) {
+    (this.host = entry.host).addController(this);
+    this.entry = entry;
   }
 
   hostConnected(): void {
-    if (this.entry) scenes.register(this.entry);
+    if (this.entry) sceneRegistry.register(this.entry);
   }
 
   hostDisconnected(): void {
-    if (this.entry) scenes.unregister(this.entry);
+    if (this.entry) sceneRegistry.unregister(this.entry);
   }
 }

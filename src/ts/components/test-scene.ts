@@ -4,7 +4,7 @@ import * as THREE from "three/webgpu";
 import { SceneController } from "../controllers/scene-controller";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { spring } from "../lib/easing";
-import type { SceneDrawCallback } from "../types";
+import type { SceneDrawFn, SceneSetupAsyncFn } from "../types";
 
 @customElement("test-scene")
 export class TestScene extends LitElement {
@@ -25,10 +25,12 @@ export class TestScene extends LitElement {
 
   constructor() {
     super();
-    new SceneController(this, () => {
+
+    const camera = new THREE.PerspectiveCamera(50, 1, 1, 10);
+    camera.position.z = 3;
+
+    const setupFn: SceneSetupAsyncFn = () => {
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(50, 1, 1, 10);
-      camera.position.z = 3;
 
       const controls = new OrbitControls(camera, this);
       controls.minDistance = 2;
@@ -60,12 +62,15 @@ export class TestScene extends LitElement {
       light.position.set(1, 1, 1);
       scene.add(light);
 
-      const draw: SceneDrawCallback = ({ elapsed }) => {
+      return { scene, camera };
+    };
+
+    const drawFn: SceneDrawFn = ({ elapsed }) => {
         mesh.rotation.y = Math.PI * spring(elapsed, 6, 0.8);
       };
+    }
 
-      return { scene, camera, draw };
-    });
+    new SceneController({ host: this, camera, setupFn, drawFn });
   }
 
   protected render() {

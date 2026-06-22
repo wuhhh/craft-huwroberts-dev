@@ -1,18 +1,26 @@
 import { css, html, LitElement, type CSSResultGroup } from "lit";
 import { customElement, query } from "lit/decorators.js";
-import { scenes } from "../registries/scene-registry";
+import { sceneRegistry } from "../registries/scene-registry";
 import * as THREE from "three/webgpu";
+import type { SceneEntry } from "../types";
 
+/**
+ * Orchestrates rendering multiple scenes to a single canvas
+ */
 @customElement("scene-canvas")
 export class SceneCanvas extends LitElement {
   @query("canvas")
   private canvasElement!: HTMLCanvasElement;
+
   private renderer!: THREE.WebGPURenderer;
   private canvasRect!: DOMRect;
 
   private delta!: number;
   private elapsed = 0;
   private startTime!: number;
+
+  // hold scenes after setup()
+  private scenes: SceneEntry[] = [];
 
   static styles?: CSSResultGroup | undefined = css`
     :host {
@@ -31,6 +39,16 @@ export class SceneCanvas extends LitElement {
     }
   `;
 
+  /**
+   * Window resize event handler
+   */
+  private handleResize = () => {
+    this.canvasRect = this.getBoundingClientRect();
+  };
+
+  /**
+   * Updates the internal renderer size if the canvas dimensions have changed
+   */
   private updateSize() {
     const width = this.canvasElement.clientWidth;
     const height = this.canvasElement.clientHeight;
@@ -43,16 +61,39 @@ export class SceneCanvas extends LitElement {
     }
   }
 
+  /**
+   * Calculates elapsed time and frame delta
+   */
   private updateTime() {
     if (!this.startTime) this.startTime = Date.now();
     const _elapsed = (Date.now() - this.startTime) / 1000;
     this.delta = _elapsed - this.elapsed;
     this.elapsed = _elapsed;
-    this.updateSize();
   }
 
+  /**
+   * Loops over scene registry entries, runs their setup fns and gives back SceneEntry[]
+   */
+  private async setupScenes() {
+    sceneRegistry.entries.forEach(async (entry) => {
+      // here we can inject context we want available to setupFn in scene components
+      // passing back host which will now be mounted
+      const { scene, camera } = await entry.setupFn({ host: entry.host });
+      this.scenes.push({
+        scene,
+        camera,
+        drawFn: entry.drawFn,
+        host: entry.host,
+      });
+    });
+  }
+
+  /**
+   * Animation frame loop
+   */
   private frame = () => {
     this.updateTime();
+    this.updateSize();
 
     // transform canvas
     this.canvasElement.style.transform = `translateY(${window.scrollY}px)`;
@@ -70,12 +111,17 @@ export class SceneCanvas extends LitElement {
     // this.renderer.setClearColor(0xe0e0e0);
     this.renderer.setScissorTest(true);
 
-    scenes.entries.forEach((entry) => {
+    this.scenes.forEach((entry) => {
       // call scene's draw fn
-      entry.draw({ delta: this.delta, elapsed: this.elapsed });
+      entry.drawFn({
+        camera: entry.camera,
+        delta: this.delta,
+        elapsed: this.elapsed,
+        host: entry.host,
+      });
 
       // get its position relative to the page's viewport
-      const rect = entry.el.getBoundingClientRect();
+      const rect = entry.host.getBoundingClientRect();
 
       // check if it's offscreen. If so skip it
       if (
@@ -96,8 +142,10 @@ export class SceneCanvas extends LitElement {
       this.renderer.setViewport(left, top, width, height);
       this.renderer.setScissor(left, top, width, height);
 
-      entry.camera.aspect = width / height;
-      entry.camera.updateProjectionMatrix();
+      if (entry.camera instanceof THREE.PerspectiveCamera) {
+        entry.camera.aspect = width / height;
+        entry.camera.updateProjectionMatrix();
+      }
 
       this.renderer.render(entry.scene, entry.camera);
     });
@@ -108,9 +156,23 @@ export class SceneCanvas extends LitElement {
       canvas: this.canvasElement,
       antialias: true,
     });
+
     this.canvasRect = this.getBoundingClientRect();
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setAnimationLoop(this.frame);
+
+    this.setupScenes().then(() => {
+      this.renderer.setAnimationLoop(this.frame);
+    });
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    window.addEventListener("resize", this.handleResize);
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    window.removeEventListener("resize", this.handleResize);
   }
 
   render() {
