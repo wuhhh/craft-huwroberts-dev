@@ -2,8 +2,6 @@ import { LitElement, css, html, type CSSResultGroup } from "lit";
 import { customElement } from "lit/decorators.js";
 import * as THREE from "three/webgpu";
 import { SceneController } from "../controllers/scene-controller";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { spring } from "../lib/easing";
 import type { DrawFn } from "../types";
 
 @customElement("intro-scene")
@@ -30,38 +28,8 @@ export class IntroScene extends LitElement {
       const camera = new THREE.PerspectiveCamera(50, 1, 1, 10);
       camera.position.z = 3;
 
-      const controls = new OrbitControls(camera, this);
-      controls.minDistance = 2;
-      controls.maxDistance = 5;
-      controls.enablePan = false;
-      controls.enableZoom = false;
-
-      // add one random mesh to each scene
-      const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-      const material = new THREE.MeshStandardMaterial({
-        color: new THREE.Color().setHSL(
-          Math.random(),
-          1,
-          0.75,
-          THREE.SRGBColorSpace,
-        ),
-        roughness: 0.5,
-        metalness: 0,
-        flatShading: true,
-      });
-
-      const mesh = new THREE.Mesh(geometry, material);
-
-      scene.add(mesh);
-      scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444, 3));
-
-      const light = new THREE.DirectionalLight(0xffffff, 1.5);
-      light.position.set(1, 1, 1);
-      scene.add(light);
-
-      const draw: DrawFn = ({ elapsed }) => {
-        mesh.rotation.y = Math.PI * spring(elapsed, 6, 0.8);
+      const draw: DrawFn = () => {
+        // draw stuff ...
       };
 
       return { scene, camera, draw };
