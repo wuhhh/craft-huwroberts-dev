@@ -20,6 +20,7 @@ import {
   max,
   mix,
   mul,
+  mx_noise_vec3,
   normalize,
   normalLocal,
   positionGeometry,
@@ -27,7 +28,9 @@ import {
   pow,
   smoothstep,
   sub,
+  time,
   uv,
+  vec3,
 } from "three/tsl";
 
 /**
@@ -35,7 +38,9 @@ import {
  */
 interface IntroSceneContext {
   meshRefs?: {
+    box: THREE.Mesh | null;
     diamond3d: THREE.Mesh | null;
+    diamondPlane: THREE.Mesh | null;
     huwRobertsMain: THREE.Mesh | null;
   };
 }
@@ -80,7 +85,7 @@ export class IntroScene extends LitElement {
 
     const setupFn: SceneSetupAsyncFn = async ({ host }) => {
       const aspect = host.clientWidth / host.clientHeight;
-      const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 100);
+      const camera = new THREE.PerspectiveCamera(25, aspect, 1, 20);
       camera.position.z = 10;
 
       const scene = new THREE.Scene();
@@ -106,7 +111,7 @@ export class IntroScene extends LitElement {
       const indigo = 0x441ce4;
       const coral = 0xf36855;
 
-      // Line material
+      // line material
       const lineMat = new THREE.LineBasicNodeMaterial();
       lineMat.transparent = true;
       lineMat.colorNode = color(indigo);
@@ -114,7 +119,7 @@ export class IntroScene extends LitElement {
       lineMat.depthTest = false;
       lineMat.depthWrite = false;
 
-      // Clouded glass material
+      // clouded glass material
       const cloudedGlassMat = new THREE.MeshStandardNodeMaterial();
       cloudedGlassMat.transparent = true;
       cloudedGlassMat.side = THREE.DoubleSide;
@@ -144,17 +149,47 @@ export class IntroScene extends LitElement {
       const fresnel = pow(sub(1, abs(dot(viewDirection, normal))), 2);
       cloudedGlassMat.opacityNode = mix(float(0.05), float(0.225), fresnel);
 
+      // diamond plane material
+      const diamondPlaneMat = new THREE.MeshBasicNodeMaterial();
+      diamondPlaneMat.colorNode = mix(
+        color(coral),
+        color(indigo),
+        clamp(
+          mx_noise_vec3(
+            vec3(uv().x.add(time.mul(0.25)), uv().y.mul(4), time.mul(0.5)),
+            1.5,
+            0,
+          ).r,
+          0,
+          1,
+        ),
+      );
+
       // meshes
+      const box = new THREE.Mesh(
+        new THREE.BoxGeometry(1, 1, 1, 4, 4, 1),
+        cloudedGlassMat,
+      );
+      const boxEdges = new THREE.EdgesGeometry(box.geometry);
+      const boxLines = new THREE.LineSegments(boxEdges, lineMat);
       const diamond3d = (this.findObject("diamond3d", c) as THREE.Mesh) || null;
       const diamond3dEdges = diamond3d
         ? new THREE.EdgesGeometry(diamond3d.geometry)
         : null;
+      const diamondPlane =
+        (this.findObject("diamondPlane", c) as THREE.Mesh) || null;
 
       ctx.meshRefs = {
+        box,
         diamond3d,
+        diamondPlane,
         huwRobertsMain:
           (this.findObject("huwRobertsMain", c) as THREE.Mesh) || null,
       };
+
+      // box
+      box.add(boxLines);
+      scene.add(box);
 
       // diamond3d
       if (ctx.meshRefs.diamond3d) {
@@ -170,6 +205,12 @@ export class IntroScene extends LitElement {
           ctx.meshRefs.diamond3d.add(diamond3dLines);
           scene.add(ctx.meshRefs.diamond3d);
         }
+      }
+
+      // diamondPlane
+      if (ctx.meshRefs.diamondPlane) {
+        ctx.meshRefs.diamondPlane.material = diamondPlaneMat;
+        scene.add(ctx.meshRefs.diamondPlane);
       }
 
       // huwRobertsMain
@@ -190,12 +231,37 @@ export class IntroScene extends LitElement {
     /**
      * Draw
      */
-    const drawFn: SceneDrawFn = ({ camera, delta, host }) => {
+    const drawFn: SceneDrawFn = ({ camera, delta, elapsed, host }) => {
       const viewport = getViewport(camera, host) as SceneViewport;
       const scaleFactor = viewport.width * 0.2;
 
+      // box
+      if (ctx.meshRefs?.box) {
+        ctx.meshRefs.box.position.set(
+          -1.8 * scaleFactor,
+          -1.05 * scaleFactor,
+          0,
+        );
+        ctx.meshRefs.box.rotation.set(
+          0.92 * scaleFactor + elapsed * 0.5,
+          -0.11 * scaleFactor + elapsed * 2,
+          0,
+        );
+        ctx.meshRefs.box.scale.set(
+          0.75 * scaleFactor,
+          0.75 * scaleFactor,
+          0.1 * scaleFactor,
+        );
+      }
+
       // diamond3d
       if (ctx.meshRefs?.diamond3d) {
+        ctx.meshRefs.diamond3d.scale.set(
+          0.9 * scaleFactor,
+          0.9 * scaleFactor,
+          0.9 * scaleFactor,
+        );
+
         ctx.meshRefs.diamond3d.position.set(
           -1.9 * scaleFactor,
           1 * scaleFactor,
@@ -203,6 +269,20 @@ export class IntroScene extends LitElement {
         );
 
         ctx.meshRefs.diamond3d.rotation.y += delta * 0.48;
+      }
+
+      // diamondPlane
+      if (ctx.meshRefs?.diamondPlane) {
+        ctx.meshRefs.diamondPlane.position.set(
+          1.67 * scaleFactor,
+          1.04 * scaleFactor,
+          0,
+        );
+        ctx.meshRefs.diamondPlane.scale.set(
+          0.5 * scaleFactor,
+          0.5 * scaleFactor,
+          0.5 * scaleFactor,
+        );
       }
 
       // huwRobertsMain
