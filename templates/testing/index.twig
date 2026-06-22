@@ -1,11 +1,14 @@
 {% extends '_layouts/elements.twig' %}
 
 {% block content %}
-  <intro-scene class="w-full h-screen [--intro-scene-color:var(--color-coral-red)]"></intro-scene>
-  <div class="w-full h-screen grid place-content-center">
-    <div><a href="/">home</a></div>
+
+  <div class="col-span-full">
+    <intro-scene class="w-full h-screen [--intro-scene-color:var(--color-coral-red)]"></intro-scene>
+    <div class="w-full h-screen grid place-content-center">
+      <div><a href="/">home</a></div>
+    </div>
+    <intro-scene class="w-full h-screen [--intro-scene-color:var(--color-seabed-indigo)]"></intro-scene>
   </div>
-  <intro-scene class="w-full h-screen [--intro-scene-color:var(--color-seabed-indigo)]"></intro-scene>
 
 {% endblock %}
 

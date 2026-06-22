@@ -1,10 +1,4 @@
-import type { Scene, PerspectiveCamera } from "three";
-
-export type SceneEntry = {
-  scene: Scene;
-  camera: PerspectiveCamera;
-  el: HTMLElement;
-};
+import type { SceneEntry } from "../types.d.ts";
 
 class SceneRegistry {
   #entries = new Set<SceneEntry>();

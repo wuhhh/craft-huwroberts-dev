@@ -10,6 +10,10 @@ export class SceneCanvas extends LitElement {
   private renderer!: THREE.WebGPURenderer;
   private canvasRect!: DOMRect;
 
+  private delta!: number;
+  private elapsed = 0;
+  private startTime!: number;
+
   static styles?: CSSResultGroup | undefined = css`
     :host {
       display: block;
@@ -39,9 +43,18 @@ export class SceneCanvas extends LitElement {
     }
   }
 
-  private frame = () => {
+  private updateTime() {
+    if (!this.startTime) this.startTime = Date.now();
+    const _elapsed = (Date.now() - this.startTime) / 1000;
+    this.delta = _elapsed - this.elapsed;
+    this.elapsed = _elapsed;
     this.updateSize();
+  }
 
+  private frame = () => {
+    this.updateTime();
+
+    // transform canvas
     this.canvasElement.style.transform = `translateY(${window.scrollY}px)`;
 
     // this.renderer.setClearColor(0xffffff);
@@ -58,8 +71,8 @@ export class SceneCanvas extends LitElement {
     this.renderer.setScissorTest(true);
 
     scenes.entries.forEach((entry) => {
-      // so something moves
-      entry.scene.children[0].rotation.y = Date.now() * 0.001;
+      // call scene's draw fn
+      entry.draw({ delta: this.delta, elapsed: this.elapsed });
 
       // get its position relative to the page's viewport
       const rect = entry.el.getBoundingClientRect();
@@ -86,16 +99,11 @@ export class SceneCanvas extends LitElement {
       entry.camera.aspect = width / height;
       entry.camera.updateProjectionMatrix();
 
-      //scene.userData.controls.update();
-
       this.renderer.render(entry.scene, entry.camera);
     });
   };
 
   firstUpdated(): void {
-    super.connectedCallback();
-    console.log([...scenes.entries][0]);
-
     this.renderer = new THREE.WebGPURenderer({
       canvas: this.canvasElement,
       antialias: true,

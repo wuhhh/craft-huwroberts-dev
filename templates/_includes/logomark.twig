@@ -1,8 +1,7 @@
-<button
-  aria-label="Go to top"
-  x-data
-  x-on:click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+<a
+  href="{{ siteUrl }}"
+  aria-label="Home"
   class="size-12 sm:size-14 bg-coral-red text-seabed-indigo rounded-full flex items-center justify-center"
 >
-  {{ svg('@webroot/dist/images/h--logomark-alt.svg', true, true)|attr({ class: 'w-10 sm:w-12 h-auto' }) }}
-</button>
+  {{ svg('@webroot/dist/images/h--logomark-alt.svg', true, true)|attr({ class: 'w-10 sm:w-12 h-auto', 'aria-hidden': true }) }}
+</a>
