@@ -4,7 +4,7 @@ import * as THREE from "three/webgpu";
 import { SceneController } from "../controllers/scene-controller";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { spring } from "../lib/easing";
-import type { DrawFn } from "../types";
+import type { SceneDrawCallback } from "../types";
 
 @customElement("test-scene")
 export class TestScene extends LitElement {
@@ -60,7 +60,7 @@ export class TestScene extends LitElement {
       light.position.set(1, 1, 1);
       scene.add(light);
 
-      const draw: DrawFn = ({ elapsed }) => {
+      const draw: SceneDrawCallback = ({ elapsed }) => {
         mesh.rotation.y = Math.PI * spring(elapsed, 6, 0.8);
       };
 

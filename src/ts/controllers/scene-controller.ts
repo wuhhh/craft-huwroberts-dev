@@ -5,29 +5,38 @@ import {
   type ReactiveControllerHost,
 } from "lit";
 import { scenes } from "../registries/scene-registry";
-import type { DrawFn, SceneEntry } from "../types";
+import type { SceneDrawCallback, SceneEntry } from "../types";
 
 export class SceneController implements ReactiveController {
   host: ReactiveControllerHost;
-  entry: SceneEntry;
+  entry?: SceneEntry;
 
   constructor(
     host: ReactiveControllerHost & LitElement,
-    build: () => {
+    build: () => Promise<{
       scene: Scene;
       camera: PerspectiveCamera;
-      draw: DrawFn;
-    },
+      draw: SceneDrawCallback;
+    }>,
   ) {
     (this.host = host).addController(this);
-    this.entry = { ...build(), el: host };
+    build()
+      .then((result) => {
+        this.entry = { ...result, el: host };
+
+        // build is async, if host connected first, register here
+        if (host.isConnected) scenes.register(this.entry);
+      })
+      .catch((err) => {
+        console.error("[SceneController] build failed, err: ", err);
+      });
   }
 
   hostConnected(): void {
-    scenes.register(this.entry);
+    if (this.entry) scenes.register(this.entry);
   }
 
   hostDisconnected(): void {
-    scenes.unregister(this.entry);
+    if (this.entry) scenes.unregister(this.entry);
   }
 }
