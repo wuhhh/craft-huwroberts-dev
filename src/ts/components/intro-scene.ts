@@ -180,8 +180,9 @@ export class IntroScene extends LitElement {
       // apply materials
 
       // add lights
-      scene.add(new THREE.DirectionalLight());
-      scene.add(new THREE.AmbientLight());
+      const directional = new THREE.DirectionalLight("yellow");
+      directional.position.set(0, 1, 1);
+      scene.add(directional, new THREE.AmbientLight("hotpink", 2));
 
       return { scene, camera };
     };
@@ -201,7 +202,7 @@ export class IntroScene extends LitElement {
           -0.45 * scaleFactor,
         );
 
-        ctx.meshRefs.diamond3d.rotation.y += delta;
+        ctx.meshRefs.diamond3d.rotation.y += delta * 0.48;
       }
 
       // huwRobertsMain
