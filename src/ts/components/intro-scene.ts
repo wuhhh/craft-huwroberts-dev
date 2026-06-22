@@ -106,6 +106,14 @@ export class IntroScene extends LitElement {
       const indigo = 0x441ce4;
       const coral = 0xf36855;
 
+      // Line material
+      const lineMat = new THREE.LineBasicNodeMaterial();
+      lineMat.transparent = true;
+      lineMat.colorNode = color(indigo);
+      lineMat.opacity = 0.2;
+      lineMat.depthTest = false;
+      lineMat.depthWrite = false;
+
       // Clouded glass material
       const cloudedGlassMat = new THREE.MeshStandardNodeMaterial();
       cloudedGlassMat.transparent = true;
@@ -137,8 +145,13 @@ export class IntroScene extends LitElement {
       cloudedGlassMat.opacityNode = mix(float(0.05), float(0.225), fresnel);
 
       // meshes
+      const diamond3d = (this.findObject("diamond3d", c) as THREE.Mesh) || null;
+      const diamond3dEdges = diamond3d
+        ? new THREE.EdgesGeometry(diamond3d.geometry)
+        : null;
+
       ctx.meshRefs = {
-        diamond3d: (this.findObject("diamond3d", c) as THREE.Mesh) || null,
+        diamond3d,
         huwRobertsMain:
           (this.findObject("huwRobertsMain", c) as THREE.Mesh) || null,
       };
@@ -147,7 +160,16 @@ export class IntroScene extends LitElement {
       if (ctx.meshRefs.diamond3d) {
         ctx.meshRefs.diamond3d.rotation.set(Math.PI * 0.125, 0, 0);
         ctx.meshRefs.diamond3d.material = cloudedGlassMat;
-        scene.add(ctx.meshRefs.diamond3d);
+
+        // edges
+        if (diamond3dEdges) {
+          const diamond3dLines = new THREE.LineSegments(
+            diamond3dEdges,
+            lineMat,
+          );
+          ctx.meshRefs.diamond3d.add(diamond3dLines);
+          scene.add(ctx.meshRefs.diamond3d);
+        }
       }
 
       // huwRobertsMain
