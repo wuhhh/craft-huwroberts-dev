@@ -6,28 +6,11 @@ import { DRACOLoader, GLTFLoader } from "three/examples/jsm/Addons.js";
 import type { SceneDrawFn, SceneSetupAsyncFn, SceneViewport } from "../types";
 import getViewport from "../lib/get-viewport";
 import {
-  abs,
-  cameraPosition,
-  clamp,
-  color,
-  dot,
-  float,
-  length,
-  max,
-  mix,
-  mul,
-  mx_noise_vec3,
-  normalize,
-  normalLocal,
-  positionGeometry,
-  positionLocal,
-  pow,
-  smoothstep,
-  sub,
-  time,
-  uv,
-  vec3,
-} from "three/tsl";
+  createCloudedGlassMat,
+  createDiamondPlaneMat,
+  createLineMat,
+  createLiquidMaterialMat,
+} from "../lib/materials";
 
 /**
  * Objects that will be available between the setup and draw functions
@@ -98,73 +81,10 @@ export class IntroScene extends LitElement {
       const gltf = await loader.loadAsync("/dist/models/hrdev.glb");
       const c = gltf.scene.children;
 
-      // materials
-
-      //colors
-      const indigo = 0x441ce4;
-      const coral = 0xf36855;
-
-      // line material
-      const lineMat = new THREE.LineBasicNodeMaterial();
-      lineMat.transparent = true;
-      lineMat.colorNode = color(indigo);
-      lineMat.opacity = 0.2;
-      lineMat.depthTest = false;
-      lineMat.depthWrite = false;
-
-      // clouded glass material
-      const cloudedGlassMat = new THREE.MeshStandardNodeMaterial();
-      cloudedGlassMat.transparent = true;
-      cloudedGlassMat.side = THREE.DoubleSide;
-      cloudedGlassMat.roughnessNode = float(0.5);
-      cloudedGlassMat.metalnessNode = float(0);
-      cloudedGlassMat.wireframe = false;
-
-      const boxDistStipple = () => {
-        const centeredUv = uv().mul(2).sub(1);
-        const offset = abs(centeredUv);
-        const boxDist = max(offset.x, offset.y);
-        return mix(color(coral), color(indigo), clamp(pow(boxDist, 4), 0, 1));
-      };
-
-      const cloudedGlass = () => {
-        const localPos = positionLocal;
-        const centerDist = length(localPos);
-        const distanceFactor = smoothstep(float(0.5), float(2.0), centerDist);
-        const edgeFactor = mul(distanceFactor, 9);
-        return mix(color(coral), color(indigo), edgeFactor);
-      };
-
-      cloudedGlassMat.colorNode = mix(cloudedGlass(), boxDistStipple(), 0.5);
-
-      const viewDirection = normalize(sub(cameraPosition, positionGeometry));
-      const normal = normalLocal;
-      const fresnel = pow(sub(1, abs(dot(viewDirection, normal))), 2);
-      cloudedGlassMat.opacityNode = mix(float(0.05), float(0.225), fresnel);
-
-      // diamond plane material
-      const diamondPlaneMat = new THREE.MeshBasicNodeMaterial();
-      diamondPlaneMat.colorNode = mix(
-        color(coral),
-        color(indigo),
-        clamp(
-          mx_noise_vec3(
-            vec3(uv().x.add(time.mul(0.25)), uv().y.mul(4), time.mul(0.5)),
-            1.5,
-            0,
-          ).r,
-          0,
-          1,
-        ),
-      );
-
-      // meshes
-      const box = new THREE.Mesh(
-        new THREE.BoxGeometry(1, 1, 1, 4, 4, 1),
-        cloudedGlassMat,
-      );
+      // set meshes
+      const box = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1, 4, 4, 1));
       const boxEdges = new THREE.EdgesGeometry(box.geometry);
-      const boxLines = new THREE.LineSegments(boxEdges, lineMat);
+      const boxLines = new THREE.LineSegments(boxEdges);
       const diamond3d = (this.findObject("diamond3d", c) as THREE.Mesh) || null;
       const diamond3dEdges = diamond3d
         ? new THREE.EdgesGeometry(diamond3d.geometry)
@@ -173,6 +93,8 @@ export class IntroScene extends LitElement {
         (this.findObject("diamondPlane", c) as THREE.Mesh) || null;
       const huwRobertsMain =
         (this.findObject("huwRobertsMain", c) as THREE.Mesh) || null;
+      const huwRobertsSoft =
+        (this.findObject("huwRobertsSoft", c) as THREE.Mesh) || null;
       const letterH = (this.findObject("letterH", c) as THREE.Mesh) || null;
       const letterHEdges = letterH
         ? new THREE.EdgesGeometry(letterH.geometry)
@@ -186,10 +108,35 @@ export class IntroScene extends LitElement {
         letterH,
       };
 
+      // set textures
+      const texHuwRobertsMain = huwRobertsMain
+        ? (huwRobertsMain.material as THREE.MeshStandardMaterial).map
+        : null;
+      const texHuwRobertsSoft = huwRobertsSoft
+        ? (huwRobertsSoft.material as THREE.MeshStandardMaterial).map
+        : null;
+
+      // materials
+      const lineMat = createLineMat();
+      const cloudedGlassMat = createCloudedGlassMat();
+      const diamondPlaneMat = createDiamondPlaneMat();
+      let liquidMaterial;
+
+      if (texHuwRobertsMain && texHuwRobertsSoft) {
+        liquidMaterial = createLiquidMaterialMat(
+          texHuwRobertsMain,
+          texHuwRobertsSoft,
+          new THREE.Vector2(0, 0),
+        );
+      }
+
+      // add meshes to groups / scene, set materials
       ctx.groups.shapes = new THREE.Group();
       scene.add(ctx.groups.shapes);
 
       // box
+      box.material = cloudedGlassMat;
+      boxLines.material = lineMat;
       box.add(boxLines);
       ctx.groups.shapes.add(box);
 
@@ -218,6 +165,10 @@ export class IntroScene extends LitElement {
 
       // huwRobertsMain
       if (ctx.meshRefs.huwRobertsMain) {
+        if (liquidMaterial) {
+          ctx.meshRefs.huwRobertsMain.material = liquidMaterial;
+        }
+
         scene.add(ctx.meshRefs.huwRobertsMain);
       }
 
@@ -234,8 +185,6 @@ export class IntroScene extends LitElement {
 
         ctx.groups.shapes.add(ctx.meshRefs.letterH);
       }
-
-      // apply materials
 
       // add lights
       const directional = new THREE.DirectionalLight("yellow");
