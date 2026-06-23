@@ -36,6 +36,7 @@ export class IntroScene extends LitElement {
   static styles?: CSSResultGroup | undefined = css`
     :host {
       display: block;
+      position: relative;
     }
 
     div {
@@ -277,7 +278,12 @@ export class IntroScene extends LitElement {
   }
 
   protected render() {
-    return html` <div></div> `;
+    return html`
+      <div>
+        <intro-scene-decor></intro-scene-decor
+        ><intro-scene-text></intro-scene-text>
+      </div>
+    `;
   }
 }
 

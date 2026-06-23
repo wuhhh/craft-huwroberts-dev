@@ -27,12 +27,7 @@ import {
   vec2,
   vec3,
 } from "three/tsl";
-
-/**
- * Colors used across materials
- */
-export const INDIGO = 0x441ce4;
-export const CORAL = 0xf36855;
+import { CORAL, INDIGO } from "./colors.ts";
 
 /**
  * Creates a clouded glass material with stippled box-dist and centre-distance blending.
