@@ -2,11 +2,7 @@ import { LitElement, css, html, type CSSResultGroup } from "lit";
 import { customElement } from "lit/decorators.js";
 import * as THREE from "three/webgpu";
 import { SceneController } from "../controllers/scene-controller";
-import {
-  DRACOLoader,
-  GLTFLoader,
-  OrbitControls,
-} from "three/examples/jsm/Addons.js";
+import { DRACOLoader, GLTFLoader } from "three/examples/jsm/Addons.js";
 import type { SceneDrawFn, SceneSetupAsyncFn, SceneViewport } from "../types";
 import getViewport from "../lib/get-viewport";
 import {
@@ -37,11 +33,15 @@ import {
  * Objects that will be available between the setup and draw functions
  */
 interface IntroSceneContext {
-  meshRefs?: {
-    box: THREE.Mesh | null;
-    diamond3d: THREE.Mesh | null;
-    diamondPlane: THREE.Mesh | null;
-    huwRobertsMain: THREE.Mesh | null;
+  groups: {
+    shapes?: THREE.Group | null;
+  };
+  meshRefs: {
+    box?: THREE.Mesh | null;
+    diamond3d?: THREE.Mesh | null;
+    diamondPlane?: THREE.Mesh | null;
+    huwRobertsMain?: THREE.Mesh | null;
+    letterH?: THREE.Mesh | null;
   };
 }
 
@@ -81,7 +81,7 @@ export class IntroScene extends LitElement {
     /**
      * Setup
      */
-    const ctx: IntroSceneContext = {};
+    const ctx: IntroSceneContext = { groups: {}, meshRefs: {} };
 
     const setupFn: SceneSetupAsyncFn = async ({ host }) => {
       const aspect = host.clientWidth / host.clientHeight;
@@ -89,13 +89,6 @@ export class IntroScene extends LitElement {
       camera.position.z = 10;
 
       const scene = new THREE.Scene();
-
-      // orbit
-      const controls = new OrbitControls(camera, this);
-      controls.minDistance = 2;
-      controls.maxDistance = 10;
-      controls.enablePan = false;
-      controls.enableZoom = false;
 
       // load the model
       const loader = new GLTFLoader();
@@ -178,22 +171,31 @@ export class IntroScene extends LitElement {
         : null;
       const diamondPlane =
         (this.findObject("diamondPlane", c) as THREE.Mesh) || null;
+      const huwRobertsMain =
+        (this.findObject("huwRobertsMain", c) as THREE.Mesh) || null;
+      const letterH = (this.findObject("letterH", c) as THREE.Mesh) || null;
+      const letterHEdges = letterH
+        ? new THREE.EdgesGeometry(letterH.geometry)
+        : null;
 
       ctx.meshRefs = {
         box,
         diamond3d,
         diamondPlane,
-        huwRobertsMain:
-          (this.findObject("huwRobertsMain", c) as THREE.Mesh) || null,
+        huwRobertsMain,
+        letterH,
       };
+
+      ctx.groups.shapes = new THREE.Group();
+      scene.add(ctx.groups.shapes);
 
       // box
       box.add(boxLines);
-      scene.add(box);
+      ctx.groups.shapes.add(box);
 
       // diamond3d
       if (ctx.meshRefs.diamond3d) {
-        ctx.meshRefs.diamond3d.rotation.set(Math.PI * 0.125, 0, 0);
+        ctx.meshRefs.diamond3d.rotation.x = Math.PI * 0.125;
         ctx.meshRefs.diamond3d.material = cloudedGlassMat;
 
         // edges
@@ -203,19 +205,34 @@ export class IntroScene extends LitElement {
             lineMat,
           );
           ctx.meshRefs.diamond3d.add(diamond3dLines);
-          scene.add(ctx.meshRefs.diamond3d);
         }
+
+        ctx.groups.shapes.add(ctx.meshRefs.diamond3d);
       }
 
       // diamondPlane
       if (ctx.meshRefs.diamondPlane) {
         ctx.meshRefs.diamondPlane.material = diamondPlaneMat;
-        scene.add(ctx.meshRefs.diamondPlane);
+        ctx.groups.shapes.add(ctx.meshRefs.diamondPlane);
       }
 
       // huwRobertsMain
       if (ctx.meshRefs.huwRobertsMain) {
         scene.add(ctx.meshRefs.huwRobertsMain);
+      }
+
+      // letterH
+      if (ctx.meshRefs.letterH) {
+        ctx.meshRefs.letterH.rotation.x = Math.PI * 0.125;
+        ctx.meshRefs.letterH.material = cloudedGlassMat;
+
+        // edges
+        if (letterHEdges) {
+          const letterHLines = new THREE.LineSegments(letterHEdges, lineMat);
+          ctx.meshRefs.letterH.add(letterHLines);
+        }
+
+        ctx.groups.shapes.add(ctx.meshRefs.letterH);
       }
 
       // apply materials
@@ -236,7 +253,7 @@ export class IntroScene extends LitElement {
       const scaleFactor = viewport.width * 0.2;
 
       // box
-      if (ctx.meshRefs?.box) {
+      if (ctx.meshRefs.box) {
         ctx.meshRefs.box.position.set(
           -1.8 * scaleFactor,
           -1.05 * scaleFactor,
@@ -255,7 +272,7 @@ export class IntroScene extends LitElement {
       }
 
       // diamond3d
-      if (ctx.meshRefs?.diamond3d) {
+      if (ctx.meshRefs.diamond3d) {
         ctx.meshRefs.diamond3d.scale.set(
           0.9 * scaleFactor,
           0.9 * scaleFactor,
@@ -272,7 +289,7 @@ export class IntroScene extends LitElement {
       }
 
       // diamondPlane
-      if (ctx.meshRefs?.diamondPlane) {
+      if (ctx.meshRefs.diamondPlane) {
         ctx.meshRefs.diamondPlane.position.set(
           1.67 * scaleFactor,
           1.04 * scaleFactor,
@@ -286,10 +303,25 @@ export class IntroScene extends LitElement {
       }
 
       // huwRobertsMain
-      if (ctx.meshRefs?.huwRobertsMain) {
+      if (ctx.meshRefs.huwRobertsMain) {
         const scale = viewport.width * 0.08;
         ctx.meshRefs.huwRobertsMain.scale.set(scale, scale, 1);
       }
+
+      // letterH
+      if (ctx.meshRefs.letterH) {
+        ctx.meshRefs.letterH.position.set(
+          0.91 * scaleFactor,
+          -0.93 * scaleFactor,
+          0,
+        );
+
+        ctx.meshRefs.letterH.rotation.y += delta * -0.48;
+      }
+
+      // if (ctx.groups.shapes) {
+      //   ctx.groups.shapes.rotation.y += delta * 2;
+      // }
     };
 
     new SceneController({ host: this, setupFn, drawFn });
