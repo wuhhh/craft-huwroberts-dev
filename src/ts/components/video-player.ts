@@ -89,14 +89,18 @@ export class VideoPlayer extends LitElement {
 
     .frame {
       position: relative;
-      aspect-ratio: 960 / 576;
       width: 100%;
+      height: 100%;
       overflow: hidden;
+      border-radius: var(--radius-2xl, 0.25rem);
     }
 
     @media (min-width: 640px) {
       .boxed.frame {
+        aspect-ratio: 960 / 576;
+        height: auto;
         max-width: clamp(414px, 960px, 83%);
+        border-radius: var(--radius-lg, 0.25rem);
       }
     }
 
@@ -111,7 +115,6 @@ export class VideoPlayer extends LitElement {
       object-position: top;
       width: 100%;
       height: 100%;
-      border-radius: var(--radius-lg, 0.25rem);
     }
 
     .sr-only {
@@ -325,7 +328,6 @@ export class VideoPlayer extends LitElement {
       object-fit: cover;
       width: 100%;
       height: 100%;
-      border-radius: 0.25rem;
     }
 
     .poster-overlay {
@@ -398,7 +400,6 @@ export class VideoPlayer extends LitElement {
       object-fit: cover;
       width: 100%;
       height: 100%;
-      border-radius: 0.25rem;
     }
   `;
 
