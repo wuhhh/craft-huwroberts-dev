@@ -4,6 +4,12 @@
 
 {% block content %}
 
+  {% set featureVideo = entry.featureVideo ?? null %}
+  {% set featureImage = entry.imageCaption ?? null %}
+  {% set summary = entry.summaryShort ?? null %}
+  {% set liveUrl = entry.liveUrl ?? null %}
+  {% set richTextPost = entry.richTextPost ?? null %}
+
   <div class="col-span-full grid grid-cols-subgrid">
     <div class="col-span-full lg:col-start-2 lg:col-span-9 pt-36">
       <div class="space-y-28">
@@ -25,6 +31,13 @@
         } only %}
 
         <h1 class="heading1 font-medium mb-16">{{ entry.title }}</h1>
+
+        {% if featureVideo and featureVideo.videoCaption and featureVideo.videoCaption.videoAsset.one() %}
+          <div>Feature video</div>
+          {% include "_includes/featureVideo.twig" with { block: featureVideo } only %}
+        {% elseif featureImage and featureImage.imageAsset.one() %}
+          <div>Feature image</div>
+        {% endif %}
 
       </div>
     </div>
