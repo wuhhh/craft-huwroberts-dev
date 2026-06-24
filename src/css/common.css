@@ -1,5 +1,5 @@
 .skip-link {
-  @apply absolute top-[10px] left-[50%] z-50 transform -translate-x-[50%] bg-white rounded-md py-[8px] px-[16px] font-bold text-[18px];
+  @apply absolute top-2.5 left-1/2 z-50 transform bg-white rounded-md py-2 px-4 font-bold text-lg;
 
   &:not(:focus) {
     @apply sr-only;

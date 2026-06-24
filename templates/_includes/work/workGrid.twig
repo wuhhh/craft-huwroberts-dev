@@ -31,10 +31,10 @@
         {% endif %}
 
 
-        <div class="relative group col-span-full space-y-4 w-full max-w-[480px] lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
+        <div class="relative group col-span-full space-y-4 w-full max-w-120 lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
 
           {% if image %}
-            <div class="relative aspect-[480/288] lg:border-x border-[#f0edea] {# shadow-sm group-hover:shadow-none #} transition-all duration-200">
+            <div class="relative aspect-480/288 lg:border-x border-[#f0edea] {# shadow-sm group-hover:shadow-none #} transition-all duration-200">
               {{ image.getImg(
                 { width: 480, height: 288, format: "avif", mode: "crop" },
                 ["480w", "960w", "1440w"]
@@ -57,14 +57,13 @@
             } %}
           </div>
 
-          <button
-            @click="$store.work.setWork('{{ entry.slug }}')"
-            @mouseenter="$store.work.fetchWork('{{ entry.slug }}')"
+          <a
+            href="{{ url(entry.uri) }}"
             data-follower="more"
-            class="box-link before:focus-visible:outline before:focus-visible:outline-2 before:focus-visible:outline-offset-2 before:focus-visible:outline-blue-700"
+            class="box-link focus-visible:outline-0 focus-visible:before:outline-2 focus-visible:before:outline-offset-2 focus-visible:before:outline-coral-red"
             aria-label="{{ '{0} project details, opens modal'|t([entry.title]) }}"
           >
-          </button>
+          </a>
         </div>
 
       {% endfor %}

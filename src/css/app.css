@@ -9,13 +9,11 @@
 /* Safelisted classes applied dynamically (formerly tailwind.config safelist) */
 @source inline("bg-{zinc,neutral}-{50,100,900} bg-black");
 
-/* .noise-overlay { */
-/*   @apply fixed inset-0 pointer-events-none z-10; */
-/*   background: url("/dist/images/bg--noise-texture@2x.png"); */
-/*   background-size: 50px 50px; */
-/*   background-attachment: fixed; */
-/* } */
-
 ::selection {
   @apply bg-coral-red/20;
+}
+
+/* View Transitions */
+@view-transition {
+  navigation: auto;
 }
