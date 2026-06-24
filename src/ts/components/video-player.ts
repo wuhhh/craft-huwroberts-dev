@@ -663,7 +663,7 @@ export class VideoPlayer extends LitElement {
           src=${this.posterImage?.url ?? ""}
           srcset=${this.posterImage?.srcset ?? nothing}
           alt="${(this.entry?.title ?? "") + " video poster image"}"
-          sizes="(min-width: 1024px) 746px, (min-width: 640px) 611px, (max-width: 639px) 90vw"
+          sizes="auto, (min-width: 1728px) 1073px, (min-width: 1024px) 746px, (min-width: 640px) 611px, (max-width: 639px) 90vw"
         /> `
       : nothing;
 
