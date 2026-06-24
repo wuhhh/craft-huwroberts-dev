@@ -13,6 +13,14 @@ interface VideoAsset {
   mimeType?: string;
 }
 
+interface VideoAttributes {
+  autoplay?: boolean;
+  controls?: boolean;
+  loop?: boolean;
+  muted?: boolean;
+  playsInline?: boolean;
+}
+
 interface MediaData {
   title?: string;
   backdropColour?: string;
@@ -20,16 +28,11 @@ interface MediaData {
   dimPoster?: boolean;
   posterImage?: ImageAsset[];
   video?: VideoAsset[];
-  videoMode?: "playable" | "background";
+  videoAttributes?: VideoAttributes;
 }
 
 @customElement("video-player")
 export class VideoPlayer extends LitElement {
-  /**
-   * The currently selected work entry, parsed from the `entry` attribute
-   * (a JSON string). Malformed/empty input resolves to `null` so the
-   * component renders nothing rather than throwing.
-   */
   @property({
     attribute: "entry",
     type: Object,
@@ -425,8 +428,15 @@ export class VideoPlayer extends LitElement {
     return this.entry?.dimPoster ?? false;
   }
 
-  private get videoMode(): "playable" | "background" {
-    return this.entry?.videoMode ?? "playable";
+  private get attrs(): Required<VideoAttributes> {
+    const v = this.entry?.videoAttributes ?? {};
+    return {
+      autoplay: v.autoplay ?? false,
+      controls: v.controls ?? false,
+      loop: v.loop ?? false,
+      muted: v.muted ?? false,
+      playsInline: v.playsInline ?? (v.autoplay || v.controls) ?? false,
+    };
   }
 
   /** lifecycle **/
@@ -478,7 +488,8 @@ export class VideoPlayer extends LitElement {
     this.paused = true;
   };
 
-  private onPlayPauseClick = () => {
+  private onPlayPauseClick = (event: MouseEvent) => {
+    event.stopPropagation();
     this.play();
     this.showVideo = true;
   };
@@ -502,10 +513,15 @@ export class VideoPlayer extends LitElement {
     this.seek = Math.min(1, Math.max(0, rect.width ? x / rect.width : 0));
   };
 
-  private onSeekClick = () => {
+  private onSeekClick = (event: MouseEvent) => {
+    event.stopPropagation();
     const v = this.videoEl;
     if (!v) return;
     v.currentTime = this.duration * this.seek;
+  };
+
+  private onControlsClick = (event: MouseEvent) => {
+    event.stopPropagation();
   };
 
   private onSeekKey = (event: KeyboardEvent) => {
@@ -541,14 +557,17 @@ export class VideoPlayer extends LitElement {
   }
 
   private renderVideoControls() {
-    if (this.videoMode == "background") return null;
+    if (!this.attrs.controls) return null;
 
     const showPlayIcon = this.paused || this.stopped;
 
     return html`
       <div class="sr-only">Video controls</div>
 
-      <div class="controls ${this.paused ? "is-paused" : ""}">
+      <div
+        class="controls ${this.paused ? "is-paused" : ""}"
+        @click=${this.onControlsClick}
+      >
         <button
           class="play-pause"
           @click=${this.onPlayPauseClick}
@@ -611,12 +630,17 @@ export class VideoPlayer extends LitElement {
   }
 
   private renderVideo() {
+    const { autoplay, loop, muted, playsInline } = this.attrs;
+    const showOverlay = !autoplay && !this.showVideo;
+
     return html`
       <div class="video">
         <video
           src=${this.videoUrl ?? ""}
-          muted
-          playsinline
+          ?autoplay=${autoplay}
+          ?loop=${loop}
+          ?muted=${muted}
+          ?playsinline=${playsInline}
           @play=${this.onPlay}
           @pause=${this.onPause}
           @durationchange=${this.onDurationChange}
@@ -628,27 +652,24 @@ export class VideoPlayer extends LitElement {
         ${this.renderVideoControls()}
       </div>
 
-      ${this.renderPlayOverlay()}
+      ${showOverlay ? this.renderPlayOverlay() : null}
     `;
   }
 
   private renderPlayOverlay() {
-    if (this.showVideo) return null;
-
-    const posterImage =
-      this.hasPosterImage && this.videoMode == "playable"
-        ? html`<img
-            src=${this.posterImage?.url ?? ""}
-            srcset=${this.posterImage?.srcset ?? nothing}
-            alt="${(this.entry?.title ?? "") + " video poster image"}"
-            sizes="(min-width: 1024px) 746px, (min-width: 640px) 611px, (max-width: 639px) 90vw"
-          /> `
-        : ``;
+    const posterImage = this.hasPosterImage
+      ? html`<img
+          src=${this.posterImage?.url ?? ""}
+          srcset=${this.posterImage?.srcset ?? nothing}
+          alt="${(this.entry?.title ?? "") + " video poster image"}"
+          sizes="(min-width: 1024px) 746px, (min-width: 640px) 611px, (max-width: 639px) 90vw"
+        /> `
+      : nothing;
 
     const posterOverlay =
       this.hasPosterImage && this.dimPoster
         ? html`<span class="poster-overlay"></span>`
-        : ``;
+        : nothing;
 
     return html`
       <button
