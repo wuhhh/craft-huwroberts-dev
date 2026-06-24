@@ -78,13 +78,36 @@ export class MainMenu extends LitElement {
     ::slotted(a:hover) {
       background-color: var(--color-coral-red);
     }
+
+    ::slotted(a:focus-visible) {
+      box-shadow: inset 0 0 0 2px var(--color-coral-red);
+    }
+
     nav.open ::slotted(a) {
       clip-path: inset(0px 0% 0px 0px);
     }
   `;
 
+  closeMenu() {
+    this.open = false;
+  }
+
+  openMenu() {
+    this.open = true;
+  }
+
   toggleMenu() {
     this.open = !this.open;
+  }
+
+  handleClickAway = (event: MouseEvent) => {
+    console.log(event);
+    if (event.target && !this.contains(event.target as Node)) this.closeMenu();
+  };
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    window.addEventListener("click", this.handleClickAway);
   }
 
   render() {
@@ -99,7 +122,11 @@ export class MainMenu extends LitElement {
           <span></span>
         </span>
       </button>
-      <nav class="${this.open ? `open` : ``}" aria-label="Main">
+      <nav
+        ?inert=${!this.open}
+        class="${this.open ? `open` : ``}"
+        aria-label="Main"
+      >
         <slot></slot>
       </nav>
     `;
