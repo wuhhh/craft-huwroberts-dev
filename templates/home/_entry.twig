@@ -6,18 +6,17 @@
     {% set entry = craft.entries.section('home').one() %}
   {% endif %}
 
-  <div class="col-span-full">
+  <div class="col-span-full mb-16">
     <intro-scene></intro-scene>
+  </div>
 
-    <div class="pt-56 pb-32 md:py-66 2xl:pt-48 2xl:pb-32">
-
-      {% include "_includes/langSelect" %}
-
-      <h1 class="font-bold heading5 md:w-full md:max-w-189 md:heading2 xl:max-w-none 2xl:heading1">
-        {{ entry.heading|nl2br }}
-      </h1>
-
-    </div>
+  <div class="col-span-full">
+    {% include "_includes/sectionTitleChip.twig" with {
+      title: "Case Studies",
+      chipLabel: "View All",
+      chipLink: url("work"),
+      classes: "mb-16",
+    } only %}
   </div>
 
   {% include "_includes/work/workGrid" only %}

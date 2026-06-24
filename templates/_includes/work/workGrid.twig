@@ -3,71 +3,69 @@
 
 {% if workEntries|length %}
 
-    <h2 class="sr-only">Recent work</h2>
+  {# Work card grid #}
+  <div class="col-span-full grid grid-cols-subgrid gap-y-24">
+    {% for entry in workEntries %}
 
-    {# Work card grid #}
-    <div class="col-span-full grid grid-cols-subgrid gap-y-24">
-      {% for entry in workEntries %}
+      {% set image = entry.cardImage.one() ?? null %}
+      {% set cls = "" %}
 
-        {% set image = entry.cardImage.one() ?? null %}
-        {% set cls = "" %}
+      {% set base6Index0 = loop.index0 % 6 %}
 
-        {% set base6Index0 = loop.index0 % 6 %}
+      {# Vertical spacing #}
+      {% if base6Index0 == 1 or base6Index0 == 4 or base6Index0 == 5 %}
+        {% set cls = "ml-auto lg:ml-0" %}
+      {% endif %}
 
-        {# Vertical spacing #}
-        {% if base6Index0 == 1 or base6Index0 == 4 or base6Index0 == 5 %}
-          {% set cls = "ml-auto lg:ml-0" %}
-        {% endif %}
+      {# Horizontal spacing #}
+      {% set blank %}
+        <div class="hidden xl:block xl:col-span-4"></div>
+      {% endset %}
 
-        {# Horizontal spacing #}
-        {% set blank %}
-          <div class="hidden xl:block xl:col-span-4"></div>
-        {% endset %}
-
-        {% if base6Index0 == 2 %}
-          {{ blank }}{{ blank }}
-        {% elseif base6Index0 == 5 %}
-          {{ blank }}
-        {% endif %}
+      {% if base6Index0 == 2 %}
+        {{ blank }}{{ blank }}
+      {% elseif base6Index0 == 5 %}
+        {{ blank }}
+      {% endif %}
 
 
-        <div class="relative group col-span-full space-y-4 w-full max-w-120 lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
+      <div class="relative group col-span-full space-y-4 w-full max-w-120 lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
 
-          {% if image %}
-            <div class="relative aspect-480/288 lg:border-x border-[#f0edea] {# shadow-sm group-hover:shadow-none #} transition-all duration-200">
-              {{ image.getImg(
-                { width: 480, height: 288, format: "avif", mode: "crop" },
-                ["480w", "960w", "1440w"]
-              )|attr({
-                sizes: "(max-width: 480px) 100vw, (min-width: 1280px) 700px, 480px",
-                class: "object-cover w-full h-full rounded-sm sm:rounded-none",
-                alt: "",
-              }) }}
-              <div class="absolute inset-0 bg-zinc-100/90 backdrop-saturate-0 backdrop-brightness-125 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></div>
-            </div>
-          {% endif %}
-
-          <div class="flex flex-col gap-y-2">
-            <h2 class="base-sans">{{ entry.title }}</h2>
-            {% include "_includes/work/workCardMeta" with {
-              class: "sm-mono leading-tight",
-              type: entry.workType,
-              year: entry.year,
-              agency: entry.agency,
-            } %}
+        {% if image %}
+          <div class="relative aspect-480/288 lg:border-x border-[#f0edea] {# shadow-sm group-hover:shadow-none #} transition-all duration-200">
+            {{ image.getImg(
+              { width: 480, height: 288, format: "avif", mode: "crop" },
+              ["480w", "960w", "1440w"]
+            )|attr({
+              sizes: "(max-width: 480px) 100vw, (min-width: 1280px) 700px, 480px",
+              class: "object-cover w-full h-full rounded-sm sm:rounded-none",
+              alt: "",
+            }) }}
+            <div class="absolute inset-0 bg-zinc-100/90 backdrop-saturate-0 backdrop-brightness-125 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></div>
           </div>
+        {% endif %}
 
-          <a
-            href="{{ url(entry.uri) }}"
-            data-follower="more"
-            class="box-link focus-visible:outline-0 focus-visible:before:outline-2 focus-visible:before:outline-offset-2 focus-visible:before:outline-coral-red"
-            aria-label="{{ '{0} project details, opens modal'|t([entry.title]) }}"
-          >
-          </a>
+        <div class="flex flex-col gap-y-2">
+          <h2 class="base-sans">{{ entry.title }}</h2>
+          {% include "_includes/work/workCardMeta" with {
+            class: "sm-mono leading-tight",
+            type: entry.workType,
+            year: entry.year,
+            agency: entry.agency,
+          } %}
         </div>
 
-      {% endfor %}
-    </div>
+        <a
+          href="{{ url(entry.uri) }}"
+          data-follower="more"
+          class="box-link focus-visible:outline-0 focus-visible:before:outline-2 focus-visible:before:outline-offset-2 focus-visible:before:outline-coral-red"
+          aria-label="{{ '{0} project details, opens modal'|t([entry.title]) }}"
+        >
+        </a>
+      </div>
+
+    {% endfor %}
+  </div>
 
 {% endif %}
 

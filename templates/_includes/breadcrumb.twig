@@ -1,0 +1,29 @@
+{% set links = links ?? [] %}
+{% set classes = classes ?? "" %}
+
+{% if links|length %}
+
+  <nav
+    aria-label="Breadcrumb"
+    class="font-mono text-xs leading-none uppercase {{ classes }}"
+  >
+    <ol class="list-none">
+      {% for link in links %}
+        <li class="inline-block">
+          {% if not loop.first %}
+            {{ svg("@webroot/dist/images/icon--chev-mini.svg", true, true)|attr({ class: "inline-block" }) }}
+          {% endif %}
+
+          {% if loop.last %}
+            <span>{{ link.label }}</span>
+          {% else %}
+            <a class="hover:underline" href="{{ link.url }}">
+              {{ link.label }}
+            </a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+{% endif %}

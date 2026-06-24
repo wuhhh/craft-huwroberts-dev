@@ -2,8 +2,20 @@
 
 {% block content %}
 
-  <div class="col-span-full py-16">
-    Work index
+  <div class="col-span-full py-36">
+    {% include "_includes/breadcrumb" with {
+      classes: "ml-2",
+      links: [
+        {
+          label: "Home",
+          url: siteUrl,
+        },
+        {
+          label: "Case Studies",
+          url: "/work",
+        }
+      ]
+    } only %}
   </div>
 
   {% include "_includes/work/workGrid" only %}

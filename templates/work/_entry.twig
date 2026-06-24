@@ -1,9 +1,33 @@
 {% extends "_layouts/elements" %}
 
+{% set gridLinesVariant = "outer" %}
+
 {% block content %}
 
-  <div class="col-span-full">
-    <h1>{{ entry.title }}</h1>
+  <div class="col-span-full grid grid-cols-subgrid">
+    <div class="col-span-full lg:col-start-2 lg:col-span-9 pt-36">
+      <div class="space-y-28">
+        {% include "_includes/breadcrumb" with {
+          links: [
+            {
+              label: "Home",
+              url: siteUrl,
+            },
+            {
+              label: "Case Studies",
+              url: "/work",
+            },
+            {
+              label: entry.title,
+              url: "",
+            }
+          ]
+        } only %}
+
+        <h1 class="heading1 font-medium mb-16">{{ entry.title }}</h1>
+
+      </div>
+    </div>
   </div>
 
 {% endblock %}
