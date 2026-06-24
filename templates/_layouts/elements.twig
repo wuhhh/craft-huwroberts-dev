@@ -4,12 +4,7 @@
 
   <div id="top"></div>
 
-  {# {% include "_includes/followers/followerDot" only %} #}
-  {# {% include "_includes/followers/followerHex" only %} #}
-
-  <mouse-follower speed="10">
-    <span class="block size-3 rounded-full bg-coral-red"></span>
-  </mouse-follower>
+  {% include "_includes/followers/followerDot.twig" only %}
 
   <star-flower class="container relative">
     {{ svg('@webroot/dist/images/icon--starflower.svg', true, true)|attr({ class: 'w-[30px]' }) }}
@@ -35,7 +30,7 @@
 
   </div>
 
-  {# {% include "_includes/followers/followerMore" only %} #}
+  {% include "_includes/followers/followerMore.twig" only %}
 
   {# == Lenis quick test == #}
   <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.23/dist/lenis.css">
