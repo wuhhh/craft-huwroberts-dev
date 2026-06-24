@@ -5,6 +5,7 @@
 @import "@css/vars.css";
 @import "@css/type.css";
 @import "@css/utilities.css";
+@import "@css/rich-text.css";
 
 /* Safelisted classes applied dynamically (formerly tailwind.config safelist) */
 @source inline("bg-{zinc,neutral}-{50,100,900} bg-black");

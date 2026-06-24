@@ -32,11 +32,53 @@
 
         <h1 class="heading1 font-medium mb-16">{{ entry.title }}</h1>
 
+        {% set mediaData = null %}
+
         {% if featureVideo and featureVideo.videoCaption and featureVideo.videoCaption.videoAsset.one() %}
-          <div>Feature video</div>
-          {% include "_includes/featureVideo.twig" with { block: featureVideo } only %}
+
+          {# Prep data for <video-player/> component #}
+          {% set video = featureVideo.videoCaption.videoAsset.one() %}
+          {% set boxed = featuredVideo.boxed ?? false %}
+          {% set poster = featureVideo.videoCaption.imageAsset.one() ?? null %}
+          {% set imageTransform = { format: 'webp', mode: 'crop', width: 960, height: 576, quality: 90 } %}
+
+          {% set mediaData = {
+            title: entry.title,
+            backdropColour: featureVideo.boxBackgroundColour.hex ?? '',
+            boxed: boxed,
+            dimPoster: featuredVideo.dimPoster ?? false,
+            posterImage: poster ? [{
+              url: poster.getUrl(imageTransform),
+              srcset: poster.getSrcset(['600w', '800w', '1250w', '1900w'], imageTransform),
+            }] : [],
+            video: [{
+              url: video.url,
+              mimeType: video.mimeType,
+            }],
+            videoMode: featureVideo.videoCaption.videoMode.value ?? "playable"
+          } %}
+
+          <video-player entry="{{ mediaData|json_encode|e('html_attr') }}"></video-player>
+
         {% elseif featureImage and featureImage.imageAsset.one() %}
-          <div>Feature image</div>
+          {% set image = featureImage.imageAsset.one() %}
+          {% set imageTransform = { format: 'webp', mode: 'crop', width: 960, height: 576, quality: 90 } %}
+
+          {% set mediaData = {
+            id: entry.id,
+            title: entry.title,
+            backdropColour: '',
+            video: [],
+            cardImage: [{
+              url: image.getUrl(imageTransform),
+              srcset: image.getSrcset(['600w', '800w', '1250w', '1900w'], imageTransform),
+            }]
+          } %}
+        {% endif %}
+
+
+        {% if richTextPost %}
+          {% include "_includes/richTextPost" with { content: richTextPost } only %}
         {% endif %}
 
       </div>

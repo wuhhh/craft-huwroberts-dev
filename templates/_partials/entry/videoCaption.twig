@@ -1,0 +1,43 @@
+{# _partials/entry/videoCaption.twig
+
+   Renders a "🔹 Video & Caption" entry nested within a `richTextPost`
+   CKEditor field. See _partials/entry/copyAside.twig for the resolution path.
+
+   The nested entry is available as `entry`, with:
+     - fullWidth    : Lightswitch (constrain to the left column when off)
+     - videoCaption : ContentBlock (Video & Caption) with:
+         - videoAsset : Assets (max 1)
+         - videoMode  : RadioButtons ("playable" | "background")
+         - imageAsset : Assets (max 1, poster image)
+         - dimPoster  : Lightswitch
+         - text       : PlainText (labelled "Caption")
+
+   NOTE: a fuller custom video player is being worked on elsewhere; this
+   partial intentionally renders a basic native <video> for now (background
+   mode autoplays, playable mode uses native controls). Swap in the finished
+   player here once available.
+#}
+
+{% set block = entry.videoCaption ?? null %}
+{% set video = block ? block.videoAsset.one() : null %}
+
+{% if video %}
+  {% set poster = block.imageAsset.one() ?? null %}
+  {% set isBackground = block.videoMode == 'background' %}
+  {% set caption = block.text ?? null %}
+
+  <div class="space-y-4 {{ not entry.fullWidth ? 'lg:max-w-[calc(100%-371px)]' }}">
+    <div class="group relative aspect-960/576 w-full overflow-hidden rounded-lg">
+      <video
+        class="h-full w-full rounded-lg object-cover"
+        src="{{ video.url }}"
+        {% if poster %}poster="{{ poster.url }}"{% endif %}
+        {% if isBackground %}autoplay muted loop playsinline{% else %}controls playsinline{% endif %}
+        data-cursor-layer="top"
+      ></video>
+    </div>
+    {% if caption|length %}
+      <p class="text-sm text-[#705959] italic">{{ caption }}</p>
+    {% endif %}
+  </div>
+{% endif %}

@@ -26,6 +26,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <meta name="msapplication-TileColor" content="#603cba">
     <meta name="theme-color" content="#ffffff">
     {% hook 'seomateMeta' %}
@@ -40,10 +41,7 @@
   {% set langAlt = lang == "en-GB" ? "cy-GB" : "en-GB" %}
 
   {% block bodyTag %}
-    <body
-      x-data="core()"
-      class="relative flex flex-col min-h-screenh antialiased bg-zinc-50 scroll-smooth"
-    >
+    <body class="relative flex flex-col min-h-screenh antialiased bg-zinc-50 scroll-smooth">
       <a class="skip-link" href="#main" tabindex="1">{{ "Skip to content"|t }}</a>
   {% endblock %}
 

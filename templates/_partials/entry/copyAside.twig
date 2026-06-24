@@ -1,0 +1,32 @@
+{% set copy = entry.richTextSimple ?? null %}
+{% set aside = entry.aside ?? null %}
+{% set asideIcon = aside ? aside.icon_ : null %}
+{% set hasAside = aside and (aside.text|length or aside.richTextSimple|length or asideIcon) %}
+
+<div class="flex flex-col gap-8 lg:flex-row lg:gap-10">
+  <div class="min-w-0 flex-1">
+    {% if copy|length %}
+      <div class="rich-text-content copy-aside-content">{{ copy }}</div>
+    {% endif %}
+  </div>
+
+  {% if hasAside %}
+    <aside class="w-full shrink-0 lg:w-82.75">
+      <div class="bg-salt-rock-100 sticky top-8 flex flex-col gap-5 rounded p-6.5">
+        {% if aside.text|length %}
+          <div class="flex items-center gap-2.5">
+            {% if asideIcon %}
+              {% set styleClass = 'brands' in (asideIcon.styles ?? []) ? 'fa-brands' : 'fa-solid' %}
+              <i class="{{ styleClass }} fa-{{ asideIcon.name }} text-seabed-indigo-400 text-2xl" aria-hidden="true"></i>
+            {% endif %}
+            <span class="text-seabed-indigo-400 text-lg leading-tight font-bold tracking-tight">{{ aside.text }}</span>
+          </div>
+        {% endif %}
+
+        {% if aside.richTextSimple|length %}
+          <div class="aside-content text-base leading-relaxed text-[#3c312d]">{{ aside.richTextSimple }}</div>
+        {% endif %}
+      </div>
+    </aside>
+  {% endif %}
+</div>

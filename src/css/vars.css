@@ -16,11 +16,14 @@
    * Colors
    */
   --color-coral-red: #f36855;
+  --color-salt-rock-100: #f9ede8;
   --color-seabed-indigo: #3f26dd;
   --color-seabed-indigo-50: #e6e3fa;
   --color-seabed-indigo-100: #e0ddf3;
   --color-seabed-indigo-400: #3f26dd;
   --color-stone: #ebeff4;
+  --color-warm-black: #272321;
+  --color-almost-white: #ececec;
 
   /**
    * Shadows
