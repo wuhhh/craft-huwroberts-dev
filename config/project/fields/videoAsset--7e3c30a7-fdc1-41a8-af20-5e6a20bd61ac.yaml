@@ -1,7 +1,7 @@
 columnSuffix: null
-handle: video
+handle: videoAsset
 instructions: null
-name: Video
+name: 'Video Asset'
 searchable: false
 settings:
   allowSelfRelations: false
@@ -10,6 +10,7 @@ settings:
   allowedKinds:
     - video
   branchLimit: null
+  defaultPlacement: end
   defaultUploadLocationSource: 'volume:d5f87477-e8cd-4d2e-b3b9-c8c97050dadb' # Assets
   defaultUploadLocationSubpath: 'videos/{slug}'
   maintainHierarchy: false
@@ -22,14 +23,14 @@ settings:
   restrictedLocationSource: 'volume:d5f87477-e8cd-4d2e-b3b9-c8c97050dadb' # Assets
   restrictedLocationSubpath: null
   selectionLabel: null
-  showCardsInGrid: false
-  showSiteMenu: false
+  showSearchInput: true
+  showSiteMenu: true
   showUnpermittedFiles: false
   showUnpermittedVolumes: false
   sources: '*'
   targetSiteId: null
   validateRelatedElements: false
-  viewMode: large
+  viewMode: thumbs
 translationKeyFormat: null
 translationMethod: none
 type: craft\fields\Assets

@@ -1,0 +1,90 @@
+columnSuffix: null
+handle: featureVideo
+instructions: null
+name: 'Feature Video'
+searchable: false
+settings:
+  fieldLayouts:
+    __assoc__:
+      -
+        - 67591209-b8c5-4603-922d-7ec74806f7d3
+        -
+          __assoc__:
+            0:
+              - tabs
+              -
+                -
+                  __assoc__:
+                    1:
+                      - uid
+                      - 8c9d91b8-0d3a-4978-b6db-d066689d7865
+                    4:
+                      - elements
+                      -
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-06-24T14:55:51+00:00'
+                            9:
+                              - uid
+                              - ce9af683-9ce4-4861-a516-3a29df764004
+                            12:
+                              - fieldUid
+                              - 26815ef3-9cba-4a58-b54c-135487262816 # Video & Caption
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-06-24T14:55:51+00:00'
+                            9:
+                              - uid
+                              - 00f72390-c37d-40cb-85a8-38eac6c68be6
+                            12:
+                              - fieldUid
+                              - ea335930-ce93-4c99-96bd-ebdb490c2b75 # Boxed
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-06-24T14:55:51+00:00'
+                            9:
+                              - uid
+                              - 15413fa4-0318-4e1a-98a0-15abfb7cc368
+                            12:
+                              - fieldUid
+                              - eaf86955-6679-4b0b-aac6-cc5e4d5b9723 # Box Background Colour
+            4:
+              - cardThumbAlignment
+              - end
+  viewMode: grouped
+translationKeyFormat: null
+translationMethod: site
+type: craft\fields\ContentBlock

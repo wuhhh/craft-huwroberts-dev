@@ -1,0 +1,58 @@
+allowLineBreaksInTitles: false
+color: pink
+description: null
+fieldLayouts:
+  fd75e2bb-bf73-4d7c-bc4e-c54249873169:
+    cardThumbAlignment: end
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2026-06-24T15:21:11+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 0c63feb6-fcfa-46d6-befd-8445e10a9e7a # Image & Caption
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: b8577e99-962e-4c92-85e1-fd43cb055cfb
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-24T15:21:11+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: bbae9f82-980e-46b3-8f33-580a96372be7 # Full Width
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 8c62b8d3-5f78-4b4a-bfc6-8d59392a602d
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: db62fdcd-6965-4c0e-bd24-8a1dfe5e1a1b
+        userCondition: null
+    thumbFieldKey: 'contentBlock:b8577e99-962e-4c92-85e1-fd43cb055cfb.layoutElement:c62ef3c8-5129-43b0-8ed1-c0a89089a2b2'
+handle: imageCaption
+hasTitleField: false
+icon: image-polaroid
+name: '🔹 Image & Caption'
+showSlugField: true
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: '{imageCaption.imageAsset.one().title}'
+titleTranslationKeyFormat: null
+titleTranslationMethod: site
+uiLabelFormat: '{title}'

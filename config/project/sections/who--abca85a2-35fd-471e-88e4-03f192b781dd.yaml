@@ -2,7 +2,7 @@ defaultPlacement: end
 enableVersioning: true
 entryTypes:
   -
-    uid: c300fa12-7356-4389-b8d8-0411927605a8 # Who
+    uid: c300fa12-7356-4389-b8d8-0411927605a8 # Page: Who
 handle: who
 maxAuthors: 1
 minAuthors: 1

@@ -2,7 +2,7 @@ allowLineBreaksInTitles: false
 color: teal
 description: null
 fieldLayouts:
-  f655158f-7778-4721-8b0d-d08ff0e9c87d:
+  f36c3e10-1b4e-410d-831e-c09f62a4e5b1:
     cardThumbAlignment: end
     tabs:
       -
@@ -13,7 +13,7 @@ fieldLayouts:
             autocomplete: false
             autocorrect: true
             class: null
-            dateAdded: '2026-06-23T19:12:33+00:00'
+            dateAdded: '2026-06-24T15:00:49+00:00'
             disabled: false
             elementCondition: null
             id: null
@@ -32,18 +32,34 @@ fieldLayouts:
             tip: null
             title: null
             type: craft\fieldlayoutelements\entries\EntryTitleField
-            uid: 9be1889e-a547-4b98-b4d0-ef8669f6de74
+            uid: 40ff4965-30ca-424c-8989-e0ef59605db5
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-24T15:02:26+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 68c90757-4b39-4910-94b6-94eb4f0a370b # Rich Text Simple
+            handle: null
+            instructions: null
+            label: Preamble
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: ffa1caf2-aad3-4dff-99ff-6e960aad23fc
             userCondition: null
             warning: null
             width: 100
         name: Content
-        uid: c4c43a49-79c9-4093-8ad4-047273fd0cef
+        uid: 66073a6c-4986-41f1-baad-04326d2c3938
         userCondition: null
     thumbFieldKey: null
-handle: workIndex
+handle: pagePostIndex
 hasTitleField: true
-icon: square-terminal
-name: 'Page: Work Index'
+icon: feather
+name: 'Page: Post Index'
 showSlugField: true
 showStatusField: true
 slugTranslationKeyFormat: null

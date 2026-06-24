@@ -1,7 +1,7 @@
 columnSuffix: null
-handle: image
+handle: imageAsset
 instructions: null
-name: Image
+name: 'Image Asset'
 searchable: false
 settings:
   allowSelfRelations: false
@@ -10,6 +10,7 @@ settings:
   allowedKinds:
     - image
   branchLimit: null
+  defaultPlacement: end
   defaultUploadLocationSource: 'volume:d5f87477-e8cd-4d2e-b3b9-c8c97050dadb' # Assets
   defaultUploadLocationSubpath: images/general
   maintainHierarchy: false
@@ -22,14 +23,14 @@ settings:
   restrictedLocationSource: 'volume:d5f87477-e8cd-4d2e-b3b9-c8c97050dadb' # Assets
   restrictedLocationSubpath: null
   selectionLabel: null
-  showCardsInGrid: false
-  showSiteMenu: false
+  showSearchInput: true
+  showSiteMenu: true
   showUnpermittedFiles: false
   showUnpermittedVolumes: false
   sources: '*'
   targetSiteId: null
   validateRelatedElements: false
-  viewMode: list
+  viewMode: thumbs
 translationKeyFormat: null
 translationMethod: none
 type: craft\fields\Assets

@@ -1,16 +1,16 @@
 columnSuffix: null
-handle: summary
+handle: text
 instructions: null
-name: Summary
+name: Text
 searchable: false
 settings:
   byteLimit: null
-  charLimit: 200
+  charLimit: null
   code: false
   initialRows: 4
   multiline: false
   placeholder: null
   uiMode: normal
 translationKeyFormat: null
-translationMethod: site
+translationMethod: none
 type: craft\fields\PlainText

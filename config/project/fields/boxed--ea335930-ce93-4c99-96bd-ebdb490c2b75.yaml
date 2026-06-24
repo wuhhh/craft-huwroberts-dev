@@ -1,0 +1,13 @@
+columnSuffix: null
+handle: boxed
+instructions: 'Render the video in a padded box/frame'
+name: Boxed
+searchable: false
+settings:
+  default: false
+  offLabel: null
+  onLabel: null
+  showLabelsInCards: false
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Lightswitch

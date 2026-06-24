@@ -1,0 +1,90 @@
+columnSuffix: null
+handle: aside
+instructions: null
+name: Aside
+searchable: false
+settings:
+  fieldLayouts:
+    __assoc__:
+      -
+        - 5f6d3d73-2cfe-4c79-a7a8-6da38b5ac197
+        -
+          __assoc__:
+            0:
+              - tabs
+              -
+                -
+                  __assoc__:
+                    1:
+                      - uid
+                      - f6bec43e-84aa-439c-947d-0a4defb36977
+                    4:
+                      - elements
+                      -
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-06-24T14:50:35+00:00'
+                            9:
+                              - uid
+                              - 9f380989-abc4-4c84-a785-bf530c676a84
+                            12:
+                              - fieldUid
+                              - 08c5f708-e62c-41c7-8648-8137caa17c81 # Text
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-06-24T14:50:35+00:00'
+                            9:
+                              - uid
+                              - 1e67f152-6900-43a8-b15f-96975ecd6669
+                            12:
+                              - fieldUid
+                              - 3d16384e-bfc8-430d-b07b-70b0014c7d93 # Icon
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-06-24T14:50:35+00:00'
+                            9:
+                              - uid
+                              - 14f59222-7d1c-45a1-bf9a-4393857dd68d
+                            12:
+                              - fieldUid
+                              - 68c90757-4b39-4910-94b6-94eb4f0a370b # Rich Text Simple
+            4:
+              - cardThumbAlignment
+              - end
+  viewMode: grouped
+translationKeyFormat: null
+translationMethod: site
+type: craft\fields\ContentBlock

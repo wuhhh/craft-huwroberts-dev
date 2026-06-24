@@ -1,0 +1,138 @@
+columnSuffix: null
+handle: richTextPost
+instructions: null
+name: 'Rich Text Post'
+searchable: false
+settings:
+  advancedLinkFields:
+    - target
+  availableTransforms: ''
+  availableVolumes: '*'
+  characterLimit: null
+  css: null
+  cssFile: null
+  defaultTransform: null
+  defaultUploadLocationSubpath: null
+  defaultUploadLocationVolume: null
+  entryTypes:
+    -
+      __assoc__:
+        -
+          - uid
+          - 9aeedb1c-23bf-4011-ab51-39b3e1120bb1 # 🔹 Copy & Aside
+        -
+          - expanded
+          - false
+    -
+      __assoc__:
+        -
+          - uid
+          - ce84f3b1-226d-40f1-9fae-0fde3b70f8ab # 🔹 Image & Caption
+        -
+          - expanded
+          - false
+    -
+      __assoc__:
+        -
+          - uid
+          - 98337978-21e0-4fe0-baf9-f1eb86492071 # 🔹 Video & Caption
+        -
+          - expanded
+          - false
+  fullGraphqlData: true
+  headingLevels:
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+  imageEntryTypeUid: null
+  imageFieldUid: null
+  imageMode: img
+  js: null
+  jsFile: null
+  options:
+    __assoc__:
+      -
+        - codeBlock
+        -
+          __assoc__:
+            -
+              - indentSequence
+              - '  '
+            -
+              - languages
+              -
+                -
+                  __assoc__:
+                    -
+                      - label
+                      - CSS
+                    -
+                      - language
+                      - css
+                -
+                  __assoc__:
+                    -
+                      - label
+                      - HTML
+                    -
+                      - language
+                      - html
+                -
+                  __assoc__:
+                    -
+                      - label
+                      - JavaScript
+                    -
+                      - language
+                      - javascript
+                -
+                  __assoc__:
+                    -
+                      - label
+                      - Rust
+                    -
+                      - language
+                      - rust
+                -
+                  __assoc__:
+                    -
+                      - label
+                      - Twig
+                    -
+                      - language
+                      - twig
+                -
+                  __assoc__:
+                    -
+                      - label
+                      - Typescript
+                    -
+                      - language
+                      - typescript
+  parseEmbeds: false
+  purifierConfig: null
+  purifyHtml: true
+  showUnpermittedFiles: false
+  showUnpermittedVolumes: false
+  showWordCount: false
+  sourceEditingGroups:
+    - __ADMINS__
+  toolbar:
+    - heading
+    - '|'
+    - bold
+    - italic
+    - link
+    - '|'
+    - code
+    - codeBlock
+    - outdent
+    - indent
+    - '|'
+    - createEntry
+  wordLimit: null
+translationKeyFormat: null
+translationMethod: none
+type: craft\ckeditor\Field

@@ -2,7 +2,7 @@ defaultPlacement: end
 enableVersioning: true
 entryTypes:
   -
-    uid: f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae # Work
+    uid: f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae # Entry: Work
 handle: work
 maxAuthors: 1
 minAuthors: 1

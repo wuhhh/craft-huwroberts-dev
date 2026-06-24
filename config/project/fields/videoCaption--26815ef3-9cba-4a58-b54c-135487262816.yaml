@@ -1,0 +1,145 @@
+columnSuffix: null
+handle: videoCaption
+instructions: null
+name: 'Video & Caption'
+searchable: false
+settings:
+  fieldLayouts:
+    __assoc__:
+      -
+        - f03ff4f2-a1ac-4b90-9da5-e08ee813895b
+        -
+          __assoc__:
+            0:
+              - tabs
+              -
+                -
+                  __assoc__:
+                    0:
+                      - name
+                      - Content
+                    1:
+                      - uid
+                      - ba794a58-e167-46c6-ba74-cc33f093ed41
+                    4:
+                      - elements
+                      -
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-06-24T14:54:50+00:00'
+                            9:
+                              - uid
+                              - 9eada1a6-fcfa-4266-918c-2d3c0c220c16
+                            12:
+                              - fieldUid
+                              - 7e3c30a7-fdc1-41a8-af20-5e6a20bd61ac # Video Asset
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-06-24T14:54:50+00:00'
+                            9:
+                              - uid
+                              - b23dd120-7828-4e91-86c3-b1c25192dd0e
+                            12:
+                              - fieldUid
+                              - 485a1249-2b8a-4895-b4f1-2d9de2650d6a # Video Mode
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            2:
+                              - label
+                              - 'Poster Image'
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-06-24T14:54:50+00:00'
+                            9:
+                              - uid
+                              - 8669d176-266c-4fd5-9a12-cb895007d825
+                            12:
+                              - fieldUid
+                              - 3304bc86-e804-4dc5-8c9b-0907003b0734 # Image Asset
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            1:
+                              - handle
+                              - dimPoster
+                            2:
+                              - label
+                              - 'Dim Poster'
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-06-24T15:27:11+00:00'
+                            9:
+                              - uid
+                              - e2b508bc-1749-48ef-839c-57bf4306cba1
+                            12:
+                              - fieldUid
+                              - 87a940b2-87cc-4846-b166-bfb9b6d845ae # Toggle
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            2:
+                              - label
+                              - Caption
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-06-24T14:54:50+00:00'
+                            9:
+                              - uid
+                              - 62871360-76e5-4845-bda4-b8f854010d22
+                            12:
+                              - fieldUid
+                              - 08c5f708-e62c-41c7-8648-8137caa17c81 # Text
+            4:
+              - cardThumbAlignment
+              - end
+  viewMode: grouped
+translationKeyFormat: null
+translationMethod: site
+type: craft\fields\ContentBlock

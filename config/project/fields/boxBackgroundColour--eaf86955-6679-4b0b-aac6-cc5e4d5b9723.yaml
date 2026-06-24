@@ -1,0 +1,33 @@
+columnSuffix: null
+handle: boxBackgroundColour
+instructions: null
+name: 'Box Background Colour'
+searchable: false
+settings:
+  allowCustomColors: true
+  palette:
+    -
+      __assoc__:
+        -
+          - color
+          - '#272321'
+        -
+          - label
+          - 'Warm Black'
+        -
+          - default
+          - '1'
+    -
+      __assoc__:
+        -
+          - color
+          - '#ececec'
+        -
+          - label
+          - 'Almost White'
+        -
+          - default
+          - ''
+translationKeyFormat: null
+translationMethod: none
+type: craft\fields\Color

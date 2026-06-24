@@ -1,6 +1,9 @@
-color: teal
+allowLineBreaksInTitles: false
+color: violet
+description: null
 fieldLayouts:
-  c2f125f0-13b9-42a4-b0b2-5afbc60c616a:
+  8c0171a4-5a7d-428b-bef6-74dd614a7251:
+    cardThumbAlignment: end
     tabs:
       -
         elementCondition: null
@@ -10,7 +13,7 @@ fieldLayouts:
             autocomplete: false
             autocorrect: true
             class: null
-            dateAdded: '2025-01-06T11:47:31+00:00'
+            dateAdded: '2026-06-24T14:57:50+00:00'
             disabled: false
             elementCondition: null
             id: null
@@ -29,31 +32,18 @@ fieldLayouts:
             tip: null
             title: null
             type: craft\fieldlayoutelements\entries\EntryTitleField
-            uid: 1006a8ec-197b-46d0-afe8-8b01dd7ea6ee
-            userCondition: null
-            warning: null
-            width: 100
-          -
-            dateAdded: '2025-01-06T11:47:31+00:00'
-            elementCondition: null
-            fieldUid: 6c0338fc-c096-4d7d-bef5-22406ee8bbe6 # Heading
-            handle: null
-            instructions: null
-            label: null
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: e6fecc58-b15c-465a-a5b8-d2ceef9b288c
+            uid: 38b8a60b-83f6-4c15-990e-7beb1aa71d31
             userCondition: null
             warning: null
             width: 100
         name: Content
-        uid: 20a74ab7-6018-4505-b33c-b8264fe51858
+        uid: ad190e45-b0fc-4482-8fc5-d7c953121349
         userCondition: null
-handle: home
+    thumbFieldKey: null
+handle: entryPost
 hasTitleField: true
-icon: moon-stars
-name: Home
+icon: feather
+name: 'Entry: Post'
 showSlugField: true
 showStatusField: true
 slugTranslationKeyFormat: null
@@ -61,3 +51,4 @@ slugTranslationMethod: site
 titleFormat: null
 titleTranslationKeyFormat: null
 titleTranslationMethod: site
+uiLabelFormat: '{title}'

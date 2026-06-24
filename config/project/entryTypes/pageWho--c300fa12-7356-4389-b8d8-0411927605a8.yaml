@@ -1,6 +1,9 @@
-color: orange
+allowLineBreaksInTitles: false
+color: teal
+description: null
 fieldLayouts:
   fca34cbb-10b3-42ee-949d-03554cad97ce:
+    cardThumbAlignment: end
     tabs:
       -
         elementCondition: null
@@ -35,21 +38,9 @@ fieldLayouts:
             width: 100
           -
             dateAdded: '2025-01-06T11:47:32+00:00'
+            editCondition: null
             elementCondition: null
-            fieldUid: 6c0338fc-c096-4d7d-bef5-22406ee8bbe6 # Heading
-            handle: null
-            instructions: null
-            label: null
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: f44a509b-b12a-4bbe-bf9a-d785ce012ac8
-            userCondition: null
-            warning: null
-            width: 100
-          -
-            dateAdded: '2025-01-06T11:47:32+00:00'
-            elementCondition: null
+            elementEditCondition: null
             fieldUid: efaad977-8c8a-4ef0-b449-ba859a367e44 # Rich Text
             handle: null
             instructions: null
@@ -63,7 +54,9 @@ fieldLayouts:
             width: 100
           -
             dateAdded: '2025-01-06T11:47:32+00:00'
+            editCondition: null
             elementCondition: null
+            elementEditCondition: null
             fieldUid: c5b973a9-a07d-4d67-acb9-a3f0cbcb1450 # Tech Tags
             handle: null
             instructions: null
@@ -77,8 +70,10 @@ fieldLayouts:
             width: 100
           -
             dateAdded: '2025-01-06T11:47:32+00:00'
+            editCondition: null
             elementCondition: null
-            fieldUid: 3304bc86-e804-4dc5-8c9b-0907003b0734 # Image
+            elementEditCondition: null
+            fieldUid: 3304bc86-e804-4dc5-8c9b-0907003b0734 # Image Asset
             handle: null
             instructions: null
             label: null
@@ -92,10 +87,11 @@ fieldLayouts:
         name: Content
         uid: 02b4089a-a82b-4587-b834-12716db01b7d
         userCondition: null
-handle: who
+    thumbFieldKey: null
+handle: pageWho
 hasTitleField: true
 icon: peace
-name: Who
+name: 'Page: Who'
 showSlugField: true
 showStatusField: true
 slugTranslationKeyFormat: null
@@ -103,3 +99,4 @@ slugTranslationMethod: site
 titleFormat: null
 titleTranslationKeyFormat: null
 titleTranslationMethod: site
+uiLabelFormat: '{title}'

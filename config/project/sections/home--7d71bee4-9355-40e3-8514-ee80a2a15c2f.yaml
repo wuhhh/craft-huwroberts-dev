@@ -2,7 +2,7 @@ defaultPlacement: end
 enableVersioning: true
 entryTypes:
   -
-    uid: c0160475-3256-40fc-89bf-3e63d0add54c # Home
+    uid: c0160475-3256-40fc-89bf-3e63d0add54c # Page: Home
 handle: home
 maxAuthors: 1
 minAuthors: 1

@@ -1,0 +1,73 @@
+columnSuffix: null
+handle: imageCaption
+instructions: null
+name: 'Image & Caption'
+searchable: false
+settings:
+  fieldLayouts:
+    __assoc__:
+      -
+        - 26131ece-0f16-4a9a-b576-a7837fb1170f
+        -
+          __assoc__:
+            0:
+              - tabs
+              -
+                -
+                  __assoc__:
+                    1:
+                      - uid
+                      - f3af19bd-297f-4107-9722-55cd18c1fe43
+                    4:
+                      - elements
+                      -
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-06-24T14:56:54+00:00'
+                            9:
+                              - uid
+                              - c62ef3c8-5129-43b0-8ed1-c0a89089a2b2
+                            12:
+                              - fieldUid
+                              - 3304bc86-e804-4dc5-8c9b-0907003b0734 # Image Asset
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            2:
+                              - label
+                              - Caption
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-06-24T14:56:54+00:00'
+                            9:
+                              - uid
+                              - c217b8ec-c777-472f-93be-65ad44fe986f
+                            12:
+                              - fieldUid
+                              - 08c5f708-e62c-41c7-8648-8137caa17c81 # Text
+            4:
+              - cardThumbAlignment
+              - end
+  viewMode: grouped
+translationKeyFormat: null
+translationMethod: site
+type: craft\fields\ContentBlock

@@ -2,7 +2,7 @@ defaultPlacement: end
 enableVersioning: true
 entryTypes:
   -
-    uid: ad34d564-b010-4b10-9cbe-473ebc2699ff # Work Index
+    uid: ad34d564-b010-4b10-9cbe-473ebc2699ff # Page: Work Index
 handle: workIndex
 maxAuthors: 1
 minAuthors: 1

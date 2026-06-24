@@ -1,0 +1,88 @@
+allowLineBreaksInTitles: false
+color: pink
+description: null
+fieldLayouts:
+  8ed88637-a317-4edf-8c95-3c62962651e4:
+    cardThumbAlignment: end
+    cardView:
+      - 'layoutElement:35c33757-721e-4029-9f56-0746b5b96256'
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            dateAdded: '2026-06-24T15:13:13+00:00'
+            disabled: false
+            elementCondition: null
+            id: null
+            inputType: null
+            instructions: null
+            label: null
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            readonly: false
+            required: true
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\entries\EntryTitleField
+            uid: 3c043263-3dd5-423d-9ccb-82c604e95ee9
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-24T15:19:57+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 68c90757-4b39-4910-94b6-94eb4f0a370b # Rich Text Simple
+            handle: null
+            instructions: null
+            label: Copy
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 35c33757-721e-4029-9f56-0746b5b96256
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-24T15:19:57+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: ebc310ef-c008-43b9-8f8e-9f569dbd9334 # Aside
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 72be52ec-9707-4c9c-8be2-4392da24e230
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: 9bf6a2a8-311a-4076-9584-140139f03d37
+        userCondition: null
+    thumbFieldKey: null
+handle: copyAside
+hasTitleField: true
+icon: notes
+name: '🔹 Copy & Aside'
+showSlugField: true
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: null
+titleTranslationKeyFormat: null
+titleTranslationMethod: site
+uiLabelFormat: '{title}'
