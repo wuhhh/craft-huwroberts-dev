@@ -1,4 +1,4 @@
-dateModified: 1781893762
+dateModified: 1782242068
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -13,6 +13,7 @@ fs:
     url: '@web/volumes/local'
 meta:
   __names__:
+    0c6d4176-996d-4614-bdff-a2d9abe117cc: 'Work (Index)' # Work (Index)
     2cf30ae5-5268-4df7-8be9-54b1dc6e9a88: 'SEO Keywords' # SEO Keywords
     4e5f4410-fe03-41d3-a103-8619a3dee7de: 'Live URL' # Live URL
     5c24cd7c-3d48-44f0-831a-3abc4d6b54ff: Work # Work
@@ -36,6 +37,7 @@ meta:
     98303f8e-dbcf-40b8-9c2b-cd5955798bd5: 'Site Name' # Site Name
     99701ea9-a4da-4fb6-b997-541f0661f9a9: Agency # Agency
     abca85a2-35fd-471e-88e4-03f192b781dd: Who # Who
+    ad34d564-b010-4b10-9cbe-473ebc2699ff: 'Work Index' # Work Index
     b72f3694-5d2a-478c-badd-08344714d7d0: Agency # Agency
     c0160475-3256-40fc-89bf-3e63d0add54c: Home # Home
     c3d4eba5-b940-4c5b-a4cd-6f3d86f6d410: 'SEO Title' # SEO Title

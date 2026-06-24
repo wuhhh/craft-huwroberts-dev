@@ -2,11 +2,11 @@ defaultPlacement: end
 enableVersioning: true
 entryTypes:
   -
-    uid: f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae # Work
-handle: work
+    uid: ad34d564-b010-4b10-9cbe-473ebc2699ff # Work Index
+handle: workIndex
 maxAuthors: 1
 minAuthors: 1
-name: Work
+name: 'Work (Index)'
 previewTargets:
   -
     label: 'Primary entry page'
@@ -17,14 +17,11 @@ siteSettings:
   5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: # Cymraeg
     enabledByDefault: true
     hasUrls: true
-    template: work/_entry.twig
-    uriFormat: 'work/{slug}'
+    template: work/_index.twig
+    uriFormat: '{slug}'
   25a33ae6-3901-458a-8998-5f63d864a3f3: # English
     enabledByDefault: true
     hasUrls: true
-    template: work/_entry.twig
-    uriFormat: 'work/{slug}'
-structure:
-  maxLevels: null
-  uid: 2713f40e-930c-43e0-963f-bc9700f8d487
-type: structure
+    template: work/_index.twig
+    uriFormat: '{slug}'
+type: single
