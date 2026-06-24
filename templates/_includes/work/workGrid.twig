@@ -1,4 +1,4 @@
-{% set work = craft.entries.section('work').with(['cardImage']).all() %}
+{% set work = craft.entries.section('work').with(['imageAsset']).all() %}
 {% set workEntries = work ?? [] %}
 
 {% if workEntries|length %}
@@ -7,7 +7,7 @@
   <div class="col-span-full grid grid-cols-subgrid gap-y-24">
     {% for entry in workEntries %}
 
-      {% set image = entry.cardImage.one() ?? null %}
+      {% set image = entry.imageAsset.one() ?? null %}
       {% set cls = "" %}
 
       {% set base6Index0 = loop.index0 % 6 %}
