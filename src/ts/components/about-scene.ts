@@ -5,7 +5,7 @@ import * as THREE from "three/webgpu";
 import { SceneController } from "../controllers/scene-controller";
 import { DRACOLoader, GLTFLoader } from "three/examples/jsm/Addons.js";
 import type { SceneDrawFn, SceneSetupAsyncFn } from "../types";
-import getViewport from "../lib/get-viewport";
+import { alignMeshWithDOM } from "../lib/align-mesh-with-dom";
 
 /**
  * Objects that will be available between the setup and draw functions
@@ -152,13 +152,6 @@ export class aboutScene extends LitElement {
        * Match each loaded letter mesh to its corresponding DOM element.
        */
       const alignMeshesWithDOM = () => {
-        const canvasRect = host.getBoundingClientRect();
-
-        const viewport = getViewport(camera, host, 0);
-        if (!viewport) return;
-
-        const { width: visibleWidth, height: visibleHeight } = viewport;
-
         for (const letterMeshName in ctx.letterMeshRefs) {
           const mesh = ctx.letterMeshRefs[letterMeshName];
 
@@ -169,39 +162,7 @@ export class aboutScene extends LitElement {
 
           if (!mesh || !domEl) continue;
 
-          const rect = domEl.getBoundingClientRect();
-          mesh.userData.rect = rect;
-
-          // DOM rect centre relative to the host canvas
-          const centerX = rect.left + rect.width / 2 - canvasRect.left;
-          const centerY = rect.top + rect.height / 2 - canvasRect.top;
-
-          // Convert to normalised device coordinates ([-0.5, 0.5])
-          const normalizedX = centerX / canvasRect.width - 0.5;
-          const normalizedY = -(centerY / canvasRect.height - 0.5);
-
-          // Convert to 3D world coordinates
-          mesh.position.x = normalizedX * visibleWidth;
-          mesh.position.y = normalizedY * visibleHeight;
-          mesh.position.z = 0;
-
-          // Scale the mesh so its bounding-box height matches the DOM cell height
-          mesh.geometry.computeBoundingBox();
-          const box = mesh.geometry.boundingBox;
-          if (box) {
-            const size = new THREE.Vector3();
-            box.getSize(size);
-
-            // Convert DOM cell height to world units
-            const targetHeight = rect.height / viewport.factor;
-
-            if (size.y > 0) {
-              const scale = targetHeight / size.y;
-              mesh.scale.setScalar(scale);
-            }
-          }
-
-          mesh.updateMatrixWorld();
+          alignMeshWithDOM({ mesh, domElement: domEl, camera, host });
         }
       };
 
