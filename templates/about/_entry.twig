@@ -1,0 +1,116 @@
+{% extends "_layouts/elements" %}
+
+{% block content %}
+
+  {% set shortBio = entry.richTextSimple ?? null %}
+  {% set tech = entry.tech ?? null %}
+  {% set frequentItems = collect(tech).pluck("frequent") %}
+  {% set occasionalItems = collect(tech).pluck("occasional") %}
+
+  <div class="col-span-full relative h-screen w-full">
+    {# ==
+    <DiamondDecor
+      parallax="mouse"
+      delay={0}
+      class="absolute top-37 right-1/2"
+      decorClassName="bg-seabed-indigo size-6.25"
+    />
+    <DiamondDecor
+      parallax="mouse"
+      delay={150}
+      speed={0.15}
+      class="absolute top-176 left-54"
+      decorClassName="bg-coral-red size-6.25"
+    />
+    <DiamondDecor
+      parallax="mouse"
+      delay={300}
+      speed={0.05}
+      class="absolute top-68 -right-2"
+      decorClassName="border-seabed-indigo size-6.25 border"
+    />
+    <StarDecor
+      parallax="mouse"
+      delay={450}
+      speed={0.12}
+      class="absolute top-140 right-40 z-10"
+      decorClassName="text-coral-red"
+    />
+    == #}
+
+    <about-scene></about-scene>
+
+    <div class="pt-36 pb-16">
+      <div class="relative grid grid-cols-12 gap-x-10">
+        <div class="col-span-10 col-start-2">
+          {% include "_includes/breadcrumb" with {
+            links: [
+              {
+                label: "Home",
+                url: siteUrl,
+              },
+              {
+                label: entry.title,
+                url: "",
+              }
+            ]
+          } only %}
+        </div>
+        <div class="col-span-full h-22.5"></div>
+        <div class="col-span-6 col-start-5">
+          <h1 class="sr-only">{entry.title}</h1>
+
+          <div class="space-y-10" data-cursor-layer="top">
+            <div data-image-ref class="relative aspect-704/498 overflow-hidden rounded-2xl"></div>
+
+            {% if shortBio %}
+              <div class="w-full max-w-162 leading-7">
+                {{ shortBio }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="pointer-events-none absolute inset-0 translate-y-9.5 font-mono text-xs leading-3.5 uppercase">
+            <div class="relative grid grid-cols-12 gap-x-10">
+              <div class="col-start-10">
+                <div class="flex gap-x-10">
+                  {% if frequentItems|length %}
+                    <div class="min-w-21">
+                      <h2>Frequent</h2>
+                      <div aria-hidden="true">++++++++</div>
+                      <br />
+                      <ul>
+                        {% for frequentItem in frequentItems %}
+                          <li>{{ frequentItem }}</li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
+
+                  {% if occasionalItems|length %}
+                    <div class="min-w-21">
+                      <h2>Occasional</h2>
+                      <div aria-hidden="true">++++++++++</div>
+                      <br />
+                      <ul>
+                        {% for occasionalItem in occasionalItems %}
+                          <li>{{ occasionalItem }}</li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# three scene here #}
+      {# ... #}
+
+    </div>
+  </div>
+
+{% endblock %}
