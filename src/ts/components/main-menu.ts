@@ -59,10 +59,10 @@ export class MainMenu extends LitElement {
       flex-direction: column;
       align-items: flex-start;
       row-gap: 0.125rem;
-      color: var(--color-stone);
     }
 
-    ::slotted(a) {
+    a {
+      color: var(--color-stone);
       display: inline-block;
       font-family: var(--font-mono);
       font-size: var(--text-xs);
@@ -73,17 +73,18 @@ export class MainMenu extends LitElement {
       clip-path: inset(0px 100% 0px 0px);
       transition: clip-path 325ms cubic-bezier(0.785, 0.135, 0.15, 0.86);
       will-change: clip-path;
+      text-decoration: none;
     }
 
-    ::slotted(a:hover) {
+    a:hover {
       background-color: var(--color-coral-red);
     }
 
-    ::slotted(a:focus-visible) {
+    a:focus-visible {
       box-shadow: inset 0 0 0 2px var(--color-coral-red);
     }
 
-    nav.open ::slotted(a) {
+    nav.open a {
       clip-path: inset(0px 0% 0px 0px);
     }
   `;
@@ -127,7 +128,11 @@ export class MainMenu extends LitElement {
         class="${this.open ? `open` : ``}"
         aria-label="Main"
       >
-        <slot></slot>
+        <a href="/">Home</a>
+        <a href="/work" style="transition-delay: 30ms">Portfolio</a>
+        <a href="/about" style="transition-delay: 60ms">About</a>
+        <a href="/journal" style="transition-delay: 90ms">Journal</a>
+        <a href="/contact" style="transition-delay: 120ms">Contact</a>
       </nav>
     `;
   }
