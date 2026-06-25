@@ -2,11 +2,12 @@
 import { LitElement, css, html, type CSSResultGroup } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import * as THREE from "three/webgpu";
-import { color } from "three/tsl";
 import { SceneController } from "../controllers/scene-controller";
 import { DRACOLoader, GLTFLoader } from "three/examples/jsm/Addons.js";
 import type { SceneDrawFn, SceneSetupAsyncFn } from "../types";
 import { alignMeshWithDOM } from "../lib/align-mesh-with-dom";
+import getViewport from "../lib/get-viewport";
+import { createSpatialImage, type SpatialImage } from "../lib/spatial-image";
 
 /**
  * Objects that will be available between the setup and draw functions
@@ -25,6 +26,11 @@ interface AboutSceneContext {
     capT_8?: THREE.Mesh | null;
     capS_9?: THREE.Mesh | null;
   };
+  /** Offscreen spatial-image scene + tracked mouse, rendered into an RT each frame. */
+  spatialImage?: {
+    si: SpatialImage;
+    mouse: THREE.Vector3;
+  } | null;
 }
 
 const letterMeshNames = [
@@ -141,18 +147,24 @@ export class aboutScene extends LitElement {
       const gltf = await loader.loadAsync("/dist/models/hrdev.glb");
       const c = gltf.scene.children;
 
+      const letterGrp = new THREE.Group();
+
       letterMeshNames.forEach((name) => {
         const mesh = c.find((child) => child.name === name) as
           | THREE.Mesh
           | undefined;
         ctx.letterMeshRefs[name] = mesh ?? null;
-        if (mesh) scene.add(mesh);
+        if (mesh) letterGrp.add(mesh);
       });
+
+      // stop z fighting with image plane
+      letterGrp.position.z = 0.01;
+      scene.add(letterGrp);
 
       /**
        * Match each loaded letter mesh to its corresponding DOM element.
        */
-      const alignMeshesWithDOM = () => {
+      const alignLetterMeshesWithDOM = () => {
         for (const letterMeshName in ctx.letterMeshRefs) {
           const mesh = ctx.letterMeshRefs[letterMeshName];
 
@@ -167,19 +179,42 @@ export class aboutScene extends LitElement {
         }
       };
 
-      alignMeshesWithDOM();
+      alignLetterMeshesWithDOM();
 
       // Re-align on resize
-      window.addEventListener("resize", alignMeshesWithDOM);
+      window.addEventListener("resize", alignLetterMeshesWithDOM);
 
-      // Scene image plane - align a green plane with the refImage element
+      // Spatial image — render a depth-displaced, mouse-tiltable plane to an
+      // offscreen RT, then show it on a flat plane aligned with refImage.
       if (this.refImageId) {
         const refImage = document.getElementById(this.refImageId);
         if (refImage) {
-          const planeGeo = new THREE.PlaneGeometry(1, 1);
-          const planeMat = new THREE.MeshBasicNodeMaterial();
-          planeMat.colorNode = color("green");
-          const imagePlane = new THREE.Mesh(planeGeo, planeMat);
+          // load colour (sRGB) + depth (linear) textures
+          const textureLoader = new THREE.TextureLoader();
+          const [colorTexture, depthTexture] = await Promise.all([
+            textureLoader.loadAsync("/dist/textures/huw-and-his-dog@2x.webp"),
+            textureLoader.loadAsync(
+              "/dist/textures/huw-and-his-dog-depth@2x.webp",
+            ),
+          ]);
+          colorTexture.colorSpace = THREE.SRGBColorSpace;
+
+          // aspect from the refImage's laid-out rect (RT/camera match it)
+          const rect = refImage.getBoundingClientRect();
+          const aspect =
+            rect.width && rect.height ? rect.width / rect.height : 1;
+
+          const si = createSpatialImage({
+            colorTexture,
+            depthTexture,
+            aspect,
+          });
+
+          // flat display plane samples the RT; align it to the refImage
+          const imagePlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(1, 1),
+            si.displayMaterial,
+          );
           scene.add(imagePlane);
 
           const alignImagePlane = () => {
@@ -191,9 +226,23 @@ export class aboutScene extends LitElement {
               scaleToMatch: "size",
             });
           };
-
           alignImagePlane();
           window.addEventListener("resize", alignImagePlane);
+
+          // mouse → world (relative to host, in the main camera's world units)
+          const mouse = new THREE.Vector3(0, 0, 0);
+          const handleMouseMove = (e: MouseEvent) => {
+            const r = host.getBoundingClientRect();
+            if (!r.width || !r.height) return;
+            const nx = (e.clientX - r.left) / r.width - 0.5;
+            const ny = -((e.clientY - r.top) / r.height - 0.5);
+            const vp = getViewport(camera, host, 0);
+            if (!vp) return;
+            mouse.set(nx * vp.width, ny * vp.height, 0);
+          };
+          window.addEventListener("mousemove", handleMouseMove);
+
+          ctx.spatialImage = { si, mouse };
         }
       }
 
@@ -203,7 +252,16 @@ export class aboutScene extends LitElement {
     /**
      * Draw
      */
-    const drawFn: SceneDrawFn = ({ camera, delta, elapsed, host }) => {};
+    const drawFn: SceneDrawFn = ({ renderer, delta }) => {
+      const sp = ctx.spatialImage;
+      if (!sp) return;
+
+      // Tilt + depth intro for the offscreen scene, then render it into the RT.
+      sp.si.update(delta, sp.mouse);
+      renderer.setRenderTarget(sp.si.rt);
+      renderer.render(sp.si.offScene, sp.si.offCamera);
+      renderer.setRenderTarget(null);
+    };
 
     new SceneController({ host: this, setupFn, drawFn });
   }

@@ -20,6 +20,8 @@ export type SceneSetupAsyncFn = (SceneSetupAsyncFnParams) => Promise<{
 
 export type SceneDrawFnParams = {
   camera: THREE.Camera;
+  /** The shared renderer — scenes can use it to render to offscreen targets. */
+  renderer: THREE.WebGPURenderer;
   delta: number;
   elapsed: number;
   host: Host;

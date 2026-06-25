@@ -115,6 +115,7 @@ export class SceneCanvas extends LitElement {
       // call scene's draw fn
       entry.drawFn({
         camera: entry.camera,
+        renderer: this.renderer,
         delta: this.delta,
         elapsed: this.elapsed,
         host: entry.host,
