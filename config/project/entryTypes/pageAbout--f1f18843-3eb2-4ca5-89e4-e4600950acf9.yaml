@@ -1,0 +1,102 @@
+allowLineBreaksInTitles: false
+color: teal
+description: null
+fieldLayouts:
+  57604a88-bf9e-40e2-bbb9-0513bb4f2cf9:
+    cardThumbAlignment: end
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            dateAdded: '2026-06-25T08:36:25+00:00'
+            disabled: false
+            elementCondition: null
+            id: null
+            inputType: null
+            instructions: null
+            label: null
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            readonly: false
+            required: true
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\entries\EntryTitleField
+            uid: e28b3789-4575-4acb-8e86-a56651a51eac
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-25T08:39:22+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 68c90757-4b39-4910-94b6-94eb4f0a370b # Rich Text Simple
+            handle: null
+            instructions: null
+            label: 'Short Bio'
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 39317c4f-3887-4f9d-9976-70ac0d405f9a
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-25T08:39:22+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 68c90757-4b39-4910-94b6-94eb4f0a370b # Rich Text Simple
+            handle: richTextSimple2
+            instructions: null
+            label: 'Full Bio'
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: abf5eb64-5593-43f4-adb5-1bc6cf9aaa17
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-25T08:39:22+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 4fb7eacc-a8a0-4a3a-8659-9d29b1f619e5 # Tech
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 01d3d0a4-428d-4625-af06-370ce67e240a
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: cfd64066-84d4-4702-835f-71b0ced18427
+        userCondition: null
+    thumbFieldKey: null
+handle: pageAbout
+hasTitleField: true
+icon: moon-over-sun
+name: 'Page: About'
+showSlugField: true
+showStatusField: true
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: null
+titleTranslationKeyFormat: null
+titleTranslationMethod: site
+uiLabelFormat: '{title}'
