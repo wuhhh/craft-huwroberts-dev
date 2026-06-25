@@ -45,7 +45,6 @@ export class IntroScene extends LitElement {
       width: 100%;
       height: 100vh;
       text-align: center;
-      color: var(--intro-scene-color, rebeccapurple);
     }
   `;
 
