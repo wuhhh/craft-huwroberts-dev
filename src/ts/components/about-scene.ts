@@ -7,21 +7,29 @@ import type { SceneDrawFn, SceneSetupAsyncFn } from "../types";
 import { alignMeshWithDOM } from "../lib/align-mesh-with-dom";
 import getViewport from "../lib/get-viewport";
 import { createSpatialImage, type SpatialImage } from "../lib/spatial-image";
-import { SpringVec3, fromTensionFriction } from "../lib/spring";
+import { SpringScalar, SpringVec3, fromTensionFriction } from "../lib/spring";
 import { CORAL, INDIGO } from "../lib/colors";
 
 // Mouse-repulsion settings
 const REPULSION_RADIUS = 1.5; // distance at which repulsion starts (world units)
 const REPULSION_STRENGTH = 0.2; // max displacement amount
 const Z_PUSH_FACTOR = 10; // push-away-from-camera relative to XY displacement
-const VELOCITY_THRESHOLD = 0.005; // min velocity to trigger repulsion
-const VELOCITY_DECAY_PER_FRAME = 0.9; // per-frame @60fps; converted in code
+const MOVE_GRACE_MS = 50; // ms after last move before letters spring back to rest
+const VELOCITY_DECAY_PER_FRAME = 0.9; // per-frame @60fps; converted in code (smooths push strength)
 const VELOCITY_REF = 0.1; // normalises velocity → 0..1 for colour/tint
 const MAX_TILT = 0.8; // max rotation (radians) from proximity
 
 // Spring configs
-const OFFSET_CFG = fromTensionFriction(150, 12); // ~wobbly, bouncy
-const COLOR_CFG = fromTensionFriction(150, 26); // ~critically damped, smooth
+const OFFSET_CFG = fromTensionFriction(150, 12); // wobbly, snappy
+const COLOR_CFG = fromTensionFriction(150, 26); // critically damped, smooth
+const ENTRANCE_CFG = fromTensionFriction(100, 10); // bouncier
+
+// Entrance / reveal settings
+const ENTRANCE_DELAY_S = 0.3; // delay before first letter reveals
+const ENTRANCE_STAGGER_S = 0.05; // delay between each letter
+const ENTRANCE_OFFSET_RANGE = 0.5; // radial offset a letter starts at
+const ENTRANCE_TILT_MULTIPLIER = 8.0; // extra tilt on entrance (× MAX_TILT)
+const ENTRANCE_SETTLE_S = 0.5; // hold after last letter before interaction begins
 
 // Letter colours
 const BASE_COLOR = new THREE.Color("#18181b");
@@ -29,8 +37,9 @@ const INDIGO_COLOR = new THREE.Color(INDIGO);
 const CORAL_COLOR = new THREE.Color(CORAL);
 
 /**
- * Per-letter spring state: base (aligned) position + offset/rotation/colour
- * springs that chase the mouse-repulsion targets each frame.
+ * Per-letter spring state: base (aligned) transform + offset/rotation/scale/
+ * colour springs that chase mouse-repulsion targets each frame, and a one-shot
+ * entrance reveal driven off elapsed time.
  */
 interface LetterState {
   name: string;
@@ -38,35 +47,76 @@ interface LetterState {
   material: THREE.MeshBasicNodeMaterial;
   /** Aligned position from alignMeshWithDOM; refreshed on resize. */
   basePos: THREE.Vector3;
+  /** Aligned uniform scale (from alignMeshWithDOM); entrance scale multiplies this. */
+  baseScale: number;
+  /** Elapsed time (s) at which this letter starts springing home. */
+  revealAt: number;
+  revealed: boolean;
   offset: SpringVec3;
   rotation: SpringVec3;
   color: SpringVec3;
+  scale: SpringScalar;
 }
 
 /** Shared mouse state for both the spatial image and letter repulsion. */
-// NOTE: this could be provided by scene-canvas
 interface MouseState {
   pos: THREE.Vector3;
   prev: THREE.Vector3;
+  /** Smoothed instantaneous speed (world units/frame) — scales push strength. */
   velocity: number;
   active: boolean;
+  /** performance.now() of the last mousemove, used to detect "still moving". */
+  lastMoveTime: number;
 }
 
-/**
- * Advance every letter's springs toward its mouse-repulsion target and apply
- * the result to the mesh.
- */
-function applyLetterInteraction(
+/** Per-frame letter update: entrance reveal + (once settled) mouse repulsion. */
+function updateLetters(
   letters: LetterState[],
   mouse: MouseState,
+  entrance: { elapsed: number; complete: boolean },
   delta: number,
 ): void {
-  // Decay velocity — frame-rate-independent equivalent of `*= 0.9` per 60fps frame.
+  if (!entrance.complete) {
+    entrance.elapsed += delta;
+    for (const L of letters) {
+      if (!L.revealed && entrance.elapsed >= L.revealAt) {
+        // Spring home: offset/rotation/scale → rest, with the entrance feel.
+        L.offset.setTargetXYZ(0, 0, 0);
+        L.rotation.setTargetXYZ(0, 0, 0);
+        L.scale.setTarget(1);
+        L.revealed = true;
+      }
+    }
+    // Once every letter is home and has settled, hand off to interaction.
+    const lastRevealAt = letters.at(-1)?.revealAt ?? 0;
+    if (
+      letters.every((L) => L.revealed) &&
+      entrance.elapsed >= lastRevealAt + ENTRANCE_SETTLE_S
+    ) {
+      entrance.complete = true;
+      for (const L of letters) {
+        L.offset.setConfig(OFFSET_CFG);
+        L.rotation.setConfig(OFFSET_CFG);
+      }
+    }
+  }
+
+  // Velocity only scales push strength while the mouse is moving (slow move =
+  // gentle push).
   mouse.velocity *= Math.pow(VELOCITY_DECAY_PER_FRAME, delta * 60);
-  const interacting = mouse.active && mouse.velocity > VELOCITY_THRESHOLD;
+
+  // "Actively moving" = a mousemove fired within the last MOVE_GRACE_MS while
+  // inside the host. The instant that window elapses, letters flip to a rest
+  // target so the whole return is a single coherent spring (one time constant)
+  const moving =
+    entrance.complete &&
+    mouse.active &&
+    performance.now() - mouse.lastMoveTime < MOVE_GRACE_MS;
 
   for (const L of letters) {
-    if (interacting) {
+    let repelling = false;
+
+    if (moving) {
       const dx = L.basePos.x - mouse.pos.x;
       const dy = L.basePos.y - mouse.pos.y;
       const dist = Math.hypot(dx, dy);
@@ -100,13 +150,11 @@ function applyLetterInteraction(
         L.offset.setTargetXYZ(offX, offY, offZ);
         L.rotation.setTargetXYZ(rotX, rotY, 0);
         L.color.setTargetXYZ(tr, tg, tb);
-      } else {
-        L.offset.setTargetXYZ(0, 0, 0);
-        L.rotation.setTargetXYZ(0, 0, 0);
-        L.color.setTargetXYZ(BASE_COLOR.r, BASE_COLOR.g, BASE_COLOR.b);
+        repelling = true;
       }
-    } else {
-      // No interaction: spring back to rest.
+    }
+
+    if (!repelling && entrance.complete) {
       L.offset.setTargetXYZ(0, 0, 0);
       L.rotation.setTargetXYZ(0, 0, 0);
       L.color.setTargetXYZ(BASE_COLOR.r, BASE_COLOR.g, BASE_COLOR.b);
@@ -115,6 +163,7 @@ function applyLetterInteraction(
     L.offset.update(delta);
     L.rotation.update(delta);
     L.color.update(delta);
+    L.scale.update(delta);
 
     const o = L.offset.value;
     L.mesh.position.set(
@@ -124,6 +173,7 @@ function applyLetterInteraction(
     );
     const r = L.rotation.value;
     L.mesh.rotation.set(r.x, r.y, r.z);
+    L.mesh.scale.setScalar(L.baseScale * L.scale.value);
     const c = L.color.value;
     L.material.color.setRGB(c.x, c.y, c.z);
   }
@@ -150,6 +200,8 @@ interface AboutSceneContext {
   letters: LetterState[];
   /** Shared mouse state (world-space position, velocity, active flag). */
   mouse: MouseState;
+  /** Entrance-reveal phase tracker. */
+  entrance: { elapsed: number; complete: boolean };
   /** Offscreen spatial-image scene, rendered into an RT each frame. */
   spatialImage?: { si: SpatialImage } | null;
 }
@@ -259,7 +311,9 @@ export class aboutScene extends LitElement {
         prev: new THREE.Vector3(),
         velocity: 0,
         active: false,
+        lastMoveTime: 0,
       },
+      entrance: { elapsed: 0, complete: false },
     };
 
     const setupFn: SceneSetupAsyncFn = async ({ host }) => {
@@ -277,17 +331,23 @@ export class aboutScene extends LitElement {
       const gltf = await loader.loadAsync("/dist/models/hrdev.glb");
       const c = gltf.scene.children;
 
+      const letterGrp = new THREE.Group();
+
       letterMeshNames.forEach((name) => {
         const mesh = c.find((child) => child.name === name) as
           | THREE.Mesh
           | undefined;
         ctx.letterMeshRefs[name] = mesh ?? null;
-        if (mesh) scene.add(mesh);
+        if (mesh) letterGrp.add(mesh);
       });
+
+      // stop z fighting with image plane
+      letterGrp.position.z = 0.01;
+      scene.add(letterGrp);
 
       // Build per-letter spring state + flat basic materials (depthTest off so
       // letters always draw over the spatial image plane
-      ctx.letters = letterMeshNames.flatMap((name) => {
+      ctx.letters = letterMeshNames.flatMap((name, index) => {
         const mesh = ctx.letterMeshRefs[name];
         if (!mesh) return [];
         const material = new THREE.MeshBasicNodeMaterial();
@@ -301,19 +361,23 @@ export class aboutScene extends LitElement {
             mesh,
             material,
             basePos: mesh.position.clone(),
-            offset: new SpringVec3(OFFSET_CFG),
-            rotation: new SpringVec3(OFFSET_CFG),
+            baseScale: mesh.scale.x,
+            revealAt: ENTRANCE_DELAY_S + index * ENTRANCE_STAGGER_S,
+            revealed: false,
+            offset: new SpringVec3(ENTRANCE_CFG),
+            rotation: new SpringVec3(ENTRANCE_CFG),
             color: new SpringVec3(
               COLOR_CFG,
               new THREE.Vector3(BASE_COLOR.r, BASE_COLOR.g, BASE_COLOR.b),
             ),
+            scale: new SpringScalar(ENTRANCE_CFG, 0),
           },
         ];
       });
 
       /**
        * Align each letter mesh with its DOM cell, then cache the aligned
-       * position as the repulsion base (springs add an offset on top of it).
+       * position/scale as the repulsion base (springs add an offset on top).
        */
       const alignLetterMeshesWithDOM = () => {
         for (const L of ctx.letters) {
@@ -322,11 +386,31 @@ export class aboutScene extends LitElement {
           if (!domEl) continue;
           alignMeshWithDOM({ mesh: L.mesh, domElement: domEl, camera, host });
           L.basePos.copy(L.mesh.position);
+          L.baseScale = L.mesh.scale.x;
+
+          // Re-snap the entrance transform if the reveal hasn't started yet, so
+          // a resize during the hold keeps the radial offset aligned to the new
+          // position. (After reveal, springs own the transform — leave them.)
+          if (!L.revealed && !ctx.entrance.complete) {
+            const snap = entranceTransformFor(L.basePos);
+            L.offset.reset(snap.offset);
+            L.rotation.reset(snap.rotation);
+            L.scale.reset(0);
+          }
         }
       };
 
       alignLetterMeshesWithDOM();
       window.addEventListener("resize", alignLetterMeshesWithDOM);
+
+      // Entrance: snap each letter to a radial offset + outward tilt at scale 0
+      // (immediate, no spring), then drawFn springs them home on their stagger.
+      for (const L of ctx.letters) {
+        const snap = entranceTransformFor(L.basePos);
+        L.offset.reset(snap.offset);
+        L.rotation.reset(snap.rotation);
+        L.scale.reset(0);
+      }
 
       // Shared mouse tracking — world-space position + velocity. Used by both
       // the spatial image (tilt) and the letter repulsion. Position updates for
@@ -353,6 +437,7 @@ export class aboutScene extends LitElement {
         const dy = mouse.pos.y - mouse.prev.y;
         const instant = Math.hypot(dx, dy);
         if (instant > mouse.velocity) mouse.velocity = instant;
+        mouse.lastMoveTime = performance.now();
       };
       window.addEventListener("mousemove", handleMouseMove);
 
@@ -412,8 +497,10 @@ export class aboutScene extends LitElement {
      * Draw
      */
     const drawFn: SceneDrawFn = ({ renderer, delta }) => {
-      applyLetterInteraction(ctx.letters, ctx.mouse, delta);
+      // 1. Letter entrance reveal + (once settled) mouse-repulsion springs
+      updateLetters(ctx.letters, ctx.mouse, ctx.entrance, delta);
 
+      // 2. Offscreen spatial image: tilt + depth intro, render into the RT
       const sp = ctx.spatialImage;
       if (sp) {
         sp.si.update(delta, ctx.mouse.pos);
@@ -450,4 +537,35 @@ declare global {
   interface HTMLElementTagNameMap {
     "about-scene": aboutScene;
   }
+}
+
+/**
+ * Entrance start transform for a letter at `basePos`: pushed radially outward
+ * from the scene centre and tilted to match (letters lean away from centre),
+ * matching CapLetterScene.tsx's `initialTransforms`.
+ */
+function entranceTransformFor(basePos: THREE.Vector3): {
+  offset: THREE.Vector3;
+  rotation: THREE.Vector3;
+} {
+  const x = basePos.x;
+  const y = basePos.y;
+  const dist = Math.hypot(x, y);
+  if (dist < 1e-3) {
+    return {
+      offset: new THREE.Vector3(0, 0, 0),
+      rotation: new THREE.Vector3(0, 0, 0),
+    };
+  }
+  const dirX = x / dist;
+  const dirY = y / dist;
+  const tilt = MAX_TILT * ENTRANCE_TILT_MULTIPLIER;
+  return {
+    offset: new THREE.Vector3(
+      dirX * ENTRANCE_OFFSET_RANGE,
+      dirY * ENTRANCE_OFFSET_RANGE,
+      0,
+    ),
+    rotation: new THREE.Vector3(dirY * tilt, -dirX * tilt, 0),
+  };
 }

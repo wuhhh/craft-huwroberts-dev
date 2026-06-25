@@ -43,7 +43,8 @@ export class SpringVec3 {
   readonly value = new THREE.Vector3();
   private readonly velocity = new THREE.Vector3();
   private readonly target = new THREE.Vector3();
-  readonly config: SpringConfig;
+  /** Mutable so a spring can switch feel (e.g. bouncy entrance → snappy interaction). */
+  config: SpringConfig;
 
   constructor(config: SpringConfig, initial?: THREE.Vector3) {
     this.config = config;
@@ -59,6 +60,11 @@ export class SpringVec3 {
 
   setTargetXYZ(x: number, y: number, z: number): void {
     this.target.set(x, y, z);
+  }
+
+  /** Swap the spring feel at runtime (omega/zeta). Velocity/value are preserved. */
+  setConfig(config: SpringConfig): void {
+    this.config = config;
   }
 
   /** Snap to a value, zeroing velocity and target. */
@@ -90,5 +96,54 @@ export class SpringVec3 {
       value.z += velocity.z * h;
     }
     return value;
+  }
+}
+
+/**
+ * Scalar spring-damper — same physics as {@link SpringVec3} for a single value
+ * (used for entrance scale).
+ */
+export class SpringScalar {
+  value = 0;
+  private velocity = 0;
+  private target = 0;
+  config: SpringConfig;
+
+  constructor(config: SpringConfig, initial = 0) {
+    this.config = config;
+    this.value = initial;
+    this.target = initial;
+  }
+
+  setTarget(target: number): void {
+    this.target = target;
+  }
+
+  setConfig(config: SpringConfig): void {
+    this.config = config;
+  }
+
+  /** Snap to a value, zeroing velocity and target. */
+  reset(value: number): void {
+    this.value = value;
+    this.target = value;
+    this.velocity = 0;
+  }
+
+  /** Advance the simulation by `dt` seconds; returns the current value. */
+  update(dt: number): number {
+    const { omega, zeta } = this.config;
+    const k = omega * omega;
+    const c = 2 * zeta * omega;
+
+    const maxStep = 0.1 / omega;
+    const steps = Math.max(1, Math.ceil(dt / maxStep));
+    const h = dt / steps;
+
+    for (let i = 0; i < steps; i++) {
+      this.velocity += (-k * (this.value - this.target) - c * this.velocity) * h;
+      this.value += this.velocity * h;
+    }
+    return this.value;
   }
 }
