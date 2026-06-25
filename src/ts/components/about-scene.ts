@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { LitElement, css, html, type CSSResultGroup } from "lit";
-import { customElement } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import * as THREE from "three/webgpu";
 import { SceneController } from "../controllers/scene-controller";
 import { DRACOLoader, GLTFLoader } from "three/examples/jsm/Addons.js";
@@ -41,6 +41,9 @@ const letterMeshNames = [
 
 @customElement("about-scene")
 export class aboutScene extends LitElement {
+  @property()
+  refImageId = "";
+
   static styles?: CSSResultGroup | undefined = css`
     :host {
       display: block;
@@ -206,6 +209,14 @@ export class aboutScene extends LitElement {
 
       // Re-align on resize
       window.addEventListener("resize", alignMeshesWithDOM);
+
+      // Scene image
+      if (this.refImageId) {
+        const refImage = document.getElementById(this.refImageId);
+        if (refImage) {
+          // TODO: spatial image plane
+        }
+      }
 
       return { scene, camera };
     };

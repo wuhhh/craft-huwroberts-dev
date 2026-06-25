@@ -38,7 +38,7 @@
     />
     == #}
 
-    <about-scene></about-scene>
+    <about-scene refImageId="scene-image-ref"></about-scene>
 
     <div class="pt-36 pb-16">
       <div class="relative grid grid-cols-12 gap-x-10">
@@ -61,7 +61,7 @@
           <h1 class="sr-only">{entry.title}</h1>
 
           <div class="space-y-10" data-cursor-layer="top">
-            <div data-image-ref class="relative aspect-704/498 overflow-hidden rounded-2xl"></div>
+            <div id="scene-image-ref" class="relative aspect-704/498 overflow-hidden rounded-2xl"></div>
 
             {% if shortBio %}
               <div class="w-full max-w-162 leading-7">
