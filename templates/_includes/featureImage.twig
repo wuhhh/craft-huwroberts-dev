@@ -1,0 +1,16 @@
+{% set featureImage = featureImage ?? null %}
+
+{% if featureImage %}
+
+  {% set image = featureImage.imageAsset.one() %}
+  {% set imageTransform = { format: 'webp', mode: 'crop', width: 960, height: 576, quality: 90 } %}
+
+  <img
+    src="{{ image.getUrl(imageTransform) }}"
+    srcset="{{ image.getSrcset(['600w', '800w', '1073w', '1250w', '1900w'], imageTransform) }}"
+    sizes="auto, (min-width: 1728px) 1073px, (min-width: 1024px) 746px, (min-width: 640px) 611px, (max-width: 639px) 90vw"
+    alt="{{ image.alt ?? entry.title }}"
+    class="w-full max-w-290 aspect-960/576 object-cover rounded-sm"
+  />
+
+{% endif %}

@@ -1,5 +1,43 @@
-{% set block = block ?? null %}
+{% set featureVideo = featureVideo ?? null %}
+{% set title = title ?? "" %}
 
-{% if block %}
-  Feature video block include
+{% if featureVideo %}
+
+  {% set mediaData = null %}
+
+  {# Prep data for <video-player/> component #}
+  {% set video = featureVideo.videoCaption.videoAsset.one() %}
+  {% set boxed = featureVideo.boxed ?? false %}
+  {% set poster = featureVideo.videoCaption.imageAsset.one() ?? null %}
+  {% set imageTransform = { format: 'webp', mode: 'crop', width: 960, height: 576, quality: 90 } %}
+
+  {% set isBackground = (featureVideo.videoCaption.videoMode.value ?? "playable") == "background" %}
+
+  {% set mediaData = {
+    title: title,
+    backdropColour: featureVideo.boxBackgroundColour.hex ?? '',
+    boxed: boxed,
+    dimPoster: featureVideo.videoCaption.dimPoster ?? false,
+    posterImage: poster ? [{
+      url: poster.getUrl(imageTransform),
+      srcset: poster.getSrcset(['600w', '800w', '1073w', '1250w', '1900w'], imageTransform),
+    }] : [],
+    video: [{
+      url: video.url,
+      mimeType: video.mimeType,
+    }],
+    videoAttributes: isBackground ? {
+      autoplay: true,
+      loop: true,
+      muted: true,
+      playsInline: true,
+    } : {
+      controls: true,
+      muted: true,
+    }
+  } %}
+
+  <video-player entry="{{ mediaData|json_encode|e('html_attr') }}"></video-player>
+
 {% endif %}
+

@@ -32,57 +32,34 @@
 
         <h1 class="heading1 font-medium mb-16">{{ entry.title }}</h1>
 
-        {% set mediaData = null %}
-
         {% if featureVideo and featureVideo.videoCaption and featureVideo.videoCaption.videoAsset.one() %}
 
-          {# Prep data for <video-player/> component #}
-          {% set video = featureVideo.videoCaption.videoAsset.one() %}
-          {% set boxed = featureVideo.boxed ?? false %}
-          {% set poster = featureVideo.videoCaption.imageAsset.one() ?? null %}
-          {% set imageTransform = { format: 'webp', mode: 'crop', width: 960, height: 576, quality: 90 } %}
+          {% set caption = featureVideo.videoCaption.text ?? null %}
 
-          {% set isBackground = (featureVideo.videoCaption.videoMode.value ?? "playable") == "background" %}
+          <div class="space-y-4">
+            {% include "_includes/featureVideo.twig" with {
+              featureVideo: featureVideo,
+              title: entry.title,
+            } only %}
 
-          {% set mediaData = {
-            title: entry.title,
-            backdropColour: featureVideo.boxBackgroundColour.hex ?? '',
-            boxed: boxed,
-            dimPoster: featureVideo.videoCaption.dimPoster ?? false,
-            posterImage: poster ? [{
-              url: poster.getUrl(imageTransform),
-              srcset: poster.getSrcset(['600w', '800w', '1073w', '1250w', '1900w'], imageTransform),
-            }] : [],
-            video: [{
-              url: video.url,
-              mimeType: video.mimeType,
-            }],
-            videoAttributes: isBackground ? {
-              autoplay: true,
-              loop: true,
-              muted: true,
-              playsInline: true,
-            } : {
-              controls: true,
-              muted: true,
-            }
-          } %}
-
-          <video-player entry="{{ mediaData|json_encode|e('html_attr') }}"></video-player>
+            {% if caption %}
+              <div class="text-sm text-zinc-500 italic">{{ caption }}</div>
+            {% endif %}
+          </div>
 
         {% elseif featureImage and featureImage.imageAsset.one() %}
-          {% set image = featureImage.imageAsset.one() %}
-          {% set imageTransform = { format: 'webp', mode: 'crop', width: 960, height: 576, quality: 90 } %}
 
-          <img
-            src="{{ image.getUrl(imageTransform) }}"
-            srcset="{{ image.getSrcset(['600w', '800w', '1073w', '1250w', '1900w'], imageTransform) }}"
-            sizes="auto, (min-width: 1728px) 1073px, (min-width: 1024px) 746px, (min-width: 640px) 611px, (max-width: 639px) 90vw"
-            alt="{{ image.alt ?? entry.title }}"
-            class="w-full max-w-[1160px] aspect-960/576 object-cover rounded-sm"
-          />
+          <div class="space-y-4">
+            {% include "_includes/featureImage.twig" with {
+              featureImage: featureImage,
+            } only %}
+
+            {% if caption %}
+              <div class="text-sm text-zinc-500 italic">{{ caption }}</div>
+            {% endif %}
+          </div>
+
         {% endif %}
-
 
         {% if richTextPost %}
           {% include "_includes/richTextPost" with { content: richTextPost } only %}
