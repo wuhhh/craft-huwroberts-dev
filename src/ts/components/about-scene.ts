@@ -2,6 +2,7 @@
 import { LitElement, css, html, type CSSResultGroup } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import * as THREE from "three/webgpu";
+import { color } from "three/tsl";
 import { SceneController } from "../controllers/scene-controller";
 import { DRACOLoader, GLTFLoader } from "three/examples/jsm/Addons.js";
 import type { SceneDrawFn, SceneSetupAsyncFn } from "../types";
@@ -171,11 +172,28 @@ export class aboutScene extends LitElement {
       // Re-align on resize
       window.addEventListener("resize", alignMeshesWithDOM);
 
-      // Scene image
+      // Scene image plane - align a green plane with the refImage element
       if (this.refImageId) {
         const refImage = document.getElementById(this.refImageId);
         if (refImage) {
-          // TODO: spatial image plane
+          const planeGeo = new THREE.PlaneGeometry(1, 1);
+          const planeMat = new THREE.MeshBasicNodeMaterial();
+          planeMat.colorNode = color("green");
+          const imagePlane = new THREE.Mesh(planeGeo, planeMat);
+          scene.add(imagePlane);
+
+          const alignImagePlane = () => {
+            alignMeshWithDOM({
+              mesh: imagePlane,
+              domElement: refImage,
+              camera,
+              host,
+              scaleToMatch: "size",
+            });
+          };
+
+          alignImagePlane();
+          window.addEventListener("resize", alignImagePlane);
         }
       }
 
