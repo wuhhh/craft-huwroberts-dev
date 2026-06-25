@@ -14,10 +14,10 @@
   @apply bg-coral-red/20;
 }
 
-/* Prevent FOUC on Lit custom elements */
-:not(:defined) {
-  opacity: 0;
-}
+/* Prevent FOUC on Lit custom elements (hopefully no longer required) */
+/* :not(:defined) { */
+/*   opacity: 0; */
+/* } */
 
 /* Prevent layout shift */
 intro-scene:not(:defined) {
