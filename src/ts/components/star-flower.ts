@@ -1,4 +1,4 @@
-import { css, html, LitElement, type CSSResultGroup } from "lit";
+import { html, LitElement } from "lit";
 import { customElement, query } from "lit/decorators.js";
 
 @customElement("star-flower")
@@ -12,23 +12,6 @@ export class StarFlower extends LitElement {
 
   @query(".t")
   t!: HTMLElement;
-
-  static styles?: CSSResultGroup | undefined = css`
-    :host > div {
-      display: none;
-      position: fixed;
-      top: 0;
-      bottom: 0;
-
-      @media (min-width: 40rem) {
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        width: 3.5rem;
-        padding-bottom: 3rem;
-      }
-    }
-  `;
 
   handleScroll = () => {
     this.scrollY = window.scrollY;
