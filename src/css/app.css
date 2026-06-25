@@ -14,6 +14,24 @@
   @apply bg-coral-red/20;
 }
 
+/* Prevent FOUC on Lit custom elements */
+:not(:defined) {
+  opacity: 0;
+}
+
+/* Prevent layout shift */
+intro-scene:not(:defined) {
+  display: block;
+  height: 100vh;
+}
+
+video-player:not(:defined) {
+  display: block;
+  width: 100%;
+  max-width: 1160px;
+  aspect-ratio: 1160 / 680;
+}
+
 /* View Transitions */
 @view-transition {
   navigation: auto;
