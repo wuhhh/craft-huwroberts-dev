@@ -14,8 +14,15 @@ export interface AlignMeshWithDOMOptions {
   camera: THREE.Camera;
   /** The host element (canvas container) */
   host: HTMLElement;
-  /** Whether to scale the mesh to match DOM element height (default: true) */
-  scaleToMatchHeight?: boolean;
+  /**
+   * How to scale the mesh to match the DOM element (default: "height")
+   * - "none": no scaling
+   * - "height": uniform scale so the mesh height matches the DOM height
+   *   (width follows the geometry's own aspect ratio)
+   * - "size": non-uniform scale so the mesh matches the DOM width AND height
+   *   (stretches to fill the DOM rect exactly)
+   */
+  scaleToMatch?: "none" | "height" | "size";
   /** Optional viewport (will be calculated if not provided) */
   viewport?: SceneViewport;
 }
@@ -26,8 +33,8 @@ export interface AlignMeshWithDOMOptions {
 export interface AlignMeshResult {
   /** The calculated world position */
   position: THREE.Vector3;
-  /** The calculated scale (if scaleToMatchHeight was true) */
-  scale: number | null;
+  /** The calculated per-axis scale (x, y) — null when scaleToMatch is "none" */
+  scale: THREE.Vector2 | null;
   /** The viewport used for calculations */
   viewport: SceneViewport;
 }
@@ -36,7 +43,8 @@ export interface AlignMeshResult {
  * Align a Three.js mesh with a DOM element.
  *
  * This function positions a mesh so that it appears at the same screen location
- * as the given DOM element. Optionally scales the mesh to match the DOM element's height.
+ * as the given DOM element. Optionally scales the mesh to match the DOM element's
+ * height (uniform) or full size (width and height).
  *
  * @param options - Configuration options
  * @returns The calculated position, scale, and viewport
@@ -44,13 +52,8 @@ export interface AlignMeshResult {
 export function alignMeshWithDOM(
   options: AlignMeshWithDOMOptions,
 ): AlignMeshResult | null {
-  const {
-    mesh,
-    domElement,
-    camera,
-    host,
-    scaleToMatchHeight = true,
-  } = options;
+  const { mesh, domElement, camera, host, scaleToMatch = "height" } =
+    options;
 
   const canvasRect = host.getBoundingClientRect();
   const viewport = options.viewport ?? getViewport(camera, host, 0);
@@ -78,10 +81,10 @@ export function alignMeshWithDOM(
 
   mesh.position.copy(position);
 
-  let scale: number | null = null;
+  let scale: THREE.Vector2 | null = null;
 
-  // Scale the mesh so its bounding-box height matches the DOM cell height
-  if (scaleToMatchHeight) {
+  // Scale the mesh so its bounding box matches the DOM element
+  if (scaleToMatch !== "none") {
     mesh.geometry.computeBoundingBox();
     const box = mesh.geometry.boundingBox;
 
@@ -89,12 +92,21 @@ export function alignMeshWithDOM(
       const size = new THREE.Vector3();
       box.getSize(size);
 
-      // Convert DOM cell height to world units
+      // Convert DOM dimensions to world units
       const targetHeight = rect.height / viewport.factor;
+      const targetWidth = rect.width / viewport.factor;
 
-      if (size.y > 0) {
-        scale = targetHeight / size.y;
-        mesh.scale.setScalar(scale);
+      const scaleY = size.y > 0 ? targetHeight / size.y : 1;
+
+      if (scaleToMatch === "height") {
+        // Uniform scale from height; width follows the geometry's aspect ratio
+        scale = new THREE.Vector2(scaleY, scaleY);
+        mesh.scale.setScalar(scaleY);
+      } else {
+        // Match width AND height (stretches to fill the DOM rect exactly)
+        const scaleX = size.x > 0 ? targetWidth / size.x : 1;
+        scale = new THREE.Vector2(scaleX, scaleY);
+        mesh.scale.set(scaleX, scaleY, 1);
       }
     }
   }
