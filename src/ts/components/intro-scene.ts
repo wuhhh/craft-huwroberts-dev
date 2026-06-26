@@ -32,10 +32,52 @@ interface IntroSceneContext {
 }
 
 /**
+ * Store mesh position/rotation/scale vectors with landscape & portrait variants
+ */
+interface MeshTransform {
+  portrait?: {
+    position?: THREE.Vector3;
+    rotation?: THREE.Vector3;
+    scale?: THREE.Vector3;
+  };
+  landscape: {
+    position: THREE.Vector3;
+    rotation: THREE.Vector3;
+    scale: THREE.Vector3;
+  };
+}
+
+/**
  * Intro scene
  */
 @customElement("intro-scene")
 export class IntroScene extends LitElement {
+  // Holds shared state for use between setup and draw fns
+  #ctx: IntroSceneContext = { groups: {}, meshRefs: {} };
+
+  // Device orientation, updated on resize
+  #orientation: "portrait" | "landscape" = "landscape";
+
+  // Resize observer to update #orientation
+  #ro = new ResizeObserver(() => {
+    const next =
+      this.clientWidth / this.clientHeight < 1 ? "portrait" : "landscape";
+    if (next === this.#orientation) return; // no-op if unchanged
+
+    this.#orientation = next;
+
+    if (!this.#ctx) return;
+
+    if (this.#ctx.meshRefs.box) {
+      this.#ctx.meshRefs.box.visible = next === "landscape";
+    }
+
+    if (this.#ctx.meshRefs.diamondPlane) {
+      this.#ctx.meshRefs.diamondPlane.visible = next === "landscape";
+    }
+  });
+
+  // styles
   static styles?: CSSResultGroup | undefined = css`
     :host {
       display: block;
@@ -61,8 +103,11 @@ export class IntroScene extends LitElement {
     return children.find((child) => child.name === name);
   }
 
-  get #isPortrait() {
-    return this.clientWidth / this.clientHeight < 1;
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.#orientation =
+      this.clientWidth / this.clientHeight < 1 ? "portrait" : "landscape";
+    this.#ro.observe(this);
   }
 
   constructor() {
@@ -71,7 +116,7 @@ export class IntroScene extends LitElement {
     /**
      * Setup
      */
-    const ctx: IntroSceneContext = { groups: {}, meshRefs: {} };
+    this.#ctx = { groups: {}, meshRefs: {} } as IntroSceneContext;
 
     const setupFn: SceneSetupAsyncFn = async ({ host }) => {
       const aspect = host.clientWidth / host.clientHeight;
@@ -108,7 +153,7 @@ export class IntroScene extends LitElement {
         ? new THREE.EdgesGeometry(letterH.geometry)
         : null;
 
-      ctx.meshRefs = {
+      this.#ctx.meshRefs = {
         box,
         diamond3d,
         diamondPlane,
@@ -141,21 +186,30 @@ export class IntroScene extends LitElement {
       }
 
       // add meshes to groups / scene, set materials
-      ctx.groups.hr = new THREE.Group();
-      ctx.groups.shapes = new THREE.Group();
-      scene.add(ctx.groups.hr);
-      scene.add(ctx.groups.shapes);
+      this.#ctx.groups.hr = new THREE.Group();
+      this.#ctx.groups.shapes = new THREE.Group();
+      scene.add(this.#ctx.groups.hr);
+      scene.add(this.#ctx.groups.shapes);
 
       // box
       box.material = cloudedGlassMat;
       boxLines.material = lineMat;
       box.add(boxLines);
-      ctx.groups.shapes.add(box);
+
+      box.userData.transform = {
+        landscape: {
+          position: new THREE.Vector3(-1.8, -1.05, 0),
+          rotation: new THREE.Vector3(0.92, -0.11, 0),
+          scale: new THREE.Vector3(0.75, 0.75, 0.1),
+        },
+      } as MeshTransform;
+
+      this.#ctx.groups.shapes.add(box);
 
       // diamond3d
-      if (ctx.meshRefs.diamond3d) {
-        ctx.meshRefs.diamond3d.rotation.x = Math.PI * 0.125;
-        ctx.meshRefs.diamond3d.material = cloudedGlassMat;
+      if (this.#ctx.meshRefs.diamond3d) {
+        this.#ctx.meshRefs.diamond3d.rotation.x = Math.PI * 0.125;
+        this.#ctx.meshRefs.diamond3d.material = cloudedGlassMat;
 
         // edges
         if (diamond3dEdges) {
@@ -163,44 +217,48 @@ export class IntroScene extends LitElement {
             diamond3dEdges,
             lineMat,
           );
-          ctx.meshRefs.diamond3d.add(diamond3dLines);
+          this.#ctx.meshRefs.diamond3d.add(diamond3dLines);
         }
 
-        ctx.groups.shapes.add(ctx.meshRefs.diamond3d);
+        this.#ctx.meshRefs.diamond3d.userData.transform = {
+          portrait: {},
+        } as MeshTransform;
+
+        this.#ctx.groups.shapes.add(this.#ctx.meshRefs.diamond3d);
       }
 
       // diamondPlane
-      if (ctx.meshRefs.diamondPlane) {
-        ctx.meshRefs.diamondPlane.material = diamondPlaneMat;
-        ctx.groups.shapes.add(ctx.meshRefs.diamondPlane);
+      if (this.#ctx.meshRefs.diamondPlane) {
+        this.#ctx.meshRefs.diamondPlane.material = diamondPlaneMat;
+        this.#ctx.groups.shapes.add(this.#ctx.meshRefs.diamondPlane);
       }
 
       // hrHuw
-      if (ctx.meshRefs.hrHuw) {
-        ctx.groups.hr.add(ctx.meshRefs.hrHuw);
+      if (this.#ctx.meshRefs.hrHuw) {
+        this.#ctx.groups.hr.add(this.#ctx.meshRefs.hrHuw);
       }
 
       // hrRobertsMain
-      if (ctx.meshRefs.hrRobertsMain) {
+      if (this.#ctx.meshRefs.hrRobertsMain) {
         if (liquidMaterial) {
-          ctx.meshRefs.hrRobertsMain.material = liquidMaterial;
+          this.#ctx.meshRefs.hrRobertsMain.material = liquidMaterial;
         }
 
-        ctx.groups.hr.add(ctx.meshRefs.hrRobertsMain);
+        this.#ctx.groups.hr.add(this.#ctx.meshRefs.hrRobertsMain);
       }
 
       // letterH
-      if (ctx.meshRefs.letterH) {
-        ctx.meshRefs.letterH.rotation.x = Math.PI * 0.125;
-        ctx.meshRefs.letterH.material = cloudedGlassMat;
+      if (this.#ctx.meshRefs.letterH) {
+        this.#ctx.meshRefs.letterH.rotation.x = Math.PI * 0.125;
+        this.#ctx.meshRefs.letterH.material = cloudedGlassMat;
 
         // edges
         if (letterHEdges) {
           const letterHLines = new THREE.LineSegments(letterHEdges, lineMat);
-          ctx.meshRefs.letterH.add(letterHLines);
+          this.#ctx.meshRefs.letterH.add(letterHLines);
         }
 
-        ctx.groups.shapes.add(ctx.meshRefs.letterH);
+        this.#ctx.groups.shapes.add(this.#ctx.meshRefs.letterH);
       }
 
       // add lights
@@ -217,51 +275,57 @@ export class IntroScene extends LitElement {
     const drawFn: SceneDrawFn = ({ camera, delta, elapsed, host }) => {
       const viewport = getViewport(camera, host) as SceneViewport;
       const scaleFactor =
-        (this.#isPortrait ? viewport.height : viewport.width) * 0.2;
+        (this.#orientation === "portrait" ? viewport.height : viewport.width) *
+        0.2;
 
       // box
-      if (ctx.meshRefs.box) {
-        ctx.meshRefs.box.position.set(
-          -1.8 * scaleFactor,
-          -1.05 * scaleFactor,
-          0,
+      if (this.#ctx.meshRefs.box) {
+        const t: MeshTransform = this.#ctx.meshRefs.box.userData.transform;
+        const p = t[this.#orientation]?.position || t.landscape.position;
+        const r = t[this.#orientation]?.rotation || t.landscape.rotation;
+        const s = t[this.#orientation]?.scale || t.landscape.scale;
+
+        this.#ctx.meshRefs.box.position.set(
+          p.x * scaleFactor,
+          p.y * scaleFactor,
+          p.z,
         );
-        ctx.meshRefs.box.rotation.set(
-          0.92 * scaleFactor + elapsed * 0.5,
-          -0.11 * scaleFactor + elapsed * 2,
-          0,
+        this.#ctx.meshRefs.box.rotation.set(
+          r.x * scaleFactor + elapsed * 0.5,
+          r.y * scaleFactor + elapsed * 2,
+          r.z,
         );
-        ctx.meshRefs.box.scale.set(
-          0.75 * scaleFactor,
-          0.75 * scaleFactor,
-          0.1 * scaleFactor,
+        this.#ctx.meshRefs.box.scale.set(
+          s.x * scaleFactor,
+          s.y * scaleFactor,
+          s.z * scaleFactor,
         );
       }
 
       // diamond3d
-      if (ctx.meshRefs.diamond3d) {
-        ctx.meshRefs.diamond3d.position.set(
+      if (this.#ctx.meshRefs.diamond3d) {
+        this.#ctx.meshRefs.diamond3d.position.set(
           -1.9 * scaleFactor,
           1 * scaleFactor,
           -0.45 * scaleFactor,
         );
-        ctx.meshRefs.diamond3d.scale.set(
+        this.#ctx.meshRefs.diamond3d.scale.set(
           0.9 * scaleFactor,
           0.9 * scaleFactor,
           0.9 * scaleFactor,
         );
 
-        ctx.meshRefs.diamond3d.rotation.y += delta * 0.48;
+        this.#ctx.meshRefs.diamond3d.rotation.y += delta * 0.48;
       }
 
       // diamondPlane
-      if (ctx.meshRefs.diamondPlane) {
-        ctx.meshRefs.diamondPlane.position.set(
+      if (this.#ctx.meshRefs.diamondPlane) {
+        this.#ctx.meshRefs.diamondPlane.position.set(
           1.67 * scaleFactor,
           1.04 * scaleFactor,
           0,
         );
-        ctx.meshRefs.diamondPlane.scale.set(
+        this.#ctx.meshRefs.diamondPlane.scale.set(
           0.5 * scaleFactor,
           0.5 * scaleFactor,
           0.5 * scaleFactor,
@@ -270,33 +334,37 @@ export class IntroScene extends LitElement {
 
       const hrScale = viewport.width * 0.08;
 
-      if (ctx.groups.hr) {
-        ctx.groups.hr.scale.set(hrScale, hrScale, 1);
+      if (this.#ctx.groups.hr) {
+        this.#ctx.groups.hr.scale.set(hrScale, hrScale, 1);
 
         // position individual name meshes which are split
-        if (ctx.meshRefs.hrHuw) {
-          ctx.meshRefs.hrHuw.position.x = -3.25;
+        if (this.#ctx.meshRefs.hrHuw) {
+          this.#ctx.meshRefs.hrHuw.position.x = -3.25;
         }
 
-        if (ctx.meshRefs.hrRobertsMain) {
-          ctx.meshRefs.hrRobertsMain.position.x = 1.75;
+        if (this.#ctx.meshRefs.hrRobertsMain) {
+          this.#ctx.meshRefs.hrRobertsMain.position.x = 1.75;
         }
       }
 
       // letterH
-      if (ctx.meshRefs.letterH) {
-        ctx.meshRefs.letterH.position.set(
+      if (this.#ctx.meshRefs.letterH) {
+        this.#ctx.meshRefs.letterH.position.set(
           0.91 * scaleFactor,
           -0.93 * scaleFactor,
           0,
         );
-        ctx.meshRefs.letterH.scale.set(scaleFactor, scaleFactor, scaleFactor);
+        this.#ctx.meshRefs.letterH.scale.set(
+          scaleFactor,
+          scaleFactor,
+          scaleFactor,
+        );
 
-        ctx.meshRefs.letterH.rotation.y += delta * -0.48;
+        this.#ctx.meshRefs.letterH.rotation.y += delta * -0.48;
       }
 
-      // if (ctx.groups.shapes) {
-      //   ctx.groups.shapes.rotation.y += delta * 2;
+      // if (this.#ctx.groups.shapes) {
+      //   this.#ctx.groups.shapes.rotation.y += delta * 2;
       // }
     };
 
