@@ -78,7 +78,11 @@ export class MouseFollower extends LitElement {
     super.connectedCallback();
 
     // do nothing if there's no coarse pointer
-    if (!window.matchMedia("(pointer: coarse)").matches) return;
+    if (
+      !window.matchMedia("(pointer: coarse)").matches &&
+      !window.matchMedia("(pointer: fine)").matches
+    )
+      return;
 
     this.rafId = window.requestAnimationFrame(this.frame);
     window.addEventListener("mousemove", this.handleMouseMove, {
