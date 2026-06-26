@@ -222,16 +222,15 @@ export class IntroScene extends LitElement {
 
       // diamond3d
       if (ctx.meshRefs.diamond3d) {
-        ctx.meshRefs.diamond3d.scale.set(
-          0.9 * scaleFactor,
-          0.9 * scaleFactor,
-          0.9 * scaleFactor,
-        );
-
         ctx.meshRefs.diamond3d.position.set(
           -1.9 * scaleFactor,
           1 * scaleFactor,
           -0.45 * scaleFactor,
+        );
+        ctx.meshRefs.diamond3d.scale.set(
+          0.9 * scaleFactor,
+          0.9 * scaleFactor,
+          0.9 * scaleFactor,
         );
 
         ctx.meshRefs.diamond3d.rotation.y += delta * 0.48;
@@ -264,6 +263,7 @@ export class IntroScene extends LitElement {
           -0.93 * scaleFactor,
           0,
         );
+        ctx.meshRefs.letterH.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
         ctx.meshRefs.letterH.rotation.y += delta * -0.48;
       }
