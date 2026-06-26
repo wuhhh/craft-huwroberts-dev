@@ -11,18 +11,18 @@ export class IntroSceneText extends LitElement {
       justify-content: center;
       align-items: center;
       font-family: var(--font-mono);
-      font-size: var(--text-sm);
+      font-size: var(--text-xs);
       text-transform: uppercase;
       color: black;
     }
 
     .labels {
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
       align-items: space-between;
-      flex-direction: row-reverse;
-      width: 70%;
-      height: 20rem;
+      width: 72%;
+      height: 14rem;
     }
 
     .labels > div:first-child {
@@ -44,6 +44,36 @@ export class IntroSceneText extends LitElement {
 
     .labels > div:last-child > div:last-child {
       margin-left: 3rem;
+    }
+
+    @media (min-width: 1280px) {
+      :host {
+        font-size: var(--text-sm);
+      }
+
+      .labels {
+        width: 75%;
+        height: 17.5rem;
+      }
+    }
+
+    @media (min-width: 1536px) {
+      .labels {
+        width: 70%;
+        height: 20rem;
+      }
+
+      .labels > div:last-child {
+        margin-left: 2rem;
+      }
+
+      .labels > div:first-child > div:last-child {
+        margin-right: 3rem;
+      }
+
+      .labels > div:last-child > div:last-child {
+        margin-left: 3rem;
+      }
     }
   `;
 
