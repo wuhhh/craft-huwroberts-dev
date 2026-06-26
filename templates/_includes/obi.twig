@@ -1,9 +1,11 @@
-{# Mobile backdrop #}
-<div class="sm:hidden fixed top-0 inset-x-0 h-24 z-10 bg-zinc-50/95 backdrop-blur-sm"></div>
-
-<div class="hidden w-14 sm:block">
-  <div class="fixed inset-y-0 z-10 pt-12 space-y-7">
-    {% include "_includes/logomark" only %}
-    <main-menu></main-menu>
+<div class="w-21 z-10">
+  <div class="hidden sm:flex fixed inset-y-0 flex-col justify-between pt-12">
+    <div class="space-y-7">
+      {% include "_includes/logomark" only %}
+      <main-menu></main-menu>
+    </div>
+    <star-flower class="pb-12">
+      {{ svg('@webroot/dist/images/icon--starflower.svg', true, true)|attr({ class: 'w-[30px]' }) }}
+    </star-flower>
   </div>
 </div>

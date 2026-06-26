@@ -17,6 +17,7 @@ export class MainMenu extends LitElement {
       display: block;
       margin-inline: auto;
       position: relative;
+
       appearance: none;
       background: none;
       border: 0;

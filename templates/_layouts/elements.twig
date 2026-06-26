@@ -6,15 +6,12 @@
 
   <div id="top"></div>
 
+  <mobile-menu></mobile-menu>
+
   {% include "_includes/followers/followerDot.twig" only %}
 
-  <star-flower class="hidden container fixed inset-y-0 items-end justify-center w-14 pb-12 sm:flex">
-    {{ svg('@webroot/dist/images/icon--starflower.svg', true, true)|attr({ class: 'w-[30px]' }) }}
-  </star-flower>
+  <div class="container flex gap-x-10">
 
-  <div class="container flex flex-col gap-x-17 sm:flex-row">
-
-    {# Obi #}
     {% include "_includes/obi" only %}
 
     <div class="relative h-screen grow">

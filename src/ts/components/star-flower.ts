@@ -54,7 +54,7 @@ export class StarFlower extends LitElement {
 
   render() {
     return html`
-      <div>
+      <div style="width: 30px; margin-inline: auto;">
         <div class="t" style="transform: rotate(0deg)"><slot></slot></div>
       </div>
     `;
