@@ -26,7 +26,7 @@
   {% set isBackground = block.videoMode == 'background' %}
   {% set caption = block.text ?? null %}
 
-  <div class="space-y-4 {{ not entry.fullWidth ? 'lg:max-w-[calc(100%-371px)]' }}">
+  <div class="space-y-4 {{ not entry.fullWidth ? 'xl:max-w-[calc(100%-371px)]' }}">
     <div class="group relative aspect-960/576 w-full overflow-hidden rounded-lg">
       <video
         class="h-full w-full rounded-lg object-cover"

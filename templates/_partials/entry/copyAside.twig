@@ -3,15 +3,15 @@
 {% set asideIcon = aside ? aside.icon_ : null %}
 {% set hasAside = aside and (aside.text|length or aside.richTextSimple|length or asideIcon) %}
 
-<div class="flex flex-col gap-8 lg:flex-row lg:gap-10">
+<div class="flex flex-col gap-8 xl:flex-row xl:gap-10">
   <div class="min-w-0 flex-1">
     {% if copy|length %}
-      <div class="rich-text-content copy-aside-content">{{ copy }}</div>
+      <div class="rich-text -post copy-aside-content">{{ copy }}</div>
     {% endif %}
   </div>
 
   {% if hasAside %}
-    <aside class="w-full shrink-0 lg:w-82.75">
+    <aside class="w-full shrink-0 xl:w-82.75">
       <div class="bg-salt-rock-100 sticky top-8 flex flex-col gap-5 rounded p-6.5">
         {% if aside.text|length %}
           <div class="flex items-center gap-2.5">

@@ -1,11 +1,11 @@
 {% set content = content ?? null %}
 
 {% if content and content.chunks|length %}
-  <div class="rich-text-post space-y-18">
+  <div class="space-y-18">
     {% for chunk in content.chunks %}
       {% if chunk.type == 'markup' %}
         {# regular content #}
-        <div class="rich-text-content lg:max-w-[calc(100%-371px)]">{{ chunk }}</div>
+        <div class="rich-text -post xl:max-w-[calc(100%-371px)]">{{ chunk }}</div>
       {% else %}
         {# entry content (renders _partials/entry/{handle}.twig) #}
         {{ chunk }}
