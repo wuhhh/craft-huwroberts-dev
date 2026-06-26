@@ -21,8 +21,8 @@ export class IntroSceneText extends LitElement {
       flex-direction: column;
       justify-content: space-between;
       align-items: space-between;
-      width: 72%;
-      height: 14rem;
+      width: 75%;
+      height: 12rem;
     }
 
     .labels > div:first-child {
@@ -46,6 +46,13 @@ export class IntroSceneText extends LitElement {
       margin-left: 3rem;
     }
 
+    @media (min-width: 1024px) {
+      .labels {
+        width: 72%;
+        height: 14rem;
+      }
+    }
+
     @media (min-width: 1280px) {
       :host {
         font-size: var(--text-sm);
@@ -58,6 +65,10 @@ export class IntroSceneText extends LitElement {
     }
 
     @media (min-width: 1536px) {
+      :host {
+        font-size: var(--text-base);
+      }
+
       .labels {
         width: 70%;
         height: 20rem;
