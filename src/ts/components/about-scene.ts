@@ -515,19 +515,18 @@ export class aboutScene extends LitElement {
 
   protected render(): unknown {
     return html`
-      <div>
-        <div class="letter-grid" aria-hidden="true">
-          <div data-letter="capH_0"></div>
-          <div data-letter="capU_1"></div>
-          <div data-letter="capW_2"></div>
-          <div data-letter="capR_3"></div>
-          <div data-letter="capO_4"></div>
-          <div data-letter="capB_5"></div>
-          <div data-letter="capE_6"></div>
-          <div data-letter="capR_7"></div>
-          <div data-letter="capT_8"></div>
-          <div data-letter="capS_9"></div>
-        </div>
+      <about-scene-decor></about-scene-decor>
+      <div class="letter-grid" aria-hidden="true">
+        <div data-letter="capH_0"></div>
+        <div data-letter="capU_1"></div>
+        <div data-letter="capW_2"></div>
+        <div data-letter="capR_3"></div>
+        <div data-letter="capO_4"></div>
+        <div data-letter="capB_5"></div>
+        <div data-letter="capE_6"></div>
+        <div data-letter="capR_7"></div>
+        <div data-letter="capT_8"></div>
+        <div data-letter="capS_9"></div>
       </div>
     `;
   }

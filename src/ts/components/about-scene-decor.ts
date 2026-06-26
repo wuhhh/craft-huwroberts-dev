@@ -1,12 +1,13 @@
 import { css, html, LitElement, type CSSResultGroup } from "lit";
 import { customElement } from "lit/decorators.js";
 
-@customElement("intro-scene-decor")
-export class IntroSceneDecor extends LitElement {
+@customElement("about-scene-decor")
+export class AboutSceneDecor extends LitElement {
   static styles?: CSSResultGroup | undefined = css`
     :host {
       position: absolute;
       inset: 0;
+      z-index: -1;
     }
 
     decor-diamond:nth-child(1) {
@@ -28,17 +29,26 @@ export class IntroSceneDecor extends LitElement {
     decor-diamond:nth-child(3) {
       position: absolute;
       left: 90%;
-      top: 75%;
+      top: 70%;
       width: 1.5rem;
       height: 1.5rem;
     }
 
     decor-diamond:nth-child(4) {
       position: absolute;
-      left: 40%;
+      left: 20%;
       top: 85%;
       width: 1.125rem;
       height: 1.125rem;
+    }
+
+    decor-diamond:nth-child(5) {
+      position: absolute;
+      left: 24%;
+      top: 33%;
+      width: 4rem;
+      height: 4rem;
+      filter: blur(0.5rem);
     }
   `;
 
@@ -48,11 +58,13 @@ export class IntroSceneDecor extends LitElement {
       <decor-diamond color="indigo" decorStyle="outline"></decor-diamond>
       <decor-diamond color="coral" decorStyle="outline"></decor-diamond>
       <decor-diamond color="coral" decorStyle="fill"></decor-diamond>
+      <decor-diamond color="coral" decorStyle="outline"></decor-diamond>
     `;
   }
 }
+
 declare global {
   interface HTMLElementTagNameMap {
-    "intro-scene-decor": IntroSceneDecor;
+    "about-scene-decor": AboutSceneDecor;
   }
 }

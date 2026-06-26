@@ -8,35 +8,6 @@
   {% set occasionalItems = collect(tech).pluck("occasional") %}
 
   <div class="col-span-full relative h-screen w-full">
-    {# ==
-    <DiamondDecor
-      parallax="mouse"
-      delay={0}
-      class="absolute top-37 right-1/2"
-      decorClassName="bg-seabed-indigo size-6.25"
-    />
-    <DiamondDecor
-      parallax="mouse"
-      delay={150}
-      speed={0.15}
-      class="absolute top-176 left-54"
-      decorClassName="bg-coral-red size-6.25"
-    />
-    <DiamondDecor
-      parallax="mouse"
-      delay={300}
-      speed={0.05}
-      class="absolute top-68 -right-2"
-      decorClassName="border-seabed-indigo size-6.25 border"
-    />
-    <StarDecor
-      parallax="mouse"
-      delay={450}
-      speed={0.12}
-      class="absolute top-140 right-40 z-10"
-      decorClassName="text-coral-red"
-    />
-    == #}
 
     <about-scene refImageId="scene-image-ref"></about-scene>
 
@@ -60,11 +31,11 @@
         <div class="col-span-6 col-start-5">
           <h1 class="sr-only">{entry.title}</h1>
 
-          <div class="space-y-10" data-cursor-layer="top">
+          <div class="space-y-12" data-cursor-layer="top">
             <div id="scene-image-ref" class="relative aspect-704/498 overflow-hidden rounded-2xl"></div>
 
             {% if shortBio %}
-              <div class="w-full max-w-162 leading-7">
+              <div class="ckeditor -simple prose text-base w-full max-w-162 leading-7">
                 {{ shortBio }}
               </div>
             {% endif %}
