@@ -273,12 +273,13 @@ export class IntroScene extends LitElement {
       if (ctx.groups.hr) {
         ctx.groups.hr.scale.set(hrScale, hrScale, 1);
 
+        // position individual name meshes which are split
         if (ctx.meshRefs.hrHuw) {
-          ctx.meshRefs.hrHuw.position.x = -3.2;
+          ctx.meshRefs.hrHuw.position.x = -3.25;
         }
 
         if (ctx.meshRefs.hrRobertsMain) {
-          ctx.meshRefs.hrRobertsMain.position.x = 1.8;
+          ctx.meshRefs.hrRobertsMain.position.x = 1.75;
         }
       }
 
