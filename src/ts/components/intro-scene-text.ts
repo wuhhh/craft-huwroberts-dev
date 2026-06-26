@@ -11,9 +11,9 @@ export class IntroSceneText extends LitElement {
       justify-content: center;
       align-items: center;
       font-family: var(--font-mono);
-      font-size: var(--text-xs);
       text-transform: uppercase;
       color: black;
+      container-type: size;
     }
 
     .labels {
@@ -23,6 +23,7 @@ export class IntroSceneText extends LitElement {
       align-items: space-between;
       width: 75%;
       height: 12rem;
+      font-size: var(--text-xs);
     }
 
     .labels > div:first-child {
@@ -65,13 +66,10 @@ export class IntroSceneText extends LitElement {
     }
 
     @media (min-width: 1536px) {
-      :host {
-        font-size: var(--text-base);
-      }
-
       .labels {
         width: 70%;
         height: 20rem;
+        font-size: var(--text-base);
       }
 
       .labels > div:last-child {
@@ -84,6 +82,23 @@ export class IntroSceneText extends LitElement {
 
       .labels > div:last-child > div:last-child {
         margin-left: 3rem;
+      }
+    }
+
+    @container (orientation: portrait) {
+      .labels {
+        width: clamp(280px, 550px, 80%);
+        height: auto;
+        position: absolute;
+        top: 62%;
+      }
+
+      .labels > div:last-child {
+        display: none;
+      }
+
+      .labels > div:first-child {
+        margin-right: 0;
       }
     }
   `;
