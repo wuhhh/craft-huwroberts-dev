@@ -60,22 +60,26 @@ export class IntroScene extends LitElement {
 
   // Resize observer to update #orientation
   #ro = new ResizeObserver(() => {
-    const next =
-      this.clientWidth / this.clientHeight < 1 ? "portrait" : "landscape";
-    if (next === this.#orientation) return; // no-op if unchanged
+    const w = this.clientWidth;
+    const h = this.clientHeight;
+    const next = w / h < 1 ? "portrait" : "landscape";
+
+    if (next === this.#orientation) return;
 
     this.#orientation = next;
+    this.#setMeshVisibility();
+  });
 
-    if (!this.#ctx) return;
-
+  #setMeshVisibility() {
     if (this.#ctx.meshRefs.box) {
-      this.#ctx.meshRefs.box.visible = next === "landscape";
+      this.#ctx.meshRefs.box.visible = this.#orientation === "landscape";
     }
 
     if (this.#ctx.meshRefs.diamondPlane) {
-      this.#ctx.meshRefs.diamondPlane.visible = next === "landscape";
+      this.#ctx.meshRefs.diamondPlane.visible =
+        this.#orientation === "landscape";
     }
-  });
+  }
 
   // styles
   static styles?: CSSResultGroup | undefined = css`
@@ -93,16 +97,6 @@ export class IntroScene extends LitElement {
     }
   `;
 
-  connectedCallback(): void {
-    super.connectedCallback();
-
-    // FIX: This doesn't get called in time
-    this.#orientation =
-      this.clientWidth / this.clientHeight < 1 ? "portrait" : "landscape";
-
-    this.#ro.observe(this);
-  }
-
   constructor() {
     super();
 
@@ -112,6 +106,9 @@ export class IntroScene extends LitElement {
     this.#ctx = { groups: {}, meshRefs: {} } as IntroSceneContext;
 
     const setupFn: SceneSetupAsyncFn = async ({ host }) => {
+      this.#orientation =
+        host.clientWidth / host.clientHeight < 1 ? "portrait" : "landscape";
+
       const aspect = host.clientWidth / host.clientHeight;
       const camera = new THREE.PerspectiveCamera(25, aspect, 1, 20);
       camera.position.z = 10;
@@ -320,6 +317,10 @@ export class IntroScene extends LitElement {
       const directional = new THREE.DirectionalLight("yellow");
       directional.position.set(0, 1, 1);
       scene.add(directional, new THREE.AmbientLight("hotpink", 2));
+
+      // hide meshes based on orientation, watch for resize
+      this.#setMeshVisibility();
+      this.#ro.observe(this);
 
       return { scene, camera };
     };
