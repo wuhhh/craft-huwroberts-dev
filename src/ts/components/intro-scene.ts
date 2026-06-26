@@ -17,13 +17,16 @@ import {
  */
 interface IntroSceneContext {
   groups: {
+    hr?: THREE.Group | null;
     shapes?: THREE.Group | null;
   };
   meshRefs: {
     box?: THREE.Mesh | null;
     diamond3d?: THREE.Mesh | null;
     diamondPlane?: THREE.Mesh | null;
-    huwRobertsMain?: THREE.Mesh | null;
+    hrHuw?: THREE.Mesh | null;
+    hrRobertsMain?: THREE.Mesh | null;
+    hrRobertsSoft?: THREE.Mesh | null;
     letterH?: THREE.Mesh | null;
   };
 }
@@ -58,6 +61,10 @@ export class IntroScene extends LitElement {
     return children.find((child) => child.name === name);
   }
 
+  get #isPortrait() {
+    return this.clientWidth / this.clientHeight < 1;
+  }
+
   constructor() {
     super();
 
@@ -78,7 +85,7 @@ export class IntroScene extends LitElement {
       const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath("/dist/draco/");
       loader.setDRACOLoader(dracoLoader);
-      const gltf = await loader.loadAsync("/dist/models/hrdev.glb");
+      const gltf = await loader.loadAsync("/dist/models/hrdev2.glb");
       const c = gltf.scene.children;
 
       // set meshes
@@ -91,10 +98,11 @@ export class IntroScene extends LitElement {
         : null;
       const diamondPlane =
         (this.findObject("diamondPlane", c) as THREE.Mesh) || null;
-      const huwRobertsMain =
-        (this.findObject("huwRobertsMain", c) as THREE.Mesh) || null;
-      const huwRobertsSoft =
-        (this.findObject("huwRobertsSoft", c) as THREE.Mesh) || null;
+      const hrHuw = (this.findObject("hrHuw", c) as THREE.Mesh) || null;
+      const hrRobertsMain =
+        (this.findObject("hrRobertsMain", c) as THREE.Mesh) || null;
+      const hrRobertsSoft =
+        (this.findObject("hrRobertsSoft", c) as THREE.Mesh) || null;
       const letterH = (this.findObject("letterH", c) as THREE.Mesh) || null;
       const letterHEdges = letterH
         ? new THREE.EdgesGeometry(letterH.geometry)
@@ -104,16 +112,18 @@ export class IntroScene extends LitElement {
         box,
         diamond3d,
         diamondPlane,
-        huwRobertsMain,
+        hrHuw,
+        hrRobertsMain,
+        hrRobertsSoft,
         letterH,
       };
 
       // set textures
-      const texHuwRobertsMain = huwRobertsMain
-        ? (huwRobertsMain.material as THREE.MeshStandardMaterial).map
+      const texHrRobertsMain = hrRobertsMain
+        ? (hrRobertsMain.material as THREE.MeshStandardMaterial).map
         : null;
-      const texHuwRobertsSoft = huwRobertsSoft
-        ? (huwRobertsSoft.material as THREE.MeshStandardMaterial).map
+      const texHrRobertsSoft = hrRobertsSoft
+        ? (hrRobertsSoft.material as THREE.MeshStandardMaterial).map
         : null;
 
       // materials
@@ -122,16 +132,18 @@ export class IntroScene extends LitElement {
       const diamondPlaneMat = createDiamondPlaneMat();
       let liquidMaterial;
 
-      if (texHuwRobertsMain && texHuwRobertsSoft) {
+      if (texHrRobertsMain && texHrRobertsSoft) {
         liquidMaterial = createLiquidMaterialMat(
-          texHuwRobertsMain,
-          texHuwRobertsSoft,
+          texHrRobertsMain,
+          texHrRobertsSoft,
           new THREE.Vector2(0, 0),
         );
       }
 
       // add meshes to groups / scene, set materials
+      ctx.groups.hr = new THREE.Group();
       ctx.groups.shapes = new THREE.Group();
+      scene.add(ctx.groups.hr);
       scene.add(ctx.groups.shapes);
 
       // box
@@ -163,13 +175,18 @@ export class IntroScene extends LitElement {
         ctx.groups.shapes.add(ctx.meshRefs.diamondPlane);
       }
 
-      // huwRobertsMain
-      if (ctx.meshRefs.huwRobertsMain) {
+      // hrHuw
+      if (ctx.meshRefs.hrHuw) {
+        ctx.groups.hr.add(ctx.meshRefs.hrHuw);
+      }
+
+      // hrRobertsMain
+      if (ctx.meshRefs.hrRobertsMain) {
         if (liquidMaterial) {
-          ctx.meshRefs.huwRobertsMain.material = liquidMaterial;
+          ctx.meshRefs.hrRobertsMain.material = liquidMaterial;
         }
 
-        scene.add(ctx.meshRefs.huwRobertsMain);
+        ctx.groups.hr.add(ctx.meshRefs.hrRobertsMain);
       }
 
       // letterH
@@ -199,7 +216,8 @@ export class IntroScene extends LitElement {
      */
     const drawFn: SceneDrawFn = ({ camera, delta, elapsed, host }) => {
       const viewport = getViewport(camera, host) as SceneViewport;
-      const scaleFactor = viewport.width * 0.2;
+      const scaleFactor =
+        (this.#isPortrait ? viewport.height : viewport.width) * 0.2;
 
       // box
       if (ctx.meshRefs.box) {
@@ -250,10 +268,18 @@ export class IntroScene extends LitElement {
         );
       }
 
-      // huwRobertsMain
-      if (ctx.meshRefs.huwRobertsMain) {
-        const scale = viewport.width * 0.08;
-        ctx.meshRefs.huwRobertsMain.scale.set(scale, scale, 1);
+      const hrScale = viewport.width * 0.08;
+
+      if (ctx.groups.hr) {
+        ctx.groups.hr.scale.set(hrScale, hrScale, 1);
+
+        if (ctx.meshRefs.hrHuw) {
+          ctx.meshRefs.hrHuw.position.x = -3.2;
+        }
+
+        if (ctx.meshRefs.hrRobertsMain) {
+          ctx.meshRefs.hrRobertsMain.position.x = 1.8;
+        }
       }
 
       // letterH
