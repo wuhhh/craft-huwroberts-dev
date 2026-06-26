@@ -32,10 +32,17 @@ export class MouseFollower extends LitElement {
 
   static styles = css`
     :host {
+      display: none;
       position: fixed;
       top: 0;
       left: 0;
       pointer-events: none;
+    }
+
+    @media (pointer: coarse) {
+      :host {
+        display: block;
+      }
     }
   `;
 
@@ -69,6 +76,10 @@ export class MouseFollower extends LitElement {
 
   connectedCallback(): void {
     super.connectedCallback();
+
+    // do nothing if there's no coarse pointer
+    if (!window.matchMedia("(pointer: coarse)").matches) return;
+
     this.rafId = window.requestAnimationFrame(this.frame);
     window.addEventListener("mousemove", this.handleMouseMove, {
       passive: true,
