@@ -233,17 +233,76 @@ export class aboutScene extends LitElement {
 
     .letter-grid {
       position: absolute;
-      top: 17.5rem;
-      left: 7.75rem;
+      top: 8.5rem;
+      left: 1rem;
       display: grid;
-      grid-template-columns: repeat(18, minmax(0, 1fr));
+      grid-template-columns: repeat(9, minmax(0, 1fr));
       grid-template-rows: repeat(6, minmax(0, 1fr));
-      row-gap: 3.875rem;
+      row-gap: 3rem;
     }
 
     .letter-grid > div {
-      width: 4.0625rem;
-      height: 2.5625rem;
+      width: 1.875rem;
+      aspect-ratio: 15/13;
+    }
+
+    @media (min-width: 640px) {
+      .letter-grid {
+        top: 12rem;
+        left: 1.5rem;
+      }
+    }
+
+    @media (min-width: 820px) {
+      .letter-grid {
+        top: 16.5rem;
+        grid-template-columns: repeat(18, minmax(0, 1fr));
+      }
+
+      .letter-grid > div {
+        width: 2.5rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .letter-grid {
+        left: 4.5rem;
+      }
+
+      .letter-grid > div {
+        width: 3rem;
+        aspect-ratio: 4/2.5;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .letter-grid {
+        left: 7.75rem;
+        row-gap: 3.375rem;
+      }
+
+      .letter-grid > div {
+        width: 3.5rem;
+      }
+    }
+
+    @media (min-width: 1536px) {
+      .letter-grid {
+        row-gap: 4.5rem;
+      }
+      .letter-grid > div {
+        width: 4rem;
+      }
+    }
+
+    @media (min-width: 1728px) {
+      .letter-grid {
+        top: 18rem;
+        row-gap: 5rem;
+      }
+      .letter-grid > div {
+        width: 4.25rem;
+      }
     }
 
     .letter-grid div:nth-child(1) {
@@ -252,13 +311,25 @@ export class aboutScene extends LitElement {
     }
 
     .letter-grid div:nth-child(2) {
-      grid-column: 4;
+      grid-column: 2;
       grid-row: 2;
     }
 
     .letter-grid div:nth-child(3) {
-      grid-column: 7;
+      grid-column: 5;
       grid-row: 2;
+    }
+
+    @media (min-width: 1280px) {
+      .letter-grid div:nth-child(2) {
+        grid-column: 4;
+        grid-row: 2;
+      }
+
+      .letter-grid div:nth-child(3) {
+        grid-column: 7;
+        grid-row: 2;
+      }
     }
 
     .letter-grid div:nth-child(4) {
@@ -292,8 +363,15 @@ export class aboutScene extends LitElement {
     }
 
     .letter-grid div:nth-child(10) {
-      grid-column: 18;
+      grid-column: 16;
       grid-row: 6;
+    }
+
+    @media (min-width: 1280px) {
+      .letter-grid div:nth-child(10) {
+        grid-column: 18;
+        grid-row: 6;
+      }
     }
   `;
 
@@ -458,6 +536,8 @@ export class aboutScene extends LitElement {
 
           // aspect from the refImage's laid-out rect (RT/camera match it)
           const rect = refImage.getBoundingClientRect();
+          console.log(rect);
+
           const rtAspect =
             rect.width && rect.height ? rect.width / rect.height : 1;
 

@@ -12,25 +12,28 @@
 
   <div class="col-span-full grid grid-cols-subgrid">
     <div class="col-span-full pt-36 lg:col-start-2 lg:col-span-10 2xl:col-start-2 2xl:col-span-9">
-      <div class="space-y-28">
-        {% include "_includes/breadcrumb" with {
-          links: [
-            {
-              label: "Home",
-              url: siteUrl,
-            },
-            {
-              label: "Case Studies",
-              url: "/work",
-            },
-            {
-              label: entry.title,
-              url: "",
-            }
-          ]
-        } only %}
 
-        <h1 class="heading1 font-medium mb-16">{{ entry.title }}</h1>
+      {% include "_includes/breadcrumb" with {
+        classes: "mb-28",
+        links: [
+          {
+            label: "Home",
+            url: siteUrl,
+          },
+          {
+            label: "Case Studies",
+            url: "/work",
+          },
+          {
+            label: entry.title,
+            url: "",
+          }
+        ]
+      } only %}
+
+      <h1 class="heading1 font-medium mb-16">{{ entry.title }}</h1>
+
+      <div class="space-y-18">
 
         {% if featureVideo and featureVideo.videoCaption and featureVideo.videoCaption.videoAsset.one() %}
 
@@ -66,6 +69,7 @@
         {% endif %}
 
       </div>
+
     </div>
   </div>
 

@@ -9,8 +9,8 @@
   /**
    * Breakpoints
    */
-  --breakpoint-md: 834px;
-  --breakpoint-3xl: 1728px;
+  --breakpoint-md: 51.25rem;
+  --breakpoint-3xl: 108rem;
 
   /**
    * Colors
@@ -61,17 +61,3 @@
  */
 @custom-variant sm-down (@media (max-width: 639px));
 @custom-variant hover-none (@media (hover: none));
-
-/**
- * Layout custom properties
- */
-:root {
-  --3xl-w: 1728px;
-  --3xl-px: 80px;
-  --panel-w: clamp(818px, 1200px, 70vw);
-  --panel-away-w: calc(100vw - var(--panel-w));
-  --3xl-panel-w: calc(((100vw - var(--3xl-w)) / 2) + (var(--3xl-w) / 100 * 70));
-  --3xl-panel-away-w: calc(
-    ((100vw - var(--3xl-w)) / 2) + (var(--3xl-w) / 100 * 30)
-  );
-}

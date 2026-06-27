@@ -19,8 +19,8 @@ export class MainMenu extends LitElement {
     }
 
     button.toggle {
-      width: 2.75rem;
-      height: 2.75rem;
+      width: 2.875rem;
+      height: 2.875rem;
       display: block;
       margin-inline: auto;
       position: relative;

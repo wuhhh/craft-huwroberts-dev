@@ -7,18 +7,19 @@ export class AboutSceneDecor extends LitElement {
     :host {
       position: absolute;
       inset: 0;
-      z-index: -1;
+      // z-index: -1;
     }
 
     decor-diamond:nth-child(1) {
       position: absolute;
-      left: 55%;
-      top: 10%;
-      width: 1.5rem;
-      height: 1.5rem;
+      left: 80%;
+      top: 15%;
+      width: 1rem;
+      height: 1rem;
     }
 
     decor-diamond:nth-child(2) {
+      display: none;
       position: absolute;
       left: 5%;
       top: 50%;
@@ -27,28 +28,67 @@ export class AboutSceneDecor extends LitElement {
     }
 
     decor-diamond:nth-child(3) {
+      display: none;
       position: absolute;
       left: 90%;
-      top: 70%;
+      top: 62%;
       width: 1.5rem;
       height: 1.5rem;
     }
 
     decor-diamond:nth-child(4) {
       position: absolute;
-      left: 20%;
-      top: 85%;
-      width: 1.125rem;
-      height: 1.125rem;
+      left: 62%;
+      top: 92%;
+      width: 1rem;
+      height: 1rem;
     }
 
     decor-diamond:nth-child(5) {
+      display: none;
       position: absolute;
       left: 24%;
       top: 33%;
       width: 4rem;
       height: 4rem;
       filter: blur(0.5rem);
+    }
+
+    @media (min-width: 640px) {
+      decor-diamond:nth-child(3) {
+        display: block;
+      }
+
+      decor-diamond:nth-child(1) {
+        left: 55%;
+        top: 10%;
+        width: 1.125rem;
+        height: 1.125rem;
+      }
+
+      decor-diamond:nth-child(4) {
+        left: 5%;
+        top: 50%;
+        width: 1.125rem;
+        height: 1.125rem;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      decor-diamond:nth-child(1) {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      decor-diamond:nth-child(2) {
+        display: block;
+        left: 20%;
+        top: 85%;
+      }
+
+      decor-diamond:nth-child(5) {
+        display: block;
+      }
     }
   `;
 
