@@ -95,7 +95,7 @@ export class VideoPlayer extends LitElement {
       border-radius: var(--radius-2xl, 0.25rem);
     }
 
-    @media (min-width: 640px) {
+    @media (min-width: 820px) {
       .boxed.frame {
         aspect-ratio: 960 / 576;
         height: auto;
