@@ -30,8 +30,8 @@ export class AboutSceneDecor extends LitElement {
     decor-diamond:nth-child(3) {
       display: none;
       position: absolute;
-      left: 90%;
-      top: 62%;
+      left: 85%;
+      top: 40%;
       width: 1.5rem;
       height: 1.5rem;
     }
