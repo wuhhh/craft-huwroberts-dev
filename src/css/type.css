@@ -254,7 +254,7 @@
 
   /* Code blocks */
   pre {
-    background-color: #fafafa;
+    background-color: #f6f6f6;
     border: 1px solid #e5e5e5;
     border-radius: 4px;
     padding: 1.25em;
@@ -330,12 +330,12 @@
 /* Copy & Aside copy — remove margins on pre as spacing is handled by the container */
 .copy-aside-content {
   > *:first-child {
-    margin-top: 0;
+    margin-top: 0 !important;
   }
 
   pre {
-    margin-top: 0;
-    margin-bottom: 0;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
 }
 
