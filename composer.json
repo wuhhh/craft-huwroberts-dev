@@ -18,8 +18,10 @@
   },
   "require": {
     "craftcms/ckeditor": "^5.6.1",
-    "craftcms/cms": "^5.10.7",
+    "craftcms/cms": "^5.10.8.1",
+    "nystudio107/craft-seomatic": "^5.1.21",
     "nystudio107/craft-vite": "5.0.1",
+    "putyourlightson/craft-blitz": "^5.12.9",
     "verbb/knock-knock": "^3.0.6",
     "vlucas/phpdotenv": "^5.6.0"
   },
