@@ -37,9 +37,10 @@ export class AboutSceneDecor extends LitElement {
     }
 
     decor-diamond:nth-child(4) {
+      display: hidden;
       position: absolute;
-      left: 62%;
-      top: 92%;
+      left: 20%;
+      top: 55%;
       width: 1rem;
       height: 1rem;
     }
@@ -55,10 +56,6 @@ export class AboutSceneDecor extends LitElement {
     }
 
     @media (min-width: 640px) {
-      decor-diamond:nth-child(3) {
-        display: block;
-      }
-
       decor-diamond:nth-child(1) {
         left: 55%;
         top: 10%;
@@ -66,11 +63,19 @@ export class AboutSceneDecor extends LitElement {
         height: 1.125rem;
       }
 
+      decor-diamond:nth-child(3) {
+        display: block;
+      }
+
       decor-diamond:nth-child(4) {
-        left: 5%;
-        top: 50%;
-        width: 1.125rem;
-        height: 1.125rem;
+        display: block;
+      }
+    }
+
+    @media (min-width: 820px) {
+      decor-diamond:nth-child(4) {
+        left: 7.5%;
+        top: 70%;
       }
     }
 
