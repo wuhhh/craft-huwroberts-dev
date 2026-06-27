@@ -14,12 +14,7 @@ previewTargets:
     urlFormat: '{url}'
 propagationMethod: all
 siteSettings:
-  5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: # Cymraeg
-    enabledByDefault: true
-    hasUrls: true
-    template: posts-index/_entry.twig
-    uriFormat: posts-index
-  25a33ae6-3901-458a-8998-5f63d864a3f3: # English
+  25a33ae6-3901-458a-8998-5f63d864a3f3: # Default
     enabledByDefault: true
     hasUrls: true
     template: posts-index/_entry.twig

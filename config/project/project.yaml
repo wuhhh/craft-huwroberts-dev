@@ -1,4 +1,4 @@
-dateModified: 1782376791
+dateModified: 1782571725
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -22,7 +22,6 @@ meta:
     4ffac4bc-7b4a-4579-9cc7-8dd3074e1e83: 'Entry: Post' # Entry: Post
     5c24cd7c-3d48-44f0-831a-3abc4d6b54ff: Work # Work
     5ce6d819-412b-470b-a122-a6d474f65997: 'Rich Text Post' # Rich Text Post
-    5d7df7d1-586e-49d0-a3ed-d6d76e75ca7c: Cymraeg # Cymraeg
     6e9cca5e-e4eb-416d-a05c-8fdf191de744: 'See Also' # See Also
     7c1c74c5-a5d4-4026-9234-01f024909531: 'Posts: Index' # Posts: Index
     7d71bee4-9355-40e3-8514-ee80a2a15c2f: Home # Home
@@ -30,7 +29,7 @@ meta:
     08c5f708-e62c-41c7-8648-8137caa17c81: Text # Text
     9aeedb1c-23bf-4011-ab51-39b3e1120bb1: '🔹 Copy & Aside' # 🔹 Copy & Aside
     9df05e4c-ad18-498a-9fba-144f3ed8f8db: 'Summary Short' # Summary Short
-    25a33ae6-3901-458a-8998-5f63d864a3f3: English # English
+    25a33ae6-3901-458a-8998-5f63d864a3f3: Default # Default
     42a845ce-2d17-4963-951a-a0d7508a1219: 'Page: Post Index' # Page: Post Index
     52ecdaa0-e78c-4b23-a67b-b2de241c25ac: Year # Year
     63c2141a-a3b1-4d55-ba4e-cf06c274ba4d: About # About
@@ -38,6 +37,7 @@ meta:
     87a940b2-87cc-4846-b166-bfb9b6d845ae: Toggle # Toggle
     279cfc2e-8324-4a53-aa20-56b80bfebaa7: 'Work Type' # Work Type
     485a1249-2b8a-4895-b4f1-2d9de2650d6a: 'Video Mode' # Video Mode
+    710f67ff-c1cc-40b2-be88-ecdd28c20a5b: 'Work Entries' # Work Entries
     728cc643-ad89-4b24-bdf4-46d3459574ef: SEO # SEO
     763f00c3-3720-4070-ab7e-910babff9419: Tech # Tech
     991d481c-d8c7-4e13-91f6-7e4112026e22: 'Link Entry' # Link Entry
