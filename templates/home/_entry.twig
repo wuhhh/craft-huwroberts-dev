@@ -2,23 +2,31 @@
 
 {% block content %}
 
-  {% if entry is not defined %}
-    {% set entry = craft.entries.section('home').one() %}
-  {% endif %}
-
   <div class="col-span-full mb-16">
     <intro-scene class="sm-down:w-screen sm-down:-ml-3"></intro-scene>
   </div>
 
-  <div class="col-span-full">
-    {% include "_includes/sectionTitleChip.twig" with {
-      title: "Case Studies",
-      chipLabel: "View All",
-      chipLink: url("work"),
-      classes: "mb-16",
-    } only %}
-  </div>
+  {# == Featured Work == #}
 
-  {% include "_includes/work/workGrid" only %}
+  {% set workTitle = entry.workTitle ?? null %}
+  {% set workCtaChip = entry.workCtaChip ?? null %}
+  {% set workEntries = entry.workEntries ?? [] %}
+
+  {% if workTitle and workCtaChip.url %}
+
+    <div class="col-span-full">
+      {% include "_includes/sectionTitleChip.twig" with {
+        title: workTitle,
+        chipLabel: workCtaChip.label ?? "View All",
+        chipLink: workCtaChip.url,
+        classes: "mb-16",
+      } only %}
+    </div>
+
+  {% endif %}
+
+  {% include "_includes/work/workGrid" with {
+    entries: workEntries,
+  } only %}
 
 {% endblock %}
