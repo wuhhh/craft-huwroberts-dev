@@ -1,4 +1,5 @@
 {% set featureImage = featureImage ?? null %}
+{% set title = title ?? "" %}
 
 {% if featureImage %}
 
@@ -9,7 +10,7 @@
     src="{{ image.getUrl(imageTransform) }}"
     srcset="{{ image.getSrcset(['600w', '800w', '1073w', '1250w', '1900w'], imageTransform) }}"
     sizes="auto, (min-width: 1728px) 1073px, (min-width: 1024px) 746px, (min-width: 640px) 611px, (max-width: 639px) 90vw"
-    alt="{{ image.alt ?? entry.title }}"
+    alt="{{ image.alt ?? title }}"
     class="w-full max-w-290 aspect-960/576 object-cover rounded-sm"
   />
 
