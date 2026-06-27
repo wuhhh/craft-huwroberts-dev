@@ -2,11 +2,11 @@ defaultPlacement: end
 enableVersioning: true
 entryTypes:
   -
-    uid: 42a845ce-2d17-4963-951a-a0d7508a1219 # Page: Post Index
-handle: postsIndex
+    uid: 4ffac4bc-7b4a-4579-9cc7-8dd3074e1e83 # Entry: Journal
+handle: journal
 maxAuthors: 1
 minAuthors: 1
-name: 'Posts: Index'
+name: Journal
 previewTargets:
   -
     label: 'Primary entry page'
@@ -17,6 +17,6 @@ siteSettings:
   25a33ae6-3901-458a-8998-5f63d864a3f3: # Default
     enabledByDefault: true
     hasUrls: true
-    template: posts-index/_entry.twig
-    uriFormat: posts-index
-type: single
+    template: journal/_entry.twig
+    uriFormat: 'journal/{slug}'
+type: channel

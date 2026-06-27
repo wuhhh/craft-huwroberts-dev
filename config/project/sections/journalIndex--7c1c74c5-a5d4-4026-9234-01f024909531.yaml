@@ -2,11 +2,11 @@ defaultPlacement: end
 enableVersioning: true
 entryTypes:
   -
-    uid: c300fa12-7356-4389-b8d8-0411927605a8 # Page: Who
-handle: who
+    uid: 42a845ce-2d17-4963-951a-a0d7508a1219 # Page: Journal Index
+handle: journalIndex
 maxAuthors: 1
 minAuthors: 1
-name: Who
+name: 'Journal (Index)'
 previewTargets:
   -
     label: 'Primary entry page'
@@ -16,7 +16,7 @@ propagationMethod: all
 siteSettings:
   25a33ae6-3901-458a-8998-5f63d864a3f3: # Default
     enabledByDefault: true
-    hasUrls: false
-    template: null
-    uriFormat: null
+    hasUrls: true
+    template: journal/_index.twig
+    uriFormat: '{slug}'
 type: single

@@ -1,8 +1,8 @@
 allowLineBreaksInTitles: false
-color: violet
+color: teal
 description: null
 fieldLayouts:
-  8c0171a4-5a7d-428b-bef6-74dd614a7251:
+  f36c3e10-1b4e-410d-831e-c09f62a4e5b1:
     cardThumbAlignment: end
     tabs:
       -
@@ -13,7 +13,7 @@ fieldLayouts:
             autocomplete: false
             autocorrect: true
             class: null
-            dateAdded: '2026-06-24T14:57:50+00:00'
+            dateAdded: '2026-06-24T15:00:49+00:00'
             disabled: false
             elementCondition: null
             id: null
@@ -32,18 +32,34 @@ fieldLayouts:
             tip: null
             title: null
             type: craft\fieldlayoutelements\entries\EntryTitleField
-            uid: 38b8a60b-83f6-4c15-990e-7beb1aa71d31
+            uid: 40ff4965-30ca-424c-8989-e0ef59605db5
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-24T15:02:26+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 68c90757-4b39-4910-94b6-94eb4f0a370b # Rich Text Simple
+            handle: null
+            instructions: null
+            label: Preamble
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: ffa1caf2-aad3-4dff-99ff-6e960aad23fc
             userCondition: null
             warning: null
             width: 100
         name: Content
-        uid: ad190e45-b0fc-4482-8fc5-d7c953121349
+        uid: 66073a6c-4986-41f1-baad-04326d2c3938
         userCondition: null
     thumbFieldKey: null
-handle: entryPost
+handle: pageJournalIndex
 hasTitleField: true
 icon: feather
-name: 'Entry: Post'
+name: 'Page: Journal Index'
 showSlugField: true
 showStatusField: true
 slugTranslationKeyFormat: null

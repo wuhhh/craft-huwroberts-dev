@@ -228,6 +228,76 @@ fieldLayouts:
         name: Meta
         uid: 6e7bd103-1dc8-48bc-8223-e7d84ce16d0c
         userCondition: null
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2026-06-27T20:28:04+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: c3d4eba5-b940-4c5b-a4cd-6f3d86f6d410
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: c574e84a-3ee4-4a9f-b7e6-91667514afae
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-27T20:28:04+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 42776a61-f5ef-4385-8543-fb5867a46711
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 9572d66a-af19-41dc-b8a2-a4bc834f0ae4
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-27T20:28:04+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 2cf30ae5-5268-4df7-8be9-54b1dc6e9a88
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 6aff2655-e3cd-4bb9-8259-150026d7fdae
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-27T20:28:04+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: fa84d361-5db4-4ada-aa90-57a291b972c7
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: c3dd2681-bbf0-49d5-823b-0fd402725a7f
+            userCondition: null
+            warning: null
+            width: 100
+        name: SEO
+        uid: 846645e5-4382-459f-9c96-b9d47f5e2e3c
+        userCondition: null
     thumbFieldKey: 'layoutElement:4eedf8db-12dd-41e7-b5e9-8c1a0f100e31'
 handle: entryWork
 hasTitleField: true
