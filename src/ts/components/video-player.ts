@@ -117,18 +117,6 @@ export class VideoPlayer extends LitElement {
       height: 100%;
     }
 
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
     .controls {
       position: absolute;
       left: 0;
@@ -563,9 +551,8 @@ export class VideoPlayer extends LitElement {
     const showPlayIcon = this.paused || this.stopped;
 
     return html`
-      <div class="sr-only">Video controls</div>
-
       <div
+        aria-label="Video controls"
         class="controls ${this.paused ? "is-paused" : ""}"
         @click=${this.onControlsClick}
       >
