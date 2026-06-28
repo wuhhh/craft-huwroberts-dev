@@ -36,6 +36,38 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
+          -
+            dateAdded: '2026-06-27T21:43:44+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 9df05e4c-ad18-498a-9fba-144f3ed8f8db # Summary Short
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 593f0005-cc00-48a9-b585-6215a1b221ff
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-27T22:02:45+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: c5b973a9-a07d-4d67-acb9-a3f0cbcb1450 # Tech Tags
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: dde9750c-9abd-4248-9147-322af68127b8
+            userCondition: null
+            warning: null
+            width: 100
         name: Content
         uid: ad190e45-b0fc-4482-8fc5-d7c953121349
         userCondition: null
@@ -43,66 +75,18 @@ fieldLayouts:
         elementCondition: null
         elements:
           -
-            dateAdded: '2026-06-27T20:28:18+00:00'
+            dateAdded: '2026-06-27T20:51:38+00:00'
             editCondition: null
             elementCondition: null
             elementEditCondition: null
-            fieldUid: c3d4eba5-b940-4c5b-a4cd-6f3d86f6d410
+            fieldUid: 2462263f-d971-4727-b2d2-8cbf1aa3bf8f # SEO
             handle: null
             instructions: null
             label: null
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
-            uid: 8446f3b7-fa17-4a71-aa00-8eabb7c7486a
-            userCondition: null
-            warning: null
-            width: 100
-          -
-            dateAdded: '2026-06-27T20:28:18+00:00'
-            editCondition: null
-            elementCondition: null
-            elementEditCondition: null
-            fieldUid: 42776a61-f5ef-4385-8543-fb5867a46711
-            handle: null
-            instructions: null
-            label: null
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: 3617be59-7173-4c18-9158-ce53ab984e05
-            userCondition: null
-            warning: null
-            width: 100
-          -
-            dateAdded: '2026-06-27T20:28:18+00:00'
-            editCondition: null
-            elementCondition: null
-            elementEditCondition: null
-            fieldUid: 2cf30ae5-5268-4df7-8be9-54b1dc6e9a88
-            handle: null
-            instructions: null
-            label: null
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: e1c11f05-43d9-4d8e-b2b3-2b739cc6d4c0
-            userCondition: null
-            warning: null
-            width: 100
-          -
-            dateAdded: '2026-06-27T20:28:18+00:00'
-            editCondition: null
-            elementCondition: null
-            elementEditCondition: null
-            fieldUid: fa84d361-5db4-4ada-aa90-57a291b972c7
-            handle: null
-            instructions: null
-            label: null
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: a5e975cd-6b37-47fe-b2a2-0447440ea290
+            uid: b8b7db48-a846-496e-a345-906c6acf179e
             userCondition: null
             warning: null
             width: 100

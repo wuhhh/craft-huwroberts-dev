@@ -1,6 +1,6 @@
 columnSuffix: null
 handle: summaryShort
-instructions: null
+instructions: "May be used in meta description tag and/or in main content (e.g. cards)\r\n"
 name: 'Summary Short'
 searchable: false
 settings:
@@ -12,5 +12,5 @@ settings:
   placeholder: null
   uiMode: normal
 translationKeyFormat: null
-translationMethod: site
+translationMethod: none
 type: craft\fields\PlainText

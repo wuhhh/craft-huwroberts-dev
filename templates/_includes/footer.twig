@@ -1,3 +1,15 @@
+{% set globals = craft.entries().section('globals').one() ?? null %}
+
+{% set footerWords = null %}
+{% set bluesky = null %}
+{% set github = null %}
+
+{% if globals %}
+  {% set footerWords = globals.footerWords ?? null %}
+  {% set bluesky = globals.bluesky ?? null %}
+  {% set github = globals.github ?? null %}
+{% endif %}
+
 <footer id="contact" class="min-h-screenh col-span-full relative">
   <div class="absolute inset-0 flex items-center justify-center">
     <a
@@ -9,20 +21,17 @@
   </div>
   <div class="absolute bottom-12 inset-x-0 flex flex-col-reverse items-center gap-y-4 sm:contents">
     <div class="sm:absolute inset-x-0 bottom-12 flex justify-center">
-      {% if footer.footerWords %}
-        <div class="xs-mono footer-words rich-text -simple leading-none">{{ footer.footerWords }}</div>
+      {% if footerWords %}
+        <div class="xs-mono footer-words rich-text -simple leading-none">{{ footerWords }}</div>
       {% endif %}
 
     </div>
     <div class="sm:absolute right-0 bottom-10 flex items-center">
-      {% set seeAlso = seo.seeAlso %}
-      {% set bluesky = seeAlso|filter(row => row.name == 'bluesky') %}
-      {% set github = seeAlso|filter(row => row.name == 'github') %}
 
       {% if bluesky %}
         <a
-          href="{{ bluesky[1]['url'] }}"
-          rel="noopener noreferrer nofollow"
+          href="{{ bluesky.url }}"
+          rel="{{ bluesky.rel }}"
           class="hover:text-seabed-indigo transition duration-100"
           aria-label="Huw Roberts on Bluesky"
         >
@@ -32,8 +41,8 @@
 
       {% if github %}
         <a
-          href="{{ github[0]['url'] }}"
-          rel="noopener noreferrer nofollow"
+          href="{{ github.url }}"
+          rel="{{ github.rel }}"
           class="hover:text-seabed-indigo transition duration-100"
           aria-label="Huw Roberts on GitHub"
         >

@@ -91,66 +91,18 @@ fieldLayouts:
         elementCondition: null
         elements:
           -
-            dateAdded: '2026-06-27T20:27:48+00:00'
+            dateAdded: '2026-06-27T20:51:50+00:00'
             editCondition: null
             elementCondition: null
             elementEditCondition: null
-            fieldUid: c3d4eba5-b940-4c5b-a4cd-6f3d86f6d410
+            fieldUid: 2462263f-d971-4727-b2d2-8cbf1aa3bf8f # SEO
             handle: null
             instructions: null
             label: null
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
-            uid: 7f03783f-2c34-4237-80e1-35d0665df854
-            userCondition: null
-            warning: null
-            width: 100
-          -
-            dateAdded: '2026-06-27T20:27:48+00:00'
-            editCondition: null
-            elementCondition: null
-            elementEditCondition: null
-            fieldUid: 42776a61-f5ef-4385-8543-fb5867a46711
-            handle: null
-            instructions: null
-            label: null
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: 5d8bb604-beef-45a1-89df-cc7308b9bf2a
-            userCondition: null
-            warning: null
-            width: 100
-          -
-            dateAdded: '2026-06-27T20:27:48+00:00'
-            editCondition: null
-            elementCondition: null
-            elementEditCondition: null
-            fieldUid: 2cf30ae5-5268-4df7-8be9-54b1dc6e9a88
-            handle: null
-            instructions: null
-            label: null
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: ba16c150-990f-4d2f-aa54-9c1cd8630d49
-            userCondition: null
-            warning: null
-            width: 100
-          -
-            dateAdded: '2026-06-27T20:27:48+00:00'
-            editCondition: null
-            elementCondition: null
-            elementEditCondition: null
-            fieldUid: fa84d361-5db4-4ada-aa90-57a291b972c7
-            handle: null
-            instructions: null
-            label: null
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            uid: ba2e6ea6-b171-4649-a52d-7304b0b0b6e3
+            uid: 28c93494-ccc3-48d5-9c0a-ef5d82d1c677
             userCondition: null
             warning: null
             width: 100

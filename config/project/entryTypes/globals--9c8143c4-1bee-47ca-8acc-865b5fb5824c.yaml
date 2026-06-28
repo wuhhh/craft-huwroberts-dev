@@ -1,0 +1,74 @@
+allowLineBreaksInTitles: false
+color: yellow
+description: null
+fieldLayouts:
+  0933f6d9-efd8-4069-88bb-b2ea6f4c7fa3:
+    cardThumbAlignment: end
+    tabs:
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2026-06-27T20:54:56+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 4824e26e-358e-48a3-8ff0-7e2517806ba0 # Footer Words
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: fd9510ad-79d1-4803-989e-b15c21210c35
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-27T20:58:09+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: d3887c2a-c6e0-4983-acf7-a4ee3ac0f95b # Bluesky
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 7a39b765-11b4-49bb-b2e4-5df53551c958
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-06-27T20:58:09+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 62d3afc2-48c5-413e-9a5f-edbb5bf79857 # GitHub
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 80f4a8bd-fef1-460d-a403-873d7092e6fc
+            userCondition: null
+            warning: null
+            width: 100
+        name: Content
+        uid: a48dfff8-a7d2-4f93-b0dd-f9c6bd91e0dd
+        userCondition: null
+    thumbFieldKey: null
+handle: globals
+hasTitleField: false
+icon: book-atlas
+name: Globals
+showSlugField: false
+showStatusField: false
+slugTranslationKeyFormat: null
+slugTranslationMethod: site
+titleFormat: Globals
+titleTranslationKeyFormat: null
+titleTranslationMethod: site
+uiLabelFormat: '{title}'

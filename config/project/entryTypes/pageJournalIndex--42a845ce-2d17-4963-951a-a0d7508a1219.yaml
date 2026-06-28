@@ -55,6 +55,28 @@ fieldLayouts:
         name: Content
         uid: 66073a6c-4986-41f1-baad-04326d2c3938
         userCondition: null
+      -
+        elementCondition: null
+        elements:
+          -
+            dateAdded: '2026-06-27T20:52:09+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 2462263f-d971-4727-b2d2-8cbf1aa3bf8f # SEO
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 209c6399-d7f3-4757-ba0d-9c799c1287ce
+            userCondition: null
+            warning: null
+            width: 100
+        name: SEO
+        uid: a35bd67c-36b4-4c3f-ac51-4c4dce362fa1
+        userCondition: null
     thumbFieldKey: null
 handle: pageJournalIndex
 hasTitleField: true

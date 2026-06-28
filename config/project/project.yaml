@@ -1,4 +1,4 @@
-dateModified: 1782593245
+dateModified: 1782600567
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -27,13 +27,16 @@ meta:
     7e3c30a7-fdc1-41a8-af20-5e6a20bd61ac: 'Video Asset' # Video Asset
     08c5f708-e62c-41c7-8648-8137caa17c81: Text # Text
     9aeedb1c-23bf-4011-ab51-39b3e1120bb1: '🔹 Copy & Aside' # 🔹 Copy & Aside
+    9c8143c4-1bee-47ca-8acc-865b5fb5824c: Globals # Globals
     9df05e4c-ad18-498a-9fba-144f3ed8f8db: 'Summary Short' # Summary Short
     25a33ae6-3901-458a-8998-5f63d864a3f3: Default # Default
     42a845ce-2d17-4963-951a-a0d7508a1219: 'Page: Journal Index' # Page: Journal Index
     52ecdaa0-e78c-4b23-a67b-b2de241c25ac: Year # Year
+    62d3afc2-48c5-413e-9a5f-edbb5bf79857: GitHub # GitHub
     63c2141a-a3b1-4d55-ba4e-cf06c274ba4d: About # About
     68c90757-4b39-4910-94b6-94eb4f0a370b: 'Rich Text Simple' # Rich Text Simple
     87a940b2-87cc-4846-b166-bfb9b6d845ae: Toggle # Toggle
+    87d208be-b37d-4f86-83c2-b793301c8d43: Globals # Globals
     279cfc2e-8324-4a53-aa20-56b80bfebaa7: 'Work Type' # Work Type
     485a1249-2b8a-4895-b4f1-2d9de2650d6a: 'Video Mode' # Video Mode
     710f67ff-c1cc-40b2-be88-ecdd28c20a5b: 'Work Entries' # Work Entries
@@ -45,6 +48,7 @@ meta:
     80763c4f-603e-4f78-8e46-e05e80044efe: 'Huw Roberts' # Huw Roberts
     98303f8e-dbcf-40b8-9c2b-cd5955798bd5: 'Site Name' # Site Name
     99701ea9-a4da-4fb6-b997-541f0661f9a9: Agency # Agency
+    2462263f-d971-4727-b2d2-8cbf1aa3bf8f: SEO # SEO
     98337978-21e0-4fe0-baf9-f1eb86492071: '🔹 Video & Caption' # 🔹 Video & Caption
     ad34d564-b010-4b10-9cbe-473ebc2699ff: 'Page: Work Index' # Page: Work Index
     b72f3694-5d2a-478c-badd-08344714d7d0: 'Entry: Agency' # Entry: Agency
@@ -53,6 +57,7 @@ meta:
     c5b973a9-a07d-4d67-acb9-a3f0cbcb1450: 'Tech Tags' # Tech Tags
     ce84f3b1-226d-40f1-9fae-0fde3b70f8ab: '🔹 Image & Caption' # 🔹 Image & Caption
     d5f87477-e8cd-4d2e-b3b9-c8c97050dadb: Assets # Assets
+    d3887c2a-c6e0-4983-acf7-a4ee3ac0f95b: Bluesky # Bluesky
     dd8ce595-c035-4e42-ba87-fceec501d0bc: 'Public Schema' # Public Schema
     dd23509a-d49a-4d16-88ed-5f5e03a83e55: Journal # Journal
     e3f4a53d-c1e3-40fc-8be5-5523b72fadd8: Agency # Agency
@@ -63,7 +68,6 @@ meta:
     f1f18843-3eb2-4ca5-89e4-e4600950acf9: 'Page: About' # Page: About
     f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae: 'Entry: Work' # Entry: Work
     f93ff202-7643-4d47-b2cc-126d5595da3f: 'Work Type' # Work Type
-    fe297c93-bf96-40ca-94ed-936d23f5fb1c: Footer # Footer
 plugins:
   blitz:
     edition: standard

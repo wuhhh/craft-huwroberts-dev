@@ -1,0 +1,17 @@
+defaultPlacement: end
+enableVersioning: true
+entryTypes:
+  -
+    uid: 9c8143c4-1bee-47ca-8acc-865b5fb5824c # Globals
+handle: globals
+maxAuthors: 1
+minAuthors: 1
+name: Globals
+propagationMethod: all
+siteSettings:
+  25a33ae6-3901-458a-8998-5f63d864a3f3: # Default
+    enabledByDefault: true
+    hasUrls: false
+    template: null
+    uriFormat: null
+type: single
