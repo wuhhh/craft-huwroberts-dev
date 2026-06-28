@@ -74,6 +74,65 @@
       </div>
 
     </div>
+
+    {% set params = craft.entries().section('work') %}
+    {% set prev = entry.getPrev(params) ?? null %}
+    {% set next = entry.getNext(params) ?? null %}
+
+    {% if prev or next %}
+      <div
+        class="col-span-full pt-20 sm:px-4 sm:pt-30 lg:px-0 2xl:pt-36 lg:col-start-2 lg:col-span-10 2xl:col-start-2 2xl:col-span-9"
+        aria-label="Navigate to adjacent entries"
+      >
+        <div class="flex items-center gap-x-6 py-3 text-zinc-900 font-mono text-sm">
+
+          {% if prev %}
+            <div class="relative group">
+              <span aria-hidden="true" class="absolute inset-0 bg-zinc-900 [clip-path:inset(0_100%_0_0)] ease-[cubic-bezier(0.785_0.135_0.15_0.86)] transition-[clip-path] duration-200 delay-0 group-hover:[clip-path:inset(0_0%_0_0)] group-hover:delay-200 pointer-events-none"></span>
+              <span
+                aria-hidden="true"
+                class="absolute inset-0 inline-flex items-center gap-x-4 text-white [clip-path:inset(0_100%_0_0)] ease-[cubic-bezier(0.785_0.135_0.15_0.86)] transition-[clip-path] duration-200 delay-0 group-hover:[clip-path:inset(0_0%_0_0)] group-hover:delay-200 pointer-events-none"
+              >
+                <em>Prev:</em> {{ prev.title }}
+              </span>
+              <span
+                aria-hidden="true"
+                class="relative inline-flex items-center gap-x-4 [clip-path:inset(0_0_0_0%)] ease-[cubic-bezier(0.785_0.135_0.15_0.86)] transition-[clip-path] duration-200 delay-200 group-hover:[clip-path:inset(0_0_0_100%)] group-hover:delay-0"
+              >
+                <em>Prev:</em> {{ prev.title }}
+              </span>
+              <a class="absolute inset-0" aria-label="View previous project: {{ prev.title }}" href="{{ url(prev.uri) }}"></a>
+
+            </div>
+          {% endif %}
+
+          <div class="w-16 h-px bg-zinc-900"></div>
+
+          {% if next %}
+            <div class="relative group">
+              <span aria-hidden="true" class="absolute inset-0 bg-zinc-900 [clip-path:inset(0_0_0_100%)] ease-[cubic-bezier(0.785_0.135_0.15_0.86)] transition-[clip-path] duration-200 delay-0 group-hover:[clip-path:inset(0_0_0_0%)] group-hover:delay-200 pointer-events-none"></span>
+              <span
+                aria-hidden="true"
+                class="absolute inset-0 inline-flex items-center gap-x-4 text-white [clip-path:inset(0_0_0_100%)] ease-[cubic-bezier(0.785_0.135_0.15_0.86)] transition-[clip-path] duration-200 delay-0 group-hover:[clip-path:inset(0_0_0_0%)] group-hover:delay-200 pointer-events-none"
+              >
+                <em>Next:</em> {{ next.title }}
+              </span>
+              <span
+                aria-hidden="true"
+                class="relative inline-flex items-center gap-x-4 [clip-path:inset(0_0%_0_0)] ease-[cubic-bezier(0.785_0.135_0.15_0.86)] transition-[clip-path] duration-200 delay-200 group-hover:[clip-path:inset(0_100%_0_0)] group-hover:delay-0"
+              >
+                <em>Next:</em> {{ next.title }}
+              </span>
+              <a class="absolute inset-0" aria-label="View next project: {{ next.title }}" href="{{ url(next.uri) }}"></a>
+
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+    {% endif %}
+
   </div>
+
 
 {% endblock %}
