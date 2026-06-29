@@ -35,9 +35,8 @@ export class SceneCanvas extends LitElement {
       position: absolute;
       display: block;
       width: 100%;
-      /* Sized by the JS-cached stable viewport height so the drawing buffer
-         doesn't transiently resize during iOS chrome collapse (which would
-         rescale every scene). Fallback to 100% (= host = 100vh) pre-JS. */
+      /* JS-cached viewport height so the buffer doesn't resize during iOS
+         chrome collapse. Fallback to 100% (= 100vh) pre-JS. */
       height: var(--stable-vh, 100%);
     }
   `;
@@ -91,29 +90,23 @@ export class SceneCanvas extends LitElement {
     this.updateTime();
     this.updateSize();
 
-    // Pin the canvas to the viewport via transform, then read its rendered
-    // rect. Because the canvas is pinned, this rect is viewport-stable
-    // (top ≈ 0) regardless of scroll position or iOS toolbar show/hide — so
-    // it's the correct, non-stale reference frame for the drawing buffer.
-    // (The HOST element is untransformed and scrolls with the page, so reading
-    // its rect — as the old resize handler did — yields a top that goes
-    // negative; on iOS a `resize` fired mid-scroll captured that bogus value,
-    // corrupting every subsequent frame and causing the smearing.)
+    // Pin the canvas to the viewport and read its rect each frame. The canvas
+    // is transformed (pinned) so its rect is viewport-stable (top ≈ 0)
+    // regardless of scroll or toolbar state — the correct reference frame for
+    // the buffer. (The host scrolls with the page, so its rect can't.)
     this.canvasElement.style.transform = `translateY(${window.scrollY}px)`;
     const canvasRect = this.canvasElement.getBoundingClientRect();
     const cw = this.canvasElement.clientWidth;
     const ch = this.canvasElement.clientHeight;
 
-    // Full-buffer clear. setViewport takes logical (CSS) px; the canvas'
-    // .width/.height are device px and would be scaled again by pixelRatio,
-    // producing an out-of-bounds value. Use clientWidth/clientHeight instead.
+    // Clear the full buffer. setViewport takes logical (CSS) px, so use
+    // clientWidth/clientHeight, not the canvas' device-px .width/.height.
     this.renderer.setScissorTest(false);
     this.renderer.setViewport(0, 0, cw, ch);
     this.renderer.clear();
     this.renderer.setScissorTest(true);
 
     this.scenes.forEach((entry) => {
-      // run the scene's draw fn (mutates objects, offscreen RTs, etc.)
       entry.drawFn({
         camera: entry.camera,
         renderer: this.renderer,
@@ -122,18 +115,16 @@ export class SceneCanvas extends LitElement {
         host: entry.host,
       });
 
-      // Host rect expressed in the pinned canvas' buffer space.
+      // Host rect in the pinned canvas' buffer space.
       const rect = entry.host.getBoundingClientRect();
       const fullLeft = rect.left - canvasRect.left;
       const fullTop = rect.top - canvasRect.top;
       const fullW = rect.width;
       const fullH = rect.height;
 
-      // Clip to the canvas bounds. WebGPU strictly validates the viewport
-      // (x,y >= 0 and x+w / y+h <= buffer size) and rejects — destroying the
-      // render pass — on out-of-bounds values. A scene scrolling partially
-      // off-screen makes fullTop negative; clamping keeps the viewport legal.
-      // (three.js clamps the scissor itself but NOT the viewport.)
+      // Clip to canvas bounds: WebGPU rejects out-of-bounds viewports (a
+      // partially off-screen scene makes fullTop negative), destroying the
+      // render pass. three.js clamps the scissor but not the viewport.
       const left = Math.max(0, fullLeft);
       const top = Math.max(0, fullTop);
       const width = Math.min(cw, fullLeft + fullW) - left;
@@ -149,13 +140,10 @@ export class SceneCanvas extends LitElement {
       this.renderer.setViewport(left, top, width, height);
       this.renderer.setScissor(left, top, width, height);
 
-      // Render only the visible sub-portion (via the camera's view offset) so
-      // content stays correctly aligned instead of being squashed into the
-      // clipped viewport. Both PerspectiveCamera and OrthographicCamera
-      // implement setViewOffset with the same sub-rectangle semantics (offset
-      // the frustum, refresh the projection matrix); perspective additionally
-      // derives its aspect from the host rect. Ortho has no `aspect`, so it
-      // needs only the offset.
+      // Render only the visible sub-rectangle so content stays aligned rather
+      // than squashed into the clipped viewport. Both PerspectiveCamera and
+      // OrthographicCamera support setViewOffset (offset the frustum + refresh
+      // the projection matrix); perspective also derives aspect from the rect.
       const camera = entry.camera;
       if (
         camera instanceof THREE.PerspectiveCamera ||
