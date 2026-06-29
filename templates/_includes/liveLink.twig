@@ -1,14 +1,13 @@
 {% set url = url ?? null %}
 
-{% if url %}
-  <a
-    class="bg-gray-200 rounded-full p-1 pr-3 flex gap-x-[9px] items-center transition-colors duration-200 hover:bg-transparent"
-    href="{{ url }}"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="{{ "View live site, opens in new tab"|t }}"
-  >
-    {{ svg('@webroot/dist/images/icon--arrow-diagonal-circ.svg', true, true)|attr({ class: "w-[23px]" }) }}
-    <span class="xs-sans md:sm-sans !font-medium">{{ "View Live"|t }}</span>
-  </a>
-{% endif %}
+<a
+  data-loading-indicator
+  class="bg-stone text-black rounded-full inline-flex gap-x-1.75 items-center transition-colors duration-200 hover:bg-transparent -translate-y-0.5 py-1 pl-2 pr-3 sm:py-1.5 sm:pl-3 sm:pr-4 lg:translate-y-0 lg:mt-1"
+
+  href="{{ url }}"
+  rel="noopener noreferrer"
+>
+  <span class="rounded-full size-2.75 bg-seabed-indigo mr-0.5"></span>
+  <span class="font-mono text-xs sm:text-[13px] leading-normal uppercase">View Live</span>
+  {{ svg('@webroot/dist/images/icon--external-link.svg', true, true)|attr({ class: "size-3" }) }}
+</a>
