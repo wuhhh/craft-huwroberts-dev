@@ -92,7 +92,11 @@ export class IntroScene extends LitElement {
       display: grid;
       place-items: center;
       width: 100%;
-      height: 100lvh;
+      /* Stable viewport height (JS-cached) so the host rect — which drives
+         the camera frustum (setViewOffset) and mesh scaling (getViewport) —
+         doesn't transiently rescale during iOS chrome collapse. Fallback to
+         100lvh pre-JS. */
+      height: var(--stable-vh, 100lvh);
       text-align: center;
     }
   `;

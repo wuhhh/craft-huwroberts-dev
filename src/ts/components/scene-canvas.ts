@@ -32,11 +32,13 @@ export class SceneCanvas extends LitElement {
     }
 
     canvas {
-      position: fixed;
-      inset: 0;
+      position: absolute;
       display: block;
       width: 100%;
-      height: 100%;
+      /* Sized by the JS-cached stable viewport height so the drawing buffer
+         doesn't transiently resize during iOS chrome collapse (which would
+         rescale every scene). Fallback to 100% (= host = 100vh) pre-JS. */
+      height: var(--stable-vh, 100%);
     }
   `;
 
@@ -89,11 +91,15 @@ export class SceneCanvas extends LitElement {
     this.updateTime();
     this.updateSize();
 
-    // The canvas is compositor-pinned via `position: fixed` (see styles), so
-    // it stays locked to the viewport with no per-frame JS transform. This is
-    // the test for the iOS chrome-collapse bump: a JS `translateY(scrollY)`
-    // pin desyncs from the compositor while iOS throttles scroll/rAF during
-    // the toolbar animation; a fixed canvas can't desync from itself.
+    // Pin the canvas to the viewport via transform, then read its rendered
+    // rect. Because the canvas is pinned, this rect is viewport-stable
+    // (top ≈ 0) regardless of scroll position or iOS toolbar show/hide — so
+    // it's the correct, non-stale reference frame for the drawing buffer.
+    // (The HOST element is untransformed and scrolls with the page, so reading
+    // its rect — as the old resize handler did — yields a top that goes
+    // negative; on iOS a `resize` fired mid-scroll captured that bogus value,
+    // corrupting every subsequent frame and causing the smearing.)
+    this.canvasElement.style.transform = `translateY(${window.scrollY}px)`;
     const canvasRect = this.canvasElement.getBoundingClientRect();
     const cw = this.canvasElement.clientWidth;
     const ch = this.canvasElement.clientHeight;
