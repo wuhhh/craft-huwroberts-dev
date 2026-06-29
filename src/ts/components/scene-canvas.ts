@@ -12,8 +12,8 @@ export class SceneCanvas extends LitElement {
   @query("canvas")
   private canvasElement!: HTMLCanvasElement;
 
+  private pixelRatio = Math.min(window.devicePixelRatio, 2);
   private renderer!: THREE.WebGPURenderer;
-  private canvasRect!: DOMRect;
 
   private delta!: number;
   private elapsed = 0;
@@ -40,13 +40,6 @@ export class SceneCanvas extends LitElement {
   `;
 
   /**
-   * Window resize event handler
-   */
-  private handleResize = () => {
-    this.canvasRect = this.getBoundingClientRect();
-  };
-
-  /**
    * Updates the internal renderer size if the canvas dimensions have changed
    */
   private updateSize() {
@@ -54,8 +47,8 @@ export class SceneCanvas extends LitElement {
     const height = this.canvasElement.clientHeight;
 
     if (
-      this.canvasElement.width !== width ||
-      this.canvasElement.height !== height
+      this.canvasElement.width / this.pixelRatio !== width ||
+      this.canvasElement.height / this.pixelRatio !== height
     ) {
       this.renderer.setSize(width, height, false);
     }
@@ -95,24 +88,29 @@ export class SceneCanvas extends LitElement {
     this.updateTime();
     this.updateSize();
 
-    // transform canvas
+    // Pin the canvas to the viewport via transform, then read its rendered
+    // rect. Because the canvas is pinned, this rect is viewport-stable
+    // (top ≈ 0) regardless of scroll position or iOS toolbar show/hide — so
+    // it's the correct, non-stale reference frame for the drawing buffer.
+    // (The HOST element is untransformed and scrolls with the page, so reading
+    // its rect — as the old resize handler did — yields a top that goes
+    // negative; on iOS a `resize` fired mid-scroll captured that bogus value,
+    // corrupting every subsequent frame and causing the smearing.)
     this.canvasElement.style.transform = `translateY(${window.scrollY}px)`;
+    const canvasRect = this.canvasElement.getBoundingClientRect();
+    const cw = this.canvasElement.clientWidth;
+    const ch = this.canvasElement.clientHeight;
 
-    // this.renderer.setClearColor(0xffffff);
+    // Full-buffer clear. setViewport takes logical (CSS) px; the canvas'
+    // .width/.height are device px and would be scaled again by pixelRatio,
+    // producing an out-of-bounds value. Use clientWidth/clientHeight instead.
     this.renderer.setScissorTest(false);
-    this.renderer.setViewport(
-      0,
-      0,
-      this.canvasElement.width,
-      this.canvasElement.height,
-    );
+    this.renderer.setViewport(0, 0, cw, ch);
     this.renderer.clear();
-
-    // this.renderer.setClearColor(0xe0e0e0);
     this.renderer.setScissorTest(true);
 
     this.scenes.forEach((entry) => {
-      // call scene's draw fn
+      // run the scene's draw fn (mutates objects, offscreen RTs, etc.)
       entry.drawFn({
         camera: entry.camera,
         renderer: this.renderer,
@@ -121,31 +119,46 @@ export class SceneCanvas extends LitElement {
         host: entry.host,
       });
 
-      // get its position relative to the page's viewport
+      // Host rect expressed in the pinned canvas' buffer space.
       const rect = entry.host.getBoundingClientRect();
+      const fullLeft = rect.left - canvasRect.left;
+      const fullTop = rect.top - canvasRect.top;
+      const fullW = rect.width;
+      const fullH = rect.height;
 
-      // check if it's offscreen. If so skip it
-      if (
-        rect.bottom < 0 ||
-        rect.top > this.canvasRect.height ||
-        rect.right < 0 ||
-        rect.left > this.canvasRect.left + this.canvasRect.width
-      ) {
-        return; // it's off screen
-      }
+      // Clip to the canvas bounds. WebGPU strictly validates the viewport
+      // (x,y >= 0 and x+w / y+h <= buffer size) and rejects — destroying the
+      // render pass — on out-of-bounds values. A scene scrolling partially
+      // off-screen makes fullTop negative; clamping keeps the viewport legal.
+      // (three.js clamps the scissor itself but NOT the viewport.)
+      const left = Math.max(0, fullLeft);
+      const top = Math.max(0, fullTop);
+      const width = Math.min(cw, fullLeft + fullW) - left;
+      const height = Math.min(ch, fullTop + fullH) - top;
 
-      // set the viewport
-      const width = rect.right - rect.left;
-      const height = rect.bottom - rect.top;
-      const left = rect.left - this.canvasRect.left;
-      const top = rect.top;
+      // fully off-screen — nothing to draw
+      if (width <= 0 || height <= 0) return;
+
+      // offset of the visible tile within the scene's full rect
+      const offsetX = left - fullLeft;
+      const offsetY = top - fullTop;
 
       this.renderer.setViewport(left, top, width, height);
       this.renderer.setScissor(left, top, width, height);
 
-      if (entry.camera instanceof THREE.PerspectiveCamera) {
-        entry.camera.aspect = width / height;
-        entry.camera.updateProjectionMatrix();
+      // Render only the visible sub-portion (via the camera's view offset) so
+      // content stays correctly aligned instead of being squashed into the
+      // clipped viewport. Both PerspectiveCamera and OrthographicCamera
+      // implement setViewOffset with the same sub-rectangle semantics (offset
+      // the frustum, refresh the projection matrix); perspective additionally
+      // derives its aspect from the host rect. Ortho has no `aspect`, so it
+      // needs only the offset.
+      const camera = entry.camera;
+      if (
+        camera instanceof THREE.PerspectiveCamera ||
+        camera instanceof THREE.OrthographicCamera
+      ) {
+        camera.setViewOffset(fullW, fullH, offsetX, offsetY, width, height);
       }
 
       this.renderer.render(entry.scene, entry.camera);
@@ -158,22 +171,11 @@ export class SceneCanvas extends LitElement {
       antialias: true,
     });
 
-    this.canvasRect = this.getBoundingClientRect();
-    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setPixelRatio(this.pixelRatio);
 
     this.setupScenes().then(() => {
       this.renderer.setAnimationLoop(this.frame);
     });
-  }
-
-  connectedCallback(): void {
-    super.connectedCallback();
-    window.addEventListener("resize", this.handleResize);
-  }
-
-  disconnectedCallback(): void {
-    super.disconnectedCallback();
-    window.removeEventListener("resize", this.handleResize);
   }
 
   render() {
