@@ -2,7 +2,7 @@
  * Stable viewport height — guards against the iOS Safari chrome-collapse
  * rescale bump.
  *
- * On iOS, `vh`/`lvh` resolve to the large (toolbars-hidden) viewport at rest,
+ * On iOS, `vh`/`lvh` resolve to the large (toolbars-hidden) viewport *at rest*,
  * but can transiently re-resolve *during* the toolbar collapse animation.
  * Anything sized by those units then rescales for the ~200ms of the animation.
  * In this app that's two independent rescale drivers:
@@ -11,23 +11,28 @@
  *      plus getViewport/alignMeshWithDOM mesh scaling).
  * Both dip together → the "scaling bump" on scroll.
  *
- * Swapping `vh`→`lvh` in CSS doesn't help because the unit still re-resolves
- * live every layout. Instead: read the large-viewport height ONCE at rest,
- * cache it as the `--stable-vh` custom property (in px), and refresh only on a
- * debounced resize/orientationchange so we never read mid-collapse. The cached
- * value doesn't re-resolve, so sizing stays put and the collapse becomes a
- * pure reveal.
+ * Swapping `vh`→`lvh` in CSS doesn't help (the unit still re-resolves live
+ * every layout), and debouncing a re-read doesn't either — it just captures the
+ * transient value a few hundred ms later, producing a *delayed* jump. The only
+ * safe read is one at a known-rest moment, never overwritten by a collapse.
  *
- * Consumers use `height: var(--stable-vh, <unit-fallback>)` so layout is
- * correct even before this module runs (progressive enhancement).
+ * So: read the large-viewport height ONCE at module load (page at rest, toolbars
+ * visible, `lvh` = large viewport), cache it as `--stable-vh` (px), and refresh
+ * ONLY on `orientationchange` — a discrete event never fired mid-collapse. The
+ * cached value doesn't re-resolve, so sizing stays put and the collapse becomes
+ * a pure reveal.
+ *
+ * Tradeoff: desktop window resizes won't refresh `--stable-vh` (canvas keeps
+ * the old height until reload). Add a width-change-guarded resize handler if
+ * that becomes a problem — chrome collapse changes visual-viewport height, not
+ * layout width, so filtering on width change would catch desktop resizes and
+ * orientation changes without ever firing on a collapse.
+ *
+ * Consumers use `height: var(--stable-vh, <unit-fallback>)` so layout is correct
+ * even before this module runs (progressive enhancement).
  */
 
-// Past the iOS toolbar-collapse animation (~200–300ms) so a debounced re-read
-// lands at rest, not mid-animation where `lvh` can transiently dip.
-const REFRESH_DEBOUNCE_MS = 250;
-
 let probe: HTMLDivElement | null = null;
-let resizeTimer: number | undefined;
 
 /**
  * Reads the large-viewport height in px via a hidden `height: 100lvh` probe
@@ -56,13 +61,16 @@ function commit(): void {
   }
 }
 
-function scheduleCommit(): void {
-  window.clearTimeout(resizeTimer);
-  resizeTimer = window.setTimeout(commit, REFRESH_DEBOUNCE_MS);
+// Read once at module load — at rest (no collapse in progress) → correct large
+// value, available before first paint so there's no flash. If layout isn't
+// ready yet (h === 0), defer to the `load` event and read once there.
+commit();
+if (document.readyState === "loading") {
+  window.addEventListener("load", commit, { once: true });
 }
 
-// Read at module load — at rest (no collapse in progress) → correct large value,
-// available before first paint so there's no flash.
-commit();
-window.addEventListener("resize", scheduleCommit);
-window.addEventListener("orientationchange", scheduleCommit);
+// Refresh ONLY on orientationchange: a discrete event fired on device rotation,
+// never during a chrome-collapse animation. (No `resize` listener — iOS fires
+// resize mid-collapse, and re-reading then would overwrite the stable value
+// with a transient one, causing a delayed rescale.)
+window.addEventListener("orientationchange", commit);
