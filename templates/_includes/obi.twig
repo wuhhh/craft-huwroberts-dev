@@ -1,10 +1,10 @@
 <div class="fixed top-0 inset-x-0 p-3 z-50 sm:w-21 sm:static sm:p-0">
-  <div class="flex flex-col justify-between sm:fixed sm:inset-y-0 sm:pt-8 2xl:pt-12">
-    <div class="flex justify-between sm:space-y-4 2xl:space-y-6 sm:block">
+  <div class="flex flex-col justify-between sm:fixed sm:inset-y-0 sm:pt-8">
+    <div class="flex justify-between sm:space-y-4 sm:block">
       {% include "_includes/logomark" only %}
       <main-menu></main-menu>
     </div>
-    <star-flower class="hidden sm:block pb-6 xl:pb-8 2xl:pb-12">
+    <star-flower class="hidden sm:block pb-6 xl:pb-8">
       {{ svg('@webroot/dist/images/icon--starflower.svg', true, true)|attr({ class: 'w-[30px]' }) }}
     </star-flower>
   </div>

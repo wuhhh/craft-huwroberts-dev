@@ -1,7 +1,7 @@
 {% set content = content ?? null %}
 
 {% if content and content.chunks|length %}
-  <div class="space-y-18">
+  <div class="space-y-10">
     {% for chunk in content.chunks %}
       {% if chunk.type == 'markup' %}
         {# regular content #}

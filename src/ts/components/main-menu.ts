@@ -136,7 +136,7 @@ export class MainMenu extends LitElement {
       nav {
         position: absolute;
         left: 4rem;
-        top: 0.4375rem;
+        top: 0.5rem;
         display: flex;
         flex-direction: column;
         align-items: flex-start;

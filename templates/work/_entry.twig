@@ -39,12 +39,13 @@
   {% set summary = entry.summaryShort ?? null %}
   {% set liveUrl = entry.liveUrl ?? null %}
   {% set richTextPost = entry.richTextPost ?? null %}
+  {% set techTags = entry.techTags.all() ?? [] %}
 
   <div class="col-span-full grid grid-cols-subgrid">
-    <div class="col-span-full pt-20 sm:px-4 sm:pt-30 lg:px-0 2xl:pt-36 lg:col-start-2 lg:col-span-10 2xl:col-start-2 2xl:col-span-9">
+    <div class="col-span-full pt-20 sm:pt-30 sm:px-4 lg:px-0 lg:col-start-2 lg:col-span-10 2xl:col-start-2 2xl:col-span-9">
 
       {% include "_includes/breadcrumb" with {
-        classes: "mb-8 sm:mb-12 2xl:mb-28",
+        classes: "mb-8 sm:mb-12 2xl:mb-20",
         links: [
           {
             label: "Home",
@@ -61,50 +62,76 @@
         ]
       } only %}
 
-      <div class="flex items-center justify-between flex-wrap gap-x-8 gap-y-4 mb-10 2xl:mb-16">
-        <h1 class="heading1 font-medium">{{ entry.title }}</h1>
+      {# post #}
+      <div class="space-y-5 sm:space-y-8">
 
-        {% if liveUrl %}
-          {% include "_includes/liveLink.twig" with {
-            url: liveUrl,
-          } only %}
-        {% endif %}
-      </div>
+        {# title and live link #}
+        <div class="flex items-center justify-between flex-wrap gap-x-8 gap-y-4">
+          <h1 class="heading1 font-medium">{{ entry.title }}</h1>
 
-      <div class="space-y-12 2xl:space-y-18">
-
-        {% if featureVideo and featureVideo.videoCaption and featureVideo.videoCaption.videoAsset.one() %}
-
-          {% set caption = featureVideo.videoCaption.text ?? null %}
-
-          <div class="space-y-4">
-            {% include "_includes/featureVideo.twig" with {
-              featureVideo: featureVideo,
-              title: entry.title,
+          {% if liveUrl %}
+            {% include "_includes/liveLink.twig" with {
+              url: liveUrl,
             } only %}
+          {% endif %}
+        </div>
 
-            {% if caption %}
-              <div class="text-sm text-zinc-500 italic">{{ caption }}</div>
-            {% endif %}
+        {# post head #}
+        {% if summary %}
+          <div class="rich-text -simple font-normal xl:max-w-[calc(100%-371px)]">
+            {{ summary }}
+
+            {# pull content below up - accounts for lineheight on summary #}
+            <div class="sm:-mb-2"></div>
           </div>
-
-        {% elseif featureImage and featureImage.imageAsset.one() %}
-
-          {% set caption = featureImage.text ?? null %}
-
-          <div class="space-y-4">
-            {% include "_includes/featureImage.twig" with {
-              featureImage: featureImage,
-              title: entry.title,
-            } only %}
-
-            {% if caption %}
-              <div class="text-sm text-zinc-500 italic">{{ caption }}</div>
-            {% endif %}
-          </div>
-
         {% endif %}
 
+        {# tags #}
+        {% if techTags %}
+          <div class="flex flex-wrap gap-x-3 gap-y-1 sm:gap-x-4 sm:gap-y-2">
+            {% for techTag in techTags %}
+              <span class="inline-block xs-mono sm-down:text-[10px] text-zinc-500">{{ techTag }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {# feature video / image #}
+        <div class="space-y-32">
+          {% if featureVideo and featureVideo.videoCaption and featureVideo.videoCaption.videoAsset.one() %}
+
+            {% set caption = featureVideo.videoCaption.text ?? null %}
+
+            <div class="space-y-4">
+              {% include "_includes/featureVideo.twig" with {
+                featureVideo: featureVideo,
+                title: entry.title,
+              } only %}
+
+              {% if caption %}
+                <div class="text-xs xl:text-sm text-zinc-500">{{ caption }}</div>
+              {% endif %}
+            </div>
+
+          {% elseif featureImage and featureImage.imageAsset.one() %}
+
+            {% set caption = featureImage.text ?? null %}
+
+            <div class="space-y-4">
+              {% include "_includes/featureImage.twig" with {
+                featureImage: featureImage,
+                title: entry.title,
+              } only %}
+
+              {% if caption %}
+                <div class="text-xs xl:text-sm text-zinc-500">{{ caption }}</div>
+              {% endif %}
+            </div>
+
+          {% endif %}
+
+        </div>
+
+        {# post content #}
         {% if richTextPost %}
           {% include "_includes/richTextPost" with { content: richTextPost } only %}
         {% endif %}

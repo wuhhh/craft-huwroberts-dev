@@ -75,9 +75,9 @@ export class VideoPlayer extends LitElement {
       box-shadow: var(--shadow-sm);
     }
 
-    @media (max-width: 639px) {
+    @media (max-width: 819px) {
       .backdrop {
-        background-color: transparent;
+        background-color: transparent !important;
       }
     }
 

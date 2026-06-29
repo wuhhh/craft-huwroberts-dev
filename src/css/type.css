@@ -117,6 +117,17 @@
 }
 
 .rich-text.-simple {
+  font-size: var(--text-sm, 0.75rem);
+  line-height: 1.53;
+
+  @media (min-width: 640px) {
+    font-size: var(--text-base, 1rem);
+  }
+
+  @media (min-width: 1536px) {
+    font-size: var(--text-lg, 1.125rem);
+  }
+
   a {
     text-decoration-line: underline;
     text-decoration-thickness: from-font;
@@ -134,8 +145,13 @@
 }
 
 .rich-text.-post {
-  font-size: var(--text-base, 1rem);
+  font-size: var(--text-sm, 0.75rem);
   line-height: 1.53;
+
+  @media (min-width: 640px) {
+    font-size: var(--text-base, 1rem);
+  }
+
   color: #000;
 
   @media (min-width: 1536px) {
