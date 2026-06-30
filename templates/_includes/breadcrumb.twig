@@ -11,7 +11,7 @@
       {% for link in links %}
         <li class="inline-block">
           {% if not loop.first %}
-            {{ svg("@webroot/dist/images/icon--chev-mini.svg", true, true)|attr({ class: "inline-block" }) }}
+            {{ svg("@webroot/dist/images/icon--chev-mini.svg", true, true)|attr({ class: "inline-block -translate-y-[0.5px]", "aria-hidden": "true" }) }}
           {% endif %}
 
           {% if loop.last %}
