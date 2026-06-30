@@ -233,12 +233,12 @@ export class aboutScene extends LitElement {
 
     .letter-grid {
       position: absolute;
-      top: 8.5rem;
-      left: 1rem;
+      top: 11.75rem;
+      left: 1.75rem;
       display: grid;
       grid-template-columns: repeat(9, minmax(0, 1fr));
       grid-template-rows: repeat(6, minmax(0, 1fr));
-      row-gap: 3rem;
+      row-gap: 2.75rem;
     }
 
     .letter-grid > div {
@@ -297,7 +297,7 @@ export class aboutScene extends LitElement {
 
     @media (min-width: 1728px) {
       .letter-grid {
-        top: 18rem;
+        top: 16rem;
         row-gap: 5rem;
       }
       .letter-grid > div {

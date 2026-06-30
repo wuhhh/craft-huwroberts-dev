@@ -40,7 +40,7 @@ export class AboutSceneDecor extends LitElement {
       display: hidden;
       position: absolute;
       left: 20%;
-      top: 45%;
+      top: 50%;
       width: 1rem;
       height: 1rem;
     }
