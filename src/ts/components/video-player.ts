@@ -487,9 +487,9 @@ export class VideoPlayer extends LitElement {
   private onPosterClick = () => {
     this.showVideo = true;
     this.play();
-    (
-      this.renderRoot.querySelector(".play-pause") as HTMLButtonElement | null
-    )?.focus();
+    // (
+    //   this.renderRoot.querySelector(".play-pause") as HTMLButtonElement | null
+    // )?.focus();
   };
 
   private onSeekMouseLeave = () => {
