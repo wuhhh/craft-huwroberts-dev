@@ -88,10 +88,13 @@
 
         {# tags #}
         {% if techTags %}
-          <div aria-label="Tech tags" class="hidden sm:flex flex-wrap gap-x-4 gap-y-2">
-            {% for techTag in techTags %}
-              <span class="inline-block xs-mono sm-down:text-[10px] text-zinc-500">{{ techTag }}</span>
-            {% endfor %}
+          <div class="hidden sm:flex flex-wrap gap-x-4 gap-y-2">
+            <h3 id="tech-tags-label" class="sr-only">Technologies used</h3>
+            <ul aria-labelledby="tech-tags-label" class="flex flex-wrap gap-x-4 gap-y-2 list-none p-0 m-0">
+              {% for techTag in techTags %}
+              <li class="inline-block xs-mono text-zinc-500">{{ techTag }}</li>
+              {% endfor %}
+            </ul>
           </div>
         {% endif %}
 
