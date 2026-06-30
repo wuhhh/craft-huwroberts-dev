@@ -42,7 +42,7 @@
   {% set techTags = entry.techTags.all() ?? [] %}
 
   <div class="col-span-full grid grid-cols-subgrid">
-    <div class="col-span-full pt-20 sm:pt-30 sm:px-4 lg:px-0 lg:col-start-2 lg:col-span-10 2xl:col-start-2 2xl:col-span-9">
+    <div class="col-span-full pt-33 sm:pt-30 sm:px-4 lg:px-0 lg:col-start-2 lg:col-span-10 2xl:col-start-2 2xl:col-span-9">
 
       {% include "_includes/breadcrumb" with {
         classes: "mb-8 sm:mb-12 2xl:mb-20",
@@ -66,8 +66,8 @@
       <div class="space-y-5 sm:space-y-8">
 
         {# title and live link #}
-        <div class="flex items-center justify-between flex-wrap gap-x-8 gap-y-4">
-          <h1 class="heading1 font-medium">{{ entry.title }}</h1>
+        <div class="flex items-end justify-between flex-wrap gap-x-8 gap-y-4">
+          <h1 class="leading-none! heading2 sm:heading1 font-medium">{{ entry.title }}</h1>
 
           {% if liveUrl %}
             {% include "_includes/liveLink.twig" with {
@@ -88,7 +88,7 @@
 
         {# tags #}
         {% if techTags %}
-          <div class="flex flex-wrap gap-x-3 gap-y-1 sm:gap-x-4 sm:gap-y-2">
+          <div class="hidden sm:flex flex-wrap gap-x-3 gap-y-1 sm:gap-x-4 sm:gap-y-2">
             {% for techTag in techTags %}
               <span class="inline-block xs-mono sm-down:text-[10px] text-zinc-500">{{ techTag }}</span>
             {% endfor %}

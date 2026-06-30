@@ -68,11 +68,9 @@ export class VideoPlayer extends LitElement {
 
     .backdrop {
       aspect-ratio: 1160 / 680;
-      border-radius: var(--radius-2xl, 0.25rem);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: var(--shadow-sm);
     }
 
     @media (max-width: 819px) {
@@ -92,15 +90,18 @@ export class VideoPlayer extends LitElement {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      border-radius: var(--radius-2xl, 0.25rem);
+      border-radius: var(--radius-lg, 0.5rem);
     }
 
     @media (min-width: 820px) {
+      .backdrop {
+        border-radius: var(--radius-2xl, 1rem);
+      }
+
       .boxed.frame {
         aspect-ratio: 960 / 576;
         height: auto;
         max-width: clamp(414px, 960px, 83%);
-        border-radius: var(--radius-lg, 0.25rem);
       }
     }
 

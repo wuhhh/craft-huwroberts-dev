@@ -27,7 +27,7 @@
   font-size: 1.625rem;
   line-height: 1.26;
 
-  @media (min-width: 834px) {
+  @media (min-width: 640px) {
     font-size: 2.8125rem;
   }
 
@@ -117,7 +117,7 @@
 }
 
 .rich-text.-simple {
-  font-size: var(--text-sm, 0.75rem);
+  font-size: 0.9375rem;
   line-height: 1.53;
 
   @media (min-width: 640px) {
@@ -145,7 +145,7 @@
 }
 
 .rich-text.-post {
-  font-size: var(--text-sm, 0.75rem);
+  font-size: 0.9375rem;
   line-height: 1.53;
 
   @media (min-width: 640px) {
