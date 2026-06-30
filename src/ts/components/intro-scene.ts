@@ -122,7 +122,7 @@ export class IntroScene extends LitElement {
       const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath("/dist/draco/");
       loader.setDRACOLoader(dracoLoader);
-      const gltf = await loader.loadAsync("/dist/models/hrdev2.glb");
+      const gltf = await loader.loadAsync("/dist/models/hrdev.glb");
 
       const modelMap = new Map(
         gltf.scene.children.map((child) => [child.name, child]),

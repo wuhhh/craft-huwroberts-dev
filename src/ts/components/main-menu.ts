@@ -233,7 +233,12 @@ export class MainMenu extends LitElement {
           <a href="/work" style="transition-delay: 30ms">Portfolio</a>
           <a href="/about" style="transition-delay: 60ms">About</a>
           <!-- <a href="/journal" style="transition-delay: 90ms">Journal</a> -->
-          <a href="#contact" style="transition-delay: 90ms">Contact</a>
+          <a
+            @click=${this.closeMenu}
+            href="#contact"
+            style="transition-delay: 90ms"
+            >Contact</a
+          >
         </nav>
         <!-- mobile menu close -->
         <button class="close" @click=${this.closeMenu}>

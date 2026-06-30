@@ -7,5 +7,8 @@ import "./lib/stable-viewport";
 // Highlight <pre><code> blocks in rich text content
 import "./lib/highlight";
 
+// Lenis
+import "./lib/lenis.ts";
+
 // Import Lit components
 import.meta.glob("./components/**/*.ts", { eager: true });

@@ -403,7 +403,7 @@ export class VideoPlayer extends LitElement {
   }
 
   private get videoUrl(): string | undefined {
-    return this.entry?.video?.[0]?.url;
+    return this.entry?.video?.[0]?.url + "#t=0.1"; // Set t to force Safari iOS to show the first frame
   }
 
   private get posterImage(): ImageAsset | undefined {

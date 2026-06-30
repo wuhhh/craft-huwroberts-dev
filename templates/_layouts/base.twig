@@ -29,7 +29,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <meta name="msapplication-TileColor" content="#603cba">
     <meta name="theme-color" content="#ffffff">
-    {% hook 'seomateMeta' %}
     {% if craft.app.config.custom.trackingEnabled == 1 %}
       <script defer data-domain="huwroberts.dev" src="https://analytics.thenumberstation.net/js/script.hash.outbound-links.pageview-props.tagged-events.js"></script>
       <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
@@ -45,9 +44,6 @@
     {% include "_includes/scripts.twig" %}
   </head>
 
-  {% set lang = currentSite.language %}
-  {% set langAlt = lang == "en-GB" ? "cy-GB" : "en-GB" %}
-
   {% block bodyTag %}
     <body class="relative flex flex-col min-h-screenh antialiased bg-zinc-50 scroll-smooth">
       <a class="skip-link" href="#main" tabindex="1">{{ "Skip to content"|t }}</a>
@@ -56,6 +52,5 @@
     {% block base %}{% endblock %}
 
     <div data-noise class="fixed inset-0 pointer-events-none bg-[url(/dist/images/bg--noise-texture@2x.png)] bg-size-[50px_50px] bg-fixed z-50"></div>
-    <div data-translations="cy-GB" data-translations-encoded="{{ craft.app.config.custom.translations.cy|json_encode }}"></div>
   </body>
 </html>
