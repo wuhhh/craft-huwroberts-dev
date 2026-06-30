@@ -98,6 +98,28 @@ export class MainMenu extends LitElement {
       margin-top: 4.5rem;
     }
 
+    .overlay {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(0.125rem);
+      opacity: 0;
+      transition: opacity 325ms ease;
+      pointer-events: none;
+    }
+
+    @media (min-width: 640px) {
+      .overlay {
+        display: none;
+      }
+    }
+
+    #menu.open .overlay {
+      opacity: 1;
+      pointer-events: auto; // we want pointer events here to prevent clicks on main content
+    }
+
     #menu.open nav {
       opacity: 1;
       transform: translateX(0);
@@ -203,6 +225,8 @@ export class MainMenu extends LitElement {
             <span></span>
           </span>
         </button>
+        <!-- overlay (shows left of nav drawer on mobile to slightly obscure main content) -->
+        <div @click=${this.closeMenu} class="overlay"></div>
         <!-- nav -->
         <nav ?inert=${!this.open} aria-label="Main">
           <a href="/">Home</a>
