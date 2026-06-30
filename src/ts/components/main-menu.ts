@@ -241,7 +241,7 @@ export class MainMenu extends LitElement {
           >
         </nav>
         <!-- mobile menu close -->
-        <button class="close" @click=${this.closeMenu}>
+        <button aria-label="Close menu" class="close" @click=${this.closeMenu}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="17"
