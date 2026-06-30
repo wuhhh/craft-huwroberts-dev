@@ -101,14 +101,14 @@
 
             {% set caption = featureVideo.videoCaption.text ?? null %}
 
-            <div class="space-y-2">
+            <div class="space-y-3">
               {% include "_includes/featureVideo.twig" with {
                 featureVideo: featureVideo,
                 title: entry.title,
               } only %}
 
               {% if caption %}
-                <div class="text-xs ml-1 xl:text-sm text-zinc-400">{{ caption }}</div>
+                <div class="text-xs ml-1 xl:text-sm text-zinc-500">{{ caption }}</div>
               {% endif %}
             </div>
 
@@ -116,14 +116,14 @@
 
             {% set caption = featureImage.text ?? null %}
 
-            <div class="space-y-2">
+            <div class="space-y-3">
               {% include "_includes/featureImage.twig" with {
                 featureImage: featureImage,
                 title: entry.title,
               } only %}
 
               {% if caption %}
-                <div class="text-xs ml-1 xl:text-sm text-zinc-400">{{ caption }}</div>
+                <div class="text-xs ml-1 xl:text-sm text-zinc-500">{{ caption }}</div>
               {% endif %}
             </div>
 
