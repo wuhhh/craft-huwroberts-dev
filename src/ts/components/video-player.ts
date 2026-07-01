@@ -403,6 +403,7 @@ export class VideoPlayer extends LitElement {
   }
 
   private get videoUrl(): string | undefined {
+    //FIX: This should only be considered a temporary fix
     return this.entry?.video?.[0]?.url + "#t=0.1"; // Set t to force Safari iOS to show the first frame
   }
 
