@@ -1,0 +1,10 @@
+{% extends "_layouts/default" %}
+
+{# Layout for pages that render a Three.js scene. Mounts the shared
+   <scene-canvas> that all scene hosts (intro-scene, about-scene) draw into.
+   Pages without a scene extend _layouts/default directly and skip the
+   renderer entirely (no WebGPU init, no rAF loop). #}
+
+{% block scene_canvas %}
+  <scene-canvas class="sm-down:w-screen sm-down:-ml-6"></scene-canvas>
+{% endblock %}

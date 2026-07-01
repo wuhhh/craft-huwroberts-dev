@@ -15,7 +15,7 @@
 
     <div id="main" class="relative h-screen grow">
 
-      <scene-canvas class="sm-down:w-screen sm-down:-ml-6"></scene-canvas>
+      {% block scene_canvas %}{% endblock %}
 
       <div class="absolute top-0 w-full grid grid-cols-12 lg:gap-x-10">
         {% block content %}{% endblock %}
