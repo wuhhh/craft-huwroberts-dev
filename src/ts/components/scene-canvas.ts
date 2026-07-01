@@ -22,6 +22,16 @@ export class SceneCanvas extends LitElement {
   // hold scenes after setup()
   private scenes: SceneEntry[] = [];
 
+  // Loop pausing
+  private io?: IntersectionObserver;
+  private visibleHosts = new Set<HTMLElement>();
+  private running = false;
+
+  // Accumulated paused duration, subtracted from elapsed/delta so animations
+  // don't jump after a pause/resume.
+  private pausedAccumMs = 0;
+  private pauseStartedAt = 0;
+
   static styles?: CSSResultGroup | undefined = css`
     :host {
       display: block;
@@ -61,7 +71,8 @@ export class SceneCanvas extends LitElement {
    */
   private updateTime() {
     if (!this.startTime) this.startTime = Date.now();
-    const _elapsed = (Date.now() - this.startTime) / 1000;
+    const now = Date.now();
+    const _elapsed = (now - this.startTime - this.pausedAccumMs) / 1000;
     this.delta = _elapsed - this.elapsed;
     this.elapsed = _elapsed;
   }
@@ -71,6 +82,13 @@ export class SceneCanvas extends LitElement {
    */
   private async setupScenes() {
     sceneRegistry.entries.forEach(async (entry) => {
+      // Observe the host up front: it exists in the DOM now, even though its
+      // async setup (GLTF + Draco load) hasn't finished. Seeding visibility
+      // here also starts the loop immediately for an on-screen hero.
+      if (this.isHostVisible(entry.host)) this.visibleHosts.add(entry.host);
+      this.io?.observe(entry.host);
+      this.updateLoopState();
+
       // here we can inject context we want available to setupFn in scene components
       // passing back host which will now be mounted
       const { scene, camera } = await entry.setupFn({ host: entry.host });
@@ -164,9 +182,63 @@ export class SceneCanvas extends LitElement {
 
     this.renderer.setPixelRatio(this.pixelRatio);
 
-    this.setupScenes().then(() => {
-      this.renderer.setAnimationLoop(this.frame);
+    this.setupVisibilityControls();
+    this.setupScenes();
+  }
+
+  /**
+   * Sets up the IntersectionObserver (on scene hosts) and a visibilitychange
+   * listener so the loop also pauses when the tab is hidden.
+   */
+  private setupVisibilityControls() {
+    this.io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) this.visibleHosts.add(e.target as HTMLElement);
+        else this.visibleHosts.delete(e.target as HTMLElement);
+      }
+      this.updateLoopState();
     });
+    document.addEventListener("visibilitychange", this.onVisibilityChange);
+  }
+
+  private onVisibilityChange = () => this.updateLoopState();
+
+  /**
+   * Synchronous viewport check used to seed visibility before the first
+   * IntersectionObserver callback fires (so an on-screen hero starts
+   * immediately rather than waiting a frame).
+   */
+  private isHostVisible(host: HTMLElement): boolean {
+    const rect = host.getBoundingClientRect();
+    return rect.bottom > 0 && rect.top < window.innerHeight;
+  }
+
+  /**
+   * Starts or stops the animation loop based on whether any scene host is
+   * visible and the tab is focused. Pausing folds the idle interval into
+   * pausedAccumMs so elapsed/delta stay continuous on resume.
+   */
+  private updateLoopState() {
+    const shouldRun = this.visibleHosts.size > 0 && !document.hidden;
+    if (shouldRun && !this.running) {
+      if (this.pauseStartedAt) {
+        this.pausedAccumMs += Date.now() - this.pauseStartedAt;
+        this.pauseStartedAt = 0;
+      }
+      this.running = true;
+      this.renderer.setAnimationLoop(this.frame);
+    } else if (!shouldRun && this.running) {
+      this.running = false;
+      this.pauseStartedAt = Date.now();
+      this.renderer.setAnimationLoop(null);
+    }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.io?.disconnect();
+    document.removeEventListener("visibilitychange", this.onVisibilityChange);
+    this.renderer?.setAnimationLoop(null);
   }
 
   render() {
