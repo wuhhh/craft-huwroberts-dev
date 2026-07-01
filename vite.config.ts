@@ -19,6 +19,13 @@ export default defineConfig(({ command }) => ({
       input: {
         app: path.resolve(__dirname, "src/ts/app.ts"),
       },
+      output: {
+        // Split three.js (core + TSL + examples/jsm addons: GLTFLoader,
+        // DRACOLoader, etc.) into its own chunk
+        manualChunks(id) {
+          if (id.includes("node_modules/three")) return "three";
+        },
+      },
     },
     sourcemap: true,
   },
@@ -69,7 +76,7 @@ export default defineConfig(({ command }) => ({
     },
     allowedHosts: [".ddev.site"],
     cors: {
-      origin: /https?:\/\/([A-Za-z0-9\-\.]+)?(\.ddev\.site)(?::\d+)?$/,
+      origin: /https?:\/\/([A-Za-z0-9\-.]+)?(\.ddev\.site)(?::\d+)?$/,
     },
   },
 }));
