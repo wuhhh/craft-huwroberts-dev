@@ -126,6 +126,10 @@ settings:
     - italic
     - link
     - '|'
+    - bulletedList
+    - numberedList
+    - '|'
+    - insertTable
     - code
     - codeBlock
     - outdent

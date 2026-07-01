@@ -42,6 +42,10 @@ settings:
     - italic
     - link
     - '|'
+    - insertImage
+    - bulletedList
+    - numberedList
+    - '|'
     - code
     - codeBlock
     - outdent
