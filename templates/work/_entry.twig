@@ -34,6 +34,8 @@
 
 {% block content %}
 
+  {% include "_includes/decor/decorCellGrid.twig" only %}
+
   {% set featureVideo = entry.featureVideo ?? null %}
   {% set featureImage = entry.imageCaption ?? null %}
   {% set summary = entry.summaryShort ?? null %}
@@ -41,7 +43,7 @@
   {% set richTextPost = entry.richTextPost ?? null %}
   {% set techTags = entry.techTags.all() ?? [] %}
 
-  <div class="col-span-full grid grid-cols-subgrid">
+    <div class="col-span-full grid grid-cols-subgrid">
     <div class="col-span-full pt-33 sm:pt-30 sm:px-4 lg:px-0 lg:col-start-2 lg:col-span-10 2xl:col-start-2 2xl:col-span-9">
 
       {% include "_includes/breadcrumb" with {
