@@ -3,6 +3,7 @@
 {% block content %}
 
   {% set shortBio = entry.richTextSimple ?? null %}
+  {% set bioSections = entry.bioSections.all() ?? [] %}
   {% set tech = entry.tech ?? null %}
   {% set frequentItems = collect(tech).pluck("frequent") %}
   {% set occasionalItems = collect(tech).pluck("occasional") %}
@@ -37,14 +38,38 @@
           <div class="space-y-12" data-cursor-layer="top">
             <div id="scene-image-ref" class="relative overflow-hidden w-full aspect-9/8 md:aspect-70/58"></div>
 
+            <h1 class="sr-only">About Huw Roberts</h1>
+
             {% if shortBio %}
-              <div class="rich-text -simple prose text-sm w-full max-w-162 px-8 pt-10 sm:pt-6 md:px-0 md:pt-0 md:text-base 2xl:text-lg 3xl:text-xl">
+              <h2 class="rich-text -simple font-normal pt-10 sm:pt-6 md:pt-0 3xl:text-[22px]!">
                 {{ shortBio }}
+              </h2>
+            {% endif %}
+
+            {% if bioSections %}
+
+              <div class="space-y-6">
+
+                {% for bioSection in bioSections %}
+
+                  {% set title = bioSection.title %}
+                  {% set bio = bioSection.richTextSimple %}
+
+                  <div class="{{ not loop.first ? "pt-3" : "" }}">
+                    <h3 class="xs-mono-capped uppercase">{{ title }}</h3>
+                    <div aria-hidden class="xs-mono-capped uppercase">{% for c in title|split("") %}+{% endfor %}</div>
+                  </div>
+                  <div class="rich-text -simple">
+                    {{ bio }}
+                  </div>
+
+                {% endfor %}
               </div>
             {% endif %}
           </div>
 
-          <div class="pointer-events-none md:absolute inset-0 translate-y-9.5 font-mono text-xs leading-3.5 uppercase px-8 pt-10 md:px-0 md:pt-0">
+          {# tech #}
+          <div class="pointer-events-none md:absolute inset-0 translate-y-9.5 font-mono text-xs leading-3.5 uppercase pt-10 md:pt-0">
             <div class="relative md:grid grid-cols-12 gap-x-10">
               <div class="col-start-9 xl:col-start-10">
                 <div class="flex gap-x-4 lg:gap-x-10">
@@ -75,15 +100,11 @@
                   {% endif %}
                 </div>
               </div>
-
             </div>
-          </div>
+          </div> {# /tech #}
+
         </div>
       </div>
-
-      {# three scene here #}
-      {# ... #}
-
     </div>
   </div>
 
