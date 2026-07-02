@@ -6,6 +6,7 @@
     -moz-osx-font-smoothing: grayscale;
     font-size: 1.125rem;
     line-height: 1.35;
+    color: black;
 
     @media (min-width: 834px) {
       font-size: 1.25rem;
@@ -144,6 +145,17 @@
   }
 }
 
+.rich-text {
+  /* Paragraphs */
+  p {
+    margin-bottom: 1.5em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .rich-text.-post {
   font-size: 0.9375rem;
   line-height: 1.53;
@@ -156,15 +168,6 @@
 
   @media (min-width: 1536px) {
     font-size: var(--text-lg, 1.125rem);
-  }
-
-  /* Paragraphs */
-  p {
-    margin-bottom: 1.5em;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
   }
 
   /* Headings */
