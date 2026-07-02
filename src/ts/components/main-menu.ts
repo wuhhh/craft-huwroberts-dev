@@ -24,6 +24,13 @@ export class MainMenu extends LitElement {
       display: block;
       margin-inline: auto;
       position: relative;
+      transform: translateX(0.75rem);
+    }
+
+    @media (min-width: 640px) {
+      button.toggle {
+        transform: none;
+      }
     }
 
     button.toggle > span {
