@@ -527,16 +527,15 @@ export class aboutScene extends LitElement {
           // load colour (sRGB) + depth (linear) textures
           const textureLoader = new THREE.TextureLoader();
           const [colorTexture, depthTexture] = await Promise.all([
-            textureLoader.loadAsync("/dist/textures/huw-and-his-dog@2x.webp"),
+            textureLoader.loadAsync("/dist/textures/huw-and-his-dog@2x.jpg"),
             textureLoader.loadAsync(
-              "/dist/textures/huw-and-his-dog-depth@2x.webp",
+              "/dist/textures/huw-and-his-dog-depth@2x.jpg",
             ),
           ]);
           colorTexture.colorSpace = THREE.SRGBColorSpace;
 
           // aspect from the refImage's laid-out rect (RT/camera match it)
           const rect = refImage.getBoundingClientRect();
-          console.log(rect);
 
           const rtAspect =
             rect.width && rect.height ? rect.width / rect.height : 1;

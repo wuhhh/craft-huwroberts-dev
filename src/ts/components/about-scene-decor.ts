@@ -13,7 +13,7 @@ export class AboutSceneDecor extends LitElement {
     decor-diamond:nth-child(1) {
       position: absolute;
       left: 80%;
-      top: 15%;
+      top: 6rem;
       width: 1rem;
       height: 1rem;
     }
@@ -22,7 +22,7 @@ export class AboutSceneDecor extends LitElement {
       display: none;
       position: absolute;
       left: 5%;
-      top: 50%;
+      top: 64rem;
       width: 1.5rem;
       height: 1.5rem;
     }
@@ -31,7 +31,7 @@ export class AboutSceneDecor extends LitElement {
       display: none;
       position: absolute;
       left: 85%;
-      top: 40%;
+      top: 36rem;
       width: 1.5rem;
       height: 1.5rem;
     }
@@ -40,7 +40,7 @@ export class AboutSceneDecor extends LitElement {
       display: hidden;
       position: absolute;
       left: 20%;
-      top: 50%;
+      top: 34rem;
       width: 1rem;
       height: 1rem;
     }
@@ -49,7 +49,7 @@ export class AboutSceneDecor extends LitElement {
       display: none;
       position: absolute;
       left: 24%;
-      top: 33%;
+      top: 34rem;
       width: 4rem;
       height: 4rem;
       filter: blur(0.5rem);
@@ -58,7 +58,7 @@ export class AboutSceneDecor extends LitElement {
     @media (min-width: 640px) {
       decor-diamond:nth-child(1) {
         left: 55%;
-        top: 10%;
+        top: 6rem;
         width: 1.125rem;
         height: 1.125rem;
       }
@@ -75,7 +75,7 @@ export class AboutSceneDecor extends LitElement {
     @media (min-width: 820px) {
       decor-diamond:nth-child(4) {
         left: 7.5%;
-        top: 70%;
+        top: 40rem;
       }
     }
 
@@ -88,7 +88,7 @@ export class AboutSceneDecor extends LitElement {
       decor-diamond:nth-child(2) {
         display: block;
         left: 20%;
-        top: 85%;
+        top: 64rem;
       }
 
       decor-diamond:nth-child(5) {
