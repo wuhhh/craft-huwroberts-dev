@@ -1,7 +1,6 @@
 import * as THREE from "three/webgpu";
 import {
   float,
-  mix,
   positionLocal,
   texture,
   uniform,
@@ -70,10 +69,7 @@ export function createSpatialImage(
   const { colorTexture, depthTexture, aspect } = options;
 
   // --- render target -------------------------------------------------------
-  const rt = new THREE.RenderTarget(
-    RT_SIZE,
-    Math.round(RT_SIZE / aspect),
-  );
+  const rt = new THREE.RenderTarget(RT_SIZE, Math.round(RT_SIZE / aspect));
 
   // --- offscreen scene + camera -------------------------------------------
   const offScene = new THREE.Scene();
@@ -108,8 +104,7 @@ export function createSpatialImage(
   mat.positionNode = positionLocal.add(vec3(0, 0, displacement));
 
   const imgColor = texture(colorTexture, coverUv);
-  const overlay = vec3(0xf7 / 255, 0xf7 / 255, 0xf7 / 255);
-  mat.colorNode = mix(imgColor, overlay, 0.5);
+  mat.colorNode = imgColor;
 
   // --- mesh (oversized so tilted edges stay off-screen) --------------------
   const geo = new THREE.PlaneGeometry(
