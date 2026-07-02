@@ -53,6 +53,22 @@ fieldLayouts:
             warning: null
             width: 100
           -
+            dateAdded: '2026-07-02T18:19:39+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 92f2ad43-f173-454f-92a5-a93e7094cc7b # Bio Sections
+            handle: null
+            instructions: null
+            label: 'Full Bio'
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 8f0b1747-01ca-4fb0-a0e7-22316e7f34a3
+            userCondition: null
+            warning: null
+            width: 100
+          -
             dateAdded: '2026-06-25T08:39:22+00:00'
             editCondition: null
             elementCondition: null

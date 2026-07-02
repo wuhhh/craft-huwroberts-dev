@@ -4,7 +4,8 @@ instructions: null
 name: 'Rich Text Simple'
 searchable: false
 settings:
-  advancedLinkFields: null
+  advancedLinkFields:
+    - target
   availableTransforms: ''
   availableVolumes: '*'
   characterLimit: null
@@ -32,7 +33,7 @@ settings:
   purifyHtml: true
   showUnpermittedFiles: false
   showUnpermittedVolumes: false
-  showWordCount: false
+  showWordCount: true
   sourceEditingGroups:
     - __ADMINS__
   toolbar:

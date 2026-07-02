@@ -1,4 +1,4 @@
-dateModified: 1782901690
+dateModified: 1783016379
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -15,6 +15,7 @@ meta:
   __names__:
     0c6d4176-996d-4614-bdff-a2d9abe117cc: 'Work (Index)' # Work (Index)
     0c63feb6-fcfa-46d6-befd-8445e10a9e7a: 'Image & Caption' # Image & Caption
+    2f8ab51a-6475-423d-a4d4-81ae028ad2dd: '🔹 Bio Section' # 🔹 Bio Section
     3d16384e-bfc8-430d-b07b-70b0014c7d93: Icon # Icon
     4e5f4410-fe03-41d3-a103-8619a3dee7de: 'Live URL' # Live URL
     4fb7eacc-a8a0-4a3a-8659-9d29b1f619e5: Tech # Tech
@@ -37,6 +38,7 @@ meta:
     68c90757-4b39-4910-94b6-94eb4f0a370b: 'Rich Text Simple' # Rich Text Simple
     87a940b2-87cc-4846-b166-bfb9b6d845ae: Toggle # Toggle
     87d208be-b37d-4f86-83c2-b793301c8d43: Globals # Globals
+    92f2ad43-f173-454f-92a5-a93e7094cc7b: 'Bio Sections' # Bio Sections
     279cfc2e-8324-4a53-aa20-56b80bfebaa7: 'Work Type' # Work Type
     485a1249-2b8a-4895-b4f1-2d9de2650d6a: 'Video Mode' # Video Mode
     710f67ff-c1cc-40b2-be88-ecdd28c20a5b: 'Work Entries' # Work Entries
@@ -46,7 +48,6 @@ meta:
     4824e26e-358e-48a3-8ff0-7e2517806ba0: 'Footer Words' # Footer Words
     26815ef3-9cba-4a58-b54c-135487262816: 'Video & Caption' # Video & Caption
     80763c4f-603e-4f78-8e46-e05e80044efe: 'Huw Roberts' # Huw Roberts
-    98303f8e-dbcf-40b8-9c2b-cd5955798bd5: 'Site Name' # Site Name
     99701ea9-a4da-4fb6-b997-541f0661f9a9: Agency # Agency
     2462263f-d971-4727-b2d2-8cbf1aa3bf8f: SEO # SEO
     98337978-21e0-4fe0-baf9-f1eb86492071: '🔹 Video & Caption' # 🔹 Video & Caption
