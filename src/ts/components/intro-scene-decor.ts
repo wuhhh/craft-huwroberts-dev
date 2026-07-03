@@ -42,6 +42,15 @@ export class IntroSceneDecor extends LitElement {
       height: 1.125rem;
     }
 
+    decor-star {
+      position: absolute;
+      left: 89%;
+      top: 43%;
+      width: 2rem;
+      height: 2rem;
+      color: var(--color-seabed-indigo);
+    }
+
     @container (orientation: portrait) {
       decor-diamond:nth-child(2),
       decor-diamond:nth-child(3) {
@@ -61,15 +70,28 @@ export class IntroSceneDecor extends LitElement {
         width: 1rem;
         height: 1rem;
       }
+
+      decor-star {
+        left: 36%;
+        top: 15%;
+      }
+    }
+
+    @media (min-width: 1728px) {
+      decor-star {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
     }
   `;
 
   render() {
     return html`
-      <decor-diamond color="indigo" decorStyle="fill"></decor-diamond>
+      <decor-diamond color="coral" decorStyle="fill"></decor-diamond>
       <decor-diamond color="indigo" decorStyle="outline"></decor-diamond>
       <decor-diamond color="coral" decorStyle="outline"></decor-diamond>
-      <decor-diamond color="coral" decorStyle="fill"></decor-diamond>
+      <decor-diamond color="indigo" decorStyle="fill"></decor-diamond>
+      <decor-star color="coral" decorStyle="fill" ?spin=${true}></decor-star>
     `;
   }
 }
