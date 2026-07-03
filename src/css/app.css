@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@import "tw-fade";
 @import "@css/common.css";
 @import "@css/fonts.css";
 @import "@css/vars.css";

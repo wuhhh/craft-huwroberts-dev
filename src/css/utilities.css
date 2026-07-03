@@ -31,3 +31,12 @@
 @utility min-h-screenh {
   min-height: 100dvh;
 }
+
+@utility no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-x: hidden;
+  scrollbar-width: none;
+}

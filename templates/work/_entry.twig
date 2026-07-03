@@ -83,18 +83,19 @@
           <div class="rich-text -simple font-normal xl:max-w-[calc(100%-371px)]">
             {{ summary }}
 
-            {# pull content below up - accounts for lineheight on summary #}
-            <div class="sm:-mb-2"></div>
+            <div class="-mb-2"></div>
           </div>
         {% endif %}
 
         {# tags #}
         {% if techTags %}
-          <div class="hidden sm:flex flex-wrap gap-x-4 gap-y-2">
-            <h3 id="tech-tags-label" class="sr-only">Technologies used</h3>
-            <ul aria-labelledby="tech-tags-label" class="flex flex-wrap gap-x-4 gap-y-2 list-none p-0 m-0">
+          <div class="flex overflow-x-scroll no-scrollbar fade-end gap-x-4 gap-y-2 xs-mono text-zinc-500">
+            <h3 id="tech-tags-label" class="flex items-center shrink-0 gap-x-0.5">
+              {{ svg("@webroot/dist/images/icon--hash.svg", true, true)|attr({ class: "shrink-0" }) }} <span class="shrink-0">Tags:</span>
+            </h3>
+            <ul aria-labelledby="tech-tags-label" class="flex gap-x-4 gap-y-2 list-none p-0 m-0">
               {% for techTag in techTags %}
-              <li class="inline-block xs-mono text-zinc-500">{{ techTag }}</li>
+              <li class="shrink-0 inline-block">{{ techTag }}</li>
               {% endfor %}
             </ul>
           </div>
