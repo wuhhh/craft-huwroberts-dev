@@ -12,12 +12,18 @@
 
 <footer id="contact" class="min-h-screenh col-span-full relative">
   <div class="absolute inset-0 flex items-center justify-center">
-    <a
-      class="font-bold heading5 decoration-from-font decoration-coral-red hover:underline sm:heading3 2xl:heading1"
-      href="mailto:huw@huwroberts.dev"
+    <copy-clip
+      value="huw@huwroberts.dev"
+      tip=""
+      copied-tip=""
+      class="relative"
     >
-      huw@huwroberts.dev
-    </a>
+      <span class="font-bold heading5 decoration-from-font decoration-coral-red hover:underline sm:heading3 2xl:heading1">
+        huw@huwroberts.dev
+      </span>
+      <span slot="tip" class="absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 md:left-full md:top-1/2 md:translate-x-0 md:-translate-y-1/2 md:ml-3 md:mt-1">{{ svg('@webroot/dist/images/icon--copy.svg', true, true)|attr({ class: 'size-6 lg:size-8' }) }}</span>
+      <span slot="copied" class="absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 md:left-full md:top-1/2 md:translate-x-0 md:-translate-y-1/2 md:ml-3 md:mt-1">{{ svg('@webroot/dist/images/icon--check.svg', true, true)|attr({ class: 'size-6 lg:size-8' }) }}</span>
+    </copy-clip>
   </div>
   <div class="absolute bottom-8 inset-x-0 flex flex-col-reverse items-center gap-y-4 sm:contents">
     <div class="sm:absolute inset-x-0 bottom-8 flex justify-center">
