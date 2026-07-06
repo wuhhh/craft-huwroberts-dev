@@ -2,7 +2,7 @@
 
 This is the open source repository for my website at [huwroberts.dev](https://huwroberts.dev). This is probably only of interest to you if you're considering hiring me, having said that, you might find something useful here if you're building something similar and you enjoy working with things like [Craft CMS](https://craftcms.com), [Tailwind](https://tailwindcss.com/), [Lit](https://lit.dev/) and [Three.js](https://threejs.org).
 
-![huwroberts.dev screen shot](https://huwroberts.dev/volumes/local/assets/images/general/huwroberts-dev-screenshot.png)
+![huwroberts.dev screen shot](https://huwroberts.dev/volumes/local/assets/images/general/huwroberts-dev-screenshot-26.png)
 
 ## Authors
 
