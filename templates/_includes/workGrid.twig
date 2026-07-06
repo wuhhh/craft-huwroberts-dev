@@ -31,7 +31,7 @@
       <div class="relative group col-span-full space-y-4 w-full max-w-120 lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
 
         {% if image %}
-          <div class="relative aspect-480/288 lg:border-x border-[#f0edea] {# shadow-sm group-hover:shadow-none #} transition-all duration-200">
+          <div class="relative aspect-480/288 lg:border-x border-smoke {# shadow-sm group-hover:shadow-none #} transition-all duration-200">
             {{ image.getImg(
               { width: 480, height: 288, format: "avif", mode: "crop" },
               ["480w", "960w", "1440w"]

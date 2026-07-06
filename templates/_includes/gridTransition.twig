@@ -1,0 +1,209 @@
+{# == Reveal strips == #}
+{% set variant = variant ?? "full" %}
+
+<div class="grid-transition">
+  <div class="grid-transition--container">
+
+    {# space for obi #}
+    <div class="grid-transition--obi-spacer"></div>
+
+    {# grid #}
+    <div class="grid-transition--grid">
+      <div class="grid-transition--grid--a grid-transition-animation-out"></div>
+      <div class="grid-transition--grid--b grid-transition-animation-out"></div>
+      <div class="grid-transition--grid--c grid-transition-animation-out"></div>
+
+      <div class="grid-transition--grid--fill-l grid-transition-animation-out"></div>
+      <div class="grid-transition--grid--fill-r grid-transition-animation-out"></div>
+    </div>
+
+  </div>
+</div>
+
+<style type="text/css">
+  /* critical */
+  @keyframes grid-transition {
+    to {
+      transform: scaleY(0);
+    }
+
+    from {
+      transform: scaleY(1);
+    }
+  }
+
+  .grid-transition {
+    --initial-delay: 500ms;
+    --stagger-delay: 75ms;
+  }
+
+  .grid-transition-animation-out {
+    transform-origin: bottom;
+    animation: grid-transition 750ms ease-out forwards;
+  }
+
+  .grid-transition {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  .grid-transition--container {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 1.5rem /* 24px */;
+    max-width: 108rem /* 1728px */;
+
+    display: flex;
+    column-gap: 2.5rem;
+  }
+
+  .grid-transition--obi-spacer {
+    width: 5.25rem;
+  }
+
+  .grid-transition--grid {
+    display: none;
+    position: relative;
+    flex-grow: 1;
+    height: 100vh;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .grid-transition--grid--a {
+    /* background: pink; */
+    animation-delay: calc(var(--initial-delay) + var(--stagger-delay));
+  }
+
+  .grid-transition--grid--b {
+    /* background: blue; */
+    animation-delay: calc(var(--initial-delay) + (var(--stagger-delay) * 2));
+  }
+
+  .grid-transition--grid--c {
+    /* background: green; */
+    animation-delay: calc(var(--initial-delay) + (var(--stagger-delay) * 3));
+  }
+
+  .grid-transition--grid--fill-l {
+    animation-delay: var(--initial-delay);
+  }
+
+  .grid-transition--grid--fill-r {
+    animation-delay: calc(var(--initial-delay) + (var(--stagger-delay) * 4));
+  }
+
+  .grid-transition--grid--a,
+  .grid-transition--grid--b,
+  .grid-transition--grid--c,
+  .grid-transition--grid--fill-l,
+  .grid-transition--grid--fill-r {
+    background: #f36855;
+    position: relative;
+  }
+
+  .grid-transition--grid--b,
+  .grid-transition--grid--c {
+    display: hidden;
+  }
+
+  .grid-transition--grid--a {
+    grid-column: 1 / -1;
+  }
+
+  .grid-transition--grid--b {
+    display: none;
+    grid-column: span 4 / span 4;
+    margin-right: calc(-2.5rem - 1px);
+  }
+
+  .grid-transition--grid--c {
+    display: none;
+    grid-column: span 6 / span 6;
+  }
+
+  .grid-transition--grid--fill-l,
+  .grid-transition--grid--fill-r {
+    position: absolute;
+    inset-block: 0;
+    width: 100vw;
+  }
+
+  .grid-transition--grid--fill-l {
+    right: 100%;
+  }
+  .grid-transition--grid--fill-r {
+
+    left: 100%;
+  }
+
+  @media (width >= 40rem /* 640px */) {
+    .grid-transition--container {
+      max-width: 40rem /* 640px */;
+      padding-inline: 1.625rem /* 26px */;
+    }
+
+    .grid-transition--grid {
+      display: grid;
+    }
+  }
+
+  @media (width >= 51.25rem /* 820px */) {
+    .grid-transition--container {
+      max-width: 51.25rem /* 820px */;
+      padding-inline: 2rem /* 32px */;
+    }
+  }
+
+  @media (width >= 64rem /* 1024px */) {
+    .grid-transition--container {
+      max-width: 64rem /* 1024px */;
+      padding-inline: 3rem /* 48px */;
+    }
+
+    .grid-transition--grid {
+      column-gap: 2.5rem;
+    }
+
+    .grid-transition--grid--a {
+      margin-right: calc(-2.5rem - 1px);
+      grid-column: span 6 / span 6;
+    }
+
+    .grid-transition--grid--c {
+      display: block;
+    }
+  }
+
+  @media (width >= 80rem /* 1280px */) {
+    .grid-transition--container {
+      max-width: 80rem /* 1280px */;
+    }
+
+    .grid-transition--grid--a {
+      grid-column: span 4 / span 4;
+    }
+
+    .grid-transition--grid--b {
+      display: block;
+    }
+
+    .grid-transition--grid--c {
+      grid-column: span 4 / span 4;
+    }
+  }
+
+  @media (width >= 96rem /* 1536px */) {
+    .grid-transition--container {
+      max-width: 96rem /* 1536px */;
+      padding-inline: 5rem /* 80px */;
+    }
+  }
+
+  @media (width >= 108rem /* 1728px */) {
+    .grid-transition--container {
+      max-width: 108rem /* 1728px */;
+    }
+  }
+</style>
