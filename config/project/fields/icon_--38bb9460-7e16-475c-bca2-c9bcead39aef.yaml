@@ -1,0 +1,17 @@
+columnSuffix: null
+handle: icon_
+instructions: null
+name: Icon
+searchable: false
+settings:
+  availableWeights:
+    - thin
+    - light
+    - regular
+    - bold
+    - fill
+    - duotone
+  defaultWeight: fill
+translationKeyFormat: null
+translationMethod: none
+type: phosphoricons\fields\PhosphorIcon

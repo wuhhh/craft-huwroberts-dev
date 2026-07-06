@@ -1,4 +1,4 @@
-dateModified: 1783114545
+dateModified: 1783333888
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: 'Huw Roberts | Freelance Web Developer'
@@ -16,7 +16,6 @@ meta:
     0c6d4176-996d-4614-bdff-a2d9abe117cc: 'Work (Index)' # Work (Index)
     0c63feb6-fcfa-46d6-befd-8445e10a9e7a: 'Image & Caption' # Image & Caption
     2f8ab51a-6475-423d-a4d4-81ae028ad2dd: '🔹 Bio Section' # 🔹 Bio Section
-    3d16384e-bfc8-430d-b07b-70b0014c7d93: Icon # Icon
     4e5f4410-fe03-41d3-a103-8619a3dee7de: 'Live URL' # Live URL
     4fb7eacc-a8a0-4a3a-8659-9d29b1f619e5: Tech # Tech
     4ffac4bc-7b4a-4579-9cc7-8dd3074e1e83: 'Entry: Journal' # Entry: Journal
@@ -31,6 +30,7 @@ meta:
     9c8143c4-1bee-47ca-8acc-865b5fb5824c: Globals # Globals
     9df05e4c-ad18-498a-9fba-144f3ed8f8db: 'Summary Short' # Summary Short
     25a33ae6-3901-458a-8998-5f63d864a3f3: Default # Default
+    38bb9460-7e16-475c-bca2-c9bcead39aef: Icon # Icon
     42a845ce-2d17-4963-951a-a0d7508a1219: 'Page: Journal Index' # Page: Journal Index
     52ecdaa0-e78c-4b23-a67b-b2de241c25ac: Year # Year
     62d3afc2-48c5-413e-9a5f-edbb5bf79857: GitHub # GitHub

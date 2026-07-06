@@ -15,6 +15,9 @@ settings:
               -
                 -
                   __assoc__:
+                    0:
+                      - name
+                      - Content
                     1:
                       - uid
                       - f6bec43e-84aa-439c-947d-0a4defb36977
@@ -60,7 +63,27 @@ settings:
                               - 1e67f152-6900-43a8-b15f-96975ecd6669
                             12:
                               - fieldUid
-                              - 3d16384e-bfc8-430d-b07b-70b0014c7d93 # Icon
+                              - 3d16384e-bfc8-430d-b07b-70b0014c7d93
+                        -
+                          __assoc__:
+                            0:
+                              - type
+                              - craft\fieldlayoutelements\CustomField
+                            6:
+                              - required
+                              - false
+                            7:
+                              - width
+                              - 100
+                            8:
+                              - dateAdded
+                              - '2026-07-06T10:16:16+00:00'
+                            9:
+                              - uid
+                              - 92ce4cea-6e06-4617-a2f0-87bb88cd12ea
+                            12:
+                              - fieldUid
+                              - 38bb9460-7e16-475c-bca2-c9bcead39aef # Icon
                         -
                           __assoc__:
                             0:

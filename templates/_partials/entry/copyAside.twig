@@ -16,8 +16,10 @@
         {% if aside.text|length %}
           <div class="flex items-center gap-2.5">
             {% if asideIcon %}
+              <div aria-hidden="true" class="size-6 text-seabed-indigo [&>svg]:w-full [&>svg]:h-full">
+                {{ craft.phosphorIcons.icon(asideIcon.name, asideIcon.weight)|raw }}
+              </div>
               {% set styleClass = 'brands' in (asideIcon.styles ?? []) ? 'fa-brands' : 'fa-solid' %}
-              <i class="{{ styleClass }} fa-{{ asideIcon.name }} text-seabed-indigo-400 text-2xl" aria-hidden="true"></i>
             {% endif %}
             <span class="text-seabed-indigo-400 text-lg leading-tight font-bold tracking-tight">{{ aside.text }}</span>
           </div>
