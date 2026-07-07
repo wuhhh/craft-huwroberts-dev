@@ -15,6 +15,9 @@ import barba from "@barba/core";
 import { lenis } from "./lenis";
 
 const OVERLAY_SELECTOR = "[data-grid-transition]";
+/* ≥1280px renders the vertical-strip grid; below that it is display:none and
+   the transition is instant (no fill/reveal wait). */
+const GRID_VISIBLE_MQ = window.matchMedia("(width >= 80rem)");
 
 /* Read a CSS <time> custom property off `el`, returning ms. */
 function cssTimeMs(el: Element, prop: string): number {
@@ -140,10 +143,10 @@ function onEnter(
 function init(): void {
   const root = document.querySelector<HTMLElement>(OVERLAY_SELECTOR);
   if (!root) return;
-  // Cold-load reveal. State stays on so `forwards` keeps strips collapsed; the
-  // next Barba `leave` swaps to `.is-filling`, whose `from` (scale 1 0) matches
-  // the persisted end state — no flicker.
-  root.classList.add("is-revealing");
+  // Cold-load reveal (≥1280px only). State stays on so `forwards` keeps
+  // strips collapsed; the next Barba `leave` swaps to `.is-filling`, whose
+  // `from` (scale 1 0) matches the persisted end state — no flicker.
+  if (GRID_VISIBLE_MQ.matches) root.classList.add("is-revealing");
 
   const container = document.querySelector<HTMLElement>(
     '[data-barba="container"]',
@@ -161,6 +164,15 @@ function init(): void {
         async leave(data) {
           root.classList.remove("is-revealing");
           root.classList.add("is-filling");
+          if (!GRID_VISIBLE_MQ.matches) {
+            // <1280px: grid is display:none, no fill to wait for. Hide the
+            // outgoing container synchronously so the incoming <scene-canvas>
+            // (added next by Barba) sees the correct host dimensions.
+            if (data.current?.container instanceof HTMLElement) {
+              data.current.container.style.display = "none";
+            }
+            return;
+          }
           await waitForPhase(root, fillTotalMs(root));
           // Hide the outgoing container after the fill covers the viewport
           // but before Barba `add()`s the new one. Done synchronously so the
@@ -174,6 +186,7 @@ function init(): void {
           root.classList.remove("is-filling");
           root.classList.add("is-revealing");
           onEnter(data.next);
+          if (!GRID_VISIBLE_MQ.matches) return Promise.resolve();
           return waitForPhase(root, revealTotalMs(root));
         },
       },
