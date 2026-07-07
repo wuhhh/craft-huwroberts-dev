@@ -45,12 +45,12 @@
 <style type="text/css">
   /* critical */
   .grid-transition {
-    --reveal-duration: 800ms;
+    --reveal-duration: 700ms;
     --reveal-delay: 500ms;
-    --strip-stagger: 50ms;
-    --fill-duration: 600ms;
-    --fill-delay: 0ms;
-    --fill-stagger: 50ms;
+    --reveal-stagger: 50ms;
+    --fill-duration: 525ms;
+    --fill-delay: 50ms;
+    --fill-stagger: 40ms;
     --logo-reveal-delay: 100ms;
     --logo-reveal-duration: 550ms;
     --logo-fade-delay: 650ms;
@@ -111,7 +111,8 @@
     transform-origin: top;
     animation-name: grid-transition-fill;
     animation-duration: var(--fill-duration);
-    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+    /* COVER_EASING — slightly front-loaded cover entry. */
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
     /* `both` (not `forwards`) applies the FROM state during each strip's
        stagger delay — otherwise strips flash at their natural (full-size)
        state for one paint frame before snapping to scale:1 0 and growing. */
@@ -123,6 +124,7 @@
     transform-origin: bottom;
     animation-name: grid-transition-reveal;
     animation-duration: var(--reveal-duration);
+    /* REVEAL_EASING — slightly softer exit. */
     animation-timing-function: cubic-bezier(0.25, 0, 0.35, 1);
     animation-fill-mode: both;
     animation-play-state: running;
@@ -181,16 +183,16 @@
     animation-delay: var(--reveal-delay);
   }
   .grid-transition.is-revealing .grid-transition--grid--a {
-    animation-delay: calc(var(--reveal-delay) + var(--strip-stagger));
+    animation-delay: calc(var(--reveal-delay) + var(--reveal-stagger));
   }
   .grid-transition.is-revealing .grid-transition--grid--b {
-    animation-delay: calc(var(--reveal-delay) + (var(--strip-stagger) * 2));
+    animation-delay: calc(var(--reveal-delay) + (var(--reveal-stagger) * 2));
   }
   .grid-transition.is-revealing .grid-transition--grid--c {
-    animation-delay: calc(var(--reveal-delay) + (var(--strip-stagger) * 3));
+    animation-delay: calc(var(--reveal-delay) + (var(--reveal-stagger) * 3));
   }
   .grid-transition.is-revealing .grid-transition--grid--fill-r {
-    animation-delay: calc(var(--reveal-delay) + (var(--strip-stagger) * 4));
+    animation-delay: calc(var(--reveal-delay) + (var(--reveal-stagger) * 4));
   }
 
   .grid-transition--grid--a,

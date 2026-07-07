@@ -170,20 +170,35 @@ function initBarba(root: HTMLElement): void {
           // start the cover-from-top fill.
           root.classList.remove("is-revealing");
           root.classList.add("is-filling");
-          if (!gridVisible()) return Promise.resolve();
-          return waitForPhase(root, fillTotalMs(root));
-        },
-        beforeEnter(data) {
-          // Barba inserts the next `#main` as a sibling of the old one and
-          // only removes the old one AFTER `enter` resolves. Both elements
-          // hold `grow`, so the `.container.flex` parent squishes them
-          // side-by-side — visible behind the peeling reveal strips. Hide
-          // the outgoing container synchronously (before the next paint) so
-          // only the incoming `#main` participates in the flex layout.
-          const old = data.current?.container;
-          if (old instanceof HTMLElement) {
-            old.style.display = "none";
+          if (!gridVisible()) {
+            // No fill animation; just hide the outgoing container so the new
+            // one (added next by Barba) gets full layout from the start.
+            const old = data.current?.container;
+            if (old instanceof HTMLElement) old.style.display = "none";
+            return Promise.resolve();
           }
+          return waitForPhase(root, fillTotalMs(root)).then(() => {
+            // Hide the outgoing container AFTER the fill covers the viewport
+            // (so the disappear is invisible) and BEFORE `add()` inserts the
+            // next `#main`. Both `#main`s are flex children of
+            // `.container.flex.lg:gap-x-10` and would split ~50/50 width, so
+            // we need the old one out of flow before the new one (and its
+            // <about-scene>/<scene-canvas> children) is constructed.
+            //
+            // Critical timing: Barba's `add()` runs synchronously and the
+            // Lit first-updated microtask of the incoming <scene-canvas>
+            // fires before Barba's `beforeEnter` hook — so hiding the old
+            // container here (end of leave) is the only synchronous seam
+            // that lets Lit's first read of `host.clientWidth/clientHeight`
+            // see correct, full-width dimensions. about-scene bakes
+            // per-letter `basePos`/`baseScale` from a single setup-time
+            // `alignMeshWithDOM` call and never re-reads them except on
+            // `resize`, so a squished read at setup leaves the model
+            // permanently scaled down (intro-scene avoids this by recomputing
+            // its scale from live viewport every frame).
+            const old = data.current?.container;
+            if (old instanceof HTMLElement) old.style.display = "none";
+          });
         },
         enter(data) {
           // DOM is already swapped by Barba; now peel the cover away.
