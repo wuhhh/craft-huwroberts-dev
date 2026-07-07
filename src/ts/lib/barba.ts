@@ -15,7 +15,6 @@ import barba from "@barba/core";
 import { lenis } from "./lenis";
 
 const OVERLAY_SELECTOR = "[data-grid-transition]";
-const GRID_VISIBLE_MQ = window.matchMedia("(width >= 40rem)");
 
 /* Read a CSS <time> custom property off `el`, returning ms. */
 function cssTimeMs(el: Element, prop: string): number {
@@ -35,7 +34,7 @@ const fillTotalMs = (root: HTMLElement) =>
   cssTimeMs(root, "--fill-duration");
 const revealTotalMs = (root: HTMLElement) =>
   cssTimeMs(root, "--reveal-delay") +
-  4 * cssTimeMs(root, "--strip-stagger") +
+  4 * cssTimeMs(root, "--reveal-stagger") +
   cssTimeMs(root, "--reveal-duration");
 
 /* Resolve on the last strip's animationend, with a hard timer fallback so a
@@ -159,33 +158,22 @@ function init(): void {
     transitions: [
       {
         name: "grid-fill-reveal",
-        async leave(data: {
-          current: { container: { style: { display: string } } };
-        }) {
+        async leave(data) {
           root.classList.remove("is-revealing");
           root.classList.add("is-filling");
-          if (!GRID_VISIBLE_MQ.matches) {
-            // Mobile: grid is display:none, so no fill to wait for — hide the
-            // outgoing container and let Barba swap immediately.
-            data.current?.container instanceof HTMLElement &&
-              (data.current.container.style.display = "none");
-            return Promise.resolve();
-          }
           await waitForPhase(root, fillTotalMs(root));
           // Hide the outgoing container after the fill covers the viewport
-          // but before Barba `add()`s the new one — done synchronously so
-          // the incoming <scene-canvas>'s first-updated microtask (which
-          // fires before Barba's `enter`) sees the correct full-width host.
-          data.current?.container instanceof HTMLElement &&
-            (data.current.container.style.display = "none");
+          // but before Barba `add()`s the new one. Done synchronously so the
+          // incoming <scene-canvas>'s first-updated microtask (which fires
+          // before Barba's `enter`) sees the correct full-width host.
+          if (data.current?.container instanceof HTMLElement) {
+            data.current.container.style.display = "none";
+          }
         },
-        enter(data: {
-          next: { html?: string; url?: { path?: string } } | undefined;
-        }) {
+        enter(data) {
           root.classList.remove("is-filling");
           root.classList.add("is-revealing");
           onEnter(data.next);
-          if (!GRID_VISIBLE_MQ.matches) return Promise.resolve();
           return waitForPhase(root, revealTotalMs(root));
         },
       },

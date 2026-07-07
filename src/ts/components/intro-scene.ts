@@ -5,6 +5,7 @@ import { SceneController } from "../controllers/scene-controller";
 import { DRACOLoader, GLTFLoader } from "three/examples/jsm/Addons.js";
 import type { SceneDrawFn, SceneSetupAsyncFn, SceneViewport } from "../types";
 import getViewport from "../lib/get-viewport";
+import { disposeObject3D } from "../lib/dispose";
 import {
   createCloudedGlassMat,
   createDiamondPlaneMat,
@@ -471,7 +472,16 @@ export class IntroScene extends LitElement {
       // }
     };
 
-    new SceneController({ host: this, setupFn, drawFn });
+    new SceneController({ host: this, setupFn, drawFn }, () => this.dispose());
+  }
+
+  private dispose(): void {
+    this.#ro.disconnect();
+    // Traverse the scene-graph roots and dispose geometries / materials /
+    // material-bound textures. The GLTF textures used by the liquid material
+    // are tracked via the GLTF material's `map` reference and picked up here.
+    if (this.#ctx.groups.hr) disposeObject3D(this.#ctx.groups.hr);
+    if (this.#ctx.groups.shapes) disposeObject3D(this.#ctx.groups.shapes);
   }
 
   protected render() {

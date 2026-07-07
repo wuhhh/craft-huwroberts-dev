@@ -81,7 +81,14 @@ export class SceneCanvas extends LitElement {
    * Loops over scene registry entries, runs their setup fns and gives back SceneEntry[]
    */
   private async setupScenes() {
+    // During a Barba swap, both old and new #main are in the DOM
+    // simultaneously (old is display:none, removed after `enter`). Only set
+    // up scene hosts that live in the same [data-barba="container"] as this
+    // <scene-canvas>, so the incoming canvas doesn't re-call setupFn on the
+    // outgoing about-scene (which would re-fetch the GLTF + clobber ctx).
+    const myContainer = this.closest('[data-barba="container"]');
     sceneRegistry.entries.forEach(async (entry) => {
+      if (entry.host.closest('[data-barba="container"]') !== myContainer) return;
       // Observe the host up front: it exists in the DOM now, even though its
       // async setup (GLTF + Draco load) hasn't finished. Seeding visibility
       // here also starts the loop immediately for an on-screen hero.
@@ -105,6 +112,12 @@ export class SceneCanvas extends LitElement {
    * Animation frame loop
    */
   private frame = () => {
+    // Bail entirely if the canvas has no layout (host container is
+    // display:none during a Barba swap, etc.). Must run before updateSize /
+    // setViewport / clear — any WebGPU call against a 0×0 swapchain throws
+    // ("swapchain texture of size 0") and poisons the device.
+    if (this.canvasElement.clientWidth === 0 || this.canvasElement.clientHeight === 0) return;
+
     this.updateTime();
     this.updateSize();
 
@@ -175,15 +188,26 @@ export class SceneCanvas extends LitElement {
   };
 
   firstUpdated(): void {
-    this.renderer = new THREE.WebGPURenderer({
-      canvas: this.canvasElement,
-      antialias: true,
-    });
-
-    this.renderer.setPixelRatio(this.pixelRatio);
-
-    this.setupVisibilityControls();
-    this.setupScenes();
+    // Defer renderer init until the canvas has non-zero layout. On Barba
+    // navigations, `firstUpdated` fires as a microtask after `add()` inserts
+    // the new #main — before the browser has laid out the shadow-DOM canvas.
+    // Constructing WebGPURenderer against a 0×0 canvas configures a 0×0
+    // swapchain + depthBuffer, which WebGPU rejects ("Could not create a
+    // swapchain texture of size 0"). rAF retry runs until layout resolves.
+    const init = () => {
+      if (this.canvasElement.clientWidth === 0 || this.canvasElement.clientHeight === 0) {
+        requestAnimationFrame(init);
+        return;
+      }
+      this.renderer = new THREE.WebGPURenderer({
+        canvas: this.canvasElement,
+        antialias: true,
+      });
+      this.renderer.setPixelRatio(this.pixelRatio);
+      this.setupVisibilityControls();
+      this.setupScenes();
+    };
+    init();
   }
 
   /**
@@ -239,6 +263,12 @@ export class SceneCanvas extends LitElement {
     this.io?.disconnect();
     document.removeEventListener("visibilitychange", this.onVisibilityChange);
     this.renderer?.setAnimationLoop(null);
+    // Release the WebGPU device + swapchain. Per-scene resources
+    // (geometries/materials/textures/RTs) are disposed by the scene
+    // components' own SceneController disposeFn.
+    this.scenes = [];
+    this.renderer?.dispose();
+    this.renderer = undefined as unknown as THREE.WebGPURenderer;
   }
 
   render() {

@@ -102,13 +102,31 @@
     }
   }
 
+  /* === <1280px: horizontal-shutter timings ========================
+     At ~13:1 duration:stagger the cascade reads as "all slats moving at
+     once" — by the time slat 2 starts, slat 1 is only 7% through its fill.
+     Bringing the ratio to ~3:1 (shorter duration, larger stagger) makes
+     the top-down cascade visible. Scoped below 1280px so the vertical
+     grid keeps its longer, more damped timings. */
+  @media (width < 80rem /* 1280px */) {
+    .grid-transition {
+      --fill-duration: 250ms;
+      --fill-stagger: 80ms;
+      --fill-delay: 50ms;
+      --reveal-duration: 300ms;
+      --reveal-stagger: 100ms;
+      --reveal-delay: 400ms;
+    }
+  }
+
+  /* State-gated animations. `both` applies the FROM state during stagger
+     delays so strips don't flash at their natural full size for one frame. */
   .grid-transition.is-filling .grid-transition-animation-out {
     transform-origin: top;
     animation-name: grid-transition-fill;
     animation-duration: var(--fill-duration);
     animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
     animation-fill-mode: both;
-    animation-play-state: running;
   }
 
   .grid-transition.is-revealing .grid-transition-animation-out {
@@ -117,7 +135,6 @@
     animation-duration: var(--reveal-duration);
     animation-timing-function: cubic-bezier(0.25, 0, 0.35, 1);
     animation-fill-mode: both;
-    animation-play-state: running;
   }
 
   .grid-transition {
@@ -127,27 +144,50 @@
     pointer-events: none;
   }
 
+  /* === Horizontal slats (<1280px) =============================
+     Five full-width slats of equal height, stacked top-to-bottom in the
+     same order as the animation stagger (fill-l → a → b → c → fill-r) so
+     the shutter cascade reads top-down on both phases. Container is
+     full-bleed (no obi-spacer / page padding; shutter is meant to cover
+     the viewport edge-to-edge at these sizes). */
   .grid-transition--container {
     width: 100%;
-    margin-inline: auto;
-    padding-inline: 1.5rem /* 24px */;
-    max-width: 108rem /* 1728px */;
-
-    display: flex;
+    height: 100vh;
   }
 
   .grid-transition--obi-spacer {
-    width: 5.25rem;
+    display: none;
   }
 
   .grid-transition--grid {
-    display: none;
     position: relative;
-    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     height: 100vh;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
   }
 
+  .grid-transition--grid--a,
+  .grid-transition--grid--b,
+  .grid-transition--grid--c,
+  .grid-transition--grid--fill-l,
+  .grid-transition--grid--fill-r {
+    background: #f36855;
+    position: relative;
+    flex: 1;
+    width: 100%;
+    /* -1px overlap closes hairline sub-pixel seams between slats, mirroring
+       the vertical grid's `-1px` margin trick. */
+    margin-bottom: -1px;
+  }
+
+  .grid-transition--grid--fill-l { order: 0; }
+  .grid-transition--grid--a      { order: 1; }
+  .grid-transition--grid--b      { order: 2; }
+  .grid-transition--grid--c      { order: 3; }
+  .grid-transition--grid--fill-r { order: 4; }
+
+  /* Staggered delays, fill phase */
   .grid-transition.is-filling .grid-transition--grid--fill-l {
     animation-delay: var(--fill-delay);
   }
@@ -164,6 +204,7 @@
     animation-delay: calc(var(--fill-delay) + (var(--fill-stagger) * 4));
   }
 
+  /* Staggered delays, reveal phase */
   .grid-transition.is-revealing .grid-transition--grid--fill-l {
     animation-delay: var(--reveal-delay);
   }
@@ -180,52 +221,7 @@
     animation-delay: calc(var(--reveal-delay) + (var(--reveal-stagger) * 4));
   }
 
-  .grid-transition--grid--a,
-  .grid-transition--grid--b,
-  .grid-transition--grid--c,
-  .grid-transition--grid--fill-l,
-  .grid-transition--grid--fill-r {
-    background: #f36855;
-    position: relative;
-  }
-
-  .grid-transition--grid--b,
-  .grid-transition--grid--c {
-    display: hidden;
-  }
-
-  .grid-transition--grid--a {
-    grid-column: 1 / -1;
-  }
-
-  .grid-transition--grid--b {
-    display: none;
-    grid-column: span 4 / span 4;
-    margin-right: calc(-2.5rem - 1px);
-  }
-
-  .grid-transition--grid--c {
-    display: none;
-    grid-column: span 6 / span 6;
-  }
-
-  .grid-transition--grid--fill-l,
-  .grid-transition--grid--fill-r {
-    position: absolute;
-    inset-block: 0;
-    width: 100vw;
-  }
-
-  .grid-transition--grid--fill-l {
-    right: 100%;
-  }
-  .grid-transition--grid--fill-r {
-
-    left: 100%;
-  }
-
   .grid-transition--logo {
-    display: none;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -248,68 +244,82 @@
     animation: grid-logo-spin var(--logo-reveal-duration) cubic-bezier(0.3, 1.5, 0.3, 1) forwards var(--logo-reveal-delay);
   }
 
-  /* 640px */
-  @media (width >= 40rem) {
+  /* === ≥1280px: original vertical-strip layout ==================
+     The page's container has obi-spacer + page padding here; strips sit
+     in a 12-column grid (a/b/c) with absolute full-viewport-width fill-l
+     pinned outside each edge. */
+  @media (width >= 80rem /* 1280px */) {
     .grid-transition--container {
-      padding-inline: 1.625rem;
+      margin-inline: auto;
+      padding-inline: 3rem /* 48px */;
+      display: flex;
+      column-gap: 2.5rem;
+    }
+
+    .grid-transition--obi-spacer {
+      display: block;
+      width: 5.25rem;
     }
 
     .grid-transition--grid {
       display: grid;
-    }
-  }
-
-  /* 820px */
-  @media (width >= 51.25rem) {
-    .grid-transition--container {
-      padding-inline: 2rem;
-    }
-  }
-
-  /* 1024px */
-  @media (width >= 64rem) {
-    .grid-transition--container {
-      padding-inline: 3rem;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: 2.5rem;
     }
 
-    .grid-transition--grid {
-      column-gap: 2.5rem;
+    .grid-transition--grid--a,
+    .grid-transition--grid--b,
+    .grid-transition--grid--c,
+    .grid-transition--grid--fill-l,
+    .grid-transition--grid--fill-r {
+      flex: initial;
+      width: auto;
+      order: initial;
+      margin-bottom: 0;
     }
 
-    .grid-transition--grid--a {
-      margin-right: calc(-2.5rem - 1px);
-      grid-column: span 6 / span 6;
-    }
-
-    .grid-transition--grid--c {
-      display: block;
-    }
-  }
-
-  /* 1280px */
-  @media (width >= 80rem) {
-    .grid-transition--grid--a {
-      grid-column: span 4 / span 4;
-    }
-
+    /* The 12-col grid has 2.5rem gaps between three span-4 strips. Each gap
+       is closed by a negative right margin on the preceding strip; the -1px
+       on top bridges the seam itself. */
+    .grid-transition--grid--a,
     .grid-transition--grid--b {
-      display: block;
+      grid-column: span 4 / span 4;
+      margin-right: calc(-2.5rem - 1px);
     }
 
     .grid-transition--grid--c {
       grid-column: span 4 / span 4;
     }
 
-    .grid-transition--logo {
-      display: block;
+    .grid-transition--grid--fill-l,
+    .grid-transition--grid--fill-r {
+      position: absolute;
+      inset-block: 0;
+      width: 100vw;
+    }
+
+    .grid-transition--grid--fill-l {
+      right: 100%;
+      left: auto;
+    }
+    .grid-transition--grid--fill-r {
+      left: 100%;
+      right: auto;
     }
   }
 
   /* 1536px */
   @media (width >= 96rem) {
     .grid-transition--container {
-      padding-inline: 5rem;
+      padding-inline: 5rem /* 80px */;
+      max-width: 96rem /* 1536px */;
+    }
+  }
+
+  /* 1728px */
+  @media (width >= 108rem) {
+    .grid-transition--container {
+      max-width: 108rem /* 1728px */;
     }
   }
 </style>

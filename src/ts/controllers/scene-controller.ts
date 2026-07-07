@@ -5,10 +5,12 @@ import type { SceneRegistryEntry } from "../types";
 export class SceneController implements ReactiveController {
   host: ReactiveControllerHost;
   entry?: SceneRegistryEntry;
+  disposeFn?: () => void;
 
-  constructor(entry: SceneRegistryEntry) {
+  constructor(entry: SceneRegistryEntry, disposeFn?: () => void) {
     (this.host = entry.host).addController(this);
     this.entry = entry;
+    this.disposeFn = disposeFn;
   }
 
   hostConnected(): void {
@@ -17,5 +19,8 @@ export class SceneController implements ReactiveController {
 
   hostDisconnected(): void {
     if (this.entry) sceneRegistry.unregister(this.entry);
+    // Free GPU/host resources so Barba navigations don't leak a renderer's
+    // worth of geometries / materials / textures / RT per route change.
+    this.disposeFn?.();
   }
 }

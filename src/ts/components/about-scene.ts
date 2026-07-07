@@ -9,6 +9,7 @@ import getViewport from "../lib/get-viewport";
 import { createSpatialImage, type SpatialImage } from "../lib/spatial-image";
 import { SpringScalar, SpringVec3, fromTensionFriction } from "../lib/spring";
 import { CORAL, INDIGO } from "../lib/colors";
+import { disposeObject3D } from "../lib/dispose";
 
 // Mouse-repulsion settings
 const REPULSION_RADIUS = 1.5; // distance at which repulsion starts (world units)
@@ -204,6 +205,10 @@ interface AboutSceneContext {
   entrance: { elapsed: number; complete: boolean };
   /** Offscreen spatial-image scene, rendered into an RT each frame. */
   spatialImage?: { si: SpatialImage } | null;
+  /** Scene-graph reference held for traversal-based disposal. */
+  scene?: THREE.Scene;
+  /** Cleanup callbacks (listeners + GPU resource disposers). */
+  disposers: Array<() => void>;
 }
 
 const letterMeshNames = [
@@ -392,6 +397,7 @@ export class aboutScene extends LitElement {
         lastMoveTime: 0,
       },
       entrance: { elapsed: 0, complete: false },
+      disposers: [],
     };
 
     const setupFn: SceneSetupAsyncFn = async ({ host }) => {
@@ -480,6 +486,7 @@ export class aboutScene extends LitElement {
 
       alignLetterMeshesWithDOM();
       window.addEventListener("resize", alignLetterMeshesWithDOM);
+      ctx.disposers.push(() => window.removeEventListener("resize", alignLetterMeshesWithDOM));
 
       // Entrance: snap each letter to a radial offset + outward tilt at scale 0
       // (immediate, no spring), then drawFn springs them home on their stagger.
@@ -518,6 +525,7 @@ export class aboutScene extends LitElement {
         mouse.lastMoveTime = performance.now();
       };
       window.addEventListener("mousemove", handleMouseMove);
+      ctx.disposers.push(() => window.removeEventListener("mousemove", handleMouseMove));
 
       // Spatial image — render a depth-displaced, mouse-tiltable plane to an
       // offscreen RT, then show it on a flat plane aligned with refImage.
@@ -564,11 +572,21 @@ export class aboutScene extends LitElement {
           };
           alignImagePlane();
           window.addEventListener("resize", alignImagePlane);
+          ctx.disposers.push(() => window.removeEventListener("resize", alignImagePlane));
+
+          // Spatial-image RT + textures are not in the scene graph; track them
+          // for disposal alongside the window listeners above.
+          ctx.disposers.push(() => {
+            si.rt.dispose();
+            colorTexture.dispose();
+            depthTexture.dispose();
+          });
 
           ctx.spatialImage = { si };
         }
       }
 
+      ctx.scene = scene;
       return { scene, camera };
     };
 
@@ -589,7 +607,13 @@ export class aboutScene extends LitElement {
       }
     };
 
-    new SceneController({ host: this, setupFn, drawFn });
+    const dispose = () => {
+      for (const d of ctx.disposers) d();
+      ctx.disposers.length = 0;
+      if (ctx.scene) disposeObject3D(ctx.scene);
+    };
+
+    new SceneController({ host: this, setupFn, drawFn }, dispose);
   }
 
   protected render(): unknown {
