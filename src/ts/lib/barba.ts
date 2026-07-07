@@ -161,7 +161,9 @@ function init(): void {
     transitions: [
       {
         name: "grid-fill-reveal",
-        async leave(data) {
+        async leave(data: {
+          current: { container: { style: { display: string } } };
+        }) {
           root.classList.remove("is-revealing");
           root.classList.add("is-filling");
           if (!GRID_VISIBLE_MQ.matches) {
@@ -182,7 +184,9 @@ function init(): void {
             data.current.container.style.display = "none";
           }
         },
-        enter(data) {
+        enter(data: {
+          next: { html?: string; url?: { path?: string } } | undefined;
+        }) {
           root.classList.remove("is-filling");
           root.classList.add("is-revealing");
           onEnter(data.next);
