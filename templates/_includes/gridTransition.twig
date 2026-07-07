@@ -99,10 +99,12 @@
   @keyframes grid-logo-fade {
     to {
        opacity: 0;
+      translate: 0 2rem;
     }
 
     from {
       opacity: 1;
+      translate: 0 0;
     }
   }
 
@@ -239,7 +241,7 @@
   }
 
   .grid-transition.is-revealing .grid-transition--logo > div {
-    animation: grid-logo-fade var(--logo-fade-duration) ease-in forwards var(--logo-fade-delay);
+    animation: grid-logo-fade var(--logo-fade-duration) cubic-bezier(0.25, 0, 0.35, 1) forwards var(--logo-fade-delay);
   }
 
   .grid-transition.is-revealing .grid-transition--logo > div > div {
