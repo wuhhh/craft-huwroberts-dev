@@ -287,7 +287,12 @@ export class MainMenu extends LitElement {
           <a href="#contact" style="transition-delay: 90ms">Contact</a>
         </nav>
         <!-- mobile menu close -->
-        <button aria-label="Close menu" class="close" @click=${this.closeMenu}>
+        <button
+          ?inert=${!this.open}
+          aria-label="Close menu"
+          class="close"
+          @click=${this.closeMenu}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="17"
