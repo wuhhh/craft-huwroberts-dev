@@ -2,7 +2,7 @@
 
 ## Stack
 
-Craft CMS (Craft 5) + PHP 8.4, MySQL 8.0, nginx-fpm. Frontend: Vite + Lit + Alpine + Tailwind. Managed by DDEV (project type `craftcms`).
+Craft CMS (Craft 5) + PHP 8.4, MySQL 8.0, nginx-fpm. Frontend: Vite + Lit + Tailwind. Managed by DDEV (project type `craftcms`).
 
 ## DDEV — always run commands in the container
 
@@ -27,7 +27,7 @@ A `Makefile` wraps the common flows: `make build`, `make dev`, `make install`.
 
 ### Dev server vs production bundle
 
-`craft.vite.script()` (in `templates/_includes/scripts.twig`) serves from the Vite dev server when `VITE_USE_DEV_SERVER=true` *and* the server is up on :3000; otherwise it falls back to the compiled manifest in `web/dist/.vite/manifest.json`. If you change frontend source but the dev server isn't running, you must `ddev npm run build` or edits won't appear.
+`craft.vite.script()` (in `templates/_includes/scripts.twig`) serves from the Vite dev server when `VITE_USE_DEV_SERVER=true` _and_ the server is up on :3000; otherwise it falls back to the compiled manifest in `web/dist/.vite/manifest.json`. If you change frontend source but the dev server isn't running, you must `ddev npm run build` or edits won't appear.
 
 ## Editing components
 
