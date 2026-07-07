@@ -213,48 +213,41 @@ export class MainMenu extends LitElement {
     if (event.target && !this.contains(event.target as Node)) this.closeMenu();
   };
 
-  // Barba listens on `document` and walks `event.target.parentNode` for an
-  // <a>. Clicks inside this component's Shadow DOM retarget to the host, so
-  // Barba never sees the actual link and the click falls through to a native
-  // full reload. Intercept internal hash-free nav clicks here and route them
-  // to the spa router explicitly.
+  /* Barba listens on `document` and walks `event.target` for an <a>. Clicks
+     inside this component's Shadow DOM retarget to the host, so Barba never
+     sees the anchor and the click falls through to a native full reload.
+     Intercept here and route to barba.go explicitly. */
   handleNavClick = (event: MouseEvent) => {
-    // Modified / new-tab clicks: native behaviour (don't transition)
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+      return;
     const link = (event.target as HTMLElement | null)?.closest("a");
     if (!link) return;
-
     const href = link.getAttribute("href");
     if (!href) return;
 
-    // Hash anchors and out-of-flow links: native. Always close the menu so
-    // the slideover doesn't end up left-open after e.g. #contact clicks.
-    if (href.startsWith("#") || link.target === "_blank" || link.hasAttribute("download")) {
+    if (
+      href.startsWith("#") ||
+      link.target === "_blank" ||
+      link.hasAttribute("download")
+    ) {
       this.closeMenu();
       return;
     }
-
-    // External origin: native navigation; don't close menu (new tab case)
     const url = new URL(href, window.location.href);
-    if (url.origin !== window.location.origin) return;
-
-    // Same URL (no hash change) — Barba would no-op; nothing to animate,
-    // but we still want the menu to close.
-    if (url.pathname === window.location.pathname && url.search === window.location.search) {
+    if (url.origin !== window.location.origin) return; // external — native nav
+    if (
+      url.pathname === window.location.pathname &&
+      url.search === window.location.search
+    ) {
       this.closeMenu();
       return;
     }
-
-    // If a transition is already running, do NOT call barba.go (it would
-    // force() a full reload). Block the click and bail.
+    // A mid-transition barba.go() would force() a full reload; swallow instead.
     if (barba.transitions.isRunning) {
       event.preventDefault();
       event.stopPropagation();
       return;
     }
-
-    // Hand the click off to Barba — it will preventDefault() the event.
     this.closeMenu();
     barba.go(href, link, event);
   };
@@ -282,7 +275,11 @@ export class MainMenu extends LitElement {
         <!-- overlay (shows left of nav drawer on mobile to slightly obscure main content) -->
         <div @click=${this.closeMenu} class="overlay"></div>
         <!-- nav -->
-        <nav ?inert=${!this.open} aria-label="Main" @click=${this.handleNavClick}>
+        <nav
+          ?inert=${!this.open}
+          aria-label="Main"
+          @click=${this.handleNavClick}
+        >
           <a href="/">Home</a>
           <a href="/work" style="transition-delay: 30ms">Portfolio</a>
           <a href="/about" style="transition-delay: 60ms">About</a>
