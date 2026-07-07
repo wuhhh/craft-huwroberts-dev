@@ -17,29 +17,81 @@
       <div class="grid-transition--grid--fill-r grid-transition-animation-out"></div>
     </div>
 
+    {# logo #}
+    <div class="grid-transition--logo">
+      <div>
+        <div>
+          <svg
+            width="56"
+            viewbox="0 0 43 31"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill="#F9EDE8"
+              d="M43 15.5 21.5 31 0 15.5 21.5 0 43 15.5Z"
+            />
+            <path
+              fill="#f36855"
+              d="M15 21V10h2.622v4.5h8.756V10H29v11h-2.622v-4.5h-8.756V21H15Z"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <style type="text/css">
   /* critical */
-  @keyframes grid-transition {
+  .grid-transition {
+    --reveal-duration: 800ms;
+    --reveal-delay: 500ms;
+    --strip-stagger: 50ms;
+    --logo-reveal-delay: 100ms;
+    --logo-reveal-duration: 550ms;
+    --logo-fade-delay: 650ms;
+    --logo-fade-duration: 325ms;
+  }
+
+  @keyframes grid-transition-reveal {
     to {
-      transform: scaleY(0);
+      scale: 1 0;
     }
 
     from {
-      transform: scaleY(1);
+      scale: 1 1;
     }
   }
 
-  .grid-transition {
-    --initial-delay: 500ms;
-    --stagger-delay: 75ms;
+
+  @keyframes grid-logo-spin {
+    to {
+      opacity: 1;
+      scale: 1 1;
+      rotate: 0deg;
+    }
+
+    from {
+      opacity: 0;
+      scale: 0.8 0.8;
+      rotate: -360deg;
+    }
+  }
+
+  @keyframes grid-logo-fade {
+    to {
+       opacity: 0;
+    }
+
+    from {
+      opacity: 1;
+    }
   }
 
   .grid-transition-animation-out {
     transform-origin: bottom;
-    animation: grid-transition 750ms ease-out forwards;
+    animation: grid-transition-reveal var(--reveal-duration) cubic-bezier(0.25, 0, 0.35, 1) forwards;
   }
 
   .grid-transition {
@@ -73,25 +125,25 @@
 
   .grid-transition--grid--a {
     /* background: pink; */
-    animation-delay: calc(var(--initial-delay) + var(--stagger-delay));
+    animation-delay: calc(var(--reveal-delay) + var(--strip-stagger));
   }
 
   .grid-transition--grid--b {
     /* background: blue; */
-    animation-delay: calc(var(--initial-delay) + (var(--stagger-delay) * 2));
+    animation-delay: calc(var(--reveal-delay) + (var(--strip-stagger) * 2));
   }
 
   .grid-transition--grid--c {
     /* background: green; */
-    animation-delay: calc(var(--initial-delay) + (var(--stagger-delay) * 3));
+    animation-delay: calc(var(--reveal-delay) + (var(--strip-stagger) * 3));
   }
 
   .grid-transition--grid--fill-l {
-    animation-delay: var(--initial-delay);
+    animation-delay: var(--reveal-delay);
   }
 
   .grid-transition--grid--fill-r {
-    animation-delay: calc(var(--initial-delay) + (var(--stagger-delay) * 4));
+    animation-delay: calc(var(--reveal-delay) + (var(--strip-stagger) * 4));
   }
 
   .grid-transition--grid--a,
@@ -136,6 +188,22 @@
   .grid-transition--grid--fill-r {
 
     left: 100%;
+  }
+
+  .grid-transition--logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .grid-transition--logo > div {
+    animation: grid-logo-fade var(--logo-fade-duration) ease-in forwards var(--logo-fade-delay);
+  }
+
+  .grid-transition--logo > div > div {
+    opacity: 0;
+    animation: grid-logo-spin var(--logo-reveal-duration) cubic-bezier(0.3, 1.5, 0.3, 1) forwards var(--logo-reveal-delay);
   }
 
   @media (width >= 40rem /* 640px */) {

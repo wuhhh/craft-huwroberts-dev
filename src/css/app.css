@@ -27,11 +27,6 @@
   @apply bg-coral-red/20;
 }
 
-/* Prevent FOUC on Lit custom elements (hopefully no longer required) */
-/* :not(:defined) { */
-/*   opacity: 0; */
-/* } */
-
 /* Prevent layout shift */
 intro-scene:not(:defined) {
   display: block;
@@ -43,9 +38,4 @@ video-player:not(:defined) {
   width: 100%;
   max-width: 1160px;
   aspect-ratio: 1160 / 680;
-}
-
-/* View Transitions */
-@view-transition {
-  navigation: auto;
 }
