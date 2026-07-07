@@ -1,0 +1,24 @@
+{% import _self as m %}
+
+{% macro dmnd(classes = "") %}
+  <svg class="{{ classes }}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 43 31">
+    <path fill="currentColor" d="M43 15.5 21.5 31 0 15.5 21.5 0 43 15.5Z" />
+  </svg>
+{% endmacro %}
+
+{% macro h(classes = "") %}
+  <svg class="{{ classes }}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 43 31">
+    <path fill="#F9EDE8" d="M15 21V10h2.622v4.5h8.756V10H29v11h-2.622v-4.5h-8.756V21H15Z" />
+  </svg>
+{% endmacro %}
+
+<a
+  href="{{ siteUrl }}"
+  aria-label="Home"
+  class="size-12 sm:size-14 group relative rounded-full flex items-center justify-center overflow-hidden"
+>
+  <span class="bg-coral-red absolute inset-0"></span>
+  {{ m.dmnd("text-seabed-indigo absolute inset-x-1 top-2.75 w-12 transition-transform delay-75 duration-325 ease-in-out group-hover:scale-200 group-hover:delay-0") }}
+  {{ m.dmnd("text-coral-red absolute inset-x-1 top-2.75 w-12 scale-0 transition-transform delay-0 duration-325 ease-in-out group-hover:scale-100 group-hover:delay-75") }}
+  {{ m.h("text-seabed-indigo relative mx-1 inline-block w-12 transition-transform delay-75 duration-375 ease-in-out group-hover:rotate-180 group-hover:delay-0") }}
+</a>
