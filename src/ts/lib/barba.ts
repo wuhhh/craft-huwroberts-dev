@@ -1,246 +1,196 @@
 // Barba SPA router driving the grid-transition overlay.
 //
-// Flow per internal click: leave() adds `.is-filling` to the persistent overlay
-// (strips grow down from top origin, covering the viewport while the next page
-// is fetched concurrently); once the fetch resolves + the fill animation has
-// played, Barba swaps `#main`'s content; enter() removes `.is-filling`, adds
-// `.is-revealing` (strips peel up from bottom origin, matching the original
-// intro reveal), fires a synthetic `pagereveal` event (consumed by
-// `./highlight.ts` to re-highlight new <pre><code>), resets scroll, and syncs
-// <head> tags.
+// Per internal click: `.is-filling` covers the viewport while the next page is
+// fetched concurrently; once both resolve the outgoing `#main` is hidden
+// synchronously (both `#main`s are flex children and would squeeze to ~50%
+// width, and about-scene bakes host dimensions at setup-time and never
+// re-reads them — see about-scene.ts:481), Barba swaps in the new `#main`,
+// then `.is-revealing` peels the cover away and focus moves to #main.
 //
-// First/hard load: `.is-revealing` is added to the overlay immediately so the
-// existing intro reveal still plays once on cold load. Pages without a Barba
-// container (404 / 500 / 503, which extend base.twig directly) bypass Barba
-// entirely; clicking them as soft-nav targets falls back to a full reload via
-// the `requestError` hook.
+// Hard-loaded pages with no Barba container (404 / 500 / 503) play the
+// reveal and skip Barba init; a click to one fetches ~404 → Barba's default
+// requestError bails to a full reload.
 
 import barba from "@barba/core";
 import { lenis } from "./lenis";
 
 const OVERLAY_SELECTOR = "[data-grid-transition]";
-const STRIPS_SELECTOR = ".grid-transition-animation-out";
+const GRID_VISIBLE_MQ = window.matchMedia("(width >= 40rem)");
 
-// Total ms the *last* strip needs to finish its animation, read from CSS vars
-// so the values stay DRY with the stylesheet in gridTransition.twig.
+/* Read a CSS <time> custom property off `el`, returning ms. */
 function cssTimeMs(el: Element, prop: string): number {
   const v = getComputedStyle(el).getPropertyValue(prop).trim();
   if (!v) return 0;
-  if (v.endsWith("ms")) return parseFloat(v) || 0;
-  if (v.endsWith("s")) return parseFloat(v) * 1000 || 0;
-  return parseFloat(v) || 0;
+  return v.endsWith("ms")
+    ? parseFloat(v) || 0
+    : v.endsWith("s")
+      ? parseFloat(v) * 1000 || 0
+      : parseFloat(v) || 0;
 }
 
-function fillTotalMs(root: HTMLElement): number {
-  // Last strip is fill-r: --fill-delay + 4*--fill-stagger + --fill-duration
-  return (
-    cssTimeMs(root, "--fill-delay") +
-    4 * cssTimeMs(root, "--fill-stagger") +
-    cssTimeMs(root, "--fill-duration")
-  );
-}
+/* Total ms until the last strip (fill-r) finishes, in each phase. */
+const fillTotalMs = (root: HTMLElement) =>
+  cssTimeMs(root, "--fill-delay") +
+  4 * cssTimeMs(root, "--fill-stagger") +
+  cssTimeMs(root, "--fill-duration");
+const revealTotalMs = (root: HTMLElement) =>
+  cssTimeMs(root, "--reveal-delay") +
+  4 * cssTimeMs(root, "--strip-stagger") +
+  cssTimeMs(root, "--reveal-duration");
 
-function revealTotalMs(root: HTMLElement): number {
-  // Last strip is fill-r: --reveal-delay + 4*--strip-stagger + --reveal-duration
-  return (
-    cssTimeMs(root, "--reveal-delay") +
-    4 * cssTimeMs(root, "--strip-stagger") +
-    cssTimeMs(root, "--reveal-duration")
-  );
-}
-
-function lastStripElement(root: HTMLElement): HTMLElement | null {
-  // `.grid-transition--grid--fill-r` carries the longest delay in both phases.
-  return root.querySelector<HTMLElement>(".grid-transition--grid--fill-r");
-}
-
-// Resolve when the last strip's `animationend` fires or after a computed
-// timer fallback (whichever fires first). Mobile strips are display:none
-// inside a hidden grid container, so `animationend` never fires there — the
-// timer is the actual resolver in that case.
-function gridVisible(): boolean {
-  // `.grid-transition--grid` is display:none below 40rem (640px); strips never
-  // animate there, so we don't make Barba wait for an animation that won't run.
-  return window.matchMedia("(width >= 40rem)").matches;
-}
-
+/* Resolve on the last strip's animationend, with a hard timer fallback so a
+   stuck animation never blocks Barba indefinitely. */
 function waitForPhase(root: HTMLElement, totalMs: number): Promise<void> {
   return new Promise<void>((resolve) => {
     let done = false;
     const finish = () => {
-      if (done) return;
-      done = true;
-      resolve();
+      if (!done) {
+        done = true;
+        resolve();
+      }
     };
-    const last = lastStripElement(root);
+    const last = root.querySelector<HTMLElement>(
+      ".grid-transition--grid--fill-r",
+    );
     if (last) {
       last.addEventListener("animationend", finish, { once: true });
       last.addEventListener("animationcancel", finish, { once: true });
     }
-    // Buffer covers paint + variance — strictly bounded so a stuck animation
-    // never blocks Barba indefinitely.
     setTimeout(finish, totalMs + 120);
   });
 }
 
-// Minimal head sync (replaces the missing @barba/head plugin). Updates
-// description, canonical, theme-color, and og:* meta from the next page's
-// <head>. Barba v2 already keeps document.title in sync itself.
-type MetaLike = HTMLMetaElement;
-function getOrMakeMeta(selector: string, attr: "name" | "property", value: string): MetaLike {
-  let el = document.head.querySelector<MetaLike>(selector);
-  if (!el) {
-    el = document.createElement("meta");
-    el.setAttribute(attr, value);
-    document.head.appendChild(el);
-  }
-  return el;
-}
+/* Sync <head> meta + canonical from the incoming page. Barba v2 keeps
+   document.title in sync itself. */
+const META_SYNC: Array<{
+  sel: string;
+  attr: "name" | "property";
+  key: string;
+}> = [
+  { sel: 'meta[name="keywords"]', attr: "name", key: "keywords" },
+  { sel: 'meta[name="description"]', attr: "name", key: "description" },
+  { sel: 'meta[name="theme-color"]', attr: "name", key: "theme-color" },
+  { sel: 'meta[property="og:title"]', attr: "property", key: "og:title" },
+  {
+    sel: 'meta[property="og:description"]',
+    attr: "property",
+    key: "og:description",
+  },
+  { sel: 'meta[property="og:image"]', attr: "property", key: "og:image" },
+  { sel: 'meta[property="og:url"]', attr: "property", key: "og:url" },
+  { sel: 'meta[property="og:type"]', attr: "property", key: "og:type" },
+];
 
 function syncHead(nextHtml: string): void {
   const doc = new DOMParser().parseFromString(nextHtml, "text/html");
-
-  const meta: Array<{ sel: string; attr: "name" | "property"; key: string }> = [
-    { sel: 'meta[name="description"]', attr: "name", key: "description" },
-    { sel: 'meta[name="theme-color"]', attr: "name", key: "theme-color" },
-    { sel: 'meta[property="og:title"]', attr: "property", key: "og:title" },
-    { sel: 'meta[property="og:description"]', attr: "property", key: "og:description" },
-    { sel: 'meta[property="og:image"]', attr: "property", key: "og:image" },
-    { sel: 'meta[property="og:url"]', attr: "property", key: "og:url" },
-    { sel: 'meta[property="og:type"]', attr: "property", key: "og:type" },
-  ];
-
-  for (const { sel, attr, key } of meta) {
-    const incoming = doc.querySelector<MetaLike>(sel);
-    const outgoing = document.head.querySelector<MetaLike>(sel);
+  for (const { sel, attr, key } of META_SYNC) {
+    const incoming = doc.querySelector<HTMLMetaElement>(sel);
+    const outgoing = document.head.querySelector<HTMLMetaElement>(sel);
     if (incoming) {
       const content = incoming.getAttribute("content") || "";
-      if (outgoing) outgoing.setAttribute("content", content);
-      else getOrMakeMeta(sel, attr, key).setAttribute("content", content);
+      if (outgoing) {
+        outgoing.setAttribute("content", content);
+      } else {
+        const m = document.createElement("meta");
+        m.setAttribute(attr, key);
+        m.setAttribute("content", content);
+        document.head.appendChild(m);
+      }
     } else if (outgoing) {
       outgoing.remove();
     }
   }
-
-  // Canonical <link rel="canonical">
   const incomingCanonical = doc.querySelector('link[rel="canonical"]');
-  let outgoingCanonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  const outgoingCanonical = document.head.querySelector<HTMLLinkElement>(
+    'link[rel="canonical"]',
+  );
   if (incomingCanonical) {
     const href = incomingCanonical.getAttribute("href") || "";
-    if (!outgoingCanonical) {
-      outgoingCanonical = document.createElement("link");
-      outgoingCanonical.setAttribute("rel", "canonical");
-      document.head.appendChild(outgoingCanonical);
+    if (outgoingCanonical) {
+      outgoingCanonical.href = href;
+    } else {
+      const link = document.createElement("link");
+      link.setAttribute("rel", "canonical");
+      link.href = href;
+      document.head.appendChild(link);
     }
-    outgoingCanonical.href = href;
   } else if (outgoingCanonical) {
     outgoingCanonical.remove();
   }
 }
 
-function resetScroll(): void {
+/* Reset scroll, sync <head>, fire pageview + pagereveal, move focus to #main. */
+function onEnter(
+  next: { html?: string; url?: { path?: string } } | undefined,
+): void {
+  if (next?.html) syncHead(next.html);
   window.scrollTo(0, 0);
   lenis?.scrollTo(0, { immediate: true });
-}
-
-function trackPageview(url: string): void {
-  const plausible = (window as unknown as { plausible?: (...a: unknown[]) => void }).plausible;
-  plausible?.("pageview", { props: { path: url } });
-}
-
-function initBarba(root: HTMLElement): void {
-  const container = document.querySelector<HTMLElement>('[data-barba="container"]');
-  if (!container) {
-    // Hard-loaded page (404/500/503) has no container — play reveal and exit.
-    root.classList.add("is-revealing");
-    return;
-  }
-
-  barba.init({
-    debug: false,
-    cacheFirstPage: true,
-    prefetchIgnore: false,
-    preventRunning: true,
-    timeout: 10_000,
-    transitions: [
-      {
-        name: "grid-fill-reveal",
-        leave(data) {
-          // Strip any lingering reveal state from a previous navigation, then
-          // start the cover-from-top fill.
-          root.classList.remove("is-revealing");
-          root.classList.add("is-filling");
-          if (!gridVisible()) {
-            // No fill animation; just hide the outgoing container so the new
-            // one (added next by Barba) gets full layout from the start.
-            const old = data.current?.container;
-            if (old instanceof HTMLElement) old.style.display = "none";
-            return Promise.resolve();
-          }
-          return waitForPhase(root, fillTotalMs(root)).then(() => {
-            // Hide the outgoing container AFTER the fill covers the viewport
-            // (so the disappear is invisible) and BEFORE `add()` inserts the
-            // next `#main`. Both `#main`s are flex children of
-            // `.container.flex.lg:gap-x-10` and would split ~50/50 width, so
-            // we need the old one out of flow before the new one (and its
-            // <about-scene>/<scene-canvas> children) is constructed.
-            //
-            // Critical timing: Barba's `add()` runs synchronously and the
-            // Lit first-updated microtask of the incoming <scene-canvas>
-            // fires before Barba's `beforeEnter` hook — so hiding the old
-            // container here (end of leave) is the only synchronous seam
-            // that lets Lit's first read of `host.clientWidth/clientHeight`
-            // see correct, full-width dimensions. about-scene bakes
-            // per-letter `basePos`/`baseScale` from a single setup-time
-            // `alignMeshWithDOM` call and never re-reads them except on
-            // `resize`, so a squished read at setup leaves the model
-            // permanently scaled down (intro-scene avoids this by recomputing
-            // its scale from live viewport every frame).
-            const old = data.current?.container;
-            if (old instanceof HTMLElement) old.style.display = "none";
-          });
-        },
-        enter(data) {
-          // DOM is already swapped by Barba; now peel the cover away.
-          root.classList.remove("is-filling");
-          root.classList.add("is-revealing");
-
-          // Sync <head> + analytics + scroll BEFORE the reveal animates so the
-          // incoming page is already at-top and titled when strips peel.
-          if (data.next?.html) syncHead(data.next.html);
-          resetScroll();
-          trackPageview(data.next?.url?.path ?? "");
-
-          // Notify any listeners (e.g. highlight.ts re-runs on swap).
-          window.dispatchEvent(new Event("pagereveal"));
-
-          if (!gridVisible()) return Promise.resolve();
-          return waitForPhase(root, revealTotalMs(root));
-        },
-        afterEnter() {
-          // Intentionally no-op: `.is-revealing` is left on so the
-          // `animation-fill-mode: forwards` end state (`scale: 1 0`) keeps
-          // strips invisible until the next `leave` swaps to `.is-filling`.
-          // Removing it would snap the strips back to their natural (full-size
-          // cover) state.
-        },
-      },
-    ],
-  });
+  // Plausible's auto-pageview script tracks full loads only — SPA nav needs
+  // a manual event.
+  const plausible = (
+    window as unknown as { plausible?: (...a: unknown[]) => void }
+  ).plausible;
+  plausible?.("pageview", { props: { path: next?.url?.path ?? "" } });
+  // Lets ./highlight.ts re-run on swapped <pre><code> etc.
+  window.dispatchEvent(new Event("pagereveal"));
+  // Move AT focus to the new page's main landmark.
+  document.getElementById("main")?.focus({ preventScroll: true });
 }
 
 function init(): void {
   const root = document.querySelector<HTMLElement>(OVERLAY_SELECTOR);
   if (!root) return;
-
-  // First/hard-load reveal — preserved exactly as the original intro. The
-  // `.is-revealing` state is left on permanently so `forwards` keeps the
-  // strips collapsed after the reveal finishes; a subsequent Barba `leave`
-  // swaps to `.is-filling` clean-slate (CSS starts `grid-transition-fill`
-  // from `scale 1 0`, which matches the persisted end state — no flicker).
+  // Cold-load reveal. State stays on so `forwards` keeps strips collapsed; the
+  // next Barba `leave` swaps to `.is-filling`, whose `from` (scale 1 0) matches
+  // the persisted end state — no flicker.
   root.classList.add("is-revealing");
 
-  initBarba(root);
+  const container = document.querySelector<HTMLElement>(
+    '[data-barba="container"]',
+  );
+  if (!container) return; // error pages — Barba never initialises
+
+  barba.init({
+    debug: false,
+    cacheFirstPage: true,
+    preventRunning: true,
+    timeout: 10_000,
+    transitions: [
+      {
+        name: "grid-fill-reveal",
+        async leave(data: {
+          current: { container: { style: { display: string } } };
+        }) {
+          root.classList.remove("is-revealing");
+          root.classList.add("is-filling");
+          if (!GRID_VISIBLE_MQ.matches) {
+            // Mobile: grid is display:none, so no fill to wait for — hide the
+            // outgoing container and let Barba swap immediately.
+            data.current?.container instanceof HTMLElement &&
+              (data.current.container.style.display = "none");
+            return Promise.resolve();
+          }
+          await waitForPhase(root, fillTotalMs(root));
+          // Hide the outgoing container after the fill covers the viewport
+          // but before Barba `add()`s the new one — done synchronously so
+          // the incoming <scene-canvas>'s first-updated microtask (which
+          // fires before Barba's `enter`) sees the correct full-width host.
+          data.current?.container instanceof HTMLElement &&
+            (data.current.container.style.display = "none");
+        },
+        enter(data: {
+          next: { html?: string; url?: { path?: string } } | undefined;
+        }) {
+          root.classList.remove("is-filling");
+          root.classList.add("is-revealing");
+          onEnter(data.next);
+          if (!GRID_VISIBLE_MQ.matches) return Promise.resolve();
+          return waitForPhase(root, revealTotalMs(root));
+        },
+      },
+    ],
+  });
 }
 
 if (document.readyState === "loading") {
