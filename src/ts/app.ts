@@ -10,5 +10,8 @@ import "./lib/highlight";
 // Lenis
 import "./lib/lenis.ts";
 
+// Barba SPA router (grid-transition fill → route → reveal)
+import "./lib/barba";
+
 // Import Lit components
 import.meta.glob("./components/**/*.ts", { eager: true });

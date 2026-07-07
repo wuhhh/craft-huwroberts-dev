@@ -1,7 +1,7 @@
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 
-new Lenis({
+export const lenis = new Lenis({
   autoRaf: true,
   autoToggle: true,
   anchors: true,

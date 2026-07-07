@@ -1,14 +1,14 @@
 {# == Reveal strips == #}
 {% set variant = variant ?? "full" %}
 
-<div class="grid-transition">
+<div class="grid-transition" data-grid-transition>
   <div class="grid-transition--container">
 
     {# space for obi #}
     <div class="grid-transition--obi-spacer"></div>
 
     {# grid #}
-    <div class="grid-transition--grid">
+    <div class="grid-transition--grid" data-grid-transition-strips>
       <div class="grid-transition--grid--a grid-transition-animation-out"></div>
       <div class="grid-transition--grid--b grid-transition-animation-out"></div>
       <div class="grid-transition--grid--c grid-transition-animation-out"></div>
@@ -48,6 +48,9 @@
     --reveal-duration: 800ms;
     --reveal-delay: 500ms;
     --strip-stagger: 50ms;
+    --fill-duration: 600ms;
+    --fill-delay: 0ms;
+    --fill-stagger: 50ms;
     --logo-reveal-delay: 100ms;
     --logo-reveal-duration: 550ms;
     --logo-fade-delay: 650ms;
@@ -60,6 +63,16 @@
     }
 
     from {
+      scale: 1 1;
+    }
+  }
+
+  @keyframes grid-transition-fill {
+    from {
+      scale: 1 0;
+    }
+
+    to {
       scale: 1 1;
     }
   }
@@ -90,8 +103,29 @@
   }
 
   .grid-transition-animation-out {
+    /* state-gated animations are applied via .is-filling / .is-revealing on
+       the root .grid-transition element — see rules below. */
+  }
+
+  .grid-transition.is-filling .grid-transition-animation-out {
+    transform-origin: top;
+    animation-name: grid-transition-fill;
+    animation-duration: var(--fill-duration);
+    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+    /* `both` (not `forwards`) applies the FROM state during each strip's
+       stagger delay — otherwise strips flash at their natural (full-size)
+       state for one paint frame before snapping to scale:1 0 and growing. */
+    animation-fill-mode: both;
+    animation-play-state: running;
+  }
+
+  .grid-transition.is-revealing .grid-transition-animation-out {
     transform-origin: bottom;
-    animation: grid-transition-reveal var(--reveal-duration) cubic-bezier(0.25, 0, 0.35, 1) forwards;
+    animation-name: grid-transition-reveal;
+    animation-duration: var(--reveal-duration);
+    animation-timing-function: cubic-bezier(0.25, 0, 0.35, 1);
+    animation-fill-mode: both;
+    animation-play-state: running;
   }
 
   .grid-transition {
@@ -123,26 +157,39 @@
     grid-template-columns: repeat(12, minmax(0, 1fr));
   }
 
-  .grid-transition--grid--a {
-    /* background: pink; */
-    animation-delay: calc(var(--reveal-delay) + var(--strip-stagger));
+  /* Fill-phase stagger (top-origin entry). Base delay is 0 so the fill feels
+     immediate on click. */
+  .grid-transition.is-filling .grid-transition--grid--fill-l {
+    animation-delay: var(--fill-delay);
+  }
+  .grid-transition.is-filling .grid-transition--grid--a {
+    animation-delay: calc(var(--fill-delay) + var(--fill-stagger));
+  }
+  .grid-transition.is-filling .grid-transition--grid--b {
+    animation-delay: calc(var(--fill-delay) + (var(--fill-stagger) * 2));
+  }
+  .grid-transition.is-filling .grid-transition--grid--c {
+    animation-delay: calc(var(--fill-delay) + (var(--fill-stagger) * 3));
+  }
+  .grid-transition.is-filling .grid-transition--grid--fill-r {
+    animation-delay: calc(var(--fill-delay) + (var(--fill-stagger) * 4));
   }
 
-  .grid-transition--grid--b {
-    /* background: blue; */
-    animation-delay: calc(var(--reveal-delay) + (var(--strip-stagger) * 2));
-  }
-
-  .grid-transition--grid--c {
-    /* background: green; */
-    animation-delay: calc(var(--reveal-delay) + (var(--strip-stagger) * 3));
-  }
-
-  .grid-transition--grid--fill-l {
+  /* Reveal-phase stagger (bottom-origin exit). Preserves the original
+     --reveal-delay base pause before strips peel away. */
+  .grid-transition.is-revealing .grid-transition--grid--fill-l {
     animation-delay: var(--reveal-delay);
   }
-
-  .grid-transition--grid--fill-r {
+  .grid-transition.is-revealing .grid-transition--grid--a {
+    animation-delay: calc(var(--reveal-delay) + var(--strip-stagger));
+  }
+  .grid-transition.is-revealing .grid-transition--grid--b {
+    animation-delay: calc(var(--reveal-delay) + (var(--strip-stagger) * 2));
+  }
+  .grid-transition.is-revealing .grid-transition--grid--c {
+    animation-delay: calc(var(--reveal-delay) + (var(--strip-stagger) * 3));
+  }
+  .grid-transition.is-revealing .grid-transition--grid--fill-r {
     animation-delay: calc(var(--reveal-delay) + (var(--strip-stagger) * 4));
   }
 
@@ -198,11 +245,18 @@
   }
 
   .grid-transition--logo > div {
-    animation: grid-logo-fade var(--logo-fade-duration) ease-in forwards var(--logo-fade-delay);
+    opacity: 1;
   }
 
   .grid-transition--logo > div > div {
     opacity: 0;
+  }
+
+  .grid-transition.is-revealing .grid-transition--logo > div {
+    animation: grid-logo-fade var(--logo-fade-duration) ease-in forwards var(--logo-fade-delay);
+  }
+
+  .grid-transition.is-revealing .grid-transition--logo > div > div {
     animation: grid-logo-spin var(--logo-reveal-duration) cubic-bezier(0.3, 1.5, 0.3, 1) forwards var(--logo-reveal-delay);
   }
 
