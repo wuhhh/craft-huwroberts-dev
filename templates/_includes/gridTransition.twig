@@ -17,6 +17,10 @@
       <div class="grid-transition--grid--fill-r grid-transition-animation-out"></div>
     </div>
 
+    {# full-viewport mask used for the <1280px fade variant. Above 1280px
+       the strip grid takes over (display:none below the cascade). #}
+    <div class="grid-transition--mask"></div>
+
     {# logo #}
     <div class="grid-transition--logo">
       <div>
@@ -131,7 +135,7 @@
     width: 100%;
     margin-inline: auto;
     padding-inline: 3rem /* 48px */;
-
+    max-width: 108rem /* 1728px */;
     display: flex;
   }
 
@@ -242,13 +246,8 @@
     animation: grid-logo-spin var(--logo-reveal-duration) cubic-bezier(0.3, 1.5, 0.3, 1) forwards var(--logo-reveal-delay);
   }
 
-  /* === ≥1280px: original vertical-strip layout ==================
-     Below this breakpoint the grid is display:none and the transition is
-     instant. From 1280px up, the 12-col grid + absolute fill-l/r are
-     restored. */
   @media (width >= 80rem /* 1280px */) {
     .grid-transition--container {
-      max-width: 80rem /* 1280px */;
       column-gap: 2.5rem;
     }
 
@@ -260,20 +259,17 @@
     .grid-transition--logo {
       display: block;
     }
+
+    /* Strip grid takes over at ≥1280px — mask is unused. */
+    .grid-transition--mask {
+      display: none;
+    }
   }
 
   /* 1536px */
   @media (width >= 96rem) {
     .grid-transition--container {
       padding-inline: 5rem /* 80px */;
-      max-width: 96rem /* 1536px */;
-    }
-  }
-
-  /* 1728px */
-  @media (width >= 108rem) {
-    .grid-transition--container {
-      max-width: 108rem /* 1728px */;
     }
   }
 </style>
