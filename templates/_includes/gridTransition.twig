@@ -1,7 +1,7 @@
 {# == Reveal strips == #}
 {% set variant = variant ?? "full" %}
 
-<div class="grid-transition" data-grid-transition>
+<div class="grid-transition" data-grid-transition aria-hidden="true">
   <div class="grid-transition--container">
 
     {# space for obi #}
@@ -102,20 +102,11 @@
     }
   }
 
-  .grid-transition-animation-out {
-    /* state-gated animations are applied via .is-filling / .is-revealing on
-       the root .grid-transition element — see rules below. */
-  }
-
   .grid-transition.is-filling .grid-transition-animation-out {
     transform-origin: top;
     animation-name: grid-transition-fill;
     animation-duration: var(--fill-duration);
-    /* COVER_EASING — slightly front-loaded cover entry. */
     animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
-    /* `both` (not `forwards`) applies the FROM state during each strip's
-       stagger delay — otherwise strips flash at their natural (full-size)
-       state for one paint frame before snapping to scale:1 0 and growing. */
     animation-fill-mode: both;
     animation-play-state: running;
   }
@@ -124,7 +115,6 @@
     transform-origin: bottom;
     animation-name: grid-transition-reveal;
     animation-duration: var(--reveal-duration);
-    /* REVEAL_EASING — slightly softer exit. */
     animation-timing-function: cubic-bezier(0.25, 0, 0.35, 1);
     animation-fill-mode: both;
     animation-play-state: running;
@@ -144,7 +134,6 @@
     max-width: 108rem /* 1728px */;
 
     display: flex;
-    column-gap: 2.5rem;
   }
 
   .grid-transition--obi-spacer {
@@ -159,8 +148,6 @@
     grid-template-columns: repeat(12, minmax(0, 1fr));
   }
 
-  /* Fill-phase stagger (top-origin entry). Base delay is 0 so the fill feels
-     immediate on click. */
   .grid-transition.is-filling .grid-transition--grid--fill-l {
     animation-delay: var(--fill-delay);
   }
@@ -177,8 +164,6 @@
     animation-delay: calc(var(--fill-delay) + (var(--fill-stagger) * 4));
   }
 
-  /* Reveal-phase stagger (bottom-origin exit). Preserves the original
-     --reveal-delay base pause before strips peel away. */
   .grid-transition.is-revealing .grid-transition--grid--fill-l {
     animation-delay: var(--reveal-delay);
   }
@@ -262,10 +247,10 @@
     animation: grid-logo-spin var(--logo-reveal-duration) cubic-bezier(0.3, 1.5, 0.3, 1) forwards var(--logo-reveal-delay);
   }
 
-  @media (width >= 40rem /* 640px */) {
+  /* 640px */
+  @media (width >= 40rem) {
     .grid-transition--container {
-      max-width: 40rem /* 640px */;
-      padding-inline: 1.625rem /* 26px */;
+      padding-inline: 1.625rem;
     }
 
     .grid-transition--grid {
@@ -273,17 +258,18 @@
     }
   }
 
-  @media (width >= 51.25rem /* 820px */) {
+  /* 820px */
+  @media (width >= 51.25rem) {
     .grid-transition--container {
-      max-width: 51.25rem /* 820px */;
-      padding-inline: 2rem /* 32px */;
+      padding-inline: 2rem;
     }
   }
 
-  @media (width >= 64rem /* 1024px */) {
+  /* 1024px */
+  @media (width >= 64rem) {
     .grid-transition--container {
-      max-width: 64rem /* 1024px */;
-      padding-inline: 3rem /* 48px */;
+      padding-inline: 3rem;
+      column-gap: 2.5rem;
     }
 
     .grid-transition--grid {
@@ -300,11 +286,8 @@
     }
   }
 
-  @media (width >= 80rem /* 1280px */) {
-    .grid-transition--container {
-      max-width: 80rem /* 1280px */;
-    }
-
+  /* 1280px */
+  @media (width >= 80rem) {
     .grid-transition--grid--a {
       grid-column: span 4 / span 4;
     }
@@ -318,16 +301,10 @@
     }
   }
 
-  @media (width >= 96rem /* 1536px */) {
+  /* 1536px */
+  @media (width >= 96rem) {
     .grid-transition--container {
-      max-width: 96rem /* 1536px */;
-      padding-inline: 5rem /* 80px */;
-    }
-  }
-
-  @media (width >= 108rem /* 1728px */) {
-    .grid-transition--container {
-      max-width: 108rem /* 1728px */;
+      padding-inline: 5rem;
     }
   }
 </style>
