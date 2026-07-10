@@ -1,11 +1,13 @@
 {% set globals = craft.entries().section('globals').one() ?? null %}
 
 {% set footerWords = null %}
+{% set linkedin = null %}
 {% set bluesky = null %}
 {% set github = null %}
 
 {% if globals %}
   {% set footerWords = globals.footerWords ?? null %}
+  {% set linkedin = globals.linkedin ?? null %}
   {% set bluesky = globals.bluesky ?? null %}
   {% set github = globals.github ?? null %}
 {% endif %}
@@ -34,10 +36,23 @@
     </div>
     <div class="sm:absolute right-0 bottom-6 flex items-center">
 
+      {% if linkedin %}
+        <a
+          href="{{ linkedin.url }}"
+          rel="{{ linkedin.rel }}"
+          target="{{ linkedin.target }}"
+          class="hover:text-seabed-indigo transition duration-100 translate-x-px"
+          aria-label="Huw Roberts on LinkedIn"
+        >
+          {{ svg('@webroot/dist/images/social--linkedin.svg', true, true)|attr({ class: "h-[38px]" }) }}
+        </a>
+      {% endif %}
+
       {% if bluesky %}
         <a
           href="{{ bluesky.url }}"
           rel="{{ bluesky.rel }}"
+          target="{{ bluesky.target }}"
           class="hover:text-seabed-indigo transition duration-100"
           aria-label="Huw Roberts on Bluesky"
         >
@@ -49,6 +64,7 @@
         <a
           href="{{ github.url }}"
           rel="{{ github.rel }}"
+          target="{{ github.target }}"
           class="hover:text-seabed-indigo transition duration-100"
           aria-label="Huw Roberts on GitHub"
         >

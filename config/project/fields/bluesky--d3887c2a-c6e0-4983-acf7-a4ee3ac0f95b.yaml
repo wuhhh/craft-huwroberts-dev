@@ -6,6 +6,7 @@ searchable: false
 settings:
   advancedFields:
     - rel
+    - target
   fullGraphqlData: true
   maxLength: 255
   showLabelField: false
