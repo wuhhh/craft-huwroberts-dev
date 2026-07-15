@@ -4,6 +4,8 @@ description: null
 fieldLayouts:
   8c0171a4-5a7d-428b-bef6-74dd614a7251:
     cardThumbAlignment: end
+    cardView:
+      - uri
     tabs:
       -
         elementCondition: null
@@ -37,6 +39,66 @@ fieldLayouts:
             warning: null
             width: 100
           -
+            dateAdded: '2026-07-13T13:52:48+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 3304bc86-e804-4dc5-8c9b-0907003b0734 # Image Asset
+            handle: null
+            instructions: null
+            label: 'Card Image'
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: f11fde33-b7a9-4730-87f5-559c11c8534b
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-07-13T13:52:48+00:00'
+            elementCondition: null
+            type: craft\fieldlayoutelements\HorizontalRule
+            uid: 19c10922-1daa-4108-aac6-57a47587d3b3
+            userCondition: null
+          -
+            dateAdded: '2026-07-13T13:52:48+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: e8279da5-f90e-4b6c-8c56-239c06e74f6b # Feature Video
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 335a1810-ae6f-4e6a-8d6d-392a19e561ba
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-07-13T13:52:48+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 0c63feb6-fcfa-46d6-befd-8445e10a9e7a # Image & Caption
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 6542f82d-8b14-46b5-b6ff-5b35f850ad68
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-07-13T13:52:48+00:00'
+            elementCondition: null
+            type: craft\fieldlayoutelements\HorizontalRule
+            uid: 3b1654f7-cd8c-4057-a664-0e406fda2b11
+            userCondition: null
+          -
             dateAdded: '2026-06-27T21:43:44+00:00'
             editCondition: null
             elementCondition: null
@@ -44,7 +106,7 @@ fieldLayouts:
             fieldUid: 9df05e4c-ad18-498a-9fba-144f3ed8f8db # Summary Short
             handle: null
             instructions: null
-            label: null
+            label: Summary
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
@@ -65,6 +127,22 @@ fieldLayouts:
             tip: null
             type: craft\fieldlayoutelements\CustomField
             uid: dde9750c-9abd-4248-9147-322af68127b8
+            userCondition: null
+            warning: null
+            width: 100
+          -
+            dateAdded: '2026-07-13T13:47:24+00:00'
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 5ce6d819-412b-470b-a122-a6d474f65997 # Rich Text Post
+            handle: null
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 999005c7-6c0c-4f51-8ce5-0a2e83d7ad59
             userCondition: null
             warning: null
             width: 100

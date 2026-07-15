@@ -1,0 +1,32 @@
+
+{% extends "_layouts/default" %}
+
+{% block content %}
+
+  <div class="col-span-full pt-33 sm:pt-30">
+    {% include "_includes/breadcrumb" with {
+      classes: "mb-8 sm:mb-12 2xl:mb-20",
+      links: [
+        {
+          label: "Home",
+          url: siteUrl,
+        },
+        {
+          label: "journal",
+          url: "/journal",
+        }
+      ]
+    } only %}
+  </div>
+
+  {% set entries = craft.entries().section('journal').all() ?? [] %}
+
+  {% if entries %}
+    <div class="col-span-full pt-33 sm:pt-30">
+      {% for entry in entries %}
+        <div><a href="{{ url(entry.uri) }}">{{ entry.title }}</a></div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+{% endblock %}
