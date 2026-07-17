@@ -1,0 +1,68 @@
+{% set entry = entry ?? null %}
+{% set size = size ?? "md" %}
+{% set isLarge = size == "lg" %}
+
+{% if entry %}
+
+  {% set imageCaption = entry.imageCaption ?? null %}
+  {% set image = imageCaption ? imageCaption.imageAsset.one() : null %}
+  {% set summary = entry.summaryShort ?? null %}
+  {% set techTags = entry.techTags.all() ?? [] %}
+
+  <div class="group relative flex w-full flex-col items-start gap-4">
+
+    <div class="flex h-3.5 w-full items-center justify-between">
+      <span class="xs-mono flex items-center gap-2 uppercase">
+        {{ svg("@webroot/dist/images/icon--featured.svg", true, true)|attr({ class: "size-3.5", "aria-hidden": "true" }) }}
+        Featured
+      </span>
+      <span class="xs-mono uppercase">{{ entry.postDate|date("F Y")|upper }}</span>
+    </div>
+
+    <div class="flex w-full flex-col items-start {{ isLarge ? "gap-4 sm:gap-8" : "gap-6.75" }}">
+
+      {% if image %}
+        <div class="relative w-full overflow-hidden {{ isLarge ? "aspect-951/570 rounded-2xl" : "aspect-456/273 rounded-lg" }}">
+          {{ image.getImg(
+            {
+              width: isLarge ? 951 : 456,
+              height: isLarge ? 570 : 273,
+              format: "avif",
+              mode: "crop",
+            },
+            isLarge ? ["720w", "951w", "1440w", "1902w"] : ["456w", "684w", "912w"]
+          )|attr({
+            sizes: isLarge ? "(min-width: 1024px) 951px, 100vw" : "(min-width: 1024px) 456px, (min-width: 640px) 45vw, 100vw",
+            class: "absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105",
+            alt: image.alt ?? entry.title,
+          }) }}
+        </div>
+      {% endif %}
+
+      <h2 class="[word-break:break-word] {{ isLarge ? "base-sans sm:heading5" : "base-sans" }} font-medium group-hover:underline">
+        {{ entry.title }}
+      </h2>
+
+      {% if summary %}
+        <p class="{{ isLarge ? "xs-sans sm:xm-sans md:base-sans max-w-147.5" : "max-w-82.5 text-base leading-[1.35] font-light" }} ">
+          {{ summary }}
+        </p>
+      {% endif %}
+
+      {% if techTags|length %}
+        <p class="xs-mono overflow-hidden w-full whitespace-nowrap text-ellipsis">
+          {% for tag in techTags %}<span class="uppercase">{{ tag }}</span>{% if not loop.last %} <span class="text-black/25">/</span> {% endif %}{% endfor %}
+        </p>
+      {% endif %}
+
+    </div>
+
+    <a
+      href="{{ url(entry.uri) }}"
+      class="box-link focus-visible:outline-0 focus-visible:before:outline-2 focus-visible:before:outline-offset-2 focus-visible:before:outline-coral-red"
+      aria-label="{{ '{0}, read article'|t([entry.title]) }}"
+    ></a>
+
+  </div>
+
+{% endif %}

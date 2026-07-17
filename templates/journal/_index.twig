@@ -1,32 +1,113 @@
-
 {% extends "_layouts/default" %}
+
+{% set gridLinesVariant = "outer" %}
 
 {% block content %}
 
-  <div class="col-span-full pt-33 sm:pt-30">
-    {% include "_includes/breadcrumb" with {
-      classes: "mb-8 sm:mb-12 2xl:mb-20",
-      links: [
-        {
-          label: "Home",
-          url: siteUrl,
-        },
-        {
-          label: "journal",
-          url: "/journal",
-        }
-      ]
-    } only %}
-  </div>
+  {% set preamble = entry.richTextSimple ?? null %}
 
-  {% set entries = craft.entries().section('journal').all() ?? [] %}
+  {% set entries = craft.entries()
+    .section('journal')
+    .with(['techTags'])
+    .orderBy('postDate DESC')
+    .all() ?? [] %}
 
-  {% if entries %}
-    <div class="col-span-full pt-33 sm:pt-30">
-      {% for entry in entries %}
-        <div><a href="{{ url(entry.uri) }}">{{ entry.title }}</a></div>
-      {% endfor %}
-    </div>
+  {# Purely date-based: the latest entry is the hero, the next two run as a
+     medium pair, and anything older falls into the dated list below. With
+     two or fewer entries there isn't enough to fill that hierarchy, so they
+     just stack full-size instead. #}
+  {% if entries|length <= 2 %}
+    {% set heroEntries = entries %}
+    {% set midEntries = [] %}
+    {% set listEntries = [] %}
+  {% else %}
+    {% set featured = entries|slice(0, 3) %}
+    {% set heroEntries = featured|slice(0, 1) %}
+    {% set midEntries = featured|slice(1) %}
+    {% set listEntries = entries|slice(3) %}
   {% endif %}
+
+  {% include "_includes/decor/decorCellGrid.twig" only %}
+
+  <div class="col-span-full grid grid-cols-subgrid">
+
+    <div class="col-span-full pt-33 sm:pt-30 sm:px-4 lg:px-0 lg:col-start-2 lg:col-span-9 xl:col-start-2 xl:col-span-8">
+
+      {% include "_includes/breadcrumb" with {
+        classes: "mb-8 sm:mb-12 2xl:mb-20",
+        links: [
+          {
+            label: "Home",
+            url: siteUrl,
+          },
+          {
+            label: "Journal",
+            url: "/journal",
+          }
+        ]
+      } only %}
+
+      <h1 class="sr-only">Journal</h1>
+
+      {% if preamble %}
+        <h2 class="max-w-236.75 font-medium base-sans sm:heading5 [word-break:break-word] xl:heading4">
+          {{ preamble }}
+        </h2>
+      {% endif %}
+
+      {% if entries|length %}
+        <div class="flex flex-col gap-y-16 sm:gap-y-20 {{ preamble ? "mt-16 sm:mt-20" : "" }}">
+
+          {% for heroEntry in heroEntries %}
+            {% include "_includes/journalFeaturedCard" with {
+              entry: heroEntry,
+              size: "lg",
+            } only %}
+          {% endfor %}
+
+          {% if midEntries|length %}
+            <div class="grid grid-cols-1 gap-x-10 gap-y-16 sm:grid-cols-2">
+              {% for midEntry in midEntries %}
+                {% include "_includes/journalFeaturedCard" with {
+                  entry: midEntry,
+                  size: "md",
+                } only %}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% if listEntries|length %}
+            <div class="flex flex-col gap-y-6">
+              {% for listEntry in listEntries %}
+                {% set entryYear = listEntry.postDate|date("Y") %}
+                {% set prevYear = loop.index0 > 0 ? listEntries[loop.index0 - 1].postDate|date("Y") : null %}
+
+                {% if entryYear != prevYear %}
+                  <div class="{{ not loop.first ? "mt-4" : "" }} inline-flex w-fit items-center rounded-full bg-black px-5 py-4 text-base font-medium text-white">
+                    {{ entryYear }}
+                  </div>
+                {% endif %}
+
+                <div class="group relative flex items-center justify-between gap-x-8 border-t border-smoke py-6">
+                  <h3 class="[word-break:break-word] text-lg leading-[1.26] font-medium tracking-[-0.01em] text-black group-hover:underline">
+                    {{ listEntry.title }}
+                  </h3>
+                  <span class="xs-mono shrink-0 text-black">{{ listEntry.postDate|date("M d")|upper }}</span>
+                  <a
+                    href="{{ url(listEntry.uri) }}"
+                    class="box-link focus-visible:outline-0 focus-visible:before:outline-2 focus-visible:before:outline-offset-2 focus-visible:before:outline-coral-red"
+                    aria-label="{{ '{0}, read article'|t([listEntry.title]) }}"
+                  ></a>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+        </div>
+      {% endif %}
+
+    </div>
+
+  </div>
 
 {% endblock %}
