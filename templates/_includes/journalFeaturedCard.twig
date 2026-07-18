@@ -33,13 +33,14 @@
             isLarge ? ["720w", "951w", "1440w", "1902w"] : ["456w", "684w", "912w"]
           )|attr({
             sizes: isLarge ? "(min-width: 1024px) 951px, 100vw" : "(min-width: 1024px) 456px, (min-width: 640px) 45vw, 100vw",
-            class: "absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105",
+            class: "absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease group-hover:scale-[1.02]",
             alt: image.alt ?? entry.title,
           }) }}
         </div>
       {% endif %}
 
       <h2 class="[word-break:break-word] {{ isLarge ? "base-sans sm:heading5" : "base-sans" }} font-medium group-hover:underline">
+        {# widont #}
         {% set titleWords = entry.title|split(" ") %}{% if titleWords|length > 1 %}{{ titleWords|slice(0, -1)|join(" ") }}&nbsp;{{ titleWords|last }}{% else %}{{ entry.title }}{% endif %}
       </h2>
 
