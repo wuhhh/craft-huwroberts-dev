@@ -6,7 +6,8 @@
   {% set mediaData = null %}
 
   {# Prep data for <video-player/> component #}
-  {% set video = featureVideo.videoCaption.videoAsset.one() %}
+  {# Multiple assets become ordered <source> fallbacks (see field instructions). #}
+  {% set videos = featureVideo.videoCaption.videoAsset.all() %}
   {% set boxed = featureVideo.boxed ?? false %}
   {% set poster = featureVideo.videoCaption.imageAsset.one() ?? null %}
   {% set imageTransform = { format: 'webp', mode: 'crop', width: 960, height: 576, quality: 90 } %}
@@ -22,10 +23,7 @@
       url: poster.getUrl(imageTransform),
       srcset: poster.getSrcset(['600w', '800w', '1073w', '1250w', '1900w'], imageTransform),
     }] : [],
-    video: [{
-      url: video.url,
-      mimeType: video.mimeType,
-    }],
+    video: videos|map(v => { url: v.url, mimeType: v.mimeType }),
     videoAttributes: isBackground ? {
       autoplay: true,
       loop: true,

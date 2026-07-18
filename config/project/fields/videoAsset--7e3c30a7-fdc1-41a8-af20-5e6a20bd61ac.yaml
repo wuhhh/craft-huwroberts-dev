@@ -1,6 +1,6 @@
 columnSuffix: null
 handle: videoAsset
-instructions: null
+instructions: 'If multiple files are provided, they are added as `<source>` elements in order (in this way they can be used as fallbacks for specific browsers)'
 name: 'Video Asset'
 searchable: false
 settings:
@@ -14,7 +14,7 @@ settings:
   defaultUploadLocationSource: 'volume:d5f87477-e8cd-4d2e-b3b9-c8c97050dadb' # Assets
   defaultUploadLocationSubpath: 'videos/{slug}'
   maintainHierarchy: false
-  maxRelations: 1
+  maxRelations: 3
   minRelations: null
   previewMode: full
   restrictFiles: true

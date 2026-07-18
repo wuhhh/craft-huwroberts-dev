@@ -6,7 +6,7 @@
    The nested entry is available as `entry`, with:
      - fullWidth    : Lightswitch (constrain to the left column when off)
      - videoCaption : ContentBlock (Video & Caption) with:
-         - videoAsset : Assets (max 1)
+         - videoAsset : Assets (max 3, ordered <source> fallbacks)
          - videoMode  : RadioButtons ("playable" | "background")
          - imageAsset : Assets (max 1, poster image)
          - dimPoster  : Lightswitch
@@ -19,9 +19,9 @@
 #}
 
 {% set block = entry.videoCaption ?? null %}
-{% set video = block ? block.videoAsset.one() : null %}
+{% set videos = block ? block.videoAsset.all() : [] %}
 
-{% if video %}
+{% if videos|length %}
   {% set poster = block.imageAsset.one() ?? null %}
   {% set isBackground = block.videoMode == 'background' %}
   {% set caption = block.text ?? null %}
@@ -30,11 +30,15 @@
     <div class="group relative aspect-960/576 w-full overflow-hidden rounded-lg">
       <video
         class="h-full w-full rounded-lg object-cover"
-        src="{{ video.url }}"
         {% if poster %}poster="{{ poster.url }}"{% endif %}
         {% if isBackground %}autoplay muted loop playsinline{% else %}controls playsinline{% endif %}
         data-cursor-layer="top"
-      ></video>
+      >
+        {# Multiple assets become ordered <source> fallbacks (see field instructions). #}
+        {% for asset in videos %}
+          <source src="{{ asset.url }}" type="{{ asset.mimeType }}">
+        {% endfor %}
+      </video>
     </div>
     {% if caption|length %}
       <p class="text-sm text-[#705959] italic">{{ caption }}</p>

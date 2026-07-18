@@ -402,9 +402,8 @@ export class VideoPlayer extends LitElement {
     return Boolean(this.entry?.posterImage?.[0]?.url);
   }
 
-  private get videoUrl(): string | undefined {
-    //FIX: This should only be considered a temporary fix
-    return this.entry?.video?.[0]?.url + "#t=0.1"; // Set t to force Safari iOS to show the first frame
+  private get videoSources(): VideoAsset[] {
+    return this.entry?.video ?? [];
   }
 
   private get posterImage(): ImageAsset | undefined {
@@ -626,7 +625,6 @@ export class VideoPlayer extends LitElement {
     return html`
       <div class="video">
         <video
-          src=${this.videoUrl ?? ""}
           ?autoplay=${autoplay}
           ?loop=${loop}
           ?muted=${muted}
@@ -637,7 +635,15 @@ export class VideoPlayer extends LitElement {
           @timeupdate=${this.onTimeUpdate}
           @ended=${this.onEnded}
           @click=${this.play}
-        ></video>
+        >
+          ${this.videoSources.map(
+            // #t=0.1 forces Safari iOS to show the first frame (temporary fix).
+            (source) => html`<source
+              src=${(source.url ?? "") + "#t=0.1"}
+              type=${source.mimeType ?? nothing}
+            />`,
+          )}
+        </video>
 
         ${this.renderVideoControls()}
       </div>
