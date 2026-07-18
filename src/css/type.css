@@ -347,6 +347,7 @@
 }
 
 /* Copy & Aside copy — remove margins on pre as spacing is handled by the container */
+/*
 .copy-aside-content {
   > *:first-child {
     margin-top: 0 !important;
@@ -357,6 +358,7 @@
     margin-bottom: 0 !important;
   }
 }
+*/
 
 /* Aside content (simpler, within the callout box) */
 .aside-content {

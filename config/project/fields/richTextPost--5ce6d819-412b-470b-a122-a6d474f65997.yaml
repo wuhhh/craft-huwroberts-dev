@@ -67,6 +67,14 @@ settings:
                   __assoc__:
                     -
                       - label
+                      - Bash
+                    -
+                      - language
+                      - bash
+                -
+                  __assoc__:
+                    -
+                      - label
                       - CSS
                     -
                       - language

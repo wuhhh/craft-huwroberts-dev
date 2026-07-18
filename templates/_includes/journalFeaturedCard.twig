@@ -40,20 +40,19 @@
       {% endif %}
 
       <h2 class="[word-break:break-word] {{ isLarge ? "base-sans sm:heading5" : "base-sans" }} font-medium group-hover:underline">
-        {{ entry.title }}
+        {% set titleWords = entry.title|split(" ") %}{% if titleWords|length > 1 %}{{ titleWords|slice(0, -1)|join(" ") }}&nbsp;{{ titleWords|last }}{% else %}{{ entry.title }}{% endif %}
       </h2>
 
       {% if summary %}
-        <p class="{{ isLarge ? "xs-sans sm:xm-sans md:base-sans max-w-147.5" : "max-w-82.5 text-base leading-[1.35] font-light" }} ">
+        <p class="{{ isLarge ? "xs-sans sm:xm-sans md:base-sans max-w-160" : "text-base leading-[1.35] font-light" }}">
           {{ summary }}
         </p>
       {% endif %}
 
-      {% if techTags|length %}
-        <p class="xs-mono overflow-hidden w-full whitespace-nowrap text-ellipsis">
-          {% for tag in techTags %}<span class="uppercase">{{ tag }}</span>{% if not loop.last %} <span class="text-black/25">/</span> {% endif %}{% endfor %}
-        </p>
-      {% endif %}
+      {% include "_includes/techTags" with {
+        techTags: techTags,
+        id: "tech-tags-" ~ entry.id,
+      } only %}
 
     </div>
 
