@@ -99,6 +99,22 @@ settings:
                   __assoc__:
                     -
                       - label
+                      - Markdown
+                    -
+                      - language
+                      - md
+                -
+                  __assoc__:
+                    -
+                      - label
+                      - Plaintext
+                    -
+                      - language
+                      - plaintext
+                -
+                  __assoc__:
+                    -
+                      - label
                       - Rust
                     -
                       - language
