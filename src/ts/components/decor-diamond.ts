@@ -1,5 +1,6 @@
 import { html, css, LitElement, type CSSResultGroup } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { PointerMotionController } from "../controllers/pointer-motion-controller";
 
 @customElement("decor-diamond")
 export class DecorDiamond extends LitElement {
@@ -10,10 +11,18 @@ export class DecorDiamond extends LitElement {
   @property({ type: Boolean })
   pointerMotion = false;
 
+  private pm?: PointerMotionController;
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    if (!this.pm) this.pm = new PointerMotionController(this);
+  }
+
   static styles?: CSSResultGroup | undefined = css`
     :host {
       display: block;
       transform: scaleY(0.67) rotateZ(45deg);
+      translate: var(--pm-x, 0px) var(--pm-y, 0px);
     }
 
     div {

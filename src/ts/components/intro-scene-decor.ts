@@ -87,10 +87,10 @@ export class IntroSceneDecor extends LitElement {
 
   render() {
     return html`
-      <decor-diamond color="coral" decorStyle="fill"></decor-diamond>
+      <decor-diamond color="coral" decorStyle="fill" ?pointerMotion=${true}></decor-diamond>
       <decor-diamond color="indigo" decorStyle="outline"></decor-diamond>
-      <decor-diamond color="coral" decorStyle="outline"></decor-diamond>
-      <decor-diamond color="indigo" decorStyle="fill"></decor-diamond>
+      <decor-diamond color="coral" decorStyle="outline" ?pointerMotion=${true}></decor-diamond>
+      <decor-diamond color="indigo" decorStyle="fill" ?pointerMotion=${true}></decor-diamond>
       <decor-star color="coral" decorStyle="fill" ?spin=${true}></decor-star>
     `;
   }
