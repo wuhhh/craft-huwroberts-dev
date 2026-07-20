@@ -132,7 +132,6 @@ export class IntroSceneText extends LitElement {
       .labels {
         width: 70%;
         height: 20rem;
-        // font-size: 1rem;
       }
 
       .labels > div:last-child {
