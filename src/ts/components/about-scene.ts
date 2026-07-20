@@ -15,18 +15,18 @@ import { disposeObject3D } from "../lib/dispose";
 // impulse into each nearby letter's spring — a still cursor imparts nothing, so
 // letters simply settle home. One continuous time domain, no moving/rest toggle.
 const REPULSION_RADIUS = 1.5; // world units — cursor influence radius
-const IMPULSE_GAIN = 6; // velocity kick per (proximity × cursor-speed)
-const MAX_IMPULSE = 3; // clamp per-frame kick (guards pointer jumps)
+const IMPULSE_GAIN = 4; // velocity kick per (proximity × cursor-speed)
+const MAX_IMPULSE = 2; // clamp per-frame kick (guards pointer jumps)
 const MAX_CURSOR_SPEED = 0.6; // clamp cursor speed (world units/frame)
 const Z_PUSH_FACTOR = 8; // z kick relative to the xy kick (pushes away from camera)
 const TILT_GAIN = 8; // rotation kick relative to the xy kick (restores the visible tilt)
-const HEAT_GAIN = 1.2; // colour-excitation kick per impulse (impulse-based tint)
+const HEAT_GAIN = 7; // colour-excitation kick per impulse (higher = stronger tint)
 const MAX_TILT = 0.8; // max entrance rotation (radians)
 const FRAME_GAP_RESET_MS = 200; // reseed cursor tracking after a render gap (pause/tab-hidden)
 
 // Spring configs
 const REPULSION_CFG = fromTensionFriction(150, 12); // wobbly, snappy — offset/rotation
-const HEAT_CFG = fromTensionFriction(150, 26); // critically damped — colour excitation
+const HEAT_CFG = fromTensionFriction(70, 12); // soft, near-critical — a visible tint flash + fade
 const ENTRANCE_CFG = fromTensionFriction(100, 10); // bouncier — one-shot reveal
 
 // Entrance / reveal settings
