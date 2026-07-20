@@ -100,10 +100,10 @@ export class AboutSceneDecor extends LitElement {
   render() {
     return html`
       <decor-diamond color="indigo" decorStyle="fill" ?pointerMotion=${true}></decor-diamond>
-      <decor-diamond color="indigo" decorStyle="outline"></decor-diamond>
+      <decor-diamond color="indigo" decorStyle="outline" ?pointerMotion=${true}></decor-diamond>
       <decor-diamond color="coral" decorStyle="outline" ?pointerMotion=${true}></decor-diamond>
       <decor-diamond color="coral" decorStyle="fill" ?pointerMotion=${true}></decor-diamond>
-      <decor-diamond color="coral" decorStyle="outline"></decor-diamond>
+      <decor-diamond color="coral" decorStyle="outline" ?pointerMotion=${true}></decor-diamond>
     `;
   }
 }
