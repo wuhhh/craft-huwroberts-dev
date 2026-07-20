@@ -6,6 +6,9 @@ import { customElement, property } from "lit/decorators.js";
 const FADE_VH = 0.15; // fraction of a viewport scrolled to fully fade (smaller = faster)
 const MAX_BLUR = 8; // px blur at full fade
 
+// Below 1280px there's no grid page-reveal to clear, so the text unclips sooner.
+const SMALL_SCREEN_REVEAL_DELAY = 200; // ms
+
 @customElement("intro-scene-text")
 export class IntroSceneText extends LitElement {
   /**
@@ -171,10 +174,14 @@ export class IntroSceneText extends LitElement {
       return;
     }
 
-    // Wait out the initial page reveal, then unclip (staggered).
+    // Wait out the initial page reveal, then unclip (staggered). Below 1280px
+    // there's no page reveal, so the delay is shortened.
+    const delay = window.matchMedia("(min-width: 1280px)").matches
+      ? this.revealDelay
+      : SMALL_SCREEN_REVEAL_DELAY;
     this.#revealTimer = window.setTimeout(() => {
       this.toggleAttribute("revealed", true);
-    }, this.revealDelay);
+    }, delay);
 
     // Scroll-linked fade/blur runs independently of the reveal, live from load.
     this.#labels = this.renderRoot.querySelector<HTMLElement>(".labels");
