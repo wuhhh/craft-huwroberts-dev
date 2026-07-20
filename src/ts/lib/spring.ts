@@ -127,6 +127,12 @@ export class SpringScalar {
     this.target = target;
   }
 
+  /** Inject an impulse into the velocity — e.g. a repulsion kick exciting an
+   * otherwise-settling spring. Value/target/config are untouched. */
+  kick(impulse: number): void {
+    this.velocity += impulse;
+  }
+
   setConfig(config: SpringConfig): void {
     this.config = config;
   }
