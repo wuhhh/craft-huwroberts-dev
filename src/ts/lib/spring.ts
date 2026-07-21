@@ -62,6 +62,14 @@ export class SpringVec3 {
     this.target.set(x, y, z);
   }
 
+  /** Inject an impulse into the velocity — e.g. a mouse flick agitating an
+   * otherwise-settling spring. Value/target/config are untouched. */
+  kickXYZ(x: number, y: number, z: number): void {
+    this.velocity.x += x;
+    this.velocity.y += y;
+    this.velocity.z += z;
+  }
+
   /** Swap the spring feel at runtime (omega/zeta). Velocity/value are preserved. */
   setConfig(config: SpringConfig): void {
     this.config = config;
@@ -117,6 +125,12 @@ export class SpringScalar {
 
   setTarget(target: number): void {
     this.target = target;
+  }
+
+  /** Inject an impulse into the velocity — e.g. a repulsion kick exciting an
+   * otherwise-settling spring. Value/target/config are untouched. */
+  kick(impulse: number): void {
+    this.velocity += impulse;
   }
 
   setConfig(config: SpringConfig): void {

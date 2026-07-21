@@ -1,6 +1,7 @@
 import { css, html, LitElement, type CSSResultGroup } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
+import { PointerMotionController } from "../controllers/pointer-motion-controller";
 
 @customElement("decor-star")
 export class DecorStar extends LitElement {
@@ -13,7 +14,17 @@ export class DecorStar extends LitElement {
   @property({ type: Boolean })
   pointerMotion = false;
 
+  private pm?: PointerMotionController;
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    if (!this.pm) this.pm = new PointerMotionController(this);
+  }
+
   static styles?: CSSResultGroup | undefined = css`
+    :host {
+      translate: var(--pm-x, 0px) var(--pm-y, 0px);
+    }
     @keyframes spin {
       from {
         transform: rotate(0deg);
