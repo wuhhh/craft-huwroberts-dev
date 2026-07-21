@@ -84,16 +84,18 @@
                   </div>
                 {% endif %}
 
-                <div class="group relative flex items-center justify-between gap-x-8 border-t border-smoke py-6">
-                  <h3 class="[word-break:break-word] text-lg leading-[1.26] font-medium tracking-[-0.01em] text-black group-hover:underline">
-                    {{ listEntry.title }}
-                  </h3>
+                <div class="group relative border-t border-smoke py-6">
+                  <div class="flex items-center justify-between gap-x-8">
+                    <h3 class="[word-break:break-word] text-lg leading-[1.26] font-medium tracking-[-0.01em] text-black group-hover:underline">
+                      {{ listEntry.title }}
+                    </h3>
+                    <span class="xs-mono shrink-0 text-black">{{ listEntry.postDate|date("M d")|upper }}</span>
+                  </div>
                   <a
                     href="{{ url(listEntry.uri) }}"
                     class="box-link focus-visible:outline-0 focus-visible:before:outline-2 focus-visible:before:outline-offset-2 focus-visible:before:outline-coral-red"
                     aria-label="{{ '{0}, read article'|t([listEntry.title]) }}"
                   ></a>
-                  <span class="xs-mono shrink-0 text-black">{{ listEntry.postDate|date("M d")|upper }}</span>
                 </div>
               {% endfor %}
             </div>
