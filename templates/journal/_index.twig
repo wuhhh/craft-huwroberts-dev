@@ -12,10 +12,6 @@
     .orderBy('postDate DESC')
     .all() ?? [] %}
 
-  {# Purely date-based: the latest entry is the hero, the next two run as a
-     medium pair, and anything older falls into the dated list below. With
-     two or fewer entries there isn't enough to fill that hierarchy, so they
-     just stack full-size instead. #}
   {% if entries|length <= 2 %}
     {% set heroEntries = entries %}
     {% set midEntries = [] %}
@@ -77,22 +73,24 @@
           {% endif %}
 
           {% if listEntries|length %}
-            <div class="flex flex-col gap-y-6">
+            <div>
               {% for listEntry in listEntries %}
                 {% set entryYear = listEntry.postDate|date("Y") %}
                 {% set prevYear = loop.index0 > 0 ? listEntries[loop.index0 - 1].postDate|date("Y") : null %}
 
                 {% if entryYear != prevYear %}
-                  <div class="{{ not loop.first ? "mt-4" : "" }} inline-flex w-fit items-center rounded-full bg-black px-5 py-4 text-base font-medium text-white">
+                  <div class="{{ not loop.first ? "mt-4" : "mb-6" }} inline-flex w-fit items-center rounded-full bg-black px-5 py-4 text-base font-medium text-white">
                     {{ entryYear }}
                   </div>
                 {% endif %}
 
-                <div class="group relative flex items-center justify-between gap-x-8 border-t border-smoke py-6">
-                  <h3 class="[word-break:break-word] text-lg leading-[1.26] font-medium tracking-[-0.01em] text-black group-hover:underline">
-                    {{ listEntry.title }}
-                  </h3>
-                  <span class="xs-mono shrink-0 text-black">{{ listEntry.postDate|date("M d")|upper }}</span>
+                <div class="group relative border-t border-smoke py-6">
+                  <div class="flex items-center justify-between gap-x-8">
+                    <h3 class="[word-break:break-word] text-lg leading-[1.26] font-medium tracking-[-0.01em] text-black group-hover:underline">
+                      {{ listEntry.title }}
+                    </h3>
+                    <span class="xs-mono shrink-0 text-black">{{ listEntry.postDate|date("M d")|upper }}</span>
+                  </div>
                   <a
                     href="{{ url(listEntry.uri) }}"
                     class="box-link focus-visible:outline-0 focus-visible:before:outline-2 focus-visible:before:outline-offset-2 focus-visible:before:outline-coral-red"
