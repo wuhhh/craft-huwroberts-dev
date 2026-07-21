@@ -11,26 +11,29 @@ import { SpringScalar, SpringVec3, fromTensionFriction } from "../lib/spring";
 import { CORAL, INDIGO } from "../lib/colors";
 import { disposeObject3D } from "../lib/dispose";
 
-// Mouse-repulsion settings
-const REPULSION_RADIUS = 1.5; // distance at which repulsion starts (world units)
-const REPULSION_STRENGTH = 0.2; // max displacement amount
-const Z_PUSH_FACTOR = 10; // push-away-from-camera relative to XY displacement
-const MOVE_GRACE_MS = 50; // ms after last move before letters spring back to rest
-const VELOCITY_DECAY_PER_FRAME = 0.9; // per-frame @60fps; converted in code (smooths push strength)
-const VELOCITY_REF = 0.1; // normalises velocity → 0..1 for colour/tint
-const MAX_TILT = 0.8; // max rotation (radians) from proximity
+// Mouse-repulsion (impulse field). The cursor's per-frame movement injects an
+// impulse into each nearby letter's spring — a still cursor imparts nothing, so
+// letters simply settle home. One continuous time domain, no moving/rest toggle.
+const REPULSION_RADIUS = 1.5; // world units — cursor influence radius
+const IMPULSE_GAIN = 4; // velocity kick per (proximity × cursor-speed)
+const MAX_IMPULSE = 2; // clamp per-frame kick (guards pointer jumps)
+const MAX_CURSOR_SPEED = 0.6; // clamp cursor speed (world units/frame)
+const Z_PUSH_FACTOR = 8; // z kick relative to the xy kick (pushes away from camera)
+const TILT_GAIN = 8; // rotation kick relative to the xy kick (restores the visible tilt)
+const HEAT_GAIN = 7; // colour-excitation kick per impulse (higher = stronger tint)
+const MAX_TILT = 0.8; // max entrance rotation (radians)
+const FRAME_GAP_RESET_MS = 200; // reseed cursor tracking after a render gap (pause/tab-hidden)
 
 // Spring configs
-const OFFSET_CFG = fromTensionFriction(150, 12); // wobbly, snappy
-const COLOR_CFG = fromTensionFriction(150, 26); // critically damped, smooth
-const ENTRANCE_CFG = fromTensionFriction(100, 10); // bouncier
+const REPULSION_CFG = fromTensionFriction(150, 12); // wobbly, snappy — offset/rotation
+const HEAT_CFG = fromTensionFriction(70, 12); // soft, near-critical — a visible tint flash + fade
+const ENTRANCE_CFG = fromTensionFriction(100, 10); // bouncier — one-shot reveal
 
 // Entrance / reveal settings
 const ENTRANCE_DELAY_S = 0.3; // delay before first letter reveals
 const ENTRANCE_STAGGER_S = 0.05; // delay between each letter
 const ENTRANCE_OFFSET_RANGE = 0.5; // radial offset a letter starts at
 const ENTRANCE_TILT_MULTIPLIER = 8.0; // extra tilt on entrance (× MAX_TILT)
-const ENTRANCE_SETTLE_S = 0.5; // hold after last letter before interaction begins
 
 // Letter colours
 const BASE_COLOR = new THREE.Color("#18181b");
@@ -38,145 +41,145 @@ const INDIGO_COLOR = new THREE.Color(INDIGO);
 const CORAL_COLOR = new THREE.Color(CORAL);
 
 /**
- * Per-letter spring state: base (aligned) transform + offset/rotation/scale/
- * colour springs that chase mouse-repulsion targets each frame, and a one-shot
- * entrance reveal driven off elapsed time.
+ * Per-letter state as two fully independent spring layers, composed ADDITIVELY
+ * on the mesh (no scene-graph nesting, so neither cascades onto the other):
+ *  - entrance: a one-shot staggered reveal, permanently on ENTRANCE_CFG — no
+ *    config swap, no phase flag.
+ *  - repulsion: offset/rotation/heat springs anchored at rest, excited by
+ *    cursor-movement impulses each frame (single time domain).
  */
 interface LetterState {
   name: string;
   mesh: THREE.Mesh;
   material: THREE.MeshBasicNodeMaterial;
-  /** Aligned position from alignMeshWithDOM; refreshed on resize. */
-  basePos: THREE.Vector3;
-  /** Aligned uniform scale (from alignMeshWithDOM); entrance scale multiplies this. */
+  /** Aligned home position (mesh anchor); refreshed on resize. */
+  home: THREE.Vector3;
+  /** Aligned uniform scale; from alignMeshWithDOM. */
   baseScale: number;
-  /** Elapsed time (s) at which this letter starts springing home. */
+  /** Entrance-clock time (s) at which this letter starts springing home. */
   revealAt: number;
-  revealed: boolean;
+  // Entrance layer
+  entranceOffset: SpringVec3;
+  entranceTilt: SpringVec3;
+  entranceScale: SpringScalar;
+  // Repulsion layer (mesh) — rest at 0, excited by impulses
   offset: SpringVec3;
   rotation: SpringVec3;
-  color: SpringVec3;
-  scale: SpringScalar;
+  /** Colour excitation 0..1 — kicked by impulses, decays to 0 (impulse tint). */
+  heat: SpringScalar;
 }
 
-/** Shared mouse state for both the spatial image and letter repulsion. */
+/** Shared cursor state for the spatial image and the letter impulse field. */
 interface MouseState {
+  /** World-space cursor position (tracked window-wide). */
   pos: THREE.Vector3;
-  prev: THREE.Vector3;
-  /** Smoothed instantaneous speed (world units/frame) — scales push strength. */
-  velocity: number;
-  active: boolean;
-  /** performance.now() of the last mousemove, used to detect "still moving". */
-  lastMoveTime: number;
+  /** Cursor position at the previous frame — yields the per-frame movement. */
+  framePrev: THREE.Vector3;
+  /** True once we've had a real cursor reading (so the first frame's movement
+   * isn't measured against the (0,0) origin — that would fire a full kick). */
+  seeded: boolean;
+  /** performance.now() of the previous drawn frame — detects render gaps
+   * (loop paused / tab hidden) so a stale delta doesn't kick on resume. */
+  lastFrameTime: number;
 }
 
-/** Per-frame letter update: entrance reveal + (once settled) mouse repulsion. */
+/**
+ * Per-frame letter update. Two independent layers composed additively on each
+ * mesh (neither cascades onto the other):
+ *  - Entrance: staggered one-shot reveal springing to home.
+ *  - Repulsion: a continuous impulse field — the cursor's per-frame movement
+ *    kicks nearby letters away; springs anchored at rest carry them home. No
+ *    velocity gate, grace window, or moving/rest toggle.
+ */
 function updateLetters(
   letters: LetterState[],
   mouse: MouseState,
-  entrance: { elapsed: number; complete: boolean },
+  entrance: { elapsed: number },
   delta: number,
 ): void {
-  if (!entrance.complete) {
-    entrance.elapsed += delta;
-    for (const L of letters) {
-      if (!L.revealed && entrance.elapsed >= L.revealAt) {
-        // Spring home: offset/rotation/scale → rest, with the entrance feel.
-        L.offset.setTargetXYZ(0, 0, 0);
-        L.rotation.setTargetXYZ(0, 0, 0);
-        L.scale.setTarget(1);
-        L.revealed = true;
-      }
-    }
-    // Once every letter is home and has settled, hand off to interaction.
-    const lastRevealAt = letters.at(-1)?.revealAt ?? 0;
-    if (
-      letters.every((L) => L.revealed) &&
-      entrance.elapsed >= lastRevealAt + ENTRANCE_SETTLE_S
-    ) {
-      entrance.complete = true;
-      for (const L of letters) {
-        L.offset.setConfig(OFFSET_CFG);
-        L.rotation.setConfig(OFFSET_CFG);
-      }
-    }
+  entrance.elapsed += delta;
+
+  // After a render gap (loop paused off-screen, tab hidden), the cursor may have
+  // moved while we weren't drawing — reseed so we don't kick on that stale delta.
+  // (delta itself folds the pause out, so it can't reveal the gap; wall-clock can.)
+  const now = performance.now();
+  if (mouse.lastFrameTime && now - mouse.lastFrameTime > FRAME_GAP_RESET_MS) {
+    mouse.framePrev.copy(mouse.pos);
   }
+  mouse.lastFrameTime = now;
 
-  // Velocity only scales push strength while the mouse is moving (slow move =
-  // gentle push).
-  mouse.velocity *= Math.pow(VELOCITY_DECAY_PER_FRAME, delta * 60);
-
-  // "Actively moving" = a mousemove fired within the last MOVE_GRACE_MS while
-  // inside the host. The instant that window elapses, letters flip to a rest
-  // target so the whole return is a single coherent spring (one time constant)
-  const moving =
-    entrance.complete &&
-    mouse.active &&
-    performance.now() - mouse.lastMoveTime < MOVE_GRACE_MS;
+  // Cursor movement this frame drives the impulse field. A still cursor gives
+  // zero movement → zero kick → letters just settle (single time domain).
+  const mdx = mouse.pos.x - mouse.framePrev.x;
+  const mdy = mouse.pos.y - mouse.framePrev.y;
+  const speed = Math.min(Math.hypot(mdx, mdy), MAX_CURSOR_SPEED);
+  mouse.framePrev.copy(mouse.pos);
 
   for (const L of letters) {
-    let repelling = false;
+    // --- Entrance layer: trigger the reveal at this letter's stagger, then let
+    // it spring home. setTarget is idempotent, so no `revealed` flag. ---
+    if (entrance.elapsed >= L.revealAt) {
+      L.entranceOffset.setTargetXYZ(0, 0, 0);
+      L.entranceTilt.setTargetXYZ(0, 0, 0);
+      L.entranceScale.setTarget(1);
+    }
+    const eo = L.entranceOffset.update(delta);
+    const et = L.entranceTilt.update(delta);
+    const es = L.entranceScale.update(delta); // may overshoot 1 (bouncy reveal)
+    // Reveal progress (clamped) ramps the repulsion impulse in below.
+    const reveal = Math.min(Math.max(es, 0), 1);
 
-    if (moving) {
-      const dx = L.basePos.x - mouse.pos.x;
-      const dy = L.basePos.y - mouse.pos.y;
+    // --- Repulsion layer (mesh): impulse from cursor movement, ramped by the
+    // letter's reveal progress so an un-revealed letter isn't kicked. ---
+    if (speed > 0) {
+      const dx = L.home.x - mouse.pos.x;
+      const dy = L.home.y - mouse.pos.y;
       const dist = Math.hypot(dx, dy);
-
       if (dist < REPULSION_RADIUS && dist > 1e-4) {
-        const proximity = 1 - dist / REPULSION_RADIUS;
-        const velFactor = Math.min(mouse.velocity / VELOCITY_REF, 1);
-        const strength = proximity * REPULSION_STRENGTH * velFactor;
-
-        const offX = (dx / dist) * strength;
-        const offY = (dy / dist) * strength;
-        const offZ = -Math.hypot(offX, offY) * Z_PUSH_FACTOR;
-
-        const tilt = proximity * MAX_TILT;
-        const rotX = (dy / dist) * tilt;
-        const rotY = -(dx / dist) * tilt;
-
-        // activeColour = lerp(INDIGO, CORAL, velFactor)
-        const ar =
-          INDIGO_COLOR.r + (CORAL_COLOR.r - INDIGO_COLOR.r) * velFactor;
-        const ag =
-          INDIGO_COLOR.g + (CORAL_COLOR.g - INDIGO_COLOR.g) * velFactor;
-        const ab =
-          INDIGO_COLOR.b + (CORAL_COLOR.b - INDIGO_COLOR.b) * velFactor;
-        // finalColour = lerp(BASE, activeColour, min(proximity·2, 1))
-        const boosted = Math.min(proximity * 2, 1);
-        const tr = BASE_COLOR.r + (ar - BASE_COLOR.r) * boosted;
-        const tg = BASE_COLOR.g + (ag - BASE_COLOR.g) * boosted;
-        const tb = BASE_COLOR.b + (ab - BASE_COLOR.b) * boosted;
-
-        L.offset.setTargetXYZ(offX, offY, offZ);
-        L.rotation.setTargetXYZ(rotX, rotY, 0);
-        L.color.setTargetXYZ(tr, tg, tb);
-        repelling = true;
+        // C¹ smoothstep falloff → no velocity kink entering/leaving the radius.
+        const t = 1 - dist / REPULSION_RADIUS;
+        const w = t * t * (3 - 2 * t);
+        const impulse = Math.min(
+          w * speed * IMPULSE_GAIN * reveal,
+          MAX_IMPULSE,
+        );
+        const nx = dx / dist;
+        const ny = dy / dist;
+        L.offset.kickXYZ(nx * impulse, ny * impulse, -impulse * Z_PUSH_FACTOR);
+        L.rotation.kickXYZ(
+          ny * impulse * TILT_GAIN,
+          -nx * impulse * TILT_GAIN,
+          0,
+        );
+        L.heat.kick(impulse * HEAT_GAIN);
       }
     }
 
-    if (!repelling && entrance.complete) {
-      L.offset.setTargetXYZ(0, 0, 0);
-      L.rotation.setTargetXYZ(0, 0, 0);
-      L.color.setTargetXYZ(BASE_COLOR.r, BASE_COLOR.g, BASE_COLOR.b);
-    }
+    const o = L.offset.update(delta);
+    const r = L.rotation.update(delta);
+    const heat = Math.min(Math.max(L.heat.update(delta), 0), 1);
 
-    L.offset.update(delta);
-    L.rotation.update(delta);
-    L.color.update(delta);
-    L.scale.update(delta);
-
-    const o = L.offset.value;
+    // Compose the two independent layers ADDITIVELY on the mesh — no scene-graph
+    // nesting, so the entrance transform never cascades onto the repulsion (or
+    // vice versa). MAX_TILT drives only `et`, TILT_GAIN only `r`.
     L.mesh.position.set(
-      L.basePos.x + o.x,
-      L.basePos.y + o.y,
-      L.basePos.z + o.z,
+      L.home.x + eo.x + o.x,
+      L.home.y + eo.y + o.y,
+      L.home.z + eo.z + o.z,
     );
-    const r = L.rotation.value;
-    L.mesh.rotation.set(r.x, r.y, r.z);
-    L.mesh.scale.setScalar(L.baseScale * L.scale.value);
-    const c = L.color.value;
-    L.material.color.setRGB(c.x, c.y, c.z);
+    L.mesh.rotation.set(et.x + r.x, et.y + r.y, et.z + r.z);
+    L.mesh.scale.setScalar(L.baseScale * es);
+
+    // Impulse-based tint: excitation `heat` fades to 0. Low heat leans indigo,
+    // high heat coral; the whole thing lerps up from BASE by heat.
+    const ar = INDIGO_COLOR.r + (CORAL_COLOR.r - INDIGO_COLOR.r) * heat;
+    const ag = INDIGO_COLOR.g + (CORAL_COLOR.g - INDIGO_COLOR.g) * heat;
+    const ab = INDIGO_COLOR.b + (CORAL_COLOR.b - INDIGO_COLOR.b) * heat;
+    L.material.color.setRGB(
+      BASE_COLOR.r + (ar - BASE_COLOR.r) * heat,
+      BASE_COLOR.g + (ag - BASE_COLOR.g) * heat,
+      BASE_COLOR.b + (ab - BASE_COLOR.b) * heat,
+    );
   }
 }
 
@@ -199,10 +202,10 @@ interface AboutSceneContext {
   };
   /** Per-letter springs + base positions. */
   letters: LetterState[];
-  /** Shared mouse state (world-space position, velocity, active flag). */
+  /** Shared cursor state (world-space position + previous-frame position). */
   mouse: MouseState;
-  /** Entrance-reveal phase tracker. */
-  entrance: { elapsed: number; complete: boolean };
+  /** Entrance clock — accumulates delta to trigger each letter's staggered reveal. */
+  entrance: { elapsed: number };
   /** Offscreen spatial-image scene, rendered into an RT each frame. */
   spatialImage?: { si: SpatialImage } | null;
   /** Scene-graph reference held for traversal-based disposal. */
@@ -391,12 +394,11 @@ export class aboutScene extends LitElement {
       letters: [],
       mouse: {
         pos: new THREE.Vector3(),
-        prev: new THREE.Vector3(),
-        velocity: 0,
-        active: false,
-        lastMoveTime: 0,
+        framePrev: new THREE.Vector3(),
+        seeded: false,
+        lastFrameTime: 0,
       },
-      entrance: { elapsed: 0, complete: false },
+      entrance: { elapsed: 0 },
       disposers: [],
     };
 
@@ -422,7 +424,6 @@ export class aboutScene extends LitElement {
           | THREE.Mesh
           | undefined;
         ctx.letterMeshRefs[name] = mesh ?? null;
-        if (mesh) letterGrp.add(mesh);
       });
 
       // stop z fighting with image plane
@@ -439,22 +440,22 @@ export class aboutScene extends LitElement {
         material.color.set(BASE_COLOR);
         mesh.material = material;
         mesh.renderOrder = 1;
+        letterGrp.add(mesh);
+
         return [
           {
             name,
             mesh,
             material,
-            basePos: mesh.position.clone(),
+            home: new THREE.Vector3(),
             baseScale: mesh.scale.x,
             revealAt: ENTRANCE_DELAY_S + index * ENTRANCE_STAGGER_S,
-            revealed: false,
-            offset: new SpringVec3(ENTRANCE_CFG),
-            rotation: new SpringVec3(ENTRANCE_CFG),
-            color: new SpringVec3(
-              COLOR_CFG,
-              new THREE.Vector3(BASE_COLOR.r, BASE_COLOR.g, BASE_COLOR.b),
-            ),
-            scale: new SpringScalar(ENTRANCE_CFG, 0),
+            entranceOffset: new SpringVec3(ENTRANCE_CFG),
+            entranceTilt: new SpringVec3(ENTRANCE_CFG),
+            entranceScale: new SpringScalar(ENTRANCE_CFG, 0),
+            offset: new SpringVec3(REPULSION_CFG),
+            rotation: new SpringVec3(REPULSION_CFG),
+            heat: new SpringScalar(HEAT_CFG, 0),
           },
         ];
       });
@@ -468,18 +469,25 @@ export class aboutScene extends LitElement {
           const domEl: HTMLDivElement | null =
             host.shadowRoot?.querySelector(`[data-letter=${L.name}]`) ?? null;
           if (!domEl) continue;
-          alignMeshWithDOM({ mesh: L.mesh, domElement: domEl, camera, host });
-          L.basePos.copy(L.mesh.position);
-          L.baseScale = L.mesh.scale.x;
+          const res = alignMeshWithDOM({
+            mesh: L.mesh,
+            domElement: domEl,
+            camera,
+            host,
+          });
+          if (!res) continue;
+          // Cache the aligned home + scale; updateLetters composes the mesh
+          // transform (home + entrance + repulsion) additively each frame.
+          L.home.copy(res.position);
+          L.baseScale = res.scale ? res.scale.y : L.mesh.scale.x;
 
-          // Re-snap the entrance transform if the reveal hasn't started yet, so
-          // a resize during the hold keeps the radial offset aligned to the new
-          // position. (After reveal, springs own the transform — leave them.)
-          if (!L.revealed && !ctx.entrance.complete) {
-            const snap = entranceTransformFor(L.basePos);
-            L.offset.reset(snap.offset);
-            L.rotation.reset(snap.rotation);
-            L.scale.reset(0);
+          // While a letter hasn't revealed yet, keep its entrance start (radial
+          // offset + outward tilt, scale 0) snapped to the new home on resize.
+          if (ctx.entrance.elapsed < L.revealAt) {
+            const snap = entranceTransformFor(L.home);
+            L.entranceOffset.reset(snap.offset);
+            L.entranceTilt.reset(snap.rotation);
+            L.entranceScale.reset(0);
           }
         }
       };
@@ -488,41 +496,24 @@ export class aboutScene extends LitElement {
       window.addEventListener("resize", alignLetterMeshesWithDOM);
       ctx.disposers.push(() => window.removeEventListener("resize", alignLetterMeshesWithDOM));
 
-      // Entrance: snap each letter to a radial offset + outward tilt at scale 0
-      // (immediate, no spring), then drawFn springs them home on their stagger.
-      for (const L of ctx.letters) {
-        const snap = entranceTransformFor(L.basePos);
-        L.offset.reset(snap.offset);
-        L.rotation.reset(snap.rotation);
-        L.scale.reset(0);
-      }
-
-      // Shared mouse tracking — world-space position + velocity. Used by both
-      // the spatial image (tilt) and the letter repulsion. Position updates for
-      // the whole window so the image keeps tracking the cursor; `active` gates
-      // the letter repulsion to within the host bounds.
+      // Shared cursor tracking — world-space position, updated window-wide so the
+      // spatial image keeps tracking the cursor. The letter impulse field reads
+      // per-frame movement in updateLetters; proximity falloff handles bounds.
       const { mouse } = ctx;
       const handleMouseMove = (e: MouseEvent) => {
         const r = host.getBoundingClientRect();
         if (!r.width || !r.height) return;
-        mouse.active =
-          e.clientX >= r.left &&
-          e.clientX <= r.right &&
-          e.clientY >= r.top &&
-          e.clientY <= r.bottom;
-
         const vp = getViewport(camera, host, 0);
         if (!vp) return;
-        mouse.prev.copy(mouse.pos);
         const nx = (e.clientX - r.left) / r.width - 0.5;
         const ny = -((e.clientY - r.top) / r.height - 0.5);
         mouse.pos.set(nx * vp.width, ny * vp.height, 0);
-
-        const dx = mouse.pos.x - mouse.prev.x;
-        const dy = mouse.pos.y - mouse.prev.y;
-        const instant = Math.hypot(dx, dy);
-        if (instant > mouse.velocity) mouse.velocity = instant;
-        mouse.lastMoveTime = performance.now();
+        // First real reading: seed framePrev so the opening frame measures no
+        // movement (rather than a jump from the (0,0) origin).
+        if (!mouse.seeded) {
+          mouse.framePrev.copy(mouse.pos);
+          mouse.seeded = true;
+        }
       };
       window.addEventListener("mousemove", handleMouseMove);
       ctx.disposers.push(() => window.removeEventListener("mousemove", handleMouseMove));
@@ -594,7 +585,7 @@ export class aboutScene extends LitElement {
      * Draw
      */
     const drawFn: SceneDrawFn = ({ renderer, delta }) => {
-      // 1. Letter entrance reveal + (once settled) mouse-repulsion springs
+      // 1. Letters: staggered entrance + impulse-field repulsion (additive)
       updateLetters(ctx.letters, ctx.mouse, ctx.entrance, delta);
 
       // 2. Offscreen spatial image: tilt + depth intro, render into the RT

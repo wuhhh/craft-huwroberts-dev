@@ -12,6 +12,24 @@ import {
   createLineMat,
   createLiquidMaterialMat,
 } from "../lib/materials";
+import { SpringVec3, fromTensionFriction } from "../lib/spring";
+
+const ROCK_CFG = fromTensionFriction(20, 1.5);
+const ROCK_INITIAL_ANGLE = .75; // rad, per axis — a big diagonal entrance swing to rest
+
+const FLICK_CFG = fromTensionFriction(70, 4);
+const FLICK_GAIN = 1.2; // impulse per world-unit of mouse movement (higher = more responsive)
+const FLICK_MAX = .8; // clamp per-event impulse, per axis — caps the swing extremities
+
+const PARALLAX: Record<string, number> = {
+  box: 0.15,
+  diamond3d: 0.25,
+  diamondPlane: 0.3,
+  letterH: 0.15,
+  hrHuw: -0.3,
+  hrRobertsMain: -0.3,
+};
+const PARALLAX_REDUCED_SCALE = 0.25; // faint parallax under prefers-reduced-motion
 
 /**
  * Objects that will be available between the setup and draw functions
@@ -19,7 +37,10 @@ import {
 interface IntroSceneContext {
   groups: {
     hr?: THREE.Group | null;
+    /** Inner group holding the shape meshes; carries the reveal rock. */
     shapes?: THREE.Group | null;
+    /** Outer wrapper around `shapes`; carries the mouse-flick tilt. */
+    shapesFlick?: THREE.Group | null;
   };
   meshRefs: {
     box?: THREE.Mesh | null;
@@ -30,6 +51,16 @@ interface IntroSceneContext {
     hrRobertsSoft?: THREE.Mesh | null;
     letterH?: THREE.Mesh | null;
   };
+  /** Entrance rock (rad) applied to the inner `shapes` group — x pitch, y yaw. */
+  revealTilt?: SpringVec3;
+  /** Mouse-flick tilt (rad) applied to the outer `shapesFlick` group. */
+  flickTilt?: SpringVec3;
+  /** Shared cursor state (world-space pos + over-host flag) for flick impulses. */
+  mouse: { pos: THREE.Vector3; prev: THREE.Vector3; active: boolean };
+  /** prefers-reduced-motion: calms the entrance/flick, fades the parallax. */
+  reducedMotion: boolean;
+  /** Cleanup callbacks (event listeners). */
+  disposers: Array<() => void>;
 }
 
 /**
@@ -54,7 +85,17 @@ interface MeshTransform {
 @customElement("intro-scene")
 export class IntroScene extends LitElement {
   // Holds shared state for use between setup and draw fns
-  #ctx: IntroSceneContext = { groups: {}, meshRefs: {} };
+  #ctx: IntroSceneContext = {
+    groups: {},
+    meshRefs: {},
+    mouse: {
+      pos: new THREE.Vector3(),
+      prev: new THREE.Vector3(),
+      active: false,
+    },
+    reducedMotion: false,
+    disposers: [],
+  };
 
   // Device orientation, updated on resize
   #orientation: "portrait" | "landscape" = "landscape";
@@ -106,8 +147,6 @@ export class IntroScene extends LitElement {
     /**
      * Setup
      */
-    this.#ctx = { groups: {}, meshRefs: {} } as IntroSceneContext;
-
     const setupFn: SceneSetupAsyncFn = async ({ host }) => {
       this.#orientation =
         host.clientWidth / host.clientHeight < 1 ? "portrait" : "landscape";
@@ -183,8 +222,13 @@ export class IntroScene extends LitElement {
       // add meshes to groups / scene, set materials
       this.#ctx.groups.hr = new THREE.Group();
       this.#ctx.groups.shapes = new THREE.Group();
+      // Nest the mesh container (inner, carries the reveal rock) inside a flick
+      // wrapper (outer, carries the mouse tilt). The two rotations compose in the
+      // scene graph, so reveal and flick stay fully independent.
+      this.#ctx.groups.shapesFlick = new THREE.Group();
+      this.#ctx.groups.shapesFlick.add(this.#ctx.groups.shapes);
       scene.add(this.#ctx.groups.hr);
-      scene.add(this.#ctx.groups.shapes);
+      scene.add(this.#ctx.groups.shapesFlick);
 
       // box
       box.material = cloudedGlassMat;
@@ -325,17 +369,104 @@ export class IntroScene extends LitElement {
       this.#setMeshVisibility();
       this.#ro.observe(this);
 
+      // Two independent tilt springs: the reveal starts displaced on the diagonal
+      // and rings home (inner `shapes` group); the flick rests at zero and is
+      // agitated by the mouse (outer `shapesFlick` group). Under reduced motion —
+      // or below 1280px — the reveal starts at rest (shapes are static).
+      this.#ctx.reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const staticReveal =
+        this.#ctx.reducedMotion ||
+        window.matchMedia("(max-width: 1279.98px)").matches;
+
+      const a = staticReveal ? 0 : ROCK_INITIAL_ANGLE;
+      const revealTilt = new SpringVec3(ROCK_CFG, new THREE.Vector3(a, a, 0));
+      revealTilt.setTargetXYZ(0, 0, 0);
+      this.#ctx.revealTilt = revealTilt;
+
+      const flickTilt = new SpringVec3(FLICK_CFG);
+      this.#ctx.flickTilt = flickTilt;
+
+      // Mouse flick agitation — bank the outer group toward the cursor's travel
+      // direction. Horizontal movement yaws (about Y), vertical movement pitches
+      // (about X), so the face leans where the mouse is heading. World-space
+      // mapping mirrors about-scene; off under reduced motion.
+      const { mouse } = this.#ctx;
+      const clampFlick = (v: number) =>
+        Math.max(-FLICK_MAX, Math.min(FLICK_MAX, v * FLICK_GAIN));
+      const handleMouseMove = (e: MouseEvent) => {
+        const r = host.getBoundingClientRect();
+        if (!r.width || !r.height) return;
+        const inside =
+          e.clientX >= r.left &&
+          e.clientX <= r.right &&
+          e.clientY >= r.top &&
+          e.clientY <= r.bottom;
+        const wasActive = mouse.active;
+        mouse.active = inside;
+        if (!inside) return;
+
+        const vp = getViewport(camera, host, 0);
+        if (!vp) return;
+        const px = ((e.clientX - r.left) / r.width - 0.5) * vp.width;
+        const py = -((e.clientY - r.top) / r.height - 0.5) * vp.height;
+
+        // On (re)entry seed prev and skip — avoids a huge first-frame impulse.
+        if (!wasActive) {
+          mouse.prev.set(px, py, 0);
+          mouse.pos.set(px, py, 0);
+          return;
+        }
+        mouse.prev.copy(mouse.pos);
+        mouse.pos.set(px, py, 0);
+
+        if (this.#ctx.reducedMotion) return;
+        const dx = mouse.pos.x - mouse.prev.x; // world units, +x right
+        const dy = mouse.pos.y - mouse.prev.y; // world units, +y up
+        // Yaw toward horizontal travel, pitch toward vertical travel, so the
+        // face's normal turns to follow the cursor.
+        flickTilt.kickXYZ(clampFlick(-dy), clampFlick(dx), 0);
+      };
+      window.addEventListener("mousemove", handleMouseMove);
+      this.#ctx.disposers.push(() =>
+        window.removeEventListener("mousemove", handleMouseMove),
+      );
+
       return { scene, camera };
     };
 
     /**
      * Draw
      */
-    const drawFn: SceneDrawFn = ({ camera, elapsed, host }) => {
+    const drawFn: SceneDrawFn = ({ camera, delta, elapsed, host }) => {
       const viewport = getViewport(camera, host) as SceneViewport;
       const scaleFactor =
         (this.#orientation === "portrait" ? viewport.height : viewport.width) *
         0.2;
+
+      // Advance both tilt springs and apply each to its group — the reveal rock
+      // on the inner mesh group, the mouse flick on the outer wrapper. They
+      // compose in the scene graph; no handoff between them.
+      if (this.#ctx.groups.shapes && this.#ctx.revealTilt) {
+        const t = this.#ctx.revealTilt.update(delta);
+        this.#ctx.groups.shapes.rotation.set(t.x, t.y, 0);
+      }
+      if (this.#ctx.groups.shapesFlick && this.#ctx.flickTilt) {
+        const t = this.#ctx.flickTilt.update(delta);
+        this.#ctx.groups.shapesFlick.rotation.set(t.x, t.y, 0);
+      }
+
+      // Scroll parallax — world-unit vertical drift, maxing out as the hero
+      // scrolls one viewport away. `parWorld(name)` returns a mesh's offset.
+      const scrollNorm = window.innerHeight
+        ? Math.min(Math.max(window.scrollY / window.innerHeight, 0), 1)
+        : 0;
+      const parallaxScale = this.#ctx.reducedMotion
+        ? PARALLAX_REDUCED_SCALE
+        : 1;
+      const parWorld = (name: string) =>
+        (PARALLAX[name] ?? 0) * scrollNorm * parallaxScale;
 
       // box
       if (this.#ctx.meshRefs.box && this.#ctx.meshRefs.box.visible) {
@@ -346,7 +477,7 @@ export class IntroScene extends LitElement {
 
         this.#ctx.meshRefs.box.position.set(
           p.x * scaleFactor,
-          p.y * scaleFactor,
+          p.y * scaleFactor + parWorld("box"),
           p.z,
         );
         this.#ctx.meshRefs.box.rotation.set(
@@ -374,7 +505,7 @@ export class IntroScene extends LitElement {
 
         this.#ctx.meshRefs.diamond3d.position.set(
           p.x * scaleFactor,
-          p.y * scaleFactor,
+          p.y * scaleFactor + parWorld("diamond3d"),
           p.z,
         );
         this.#ctx.meshRefs.diamond3d.rotation.set(
@@ -401,7 +532,7 @@ export class IntroScene extends LitElement {
 
         this.#ctx.meshRefs.diamondPlane.position.set(
           p.x * scaleFactor,
-          p.y * scaleFactor,
+          p.y * scaleFactor + parWorld("diamondPlane"),
           p.z,
         );
         this.#ctx.meshRefs.diamondPlane.scale.set(
@@ -425,7 +556,12 @@ export class IntroScene extends LitElement {
           const p = t[this.#orientation]?.position || t.landscape.position;
           const s = t[this.#orientation]?.scale || t.landscape.scale;
 
-          this.#ctx.meshRefs.hrHuw.position.set(p.x, p.y, p.z);
+          // Parallax is world-unit; convert to hr-group-local (÷ hrScale).
+          this.#ctx.meshRefs.hrHuw.position.set(
+            p.x,
+            p.y + parWorld("hrHuw") / hrScale,
+            p.z,
+          );
           this.#ctx.meshRefs.hrHuw.scale.set(s.x, s.y, s.z);
         }
 
@@ -438,7 +574,11 @@ export class IntroScene extends LitElement {
           const p = t[this.#orientation]?.position || t.landscape.position;
           const s = t[this.#orientation]?.scale || t.landscape.scale;
 
-          this.#ctx.meshRefs.hrRobertsMain.position.set(p.x, p.y, p.z);
+          this.#ctx.meshRefs.hrRobertsMain.position.set(
+            p.x,
+            p.y + parWorld("hrRobertsMain") / hrScale,
+            p.z,
+          );
           this.#ctx.meshRefs.hrRobertsMain.scale.set(s.x, s.y, s.z);
         }
       }
@@ -452,7 +592,7 @@ export class IntroScene extends LitElement {
 
         this.#ctx.meshRefs.letterH.position.set(
           p.x * scaleFactor,
-          p.y * scaleFactor,
+          p.y * scaleFactor + parWorld("letterH"),
           p.z,
         );
         this.#ctx.meshRefs.letterH.rotation.set(
@@ -477,11 +617,14 @@ export class IntroScene extends LitElement {
 
   private dispose(): void {
     this.#ro.disconnect();
+    for (const d of this.#ctx.disposers) d();
+    this.#ctx.disposers.length = 0;
     // Traverse the scene-graph roots and dispose geometries / materials /
     // material-bound textures. The GLTF textures used by the liquid material
     // are tracked via the GLTF material's `map` reference and picked up here.
     if (this.#ctx.groups.hr) disposeObject3D(this.#ctx.groups.hr);
-    if (this.#ctx.groups.shapes) disposeObject3D(this.#ctx.groups.shapes);
+    if (this.#ctx.groups.shapesFlick)
+      disposeObject3D(this.#ctx.groups.shapesFlick);
   }
 
   protected render() {
