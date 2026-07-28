@@ -228,14 +228,14 @@ const letterMeshNames = [
 ];
 
 @customElement("about-scene")
-export class aboutScene extends LitElement {
+export class AboutScene extends LitElement {
   @property()
   refImageId = "";
 
   static styles?: CSSResultGroup | undefined = css`
     :host {
       display: block;
-      position: absolute;
+            position: absolute;
       inset: 0;
     }
 
@@ -628,7 +628,7 @@ export class aboutScene extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    "about-scene": aboutScene;
+    "about-scene": AboutScene;
   }
 }
 
