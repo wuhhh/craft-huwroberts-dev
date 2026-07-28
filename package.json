@@ -5,7 +5,10 @@
   "description": "This is the open source repository for my website at [huwroberts.dev](https://huwroberts.dev). This is probably only of interest to you if you're considering hiring me, having said that, you might find something useful here if you're building something similar and you enjoy working with things like [Craft CMS](https://craftcms.com), [Tailwind](https://tailwindcss.com/), [Lit](https://lit.dev/) and [Three.js](https://threejs.org).",
   "scripts": {
     "build": "NODE_ENV=production vite build",
-    "serve": "NODE_ENV=dev vite"
+    "serve": "NODE_ENV=dev vite",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --write 'src/**/*.{ts,js}' vite.config.ts tailwind.config.ts"
   },
   "author": "wuhhh",
   "license": "ISC",
@@ -15,12 +18,13 @@
     "@tailwindcss/vite": "^4.3.1",
     "@types/node": "^26.0.0",
     "@types/three": "^0.184.1",
-    "eslint": "^10.5.0",
-    "globals": "^17.6.0",
+    "eslint": "^10.8.0",
+    "globals": "^17.8.0",
     "jiti": "^2.7.0",
+    "prettier": "^3.9.6",
     "ts-lit-plugin": "^2.0.2",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.61.1",
+    "typescript-eslint": "^8.65.0",
     "vite": "^7.3.5",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-manifest-sri": "^0.2.0",
