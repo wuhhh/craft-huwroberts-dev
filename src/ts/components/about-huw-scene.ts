@@ -1,22 +1,32 @@
-import { css, LitElement, type CSSResultGroup } from "lit";
-import { customElement } from "lit/decorators.js";
-import * as THREE from "three/webgpu";
-import type { SceneDrawFn, SceneSetupAsyncFn } from "../types";
-import { SceneController } from "../controllers/scene-controller";
+import { css, html, LitElement, type CSSResultGroup } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import * as THREE from 'three/webgpu';
+import type { SceneDrawFn, SceneSetupAsyncFn } from '../types';
+import { SceneController } from '../controllers/scene-controller';
 
-customElement("about-huw-scene")
+interface AboutHuwSceneContext {
+  meshRefs: {
+    box?: THREE.Mesh | null;
+  };
+}
+
+@customElement('about-huw-scene')
 export class AboutHuwScene extends LitElement {
+  #ctx: AboutHuwSceneContext = { meshRefs: {} };
+
   static styles?: CSSResultGroup | undefined = css`
-  :host {
+    :host {
       display: block;
-      position: absolute;
-      inset: 0;
+      position: relative;
     }
 
-    a {
-              color: red;
-
-}
+    div {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: var(--stable-vh, 100vh);
+      text-align: center;
+    }
   `;
 
   constructor() {
@@ -33,32 +43,41 @@ export class AboutHuwScene extends LitElement {
       const scene = new THREE.Scene();
 
       const box = new THREE.BoxGeometry();
-      const boxMesh = new THREE.Mesh(box, new THREE.MeshNormalMaterial);
+      this.#ctx.meshRefs.box = new THREE.Mesh(
+        box,
+        new THREE.MeshNormalMaterial(),
+      );
 
-      scene.add(boxMesh);
+      scene.add(this.#ctx.meshRefs.box);
 
-      return { scene, camera }
-    }
+      return { scene, camera };
+    };
 
     /**
      * Draw
      */
-    const drawFn: SceneDrawFn = () => {
-    }
+    const drawFn: SceneDrawFn = ({ delta }) => {
+      if (this.#ctx.meshRefs.box) {
+        this.#ctx.meshRefs.box.rotation.x += delta;
+        this.#ctx.meshRefs.box.rotation.y += delta * 1.1;
+      }
+    };
 
     /**
      * Dipose
      */
-    const dispose = () => {
-
-    }
+    const dispose = () => {};
 
     new SceneController({ host: this, setupFn, drawFn }, dispose);
+  }
+
+  protected render() {
+    return html` <div></div> `;
   }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "about-huw-scene": AboutHuwScene;
+    'about-huw-scene': AboutHuwScene;
   }
 }
