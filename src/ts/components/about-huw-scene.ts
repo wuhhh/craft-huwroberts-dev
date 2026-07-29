@@ -3,10 +3,12 @@ import { customElement } from "lit/decorators.js";
 import * as THREE from "three/webgpu";
 import type { SceneDrawFn, SceneSetupAsyncFn } from "../types";
 import { SceneController } from "../controllers/scene-controller";
+import { DRACOLoader, GLTFLoader } from "three/examples/jsm/Addons.js";
 
 interface AboutHuwSceneContext {
   meshRefs: {
     box?: THREE.Mesh | null;
+    wuhhh?: THREE.Mesh | null;
   };
 }
 
@@ -42,13 +44,36 @@ export class AboutHuwScene extends LitElement {
 
       const scene = new THREE.Scene();
 
-      const box = new THREE.BoxGeometry();
-      this.#ctx.meshRefs.box = new THREE.Mesh(
-        box,
-        new THREE.MeshNormalMaterial(),
+      // load the model
+      const loader = new GLTFLoader();
+      const dracoLoader = new DRACOLoader();
+      dracoLoader.setDecoderPath("/dist/draco/");
+      loader.setDRACOLoader(dracoLoader);
+      const gltf = await loader.loadAsync("/dist/models/hrdev.glb");
+
+      const modelMap = new Map(
+        gltf.scene.children.map((child) => [child.name, child]),
       );
 
-      scene.add(this.#ctx.meshRefs.box);
+      // set meshes
+      const wuhhh = (modelMap.get("huwWhoAboutWuhhh") as THREE.Mesh) ?? null;
+      if (wuhhh) {
+        wuhhh.scale.x = wuhhh.scale.y = 0.5;
+        const mat = wuhhh.material as THREE.MeshStandardMaterial;
+
+        if (mat.map) {
+          mat.map.wrapS = THREE.RepeatWrapping;
+          mat.map.wrapT = THREE.ClampToEdgeWrapping;
+          mat.map.magFilter = THREE.LinearFilter;
+          mat.map.minFilter = THREE.LinearMipmapLinearFilter;
+          mat.map.generateMipmaps = true;
+          wuhhh.scale.x = 2;
+          mat.map.repeat.set(4, 1);
+        }
+        this.#ctx.meshRefs.wuhhh = wuhhh;
+
+        scene.add(this.#ctx.meshRefs.wuhhh);
+      }
 
       return { scene, camera };
     };
@@ -57,9 +82,13 @@ export class AboutHuwScene extends LitElement {
      * Draw
      */
     const drawFn: SceneDrawFn = ({ delta }) => {
-      if (this.#ctx.meshRefs.box) {
-        this.#ctx.meshRefs.box.rotation.x += delta;
-        this.#ctx.meshRefs.box.rotation.y += delta * 1.1;
+      if (this.#ctx.meshRefs.wuhhh) {
+        const wuhhh = this.#ctx.meshRefs.wuhhh;
+        const mat = wuhhh.material as THREE.MeshStandardMaterial;
+
+        if (mat.map) {
+          mat.map.offset.x += delta * 0.125;
+        }
       }
     };
 
