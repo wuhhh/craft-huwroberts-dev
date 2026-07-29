@@ -13,66 +13,13 @@ const CURVE_SEGMENTS = 128; // ribbon smoothness
 const CURVE_AMPLITUDE = 0.16; // how far the string can swing
 
 const STRING_MODES = 3; // how many wobbles it can hold at once
-const STRING_OMEGA = 2.5; // speed of the sway
-const STRING_ZETA = 0.055; // how quickly it settles
+const STRING_OMEGA = 8; // speed of the sway
+const STRING_ZETA = 0.25; // how quickly it settles
 
 const PLUCK_GAIN = 4; // how hard a swipe hits
 const PLUCK_MAX = 1; // hardest possible pluck
 
 const FOLLOW_STRENGTH = 0.9; // 0 = letters slide up/down, 1 = they lean into the curve
-
-const WUHHH_SEGMENTS = 128; // wuhhh smoothness
-
-/**
- * Rebuilds a flat XY plane at `segments` columns, so subdivision is tunable
- * here rather than re-exported from Blender. Copies the source's UV mapping
- * across, including flips and atlas sub-rects.
- */
-function subdividePlane(
-  source: THREE.BufferGeometry,
-  segments: number,
-): THREE.PlaneGeometry {
-  source.computeBoundingBox();
-  const box = source.boundingBox as THREE.Box3;
-  const width = box.max.x - box.min.x;
-  const height = box.max.y - box.min.y;
-
-  const geometry = new THREE.PlaneGeometry(width, height, segments, 1);
-  const center = box.getCenter(new THREE.Vector3());
-  geometry.translate(center.x, center.y, center.z);
-
-  const srcPos = source.attributes.position;
-  const srcUv = source.attributes.uv;
-  if (!srcUv || !width || !height) return geometry;
-
-  // UV runs with position on a plane, so the end verts pin the mapping
-  let minX = 0;
-  let maxX = 0;
-  let minY = 0;
-  let maxY = 0;
-  for (let i = 1; i < srcPos.count; i++) {
-    if (srcPos.getX(i) < srcPos.getX(minX)) minX = i;
-    if (srcPos.getX(i) > srcPos.getX(maxX)) maxX = i;
-    if (srcPos.getY(i) < srcPos.getY(minY)) minY = i;
-    if (srcPos.getY(i) > srcPos.getY(maxY)) maxY = i;
-  }
-  const u0 = srcUv.getX(minX);
-  const u1 = srcUv.getX(maxX);
-  const v0 = srcUv.getY(minY);
-  const v1 = srcUv.getY(maxY);
-
-  const uv = geometry.attributes.uv;
-  const pos = geometry.attributes.position;
-  for (let i = 0; i < uv.count; i++) {
-    uv.setXY(
-      i,
-      u0 + ((pos.getX(i) - box.min.x) / width) * (u1 - u0),
-      v0 + ((pos.getY(i) - box.min.y) / height) * (v1 - v0),
-    );
-  }
-  uv.needsUpdate = true;
-  return geometry;
-}
 
 interface AboutHuwSceneContext {
   meshRefs: {
@@ -157,17 +104,12 @@ export class AboutHuwScene extends LitElement {
 
       // Puts a point on the string. FOLLOW_STRENGTH swings the offset
       // direction from straight-up toward the curve's normal.
-      const deformPoint = (
-        worldX: number,
-        worldY: number,
-        out: THREE.Vector2,
-      ) => {
+      const deformPoint = (worldX: number, worldY: number, out: THREE.Vector2) => {
         const slope = curveSlope(worldX);
         const len = Math.hypot(1, slope);
         return out.set(
           worldX + FOLLOW_STRENGTH * (-slope / len) * worldY,
-          curveY(worldX) +
-            THREE.MathUtils.lerp(1, 1 / len, FOLLOW_STRENGTH) * worldY,
+          curveY(worldX) + THREE.MathUtils.lerp(1, 1 / len, FOLLOW_STRENGTH) * worldY,
         );
       };
       const deformed = new THREE.Vector2();
@@ -199,9 +141,7 @@ export class AboutHuwScene extends LitElement {
       loader.setDRACOLoader(dracoLoader);
       const gltf = await loader.loadAsync("/dist/models/hrdev.glb");
 
-      const modelMap = new Map(
-        gltf.scene.children.map((child) => [child.name, child]),
-      );
+      const modelMap = new Map(gltf.scene.children.map((child) => [child.name, child]));
 
       // set meshes
       let wuhhhBase: Float32Array | null = null;
@@ -221,22 +161,13 @@ export class AboutHuwScene extends LitElement {
         }
         this.#ctx.meshRefs.wuhhh = wuhhh;
 
-        // Swap in a denser plane so smoothness is tunable without Blender
-        const sourceGeo = wuhhh.geometry;
-        wuhhh.geometry = subdividePlane(sourceGeo, WUHHH_SEGMENTS);
-        sourceGeo.dispose();
         wuhhhBase = new Float32Array(wuhhh.geometry.attributes.position.array);
 
         scene.add(this.#ctx.meshRefs.wuhhh);
       }
 
       // Red debug ribbon — shows the string itself
-      const curveGeo = new THREE.PlaneGeometry(
-        viewport.width,
-        CURVE_THICKNESS,
-        CURVE_SEGMENTS,
-        1,
-      );
+      const curveGeo = new THREE.PlaneGeometry(viewport.width, CURVE_THICKNESS, CURVE_SEGMENTS, 1);
       const curveBase = new Float32Array(curveGeo.attributes.position.array);
 
       const curveMat = new THREE.MeshBasicNodeMaterial();
@@ -256,15 +187,9 @@ export class AboutHuwScene extends LitElement {
       // near an end rings differently to one in the middle. The STRING_OMEGA
       // factor keeps PLUCK_GAIN meaning "how big", not "how fast".
       const pluck = (x: number, cursorDy: number) => {
-        const impulse = THREE.MathUtils.clamp(
-          cursorDy * PLUCK_GAIN,
-          -PLUCK_MAX,
-          PLUCK_MAX,
-        );
+        const impulse = THREE.MathUtils.clamp(cursorDy * PLUCK_GAIN, -PLUCK_MAX, PLUCK_MAX);
         const p = (Math.PI * (x + halfWidth)) / viewport.width;
-        modes.forEach((mode, n) =>
-          mode.kick(impulse * Math.sin((n + 1) * p) * STRING_OMEGA),
-        );
+        modes.forEach((mode, n) => mode.kick(impulse * Math.sin((n + 1) * p) * STRING_OMEGA));
       };
 
       // Which side the cursor was last on, and where — so we can tell it
@@ -295,9 +220,7 @@ export class AboutHuwScene extends LitElement {
       };
 
       window.addEventListener("mousemove", handleMouseMove);
-      this.#ctx.disposers.push(() =>
-        window.removeEventListener("mousemove", handleMouseMove),
-      );
+      this.#ctx.disposers.push(() => window.removeEventListener("mousemove", handleMouseMove));
 
       return { scene, camera };
     };
