@@ -1,8 +1,8 @@
-import { css, html, LitElement, type CSSResultGroup } from 'lit';
-import { customElement } from 'lit/decorators.js';
-import * as THREE from 'three/webgpu';
-import type { SceneDrawFn, SceneSetupAsyncFn } from '../types';
-import { SceneController } from '../controllers/scene-controller';
+import { css, html, LitElement, type CSSResultGroup } from "lit";
+import { customElement } from "lit/decorators.js";
+import * as THREE from "three/webgpu";
+import type { SceneDrawFn, SceneSetupAsyncFn } from "../types";
+import { SceneController } from "../controllers/scene-controller";
 
 interface AboutHuwSceneContext {
   meshRefs: {
@@ -10,7 +10,7 @@ interface AboutHuwSceneContext {
   };
 }
 
-@customElement('about-huw-scene')
+@customElement("about-huw-scene")
 export class AboutHuwScene extends LitElement {
   #ctx: AboutHuwSceneContext = { meshRefs: {} };
 
@@ -78,6 +78,6 @@ export class AboutHuwScene extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'about-huw-scene': AboutHuwScene;
+    "about-huw-scene": AboutHuwScene;
   }
 }
