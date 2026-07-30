@@ -16,8 +16,8 @@ export interface SpringConfig {
 /**
  * Derive a {@link SpringConfig} from react-spring's `tension`/`friction` pair.
  *
- * The resulting integrator has the same step response as `spring(t, omega, zeta)`
- * in lib/easing.ts — they solve the same second-order ODE — but is integrated
+ * The resulting integrator has the same step response as a closed-form spring
+ * tween — they solve the same second-order ODE — but is integrated
  * frame-by-frame so it stays correct while the target moves continuously
  * (e.g. a letter chasing a moving mouse), which an easing tween cannot do.
  */
