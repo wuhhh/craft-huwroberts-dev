@@ -20,6 +20,4 @@
 
 return [
 	'api' => 'graphql/api',
-	'work/<slug>' => ['template' => 'home/_entry'],
-	'about' => ['template' => 'home/_entry'],
 ];
