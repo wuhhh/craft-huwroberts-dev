@@ -21,10 +21,7 @@ export interface SpringConfig {
  * frame-by-frame so it stays correct while the target moves continuously
  * (e.g. a letter chasing a moving mouse), which an easing tween cannot do.
  */
-export function fromTensionFriction(
-  tension: number,
-  friction: number,
-): SpringConfig {
+export function fromTensionFriction(tension: number, friction: number): SpringConfig {
   return {
     omega: Math.sqrt(tension),
     zeta: friction / (2 * Math.sqrt(tension)),

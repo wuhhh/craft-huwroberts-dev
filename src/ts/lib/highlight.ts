@@ -7,7 +7,7 @@
 // navigations, with a MutationObserver to catch any dynamically swapped content.
 
 import hljs from "highlight.js/lib/core";
-import type { HLJSApi, Mode } from "highlight.js";
+import type { HLJSApi, Language, Mode } from "highlight.js";
 import bash from "highlight.js/lib/languages/bash";
 import css from "highlight.js/lib/languages/css";
 import xml from "highlight.js/lib/languages/xml";
@@ -28,8 +28,11 @@ import { enhanceCodeBlock } from "./code-block-toolbar";
 // with a frontmatter region highlighted as YAML. The `on:begin` guard restricts
 // it to the very top of the block (index 0) so a `---` thematic break in the
 // body isn't mistaken for frontmatter.
-function markdownWithFrontmatter(hljs: HLJSApi): Mode {
-  const md = markdown(hljs) as Mode;
+// Returns Language, not Mode: registerLanguage takes a LanguageFn, and Mode is
+// the looser of the two -- its `contains` admits `"self"` and `undefined`, which
+// Language's does not, so a Mode is not assignable where a Language is wanted.
+function markdownWithFrontmatter(hljs: HLJSApi): Language {
+  const md = markdown(hljs);
   const frontmatter: Mode = {
     begin: /^---$/,
     end: /^---$/,

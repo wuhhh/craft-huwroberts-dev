@@ -218,27 +218,19 @@ export class MainMenu extends LitElement {
      sees the anchor and the click falls through to a native full reload.
      Intercept here and route to barba.go explicitly. */
   handleNavClick = (event: MouseEvent) => {
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
-      return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const link = (event.target as HTMLElement | null)?.closest("a");
     if (!link) return;
     const href = link.getAttribute("href");
     if (!href) return;
 
-    if (
-      href.startsWith("#") ||
-      link.target === "_blank" ||
-      link.hasAttribute("download")
-    ) {
+    if (href.startsWith("#") || link.target === "_blank" || link.hasAttribute("download")) {
       this.closeMenu();
       return;
     }
     const url = new URL(href, window.location.href);
     if (url.origin !== window.location.origin) return; // external — native nav
-    if (
-      url.pathname === window.location.pathname &&
-      url.search === window.location.search
-    ) {
+    if (url.pathname === window.location.pathname && url.search === window.location.search) {
       this.closeMenu();
       return;
     }
@@ -275,11 +267,7 @@ export class MainMenu extends LitElement {
         <!-- overlay (shows left of nav drawer on mobile to slightly obscure main content) -->
         <div @click=${this.closeMenu} class="overlay"></div>
         <!-- nav -->
-        <nav
-          ?inert=${!this.open}
-          aria-label="Main"
-          @click=${this.handleNavClick}
-        >
+        <nav ?inert=${!this.open} aria-label="Main" @click=${this.handleNavClick}>
           <a href="/">Home</a>
           <a href="/work" style="transition-delay: 30ms">Portfolio</a>
           <a href="/about" style="transition-delay: 60ms">About</a>
@@ -287,12 +275,7 @@ export class MainMenu extends LitElement {
           <a href="#contact" style="transition-delay: 120ms">Contact</a>
         </nav>
         <!-- mobile menu close -->
-        <button
-          ?inert=${!this.open}
-          aria-label="Close menu"
-          class="close"
-          @click=${this.closeMenu}
-        >
+        <button ?inert=${!this.open} aria-label="Close menu" class="close" @click=${this.closeMenu}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="17"

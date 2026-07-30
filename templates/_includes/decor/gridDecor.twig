@@ -1,27 +1,19 @@
 {# Render visible grid lines, variants are `full` | `double` | `outer` #}
 
-{% set variant = variant ?? "full" %}
+{% set variant = variant ?? 'full' %}
 
-<div class="hidden pointer-events-none absolute inset-0 -z-10 sm:grid grid-cols-12 gap-x-10">
-
-  {% if variant == "full" %}
-
+<div class="pointer-events-none absolute inset-0 -z-10 hidden grid-cols-12 gap-x-10 sm:grid">
+  {% if variant == 'full' %}
     <!-- full -->
-    <div class="col-span-full lg:col-span-6 xl:col-span-4 border-x border-smoke"></div>
-    <div class="hidden lg:block lg:col-span-6 xl:col-span-4 border-x border-smoke"></div>
-    <div class="hidden xl:block xl:col-span-4 border-x border-smoke"></div>
-
-  {% elseif variant == "double" %}
-
+    <div class="border-smoke col-span-full border-x lg:col-span-6 xl:col-span-4"></div>
+    <div class="border-smoke hidden border-x lg:col-span-6 lg:block xl:col-span-4"></div>
+    <div class="border-smoke hidden border-x xl:col-span-4 xl:block"></div>
+  {% elseif variant == 'double' %}
     <!-- double -->
-    <div class="col-span-full lg:col-span-6 border-x border-smoke"></div>
-    <div class="hidden lg:block lg:col-span-6 border-x border-smoke"></div>
-
-  {% elseif variant == "outer" %}
-
+    <div class="border-smoke col-span-full border-x lg:col-span-6"></div>
+    <div class="border-smoke hidden border-x lg:col-span-6 lg:block"></div>
+  {% elseif variant == 'outer' %}
     <!-- outer -->
-    <div class="col-span-full border-x border-smoke"></div>
-
+    <div class="border-smoke col-span-full border-x"></div>
   {% endif %}
-
 </div>

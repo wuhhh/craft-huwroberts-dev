@@ -15,11 +15,11 @@ import {
 import { SpringVec3, fromTensionFriction } from "../lib/spring";
 
 const ROCK_CFG = fromTensionFriction(20, 1.5);
-const ROCK_INITIAL_ANGLE = .75; // rad, per axis — a big diagonal entrance swing to rest
+const ROCK_INITIAL_ANGLE = 0.75; // rad, per axis — a big diagonal entrance swing to rest
 
 const FLICK_CFG = fromTensionFriction(70, 4);
 const FLICK_GAIN = 1.2; // impulse per world-unit of mouse movement (higher = more responsive)
-const FLICK_MAX = .8; // clamp per-event impulse, per axis — caps the swing extremities
+const FLICK_MAX = 0.8; // clamp per-event impulse, per axis — caps the swing extremities
 
 const PARALLAX: Record<string, number> = {
   box: 0.15,
@@ -118,8 +118,7 @@ export class IntroScene extends LitElement {
     }
 
     if (this.#ctx.meshRefs.diamondPlane) {
-      this.#ctx.meshRefs.diamondPlane.visible =
-        this.#orientation === "landscape";
+      this.#ctx.meshRefs.diamondPlane.visible = this.#orientation === "landscape";
     }
   }
 
@@ -148,8 +147,7 @@ export class IntroScene extends LitElement {
      * Setup
      */
     const setupFn: SceneSetupAsyncFn = async ({ host }) => {
-      this.#orientation =
-        host.clientWidth / host.clientHeight < 1 ? "portrait" : "landscape";
+      this.#orientation = host.clientWidth / host.clientHeight < 1 ? "portrait" : "landscape";
 
       const aspect = host.clientWidth / host.clientHeight;
       const camera = new THREE.PerspectiveCamera(25, aspect, 1, 20);
@@ -164,28 +162,20 @@ export class IntroScene extends LitElement {
       loader.setDRACOLoader(dracoLoader);
       const gltf = await loader.loadAsync("/dist/models/hrdev.glb");
 
-      const modelMap = new Map(
-        gltf.scene.children.map((child) => [child.name, child]),
-      );
+      const modelMap = new Map(gltf.scene.children.map((child) => [child.name, child]));
 
       // set meshes
       const box = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1, 4, 4, 1));
       const boxEdges = new THREE.EdgesGeometry(box.geometry);
       const boxLines = new THREE.LineSegments(boxEdges);
       const diamond3d = (modelMap.get("diamond3d") as THREE.Mesh) ?? null;
-      const diamond3dEdges = diamond3d
-        ? new THREE.EdgesGeometry(diamond3d.geometry)
-        : null;
+      const diamond3dEdges = diamond3d ? new THREE.EdgesGeometry(diamond3d.geometry) : null;
       const diamondPlane = (modelMap.get("diamondPlane") as THREE.Mesh) ?? null;
       const hrHuw = (modelMap.get("hrHuw") as THREE.Mesh) ?? null;
-      const hrRobertsMain =
-        (modelMap.get("hrRobertsMain") as THREE.Mesh) ?? null;
-      const hrRobertsSoft =
-        (modelMap.get("hrRobertsSoft") as THREE.Mesh) ?? null;
+      const hrRobertsMain = (modelMap.get("hrRobertsMain") as THREE.Mesh) ?? null;
+      const hrRobertsSoft = (modelMap.get("hrRobertsSoft") as THREE.Mesh) ?? null;
       const letterH = (modelMap.get("letterH") as THREE.Mesh) ?? null;
-      const letterHEdges = letterH
-        ? new THREE.EdgesGeometry(letterH.geometry)
-        : null;
+      const letterHEdges = letterH ? new THREE.EdgesGeometry(letterH.geometry) : null;
 
       this.#ctx.meshRefs = {
         box,
@@ -267,10 +257,7 @@ export class IntroScene extends LitElement {
 
         // edges
         if (diamond3dEdges) {
-          const diamond3dLines = new THREE.LineSegments(
-            diamond3dEdges,
-            lineMat,
-          );
+          const diamond3dLines = new THREE.LineSegments(diamond3dEdges, lineMat);
           this.#ctx.meshRefs.diamond3d.add(diamond3dLines);
         }
 
@@ -287,8 +274,7 @@ export class IntroScene extends LitElement {
           },
         };
 
-        this.#ctx.meshRefs.diamondPlane.userData.transform =
-          diamondPlaneTransform;
+        this.#ctx.meshRefs.diamondPlane.userData.transform = diamondPlaneTransform;
         this.#ctx.meshRefs.diamondPlane.material = diamondPlaneMat;
         this.#ctx.groups.shapes.add(this.#ctx.meshRefs.diamondPlane);
       }
@@ -323,8 +309,7 @@ export class IntroScene extends LitElement {
           },
         };
 
-        this.#ctx.meshRefs.hrRobertsMain.userData.transform =
-          hrRobertsMainTransform;
+        this.#ctx.meshRefs.hrRobertsMain.userData.transform = hrRobertsMainTransform;
         this.#ctx.meshRefs.hrRobertsMain.position.x = 1.75;
 
         if (liquidMaterial) {
@@ -373,12 +358,9 @@ export class IntroScene extends LitElement {
       // and rings home (inner `shapes` group); the flick rests at zero and is
       // agitated by the mouse (outer `shapesFlick` group). Under reduced motion —
       // or below 1280px — the reveal starts at rest (shapes are static).
-      this.#ctx.reducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
+      this.#ctx.reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const staticReveal =
-        this.#ctx.reducedMotion ||
-        window.matchMedia("(max-width: 1279.98px)").matches;
+        this.#ctx.reducedMotion || window.matchMedia("(max-width: 1279.98px)").matches;
 
       const a = staticReveal ? 0 : ROCK_INITIAL_ANGLE;
       const revealTilt = new SpringVec3(ROCK_CFG, new THREE.Vector3(a, a, 0));
@@ -393,8 +375,7 @@ export class IntroScene extends LitElement {
       // (about X), so the face leans where the mouse is heading. World-space
       // mapping mirrors about-scene; off under reduced motion.
       const { mouse } = this.#ctx;
-      const clampFlick = (v: number) =>
-        Math.max(-FLICK_MAX, Math.min(FLICK_MAX, v * FLICK_GAIN));
+      const clampFlick = (v: number) => Math.max(-FLICK_MAX, Math.min(FLICK_MAX, v * FLICK_GAIN));
       const handleMouseMove = (e: MouseEvent) => {
         const r = host.getBoundingClientRect();
         if (!r.width || !r.height) return;
@@ -429,9 +410,7 @@ export class IntroScene extends LitElement {
         flickTilt.kickXYZ(clampFlick(-dy), clampFlick(dx), 0);
       };
       window.addEventListener("mousemove", handleMouseMove);
-      this.#ctx.disposers.push(() =>
-        window.removeEventListener("mousemove", handleMouseMove),
-      );
+      this.#ctx.disposers.push(() => window.removeEventListener("mousemove", handleMouseMove));
 
       return { scene, camera };
     };
@@ -442,8 +421,7 @@ export class IntroScene extends LitElement {
     const drawFn: SceneDrawFn = ({ camera, delta, elapsed, host }) => {
       const viewport = getViewport(camera, host) as SceneViewport;
       const scaleFactor =
-        (this.#orientation === "portrait" ? viewport.height : viewport.width) *
-        0.2;
+        (this.#orientation === "portrait" ? viewport.height : viewport.width) * 0.2;
 
       // Advance both tilt springs and apply each to its group — the reveal rock
       // on the inner mesh group, the mouse flick on the outer wrapper. They
@@ -462,11 +440,8 @@ export class IntroScene extends LitElement {
       const scrollNorm = window.innerHeight
         ? Math.min(Math.max(window.scrollY / window.innerHeight, 0), 1)
         : 0;
-      const parallaxScale = this.#ctx.reducedMotion
-        ? PARALLAX_REDUCED_SCALE
-        : 1;
-      const parWorld = (name: string) =>
-        (PARALLAX[name] ?? 0) * scrollNorm * parallaxScale;
+      const parallaxScale = this.#ctx.reducedMotion ? PARALLAX_REDUCED_SCALE : 1;
+      const parWorld = (name: string) => (PARALLAX[name] ?? 0) * scrollNorm * parallaxScale;
 
       // box
       if (this.#ctx.meshRefs.box && this.#ctx.meshRefs.box.visible) {
@@ -485,20 +460,12 @@ export class IntroScene extends LitElement {
           r.y * scaleFactor + elapsed * 2,
           r.z,
         );
-        this.#ctx.meshRefs.box.scale.set(
-          s.x * scaleFactor,
-          s.y * scaleFactor,
-          s.z * scaleFactor,
-        );
+        this.#ctx.meshRefs.box.scale.set(s.x * scaleFactor, s.y * scaleFactor, s.z * scaleFactor);
       }
 
       // diamond3d
-      if (
-        this.#ctx.meshRefs.diamond3d &&
-        this.#ctx.meshRefs.diamond3d.visible
-      ) {
-        const t: MeshTransform =
-          this.#ctx.meshRefs.diamond3d.userData.transform;
+      if (this.#ctx.meshRefs.diamond3d && this.#ctx.meshRefs.diamond3d.visible) {
+        const t: MeshTransform = this.#ctx.meshRefs.diamond3d.userData.transform;
         const p = t[this.#orientation]?.position || t.landscape.position;
         const r = t[this.#orientation]?.rotation || t.landscape.rotation;
         const s = t[this.#orientation]?.scale || t.landscape.scale;
@@ -508,11 +475,7 @@ export class IntroScene extends LitElement {
           p.y * scaleFactor + parWorld("diamond3d"),
           p.z,
         );
-        this.#ctx.meshRefs.diamond3d.rotation.set(
-          r.x,
-          r.y + elapsed * 0.48,
-          r.z,
-        );
+        this.#ctx.meshRefs.diamond3d.rotation.set(r.x, r.y + elapsed * 0.48, r.z);
         this.#ctx.meshRefs.diamond3d.scale.set(
           s.x * scaleFactor,
           s.y * scaleFactor,
@@ -521,12 +484,8 @@ export class IntroScene extends LitElement {
       }
 
       // diamondPlane
-      if (
-        this.#ctx.meshRefs.diamondPlane &&
-        this.#ctx.meshRefs.diamondPlane.visible
-      ) {
-        const t: MeshTransform =
-          this.#ctx.meshRefs.diamondPlane.userData.transform;
+      if (this.#ctx.meshRefs.diamondPlane && this.#ctx.meshRefs.diamondPlane.visible) {
+        const t: MeshTransform = this.#ctx.meshRefs.diamondPlane.userData.transform;
         const p = t[this.#orientation]?.position || t.landscape.position;
         const s = t[this.#orientation]?.scale || t.landscape.scale;
 
@@ -557,20 +516,12 @@ export class IntroScene extends LitElement {
           const s = t[this.#orientation]?.scale || t.landscape.scale;
 
           // Parallax is world-unit; convert to hr-group-local (÷ hrScale).
-          this.#ctx.meshRefs.hrHuw.position.set(
-            p.x,
-            p.y + parWorld("hrHuw") / hrScale,
-            p.z,
-          );
+          this.#ctx.meshRefs.hrHuw.position.set(p.x, p.y + parWorld("hrHuw") / hrScale, p.z);
           this.#ctx.meshRefs.hrHuw.scale.set(s.x, s.y, s.z);
         }
 
-        if (
-          this.#ctx.meshRefs.hrRobertsMain &&
-          this.#ctx.meshRefs.hrRobertsMain.visible
-        ) {
-          const t: MeshTransform =
-            this.#ctx.meshRefs.hrRobertsMain.userData.transform;
+        if (this.#ctx.meshRefs.hrRobertsMain && this.#ctx.meshRefs.hrRobertsMain.visible) {
+          const t: MeshTransform = this.#ctx.meshRefs.hrRobertsMain.userData.transform;
           const p = t[this.#orientation]?.position || t.landscape.position;
           const s = t[this.#orientation]?.scale || t.landscape.scale;
 
@@ -595,11 +546,7 @@ export class IntroScene extends LitElement {
           p.y * scaleFactor + parWorld("letterH"),
           p.z,
         );
-        this.#ctx.meshRefs.letterH.rotation.set(
-          r.x,
-          r.y + elapsed * -0.48,
-          r.z,
-        );
+        this.#ctx.meshRefs.letterH.rotation.set(r.x, r.y + elapsed * -0.48, r.z);
         this.#ctx.meshRefs.letterH.scale.set(
           s.x * scaleFactor,
           s.y * scaleFactor,
@@ -623,16 +570,12 @@ export class IntroScene extends LitElement {
     // material-bound textures. The GLTF textures used by the liquid material
     // are tracked via the GLTF material's `map` reference and picked up here.
     if (this.#ctx.groups.hr) disposeObject3D(this.#ctx.groups.hr);
-    if (this.#ctx.groups.shapesFlick)
-      disposeObject3D(this.#ctx.groups.shapesFlick);
+    if (this.#ctx.groups.shapesFlick) disposeObject3D(this.#ctx.groups.shapesFlick);
   }
 
   protected render() {
     return html`
-      <div>
-        <intro-scene-decor></intro-scene-decor
-        ><intro-scene-text></intro-scene-text>
-      </div>
+      <div><intro-scene-decor></intro-scene-decor><intro-scene-text></intro-scene-text></div>
     `;
   }
 }

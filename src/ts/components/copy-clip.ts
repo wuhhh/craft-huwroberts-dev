@@ -124,16 +124,18 @@ export class CopyClip extends LitElement {
         @pointerleave=${this._onLeave}
       >
         <slot></slot>
-        ${showPending
-          ? html`<span aria-hidden="true"
-              ><slot name="tip">${this.tip}</slot></span
-            >`
-          : nothing}
-        ${showCopied
-          ? html`<span role="status" aria-live="polite"
-              ><slot name="copied">${this.copiedTip}</slot></span
-            >`
-          : nothing}
+        ${
+          showPending
+            ? html`<span aria-hidden="true"><slot name="tip">${this.tip}</slot></span>`
+            : nothing
+        }
+        ${
+          showCopied
+            ? html`<span role="status" aria-live="polite"
+                ><slot name="copied">${this.copiedTip}</slot></span
+              >`
+            : nothing
+        }
       </span>
     `;
   }

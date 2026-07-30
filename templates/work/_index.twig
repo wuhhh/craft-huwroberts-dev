@@ -1,23 +1,12 @@
-{% extends "_layouts/default" %}
+{% extends '_layouts/default' %}
 
 {% block content %}
-
   <div class="col-span-full pt-33 sm:pt-30">
-    {% include "_includes/breadcrumb" with {
-      classes: "mb-8 sm:mb-12 2xl:mb-20",
-      links: [
-        {
-          label: "Home",
-          url: siteUrl,
-        },
-        {
-          label: "Case Studies",
-          url: "/work",
-        }
-      ]
+    {% include '_includes/breadcrumb' with {
+      classes: 'mb-8 sm:mb-12 2xl:mb-20',
+      links: [{ label: 'Home', url: siteUrl }, { label: 'Case Studies', url: '/work' }]
     } only %}
   </div>
 
-  {% include "_includes/workGrid" only %}
-
+  {% include '_includes/workGrid' only %}
 {% endblock %}

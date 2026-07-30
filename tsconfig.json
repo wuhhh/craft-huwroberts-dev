@@ -8,6 +8,15 @@
     "types": ["vite/client"],
     "skipLibCheck": true,
 
+    /* @barba/core 2.10.3 sets "types": "dist/core/src/typings", a path that was
+       never published, so TypeScript falls back to an implicit any (TS7016). The
+       declarations do ship, just at a different path -- mapping to them keeps
+       real types instead of papering over it with `declare module`. Remove this
+       if a future release fixes the package's own types field. */
+    "paths": {
+      "@barba/core": ["./node_modules/@barba/core/dist/src/index.d.ts"]
+    },
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,

@@ -27,6 +27,7 @@
     "wuhhh/craft-phosphor-icons": "^1.0"
   },
   "require-dev": {
+    "vincentlanglet/twig-cs-fixer": "^4.0",
     "yiisoft/yii2-shell": "^2.0.3"
   },
   "scripts": {

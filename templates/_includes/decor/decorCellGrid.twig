@@ -1,7 +1,13 @@
 {% import _self as macros %}
 
 {% macro gridCell(spacer = false, enclosed = false) %}
-  <div class="{{ enclosed ? "size-[calc(var(--cell-size)+1px)]" : "size-(--cell-size)" }} {{ spacer ? "" : "border-b border-l" }} {{ enclosed ? "border-t border-r" : "" }} border-[#F0EDEA]"></div>
+  <div
+    class="{{ enclosed ? 'size-[calc(var(--cell-size)+1px)]' : 'size-(--cell-size)' }} {{
+    spacer
+      ? ''
+      : 'border-b border-l'
+    }} {{ enclosed ? 'border-t border-r' : '' }} border-[#F0EDEA]"
+  ></div>
 {% endmacro %}
 
 {% macro gridCells(n, spacer = false) %}
@@ -10,18 +16,20 @@
   {% endfor %}
 {% endmacro %}
 
-<div class="hidden sm:block absolute top-0 right-0 pointer-events-none [--cell-size:1.625rem] xl:[--cell-size:1.875rem]">
+<div
+  class="pointer-events-none absolute top-0 right-0 hidden [--cell-size:1.625rem] sm:block xl:[--cell-size:1.875rem]"
+>
   <div class="flex justify-end">
-    <div class="hidden 2xl:flex justify-end">
+    <div class="hidden justify-end 2xl:flex">
       {{ macros.gridCells(8) }}
     </div>
-    <div class="hidden xl:flex justify-end">
+    <div class="hidden justify-end xl:flex">
       {{ macros.gridCells(5) }}
     </div>
-    <div class="hidden lg:flex justify-end">
+    <div class="hidden justify-end lg:flex">
       {{ macros.gridCells(6) }}
     </div>
-    <div class="hidden md:flex justify-end">
+    <div class="hidden justify-end md:flex">
       {{ macros.gridCells(6) }}
     </div>
     <div class="flex justify-end">
@@ -29,16 +37,16 @@
     </div>
   </div>
   <div class="flex justify-end">
-    <div class="hidden 2xl:flex justify-end">
+    <div class="hidden justify-end 2xl:flex">
       {{ macros.gridCells(9) }}
     </div>
-    <div class="hidden xl:flex justify-end">
+    <div class="hidden justify-end xl:flex">
       {{ macros.gridCells(5) }}
     </div>
-    <div class="hidden lg:flex justify-end">
+    <div class="hidden justify-end lg:flex">
       {{ macros.gridCells(7) }}
     </div>
-    <div class="hidden md:flex justify-end">
+    <div class="hidden justify-end md:flex">
       {{ macros.gridCells(5) }}
     </div>
     <div class="flex justify-end">
@@ -46,16 +54,16 @@
     </div>
   </div>
   <div class="flex justify-end">
-    <div class="hidden 2xl:flex justify-end">
+    <div class="hidden justify-end 2xl:flex">
       {{ macros.gridCells(11) }}
     </div>
-    <div class="hidden xl:flex justify-end">
+    <div class="hidden justify-end xl:flex">
       {{ macros.gridCells(4) }}
     </div>
-    <div class="hidden lg:flex justify-end">
+    <div class="hidden justify-end lg:flex">
       {{ macros.gridCells(6) }}
     </div>
-    <div class="hidden md:flex justify-end">
+    <div class="hidden justify-end md:flex">
       {{ macros.gridCells(3) }}
     </div>
     <div class="flex justify-end">
@@ -63,16 +71,16 @@
     </div>
   </div>
   <div class="flex justify-end">
-    <div class="hidden 2xl:flex justify-end">
+    <div class="hidden justify-end 2xl:flex">
       {{ macros.gridCells(13) }}
     </div>
-    <div class="hidden xl:flex justify-end">
+    <div class="hidden justify-end xl:flex">
       {{ macros.gridCells(3) }}
     </div>
-    <div class="hidden lg:flex justify-end">
+    <div class="hidden justify-end lg:flex">
       {{ macros.gridCells(6) }}
     </div>
-    <div class="hidden md:flex justify-end">
+    <div class="hidden justify-end md:flex">
       {{ macros.gridCells(1) }}
     </div>
     <div class="flex justify-end">
@@ -80,86 +88,129 @@
     </div>
   </div>
   <div class="flex justify-end">
-    <div class="hidden 2xl:flex justify-end">
+    <div class="hidden justify-end 2xl:flex">
       {{ macros.gridCells(10) }}
     </div>
-    <div class="hidden xl:flex justify-end">
+    <div class="hidden justify-end xl:flex">
       {{ macros.gridCells(2) }}
     </div>
-    <div class="hidden lg:flex justify-end">
+    <div class="hidden justify-end lg:flex">
       {{ macros.gridCells(4) }}
     </div>
-    <div class="hidden md:flex justify-end">
+    <div class="hidden justify-end md:flex">
       {{ macros.gridCells(1) }}
     </div>
     <div class="flex justify-end">
       {{ macros.gridCells(1) }}
     </div>
   </div>
-  <div class="hidden md:flex justify-end">
-    <div class="hidden 2xl:flex justify-end">
+  <div class="hidden justify-end md:flex">
+    <div class="hidden justify-end 2xl:flex">
       {{ macros.gridCells(8) }}
     </div>
-    <div class="hidden lg:flex justify-end">
+    <div class="hidden justify-end lg:flex">
       {{ macros.gridCells(2) }}
     </div>
     <div class="flex justify-end">
       {{ macros.gridCells(1) }}
     </div>
   </div>
-  <div class="hidden lg:flex justify-end">
-    <div class="hidden 2xl:flex justify-end">
+  <div class="hidden justify-end lg:flex">
+    <div class="hidden justify-end 2xl:flex">
       {{ macros.gridCells(4) }}
     </div>
     <div class="flex justify-end">
       {{ macros.gridCells(2) }}
     </div>
   </div>
-  <div class="hidden lg:flex justify-end">
-    <div class="hidden 2xl:flex justify-end">
+  <div class="hidden justify-end lg:flex">
+    <div class="hidden justify-end 2xl:flex">
       {{ macros.gridCells(3) }}
     </div>
     <div class="flex justify-end">
       {{ macros.gridCells(1) }}
     </div>
   </div>
-  <div class="hidden 2xl:flex justify-end">
+  <div class="hidden justify-end 2xl:flex">
     {{ macros.gridCells(3) }}
   </div>
-  <div class="hidden 2xl:flex justify-end">
+  <div class="hidden justify-end 2xl:flex">
     {{ macros.gridCells(3) }}
   </div>
-  <div class="hidden 2xl:flex justify-end">
+  <div class="hidden justify-end 2xl:flex">
     {{ macros.gridCells(3) }}
   </div>
-  <div class="hidden 2xl:flex justify-end">
+  <div class="hidden justify-end 2xl:flex">
     {{ macros.gridCells(2) }}
   </div>
-  <div class="hidden 2xl:flex justify-end">
+  <div class="hidden justify-end 2xl:flex">
     {{ macros.gridCells(2) }}
   </div>
-  <div class="hidden 2xl:flex justify-end">
+  <div class="hidden justify-end 2xl:flex">
     {{ macros.gridCells(1) }}
   </div>
 
   {# always the same, just need --cell-top/left on the same el #}
-  {% set tl = "top-[calc((var(--cell-top))*(var(--cell-size)))] left-[calc((var(--cell-left))*(var(--cell-size)))]" %}
+  {% set tl =
+    'top-[calc((var(--cell-top))*(var(--cell-size)))] left-[calc((var(--cell-left))*(var(--cell-size)))]'
+  %}
 
   {# non contiguous cells #}
-  <div class="absolute [--cell-top:3] [--cell-left:5] sm:[--cell-left:8] xl:[--cell-left:9] 2xl:[--cell-top:5] 2xl:[--cell-left:18] {{ tl }} -translate-y-px">
+  <div
+    class="absolute [--cell-left:5] [--cell-top:3] sm:[--cell-left:8] xl:[--cell-left:9] 2xl:[--cell-left:18] 2xl:[--cell-top:5] {{
+    tl
+    }} -translate-y-px"
+  >
     {{ macros.gridCell(false, true) }}
   </div>
-  <div class="hidden absolute [--cell-top:10] [--cell-left:32] {{ tl }} 2xl:block -translate-y-px">
+  <div class="absolute hidden [--cell-left:32] [--cell-top:10] {{ tl }} -translate-y-px 2xl:block">
     {{ macros.gridCell(false, true) }}
   </div>
 
   {# shapes #}
-  <decor-diamond class="absolute [--cell-top:1] [--cell-left:7] lg:[--cell-left:10] xl:[--cell-top:2] xl:[--cell-left:16] 2xl:[--cell-left:18] {{ tl }} size-3 -translate-x-1/2 -translate-y-1/2 xl:size-5 2xl:size-6" color="coral"></decor-diamond>
-  <decor-diamond class="absolute [--cell-top:2.5] [--cell-left:11.5] lg:[--cell-left:16.5] lg:[--cell-top:2.5] xl:[--cell-top:4.5] xl:[--cell-left:23.5] 2xl:[--cell-top:6.5] 2xl:[--cell-left:35.5] {{ tl }} size-3 2xl:size-4 -translate-x-1/2 -translate-y-1/2" color="indigo"></decor-diamond>
-  <decor-diamond class="hidden absolute [--cell-top:2.5] [--cell-left:36.5] {{ tl }} size-3 2xl:block -translate-x-1/2 -translate-y-1/2" color="coral"></decor-diamond>
-  <div class="hidden absolute size-(--cell-size) [--cell-top:1] [--cell-left:33] {{ tl }} 2xl:grid place-content-center"><div class="size-2 rounded-full bg-seabed-indigo"></div></div>
-  <div class="hidden absolute size-(--cell-size) [--cell-top:4] [--cell-left:23] xl:[--cell-top:5] xl:[--cell-left:28] 2xl:[--cell-top:4] 2xl:[--cell-left:23] {{ tl }} lg:grid place-content-center"><div class="size-2 rounded-full bg-coral-red"></div></div>
+  <decor-diamond
+    class="absolute [--cell-left:7] [--cell-top:1] lg:[--cell-left:10] xl:[--cell-left:16] xl:[--cell-top:2] 2xl:[--cell-left:18] {{
+    tl
+    }} size-3 -translate-x-1/2 -translate-y-1/2 xl:size-5 2xl:size-6"
+    color="coral"
+  ></decor-diamond>
+  <decor-diamond
+    class="absolute [--cell-left:11.5] [--cell-top:2.5] lg:[--cell-left:16.5] lg:[--cell-top:2.5] xl:[--cell-left:23.5] xl:[--cell-top:4.5] 2xl:[--cell-left:35.5] 2xl:[--cell-top:6.5] {{
+    tl
+    }} size-3 -translate-x-1/2 -translate-y-1/2 2xl:size-4"
+    color="indigo"
+  ></decor-diamond>
+  <decor-diamond
+    class="absolute hidden [--cell-left:36.5] [--cell-top:2.5] {{
+    tl
+    }} size-3 -translate-x-1/2 -translate-y-1/2 2xl:block"
+    color="coral"
+  ></decor-diamond>
+  <div
+    class="absolute hidden size-(--cell-size) [--cell-left:33] [--cell-top:1] {{
+    tl
+    }} place-content-center 2xl:grid"
+  >
+    <div class="bg-seabed-indigo size-2 rounded-full"></div>
+  </div>
+  <div
+    class="absolute hidden size-(--cell-size) [--cell-left:23] [--cell-top:4] xl:[--cell-left:28] xl:[--cell-top:5] 2xl:[--cell-left:23] 2xl:[--cell-top:4] {{
+    tl
+    }} place-content-center lg:grid"
+  >
+    <div class="bg-coral-red size-2 rounded-full"></div>
+  </div>
 
-  {{ svg("@webroot/dist/images/icon--eye-can-see-you.svg", true, true)|attr({ class: "hidden absolute [--cell-top:2] [--cell-left:17] lg:[--cell-left:22] xl:[--cell-top:3] xl:[--cell-left:27] 2xl:[--cell-top:4] 2xl:[--cell-left:32.5] " ~ tl ~ " w-12 -translate-x-1/2 -translate-y-1/2 md:block xl:w-14 2xl:w-16" }) }}
-  <decor-star class="hidden text-seabed-indigo animate-spin-very-slow absolute [--cell-top:1] [--cell-left:21] 2xl:[--cell-top:2] 2xl:[--cell-left:27] {{ tl }} w-8 2xl:w-12 -translate-x-1/2 -translate-y-1/2 xl:block"></decor-star>
+  {{
+    svg('@webroot/dist/images/icon--eye-can-see-you.svg', true, true)|attr({
+      class: 'hidden absolute [--cell-top:2] [--cell-left:17] lg:[--cell-left:22] xl:[--cell-top:3] xl:[--cell-left:27] 2xl:[--cell-top:4] 2xl:[--cell-left:32.5] '
+        ~ tl
+        ~ ' w-12 -translate-x-1/2 -translate-y-1/2 md:block xl:w-14 2xl:w-16'
+    })
+  }}
+  <decor-star
+    class="text-seabed-indigo animate-spin-very-slow absolute hidden [--cell-left:21] [--cell-top:1] 2xl:[--cell-left:27] 2xl:[--cell-top:2] {{
+    tl
+    }} w-8 -translate-x-1/2 -translate-y-1/2 xl:block 2xl:w-12"
+  ></decor-star>
 </div>

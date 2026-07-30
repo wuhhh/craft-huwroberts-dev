@@ -176,10 +176,7 @@ export class SceneCanvas extends LitElement {
       // OrthographicCamera support setViewOffset (offset the frustum + refresh
       // the projection matrix); perspective also derives aspect from the rect.
       const camera = entry.camera;
-      if (
-        camera instanceof THREE.PerspectiveCamera ||
-        camera instanceof THREE.OrthographicCamera
-      ) {
+      if (camera instanceof THREE.PerspectiveCamera || camera instanceof THREE.OrthographicCamera) {
         camera.setViewOffset(fullW, fullH, offsetX, offsetY, width, height);
       }
 

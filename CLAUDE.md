@@ -7,18 +7,22 @@ this file is only a pointer, so don't add conventions here.
 One rule matters before you run anything, because getting it wrong looks like a
 broken repo rather than a mistake:
 
-> `node_modules` is installed **inside the DDEV container** (Linux), so
-> platform-specific binaries only exist there. Never run `npm` / `composer` /
-> `php craft` on the host — prefix everything with `ddev`:
+> `node_modules` is installed **inside the DDEV container** (Linux), so anything
+> with a native binary only works there. That is the **build** specifically:
 >
 > ```sh
 > ddev npm run build              # production build → web/dist/
-> ddev exec npx tsc --noEmit      # typecheck
-> ddev exec npx eslint <paths>    # lint
 > ```
 >
-> On the host these fail with a missing `@rollup/rollup-linux-arm64-gnu`, which
-> is a host/container mismatch, not a dependency problem — don't try to fix it
-> by installing anything.
+> On the host it fails with a missing `@rollup/rollup-linux-arm64-gnu`, which is
+> a host/container mismatch, not a dependency problem — don't try to fix it by
+> installing anything.
+>
+> The checks are pure JS or PHP and run on the host, which is what the git hooks
+> rely on — don't prefix these with `ddev`:
+>
+> ```sh
+> npm run check                   # format + lint + twig-cs-fixer + typecheck
+> ```
 
 See `AGENTS.md` for the stack, build layout, and Lit/Twig conventions.

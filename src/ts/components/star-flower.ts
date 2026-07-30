@@ -18,8 +18,7 @@ export class StarFlower extends LitElement {
 
     // Get scroll position as a percentage of the total scrollable height
     const scrollPercent =
-      this.scrollY /
-      (document.documentElement.scrollHeight - window.innerHeight);
+      this.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
 
     this.rotationTarget = scrollPercent * this.rotationMax;
   };

@@ -1,16 +1,14 @@
-{% extends "_layouts/default" %}
+{% extends '_layouts/default' %}
 
-{% set gridLinesVariant = "outer" %}
+{% set gridLinesVariant = 'outer' %}
 
 {% block content %}
-
-  {% include "_includes/entryDetail" with {
+  {% include '_includes/entryDetail' with {
     entry: entry,
     breadcrumbLinks: [
-      { label: "Home", url: siteUrl },
-      { label: "Journal", url: "/journal" },
-      { label: entry.title, url: "" },
-    ],
+      { label: 'Home', url: siteUrl },
+      { label: 'Journal', url: '/journal' },
+      { label: entry.title, url: '' }
+    ]
   } only %}
-
 {% endblock %}

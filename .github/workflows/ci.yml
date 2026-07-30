@@ -1,0 +1,61 @@
+name: CI
+
+# The backstop. Pre-commit hooks are bypassable (`--no-verify`) and absent on any
+# clone that skipped `npm install`, so everything enforced locally is re-checked
+# here where it cannot be skipped.
+
+on:
+  push:
+    branches: [main, stage]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    name: Format, lint, typecheck, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      # `npm ci` rather than `install`: it honours package-lock exactly, and on
+      # Linux it resolves @rollup/rollup-linux-x64-gnu, which is why the build
+      # works here but not on a macOS host.
+      - run: npm ci
+
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build
+
+  templates:
+    name: Twig coding standards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 8.2 matches composer.lock's platform-overrides, so CI resolves exactly the
+      # versions committed rather than a set the lock was never built against.
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: ctype
+          coverage: none
+
+      # --no-scripts skips composer's post-install hook, which chains into
+      # `craft up` / `clear-caches`. Those need a database and a populated .env;
+      # twig-cs-fixer needs neither, only its own autoloaded dependencies.
+      - uses: ramsey/composer-install@v3
+        with:
+          composer-options: "--no-scripts"
+
+      # Called directly rather than via `npm run lint:twig`, so this job needs no
+      # Node toolchain at all.
+      - run: vendor/bin/twig-cs-fixer lint

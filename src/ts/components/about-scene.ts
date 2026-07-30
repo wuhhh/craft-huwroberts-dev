@@ -139,18 +139,11 @@ function updateLetters(
         // C¹ smoothstep falloff → no velocity kink entering/leaving the radius.
         const t = 1 - dist / REPULSION_RADIUS;
         const w = t * t * (3 - 2 * t);
-        const impulse = Math.min(
-          w * speed * IMPULSE_GAIN * reveal,
-          MAX_IMPULSE,
-        );
+        const impulse = Math.min(w * speed * IMPULSE_GAIN * reveal, MAX_IMPULSE);
         const nx = dx / dist;
         const ny = dy / dist;
         L.offset.kickXYZ(nx * impulse, ny * impulse, -impulse * Z_PUSH_FACTOR);
-        L.rotation.kickXYZ(
-          ny * impulse * TILT_GAIN,
-          -nx * impulse * TILT_GAIN,
-          0,
-        );
+        L.rotation.kickXYZ(ny * impulse * TILT_GAIN, -nx * impulse * TILT_GAIN, 0);
         L.heat.kick(impulse * HEAT_GAIN);
       }
     }
@@ -162,11 +155,7 @@ function updateLetters(
     // Compose the two independent layers ADDITIVELY on the mesh — no scene-graph
     // nesting, so the entrance transform never cascades onto the repulsion (or
     // vice versa). MAX_TILT drives only `et`, TILT_GAIN only `r`.
-    L.mesh.position.set(
-      L.home.x + eo.x + o.x,
-      L.home.y + eo.y + o.y,
-      L.home.z + eo.z + o.z,
-    );
+    L.mesh.position.set(L.home.x + eo.x + o.x, L.home.y + eo.y + o.y, L.home.z + eo.z + o.z);
     L.mesh.rotation.set(et.x + r.x, et.y + r.y, et.z + r.z);
     L.mesh.scale.setScalar(L.baseScale * es);
 
@@ -228,7 +217,7 @@ const letterMeshNames = [
 ];
 
 @customElement("about-scene")
-export class aboutScene extends LitElement {
+export class AboutScene extends LitElement {
   @property()
   refImageId = "";
 
@@ -420,9 +409,7 @@ export class aboutScene extends LitElement {
       const letterGrp = new THREE.Group();
 
       letterMeshNames.forEach((name) => {
-        const mesh = c.find((child) => child.name === name) as
-          | THREE.Mesh
-          | undefined;
+        const mesh = c.find((child) => child.name === name) as THREE.Mesh | undefined;
         ctx.letterMeshRefs[name] = mesh ?? null;
       });
 
@@ -527,17 +514,14 @@ export class aboutScene extends LitElement {
           const textureLoader = new THREE.TextureLoader();
           const [colorTexture, depthTexture] = await Promise.all([
             textureLoader.loadAsync("/dist/textures/huw-and-his-dog@2x.jpg"),
-            textureLoader.loadAsync(
-              "/dist/textures/huw-and-his-dog-depth@2x.jpg",
-            ),
+            textureLoader.loadAsync("/dist/textures/huw-and-his-dog-depth@2x.jpg"),
           ]);
           colorTexture.colorSpace = THREE.SRGBColorSpace;
 
           // aspect from the refImage's laid-out rect (RT/camera match it)
           const rect = refImage.getBoundingClientRect();
 
-          const rtAspect =
-            rect.width && rect.height ? rect.width / rect.height : 1;
+          const rtAspect = rect.width && rect.height ? rect.width / rect.height : 1;
 
           const si = createSpatialImage({
             colorTexture,
@@ -546,10 +530,7 @@ export class aboutScene extends LitElement {
           });
 
           // flat display plane samples the RT; align it to the refImage
-          const imagePlane = new THREE.Mesh(
-            new THREE.PlaneGeometry(1, 1),
-            si.displayMaterial,
-          );
+          const imagePlane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), si.displayMaterial);
           scene.add(imagePlane);
 
           const alignImagePlane = () => {
@@ -628,7 +609,7 @@ export class aboutScene extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    "about-scene": aboutScene;
+    "about-scene": AboutScene;
   }
 }
 
@@ -654,11 +635,7 @@ function entranceTransformFor(basePos: THREE.Vector3): {
   const dirY = y / dist;
   const tilt = MAX_TILT * ENTRANCE_TILT_MULTIPLIER;
   return {
-    offset: new THREE.Vector3(
-      dirX * ENTRANCE_OFFSET_RANGE,
-      dirY * ENTRANCE_OFFSET_RANGE,
-      0,
-    ),
+    offset: new THREE.Vector3(dirX * ENTRANCE_OFFSET_RANGE, dirY * ENTRANCE_OFFSET_RANGE, 0),
     rotation: new THREE.Vector3(dirY * tilt, -dirX * tilt, 0),
   };
 }

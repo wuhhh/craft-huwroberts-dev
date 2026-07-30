@@ -1,5 +1,19 @@
 {
+  "printWidth": 100,
+  "tabWidth": 2,
   "singleQuote": false,
-  "semi": true,
-  "trailingComma": "all"
+  "plugins": ["@zackad/prettier-plugin-twig", "prettier-plugin-tailwindcss"],
+  "twigSingleQuote": true,
+  "twigFollowOfficialCodingStandards": true,
+  "twigAlwaysBreakObjects": false,
+  "twigMultiTags": [
+    "nav,endnav",
+    "switch,case,default,endswitch",
+    "ifchildren,endifchildren",
+    "cache,endcache",
+    "block,endblock",
+    "macro,endmacro",
+    "set,endset",
+    "spaceless,endspaceless"
+  ]
 }

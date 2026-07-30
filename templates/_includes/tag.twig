@@ -1,9 +1,9 @@
 {% set tag = tag ?? null %}
 
 {% if tag %}
-
-  <li class="font-sans font-medium h-[45px] text-base bg-black text-white rounded-full flex items-center justify-center px-5 whitespace-nowrap flex-shrink-0 md:font-bold md:px-6 md:text-[18px] md:h-14">
+  <li
+    class="flex h-[45px] flex-shrink-0 items-center justify-center rounded-full bg-black px-5 font-sans text-base font-medium whitespace-nowrap text-white md:h-14 md:px-6 md:text-[18px] md:font-bold"
+  >
     <span class="relative z-10">{{ tag }}</span>
   </li>
-
 {% endif %}

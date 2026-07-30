@@ -1,9 +1,8 @@
 {# == Reveal strips == #}
-{% set variant = variant ?? "full" %}
+{% set variant = variant ?? 'full' %}
 
 <div class="grid-transition" data-grid-transition aria-hidden="true">
   <div class="grid-transition--container">
-
     {# space for obi #}
     <div class="grid-transition--obi-spacer"></div>
 
@@ -25,20 +24,9 @@
     <div class="grid-transition--logo">
       <div>
         <div>
-          <svg
-            width="56"
-            viewbox="0 0 43 31"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill="#F9EDE8"
-              d="M43 15.5 21.5 31 0 15.5 21.5 0 43 15.5Z"
-            />
-            <path
-              fill="#f36855"
-              d="M15 21V10h2.622v4.5h8.756V10H29v11h-2.622v-4.5h-8.756V21H15Z"
-            />
+          <svg width="56" viewbox="0 0 43 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#F9EDE8" d="M43 15.5 21.5 31 0 15.5 21.5 0 43 15.5Z" />
+            <path fill="#f36855" d="M15 21V10h2.622v4.5h8.756V10H29v11h-2.622v-4.5h-8.756V21H15Z" />
           </svg>
         </div>
       </div>
@@ -47,231 +35,103 @@
 </div>
 
 <style type="text/css">
-  /* critical */
-  .grid-transition {
-    --reveal-duration: 700ms;
-    --reveal-delay: 500ms;
-    --reveal-stagger: 50ms;
-    --fill-duration: 525ms;
-    --fill-delay: 50ms;
-    --fill-stagger: 40ms;
-    --logo-reveal-delay: 100ms;
-    --logo-reveal-duration: 550ms;
-    --logo-fade-delay: 650ms;
-    --logo-fade-duration: 325ms;
+  /* critical */ .grid-transition { --reveal-duration: 700ms; --reveal-delay: 500ms;
+  --reveal-stagger: 50ms; --fill-duration: 525ms; --fill-delay: 50ms; --fill-stagger: 40ms;
+  --logo-reveal-delay: 100ms; --logo-reveal-duration: 550ms; --logo-fade-delay: 650ms;
+  --logo-fade-duration: 325ms; }
+
+  @keyframes grid-transition-reveal { to { scale: 1 0; }
+
+  from { scale: 1 1; } }
+
+  @keyframes grid-transition-fill { from { scale: 1 0; }
+
+  to { scale: 1 1; } }
+
+  @keyframes grid-logo-spin { to { opacity: 1; scale: 1 1; rotate: 0deg; }
+
+  from { opacity: 0; scale: 0.8 0.8; rotate: -360deg; } }
+
+  @keyframes grid-logo-fade { to { opacity: 0; translate: 0 2rem; }
+
+  from { opacity: 1; translate: 0 0; } }
+
+  /* State-gated animations. `both` applies the FROM state during stagger delays so strips don't
+  flash at their natural full size for one frame. */ .grid-transition.is-filling
+  .grid-transition-animation-out { transform-origin: top; animation-name: grid-transition-fill;
+  animation-duration: var(--fill-duration); animation-timing-function: cubic-bezier(0.45, 0, 0.55,
+  1); animation-fill-mode: both; }
+
+  .grid-transition.is-revealing .grid-transition-animation-out { transform-origin: bottom;
+  animation-name: grid-transition-reveal; animation-duration: var(--reveal-duration);
+  animation-timing-function: cubic-bezier(0.25, 0, 0.35, 1); animation-fill-mode: both; }
+
+  .grid-transition { position: fixed; inset: 0; z-index: 9999; pointer-events: none; }
+
+  .grid-transition--container { width: 100%; margin-inline: auto; padding-inline: 3rem /* 48px */;
+  max-width: 108rem /* 1728px */; display: flex; }
+
+  .grid-transition--obi-spacer { width: 5.25rem; }
+
+  /* Below 1280px the grid is not rendered; the transition is instant on small viewports (Barba
+  swaps immediately, no fill/reveal wait). */ .grid-transition--grid { display: none; position:
+  relative; flex-grow: 1; height: 100vh; grid-template-columns: repeat(12, minmax(0, 1fr)); }
+
+  .grid-transition.is-filling .grid-transition--grid--fill-l { animation-delay: var(--fill-delay); }
+  .grid-transition.is-filling .grid-transition--grid--a { animation-delay: calc(var(--fill-delay) +
+  var(--fill-stagger)); } .grid-transition.is-filling .grid-transition--grid--b { animation-delay:
+  calc(var(--fill-delay) + (var(--fill-stagger) * 2)); } .grid-transition.is-filling
+  .grid-transition--grid--c { animation-delay: calc(var(--fill-delay) + (var(--fill-stagger) * 3));
+  } .grid-transition.is-filling .grid-transition--grid--fill-r { animation-delay:
+  calc(var(--fill-delay) + (var(--fill-stagger) * 4)); }
+
+  .grid-transition.is-revealing .grid-transition--grid--fill-l { animation-delay:
+  var(--reveal-delay); } .grid-transition.is-revealing .grid-transition--grid--a { animation-delay:
+  calc(var(--reveal-delay) + var(--reveal-stagger)); } .grid-transition.is-revealing
+  .grid-transition--grid--b { animation-delay: calc(var(--reveal-delay) + (var(--reveal-stagger) *
+  2)); } .grid-transition.is-revealing .grid-transition--grid--c { animation-delay:
+  calc(var(--reveal-delay) + (var(--reveal-stagger) * 3)); } .grid-transition.is-revealing
+  .grid-transition--grid--fill-r { animation-delay: calc(var(--reveal-delay) +
+  (var(--reveal-stagger) * 4)); }
+
+  .grid-transition--grid--a, .grid-transition--grid--b, .grid-transition--grid--c,
+  .grid-transition--grid--fill-l, .grid-transition--grid--fill-r { background: #f36855; position:
+  relative; }
+
+  .grid-transition--grid--a { grid-column: span 4 / span 4; margin-right: calc(-2.5rem - 1px); }
+
+  .grid-transition--grid--b { grid-column: span 4 / span 4; margin-right: calc(-2.5rem - 1px); }
+
+  .grid-transition--grid--c { grid-column: span 4 / span 4; }
+
+  .grid-transition--grid--fill-l, .grid-transition--grid--fill-r { position: absolute; inset-block:
+  0; width: 100vw; }
+
+  .grid-transition--grid--fill-l { right: calc(100% - 1px); } .grid-transition--grid--fill-r { left:
+  calc(100% - 1px); }
+
+  .grid-transition--logo { display: none; position: absolute; top: 50%; left: 50%; transform:
+  translate(-50%, -50%); }
+
+  .grid-transition--logo > div { opacity: 1; }
+
+  .grid-transition--logo > div > div { opacity: 0; }
+
+  .grid-transition.is-revealing .grid-transition--logo > div { animation: grid-logo-fade
+  var(--logo-fade-duration) cubic-bezier(0.25, 0, 0.35, 1) forwards var(--logo-fade-delay); }
+
+  .grid-transition.is-revealing .grid-transition--logo > div > div { animation: grid-logo-spin
+  var(--logo-reveal-duration) cubic-bezier(0.3, 1.5, 0.3, 1) forwards var(--logo-reveal-delay); }
+
+  @media (width >= 80rem /* 1280px */) { .grid-transition--container { column-gap: 2.5rem; }
+
+  .grid-transition--grid { display: grid; column-gap: 2.5rem; }
+
+  .grid-transition--logo { display: block; }
+
+  /* Strip grid takes over at ≥1280px — mask is unused. */ .grid-transition--mask { display: none; }
   }
 
-  @keyframes grid-transition-reveal {
-    to {
-      scale: 1 0;
-    }
-
-    from {
-      scale: 1 1;
-    }
-  }
-
-  @keyframes grid-transition-fill {
-    from {
-      scale: 1 0;
-    }
-
-    to {
-      scale: 1 1;
-    }
-  }
-
-
-  @keyframes grid-logo-spin {
-    to {
-      opacity: 1;
-      scale: 1 1;
-      rotate: 0deg;
-    }
-
-    from {
-      opacity: 0;
-      scale: 0.8 0.8;
-      rotate: -360deg;
-    }
-  }
-
-  @keyframes grid-logo-fade {
-    to {
-       opacity: 0;
-      translate: 0 2rem;
-    }
-
-    from {
-      opacity: 1;
-      translate: 0 0;
-    }
-  }
-
-  /* State-gated animations. `both` applies the FROM state during stagger
-     delays so strips don't flash at their natural full size for one frame. */
-  .grid-transition.is-filling .grid-transition-animation-out {
-    transform-origin: top;
-    animation-name: grid-transition-fill;
-    animation-duration: var(--fill-duration);
-    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
-    animation-fill-mode: both;
-  }
-
-  .grid-transition.is-revealing .grid-transition-animation-out {
-    transform-origin: bottom;
-    animation-name: grid-transition-reveal;
-    animation-duration: var(--reveal-duration);
-    animation-timing-function: cubic-bezier(0.25, 0, 0.35, 1);
-    animation-fill-mode: both;
-  }
-
-  .grid-transition {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    pointer-events: none;
-  }
-
-  .grid-transition--container {
-    width: 100%;
-    margin-inline: auto;
-    padding-inline: 3rem /* 48px */;
-    max-width: 108rem /* 1728px */;
-    display: flex;
-  }
-
-  .grid-transition--obi-spacer {
-    width: 5.25rem;
-  }
-
-  /* Below 1280px the grid is not rendered; the transition is instant on
-     small viewports (Barba swaps immediately, no fill/reveal wait). */
-  .grid-transition--grid {
-    display: none;
-    position: relative;
-    flex-grow: 1;
-    height: 100vh;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-  }
-
-  .grid-transition.is-filling .grid-transition--grid--fill-l {
-    animation-delay: var(--fill-delay);
-  }
-  .grid-transition.is-filling .grid-transition--grid--a {
-    animation-delay: calc(var(--fill-delay) + var(--fill-stagger));
-  }
-  .grid-transition.is-filling .grid-transition--grid--b {
-    animation-delay: calc(var(--fill-delay) + (var(--fill-stagger) * 2));
-  }
-  .grid-transition.is-filling .grid-transition--grid--c {
-    animation-delay: calc(var(--fill-delay) + (var(--fill-stagger) * 3));
-  }
-  .grid-transition.is-filling .grid-transition--grid--fill-r {
-    animation-delay: calc(var(--fill-delay) + (var(--fill-stagger) * 4));
-  }
-
-  .grid-transition.is-revealing .grid-transition--grid--fill-l {
-    animation-delay: var(--reveal-delay);
-  }
-  .grid-transition.is-revealing .grid-transition--grid--a {
-    animation-delay: calc(var(--reveal-delay) + var(--reveal-stagger));
-  }
-  .grid-transition.is-revealing .grid-transition--grid--b {
-    animation-delay: calc(var(--reveal-delay) + (var(--reveal-stagger) * 2));
-  }
-  .grid-transition.is-revealing .grid-transition--grid--c {
-    animation-delay: calc(var(--reveal-delay) + (var(--reveal-stagger) * 3));
-  }
-  .grid-transition.is-revealing .grid-transition--grid--fill-r {
-    animation-delay: calc(var(--reveal-delay) + (var(--reveal-stagger) * 4));
-  }
-
-  .grid-transition--grid--a,
-  .grid-transition--grid--b,
-  .grid-transition--grid--c,
-  .grid-transition--grid--fill-l,
-  .grid-transition--grid--fill-r {
-    background: #f36855;
-    position: relative;
-  }
-
-  .grid-transition--grid--a {
-    grid-column: span 4 / span 4;
-    margin-right: calc(-2.5rem - 1px);
-  }
-
-  .grid-transition--grid--b {
-    grid-column: span 4 / span 4;
-    margin-right: calc(-2.5rem - 1px);
-  }
-
-  .grid-transition--grid--c {
-    grid-column: span 4 / span 4;
-  }
-
-  .grid-transition--grid--fill-l,
-  .grid-transition--grid--fill-r {
-    position: absolute;
-    inset-block: 0;
-    width: 100vw;
-  }
-
-  .grid-transition--grid--fill-l {
-    right: calc(100% - 1px);
-  }
-  .grid-transition--grid--fill-r {
-    left: calc(100% - 1px);
-  }
-
-  .grid-transition--logo {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .grid-transition--logo > div {
-    opacity: 1;
-  }
-
-  .grid-transition--logo > div > div {
-    opacity: 0;
-  }
-
-  .grid-transition.is-revealing .grid-transition--logo > div {
-    animation: grid-logo-fade var(--logo-fade-duration) cubic-bezier(0.25, 0, 0.35, 1) forwards var(--logo-fade-delay);
-  }
-
-  .grid-transition.is-revealing .grid-transition--logo > div > div {
-    animation: grid-logo-spin var(--logo-reveal-duration) cubic-bezier(0.3, 1.5, 0.3, 1) forwards var(--logo-reveal-delay);
-  }
-
-  @media (width >= 80rem /* 1280px */) {
-    .grid-transition--container {
-      column-gap: 2.5rem;
-    }
-
-    .grid-transition--grid {
-      display: grid;
-      column-gap: 2.5rem;
-    }
-
-    .grid-transition--logo {
-      display: block;
-    }
-
-    /* Strip grid takes over at ≥1280px — mask is unused. */
-    .grid-transition--mask {
-      display: none;
-    }
-  }
-
-  /* 1536px */
-  @media (width >= 96rem) {
-    .grid-transition--container {
-      padding-inline: 5rem /* 80px */;
-    }
-  }
+  /* 1536px */ @media (width >= 96rem) { .grid-transition--container { padding-inline: 5rem /* 80px
+  */; } }
 </style>

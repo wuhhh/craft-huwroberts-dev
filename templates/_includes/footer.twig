@@ -12,39 +12,54 @@
   {% set github = globals.github ?? null %}
 {% endif %}
 
-<footer id="contact" class="min-h-screenh col-span-full relative">
+<footer id="contact" class="min-h-screenh relative col-span-full">
   <div class="absolute inset-0 flex items-center justify-center">
-    <copy-clip
-      value="huw@huwroberts.dev"
-      tip=""
-      copied-tip=""
-      class="relative"
-    >
-      <span class="font-bold heading5 decoration-from-font decoration-coral-red hover:underline sm:heading3 2xl:heading1">
+    <copy-clip value="huw@huwroberts.dev" tip="" copied-tip="" class="relative">
+      <span
+        class="heading5 decoration-coral-red sm:heading3 2xl:heading1 font-bold decoration-from-font hover:underline"
+      >
         huw@huwroberts.dev
       </span>
-      <span slot="tip" class="absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 md:left-full md:top-1/2 md:translate-x-0 md:-translate-y-1/2 md:ml-3 md:mt-1">{{ svg('@webroot/dist/images/icon--copy.svg', true, true)|attr({ class: 'size-6 lg:size-8' }) }}</span>
-      <span slot="copied" class="absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 md:left-full md:top-1/2 md:translate-x-0 md:-translate-y-1/2 md:ml-3 md:mt-1">{{ svg('@webroot/dist/images/icon--check.svg', true, true)|attr({ class: 'size-6 lg:size-8' }) }}</span>
+      <span
+        slot="tip"
+        class="absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 md:top-1/2 md:left-full md:mt-1 md:ml-3 md:translate-x-0 md:-translate-y-1/2"
+      >
+        {{
+          svg('@webroot/dist/images/icon--copy.svg', true, true)|attr({ class: 'size-6 lg:size-8' })
+        }}
+      </span>
+      <span
+        slot="copied"
+        class="absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 md:top-1/2 md:left-full md:mt-1 md:ml-3 md:translate-x-0 md:-translate-y-1/2"
+      >
+        {{
+          svg('@webroot/dist/images/icon--check.svg', true, true)|attr({
+            class: 'size-6 lg:size-8'
+          })
+        }}
+      </span>
     </copy-clip>
   </div>
-  <div class="absolute bottom-8 inset-x-0 flex flex-col-reverse items-center gap-y-4 sm:contents">
-    <div class="sm:absolute inset-x-0 bottom-8 flex justify-center">
+  <div class="absolute inset-x-0 bottom-8 flex flex-col-reverse items-center gap-y-4 sm:contents">
+    <div class="inset-x-0 bottom-8 flex justify-center sm:absolute">
       {% if footerWords %}
-        <div class="xs-mono footer-words rich-text -simple leading-none text-sm!">{{ footerWords }}</div>
+        <div class="xs-mono footer-words rich-text -simple text-sm! leading-none">
+          {{ footerWords }}
+        </div>
       {% endif %}
-
     </div>
-    <div class="sm:absolute right-0 bottom-6 flex items-center">
-
+    <div class="right-0 bottom-6 flex items-center sm:absolute">
       {% if linkedin %}
         <a
           href="{{ linkedin.url }}"
           rel="{{ linkedin.rel }}"
           target="{{ linkedin.target }}"
-          class="hover:text-seabed-indigo transition duration-100 translate-x-px"
+          class="hover:text-seabed-indigo translate-x-px transition duration-100"
           aria-label="Huw Roberts on LinkedIn"
         >
-          {{ svg('@webroot/dist/images/social--linkedin.svg', true, true)|attr({ class: "h-[38px]" }) }}
+          {{
+            svg('@webroot/dist/images/social--linkedin.svg', true, true)|attr({ class: 'h-[38px]' })
+          }}
         </a>
       {% endif %}
 
@@ -56,7 +71,9 @@
           class="hover:text-seabed-indigo transition duration-100"
           aria-label="Huw Roberts on Bluesky"
         >
-          {{ svg('@webroot/dist/images/social--bluesky.svg', true, true)|attr({ class: "h-[38px]" }) }}
+          {{
+            svg('@webroot/dist/images/social--bluesky.svg', true, true)|attr({ class: 'h-[38px]' })
+          }}
         </a>
       {% endif %}
 
@@ -68,7 +85,9 @@
           class="hover:text-seabed-indigo transition duration-100"
           aria-label="Huw Roberts on GitHub"
         >
-          {{ svg('@webroot/dist/images/social--github.svg', true, true)|attr({ class: "h-[38px]" }) }}
+          {{
+            svg('@webroot/dist/images/social--github.svg', true, true)|attr({ class: 'h-[38px]' })
+          }}
         </a>
       {% endif %}
     </div>
