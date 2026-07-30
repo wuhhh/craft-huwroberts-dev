@@ -136,11 +136,7 @@
 
     &:hover {
       text-decoration-line: none;
-      background-color: color-mix(
-        in oklab,
-        var(--color-coral-red) 20%,
-        transparent
-      );
+      background-color: color-mix(in oklab, var(--color-coral-red) 20%, transparent);
     }
   }
 }

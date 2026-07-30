@@ -75,11 +75,7 @@ export function createDiamondPlaneMat(): THREE.MeshBasicNodeMaterial {
     color(CORAL),
     color(INDIGO),
     clamp(
-      mx_noise_vec3(
-        vec3(uv().x.add(time.mul(0.25)), uv().y.mul(4), time.mul(0.5)),
-        1.5,
-        0,
-      ).r,
+      mx_noise_vec3(vec3(uv().x.add(time.mul(0.25)), uv().y.mul(4), time.mul(0.5)), 1.5, 0).r,
       0,
       1,
     ),
@@ -191,22 +187,15 @@ export function createLiquidMaterialMat(
       add(mul(noise2, 0.3), add(mul(noise3, 0.2), mul(noise4, 0.1))),
     );
     // Add mouse-driven turbulence (subtle)
-    const mouseNoise = mul(
-      mouseInfluence,
-      mul(mouseDir.x.add(mouseDir.y), 0.25),
-    );
+    const mouseNoise = mul(mouseInfluence, mul(mouseDir.x.add(mouseDir.y), 0.25));
     const noise = add(baseNoise, mul(mouseNoise, 0.15));
 
     // Apply liquid distortion to edge
-    const liquidEdge = softEdge.add(
-      mul(sub(1.0, softEdge), mul(liquidAmount, noise)),
-    );
+    const liquidEdge = softEdge.add(mul(sub(1.0, softEdge), mul(liquidAmount, noise)));
 
     // Stripe calculations
     const cycleWidth = patternScale;
-    const thinStrip1Ratio = mul(0.12, sub(1.0, mul(0.4, bulge))).div(
-      cycleWidth,
-    );
+    const thinStrip1Ratio = mul(0.12, sub(1.0, mul(0.4, bulge))).div(cycleWidth);
 
     // Direction for stripes with more noise variation
     let dir = gradUv.x;
@@ -260,16 +249,8 @@ export function createLiquidMaterialMat(
 
     // Use noise to select highlight color from palette
     const colorBlend = add(noise1, mul(noise2, 0.5)).mul(0.5).add(0.5);
-    const highlightColor1 = mix(
-      orange,
-      indigo,
-      smoothstep(float(0.3), float(0.7), colorBlend),
-    );
-    const highlightColor2 = mix(
-      indigo,
-      pink,
-      smoothstep(float(0.4), float(0.8), colorBlend),
-    );
+    const highlightColor1 = mix(orange, indigo, smoothstep(float(0.3), float(0.7), colorBlend));
+    const highlightColor2 = mix(indigo, pink, smoothstep(float(0.4), float(0.8), colorBlend));
     const highlightColor = mix(
       highlightColor1,
       highlightColor2,
@@ -295,11 +276,7 @@ export function createLiquidMaterialMat(
     const effectStrength = sub(1.0, softEdge);
 
     // Mix: original black base + liquid chrome highlights on top (toned down)
-    const finalColor = mix(
-      originalColor.rgb,
-      liquidColor,
-      mul(effectStrength, 0.9),
-    );
+    const finalColor = mix(originalColor.rgb, liquidColor, mul(effectStrength, 0.9));
 
     return finalColor;
   });

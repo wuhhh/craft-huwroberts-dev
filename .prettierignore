@@ -1,0 +1,27 @@
+# Build output / vendored
+node_modules
+dist
+vendor
+web
+storage
+.ddev
+backups
+
+# Static assets copied verbatim by Vite (Draco wasm glue, etc.)
+src/public
+
+# Lockfiles / generated
+*.lock
+package-lock.json
+composer.lock
+
+# PHP is handled by Craft coding standards + .editorconfig — never format it
+*.php
+
+# Layout shells with DOCTYPE + embedded <script> + {% block %} nesting choke
+# the Twig plugin parser. Edit by hand here.
+templates/_layouts/**
+
+# Generated manifests / SRI
+**/.vite/
+**/manifest.json

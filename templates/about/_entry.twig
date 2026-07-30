@@ -1,82 +1,72 @@
-{% extends "_layouts/scene" %}
+{% extends '_layouts/scene' %}
 
 {% block content %}
-
   {% set shortBio = entry.richTextSimple ?? null %}
   {% set bioSections = entry.bioSections.all() ?? [] %}
   {% set tech = entry.tech ?? null %}
-  {% set frequentItems = collect(tech).pluck("frequent") %}
-  {% set occasionalItems = collect(tech).pluck("occasional") %}
+  {% set frequentItems = collect(tech).pluck('frequent') %}
+  {% set occasionalItems = collect(tech).pluck('occasional') %}
 
-  <div class="col-span-full relative min-h-screen w-full">
-
-    <about-scene
-      refImageId="scene-image-ref"
-      class="sm-down:w-screen sm-down:-ml-6"
-    ></about-scene>
+  <div class="relative col-span-full min-h-screen w-full">
+    <about-scene refImageId="scene-image-ref" class="sm-down:w-screen sm-down:-ml-6"></about-scene>
 
     <div class="pt-33 sm:px-4 sm:pt-30 lg:px-0">
-      <div class="relative md:grid grid-cols-12 gap-x-10">
+      <div class="relative grid-cols-12 gap-x-10 md:grid">
         <div class="col-span-full lg:col-span-10 lg:col-start-2">
-          {% include "_includes/breadcrumb" with {
-            classes: "mb-8 sm:mb-12 md:mb-28",
-            links: [
-              {
-                label: "Home",
-                url: siteUrl,
-              },
-              {
-                label: entry.title,
-                url: "",
-              }
-            ]
+          {% include '_includes/breadcrumb' with {
+            classes: 'mb-8 sm:mb-12 md:mb-28',
+            links: [{ label: 'Home', url: siteUrl }, { label: entry.title, url: '' }]
           } only %}
         </div>
-        <div class="col-span-10 lg:col-start-3 lg:col-span-7 xl:col-span-6 xl:col-start-5">
+        <div class="col-span-10 lg:col-span-7 lg:col-start-3 xl:col-span-6 xl:col-start-5">
           <h1 class="sr-only">{entry.title}</h1>
 
           <div class="space-y-12" data-cursor-layer="top">
-            <div id="scene-image-ref" class="relative overflow-hidden w-full aspect-9/8 md:aspect-70/58"></div>
+            <div
+              id="scene-image-ref"
+              class="relative aspect-9/8 w-full overflow-hidden md:aspect-70/58"
+            ></div>
 
             <h1 class="sr-only">About Huw Roberts</h1>
 
             {% if shortBio %}
-              <h2 class="rich-text -simple font-normal pt-10 sm:pt-6 md:pt-0 3xl:text-[22px]!">
+              <h2 class="rich-text -simple 3xl:text-[22px]! pt-10 font-normal sm:pt-6 md:pt-0">
                 {{ shortBio }}
               </h2>
             {% endif %}
 
             {% if bioSections %}
-
               <div class="space-y-6">
-
                 {% for bioSection in bioSections %}
-
                   {% set title = bioSection.title %}
                   {% set bio = bioSection.richTextSimple %}
 
-                  <div class="{{ not loop.first ? "pt-3" : "" }}">
+                  <div class="{{ not loop.first ? 'pt-3' : '' }}">
                     <h3 class="xs-mono-capped uppercase">{{ title }}</h3>
-                    <div aria-hidden class="xs-mono-capped uppercase">{% for c in title|split("") %}+{% endfor %}</div>
+                    {# prettier-ignore #}
+                    <div aria-hidden class="xs-mono-capped uppercase">{% for c in title|split('') %}+{% endfor %}</div>
                   </div>
                   <div class="rich-text -simple">
                     {{ bio }}
                   </div>
-
                 {% endfor %}
               </div>
             {% endif %}
           </div>
 
           {# tech #}
-          <div class="pointer-events-none md:absolute inset-0 translate-y-9.5 font-mono text-xs leading-3.5 uppercase pt-10 md:pt-0">
-            <div class="relative md:grid grid-cols-12 gap-x-10">
+          <div
+            class="pointer-events-none inset-0 translate-y-9.5 pt-10 font-mono text-xs leading-3.5 uppercase md:absolute md:pt-0"
+          >
+            <div class="relative grid-cols-12 gap-x-10 md:grid">
               <div class="col-start-9 xl:col-start-10">
                 <div class="flex gap-x-4 lg:gap-x-10">
                   {% if frequentItems|length %}
                     <div class="min-w-21">
                       <h2>Frequent</h2>
-                      <div aria-hidden="true">++++++++</div>
+                      <div aria-hidden="true">
+                        ++++++++
+                      </div>
                       <br />
                       <ul>
                         {% for frequentItem in frequentItems %}
@@ -89,7 +79,9 @@
                   {% if occasionalItems|length %}
                     <div class="min-w-21">
                       <h2>Occasional</h2>
-                      <div aria-hidden="true">++++++++++</div>
+                      <div aria-hidden="true">
+                        ++++++++++
+                      </div>
                       <br />
                       <ul>
                         {% for occasionalItem in occasionalItems %}
@@ -102,10 +94,8 @@
               </div>
             </div>
           </div> {# /tech #}
-
         </div>
       </div>
     </div>
   </div>
-
 {% endblock %}

@@ -1,13 +1,5 @@
 import * as THREE from "three/webgpu";
-import {
-  float,
-  positionLocal,
-  texture,
-  uniform,
-  uv,
-  vec2,
-  vec3,
-} from "three/tsl";
+import { float, positionLocal, texture, uniform, uv, vec2, vec3 } from "three/tsl";
 
 /** Max depth displacement (world units) once fully inflated. */
 export const DEPTH_SCALE = 1.7;
@@ -63,9 +55,7 @@ export interface SpatialImage {
  *
  * Ported from hrdev-react's SpatialImage.tsx — the TSL graph is unchanged.
  */
-export function createSpatialImage(
-  options: CreateSpatialImageOptions,
-): SpatialImage {
+export function createSpatialImage(options: CreateSpatialImageOptions): SpatialImage {
   const { colorTexture, depthTexture, aspect } = options;
 
   // --- render target -------------------------------------------------------
@@ -118,10 +108,7 @@ export function createSpatialImage(
 
   // --- display-plane material: shows the RT (V-flipped to match uv origin) -
   const displayMaterial = new THREE.MeshBasicNodeMaterial();
-  displayMaterial.colorNode = texture(
-    rt.texture,
-    vec2(uv().x, float(1.0).sub(uv().y)),
-  );
+  displayMaterial.colorNode = texture(rt.texture, vec2(uv().x, float(1.0).sub(uv().y)));
 
   // --- per-frame tilt + depth intro ----------------------------------------
   let tiltX = 0;

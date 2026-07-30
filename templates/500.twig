@@ -1,16 +1,16 @@
-{% extends "_layouts/base.twig" %}
+{% extends '_layouts/base.twig' %}
 
 {% block bodyTag %}
-  {{ parent()|attr({
-    class: 'bg-gray-200 h-screen'
-  }) }}
+  {{ parent()|attr({ class: 'bg-gray-200 h-screen' }) }}
 {% endblock %}
 
 {% block base %}
-  <div class="w-full h-full flex items-center justify-center text-center">
-		<div>
-			<h1 class="font-mono text-2xl">500</h1>
-			<div class="font-mono mt-4">Internal server error</div>
-		</div>
-	</div>
+  <div class="flex h-full w-full items-center justify-center text-center">
+    <div>
+      <h1 class="font-mono text-2xl">500</h1>
+      <div class="mt-4 font-mono">
+        Internal server error
+      </div>
+    </div>
+  </div>
 {% endblock %}

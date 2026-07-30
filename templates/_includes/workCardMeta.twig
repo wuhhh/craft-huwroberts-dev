@@ -2,10 +2,10 @@
 {% set isAgency = false %}
 {% set agencyTitle = null %}
 {% set agencyUrl = null %}
-{% set class = class ?? "" %}
+{% set class = class ?? '' %}
 
 {# Safe to use slug because it is not translatable #}
-{% if type and type.slug == "agency" %}
+{% if type and type.slug == 'agency' %}
   {% set isAgency = true %}
   {% set agency = agency.one() ?? null %}
 
@@ -17,18 +17,13 @@
 {% set year = year ?? null %}
 
 {% if type and year and ((isAgency and agencyTitle) or not isAgency) %}
-
   <div class="flex flex-col gap-y-2 {{ class }}">
     <div>
-      <span>{{ "Type"|t }}: {{ type }}</span>
+      <span>{{ 'Type'|t }}: {{ type }}</span>
       {% if isAgency %}
-        <span>
-          ({{ agencyTitle }})
-        </span>
+        <span>({{ agencyTitle }})</span>
       {% endif %}
     </div>
-{#    <div>{{ year }}</div> #}
+    {# <div>{{ year }}</div> #}
   </div>
-
 {% endif %}
-

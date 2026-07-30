@@ -1,7 +1,7 @@
 {% set breadcrumbLinks = breadcrumbLinks ?? [] %}
 {% set liveUrl = liveUrl ?? null %}
 
-{% include "_includes/decor/decorCellGrid.twig" only %}
+{% include '_includes/decor/decorCellGrid.twig' only %}
 
 {% set featureVideo = entry.featureVideo ?? null %}
 {% set featureImage = entry.imageCaption ?? null %}
@@ -10,23 +10,21 @@
 {% set techTags = entry.techTags.all() ?? [] %}
 
 <div class="col-span-full grid grid-cols-subgrid">
-  <div class="col-span-full pt-33 sm:pt-30 sm:px-4 lg:px-0 lg:col-start-2 lg:col-span-10 2xl:col-start-2 2xl:col-span-9">
-
-    {% include "_includes/breadcrumb" with {
-      classes: "mb-8 sm:mb-12 2xl:mb-20",
-      links: breadcrumbLinks,
+  <div
+    class="col-span-full pt-33 sm:px-4 sm:pt-30 lg:col-span-10 lg:col-start-2 lg:px-0 2xl:col-span-9 2xl:col-start-2"
+  >
+    {% include '_includes/breadcrumb' with {
+      classes: 'mb-8 sm:mb-12 2xl:mb-20',
+      links: breadcrumbLinks
     } only %}
 
     {# post #}
     <div class="space-y-5 sm:space-y-8">
-
       {# title and live link #}
-      <div class="flex items-end justify-between flex-wrap gap-x-8 gap-y-4">
-        <h1 class="leading-none! heading2 sm:heading1 font-medium max-w-3xl">{{ entry.title }}</h1>
+      <div class="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
+        <h1 class="heading2 sm:heading1 max-w-3xl leading-none! font-medium">{{ entry.title }}</h1>
         {% if liveUrl %}
-          {% include "_includes/liveLink.twig" with {
-            url: liveUrl,
-          } only %}
+          {% include '_includes/liveLink.twig' with { url: liveUrl } only %}
         {% endif %}
       </div>
 
@@ -40,54 +38,54 @@
       {% endif %}
 
       {# tags #}
-      {% include "_includes/techTags" with {
+      {% include '_includes/techTags' with {
         techTags: techTags,
-        id: "tech-tags-" ~ entry.id,
+        id: 'tech-tags-' ~ entry.id
       } only %}
 
       {# feature video / image #}
       <div class="space-y-32">
-        {% if featureVideo and featureVideo.videoCaption and featureVideo.videoCaption.videoAsset.one() %}
-
+        {% if
+          featureVideo
+            and featureVideo.videoCaption
+            and featureVideo.videoCaption.videoAsset.one() %}
           {% set caption = featureVideo.videoCaption.text ?? null %}
 
           <div class="space-y-3">
-            {% include "_includes/featureVideo.twig" with {
+            {% include '_includes/featureVideo.twig' with {
               featureVideo: featureVideo,
-              title: entry.title,
+              title: entry.title
             } only %}
 
             {% if caption %}
-              <div class="text-xs ml-1 xl:text-sm text-zinc-500">{{ caption }}</div>
+              <div class="ml-1 text-xs text-zinc-500 xl:text-sm">
+                {{ caption }}
+              </div>
             {% endif %}
           </div>
-
         {% elseif featureImage and featureImage.imageAsset.one() %}
-
           {% set caption = featureImage.text ?? null %}
 
           <div class="space-y-3">
-            {% include "_includes/featureImage.twig" with {
+            {% include '_includes/featureImage.twig' with {
               featureImage: featureImage,
-              title: entry.title,
+              title: entry.title
             } only %}
 
             {% if caption %}
-              <div class="text-xs ml-1 xl:text-sm text-zinc-500">{{ caption }}</div>
+              <div class="ml-1 text-xs text-zinc-500 xl:text-sm">
+                {{ caption }}
+              </div>
             {% endif %}
           </div>
-
         {% endif %}
-
       </div>
 
       {# post content #}
       {% if richTextPost %}
-        {% include "_includes/richTextPost" with { content: richTextPost } only %}
+        {% include '_includes/richTextPost' with { content: richTextPost } only %}
       {% endif %}
-
     </div>
-
   </div>
 
   {% set params = craft.entries().section('work') %}
@@ -96,55 +94,94 @@
 
   {% if prev or next %}
     <div
-      class="col-span-full pt-20 sm:px-4 sm:pt-30 lg:px-0 2xl:pt-36 lg:col-start-2 lg:col-span-10 2xl:col-start-2 2xl:col-span-9"
+      class="col-span-full pt-20 sm:px-4 sm:pt-30 lg:col-span-10 lg:col-start-2 lg:px-0 2xl:col-span-9 2xl:col-start-2 2xl:pt-36"
       aria-label="Navigate to adjacent entries"
     >
-      <div class="flex flex-col-reverse items-start w-[clamp(14.6875rem,18.75rem,72.5%)] mx-auto gap-x-6 gap-y-2 py-3 font-mono text-sm md:w-auto md:mx-0 md:flex-row md:items-center">
-
+      <div
+        class="mx-auto flex w-[clamp(14.6875rem,18.75rem,72.5%)] flex-col-reverse items-start gap-x-6 gap-y-2 py-3 font-mono text-sm md:mx-0 md:w-auto md:flex-row md:items-center"
+      >
         {% if prev %}
-          <div class="relative group">
-            <span aria-hidden="true" class="absolute inset-0 bg-zinc-900 [clip-path:inset(0_100%_0_0)] ease-[cubic-bezier(0.785_0.135_0.15_0.86)] transition-[clip-path] duration-200 delay-0 group-hover:[clip-path:inset(0_0%_0_0)] group-hover:delay-200 pointer-events-none"></span>
+          <div class="group relative">
             <span
               aria-hidden="true"
-              class="absolute inset-0 inline-flex items-center gap-x-3 text-white [clip-path:inset(0_100%_0_0)] ease-[cubic-bezier(0.785_0.135_0.15_0.86)] transition-[clip-path] duration-200 delay-0 group-hover:[clip-path:inset(0_0%_0_0)] group-hover:delay-200 pointer-events-none"
+              class="pointer-events-none absolute inset-0 bg-zinc-900 transition-[clip-path] delay-0 duration-200 ease-[cubic-bezier(0.785_0.135_0.15_0.86)] [clip-path:inset(0_100%_0_0)] group-hover:delay-200 group-hover:[clip-path:inset(0_0%_0_0)]"
             >
-              {{ svg("@webroot/dist/images/icon--arrow-left.svg", true, true)|attr({ class: "w-2.5 translate-y-px" }) }} <em>Prev:</em> {{ prev.title }}
-            </span>
-            <span
-              aria-hidden="true"
-              class="relative inline-flex items-center gap-x-3 [clip-path:inset(0_0_0_0%)] ease-[cubic-bezier(0.785_0.135_0.15_0.86)] transition-[clip-path] duration-200 delay-200 group-hover:[clip-path:inset(0_0_0_100%)] group-hover:delay-0"
-            >
-              {{ svg("@webroot/dist/images/icon--arrow-left.svg", true, true)|attr({ class: "w-2.5 translate-y-px" }) }} <em>Prev:</em> {{ prev.title }}
-            </span>
-            <a class="absolute inset-0" aria-label="View previous project: {{ prev.title }}" href="{{ url(prev.uri) }}"></a>
 
+            </span>
+            <span
+              aria-hidden="true"
+              class="pointer-events-none absolute inset-0 inline-flex items-center gap-x-3 text-white transition-[clip-path] delay-0 duration-200 ease-[cubic-bezier(0.785_0.135_0.15_0.86)] [clip-path:inset(0_100%_0_0)] group-hover:delay-200 group-hover:[clip-path:inset(0_0%_0_0)]"
+            >
+              {{
+                svg('@webroot/dist/images/icon--arrow-left.svg', true, true)|attr({
+                  class: 'w-2.5 translate-y-px'
+                })
+              }}
+              <em>Prev:</em> {{ prev.title }}
+            </span>
+            <span
+              aria-hidden="true"
+              class="relative inline-flex items-center gap-x-3 transition-[clip-path] delay-200 duration-200 ease-[cubic-bezier(0.785_0.135_0.15_0.86)] [clip-path:inset(0_0_0_0%)] group-hover:delay-0 group-hover:[clip-path:inset(0_0_0_100%)]"
+            >
+              {{
+                svg('@webroot/dist/images/icon--arrow-left.svg', true, true)|attr({
+                  class: 'w-2.5 translate-y-px'
+                })
+              }}
+              <em>Prev:</em> {{ prev.title }}
+            </span>
+            <a
+              class="absolute inset-0"
+              aria-label="View previous project: {{ prev.title }}"
+              href="{{ url(prev.uri) }}"
+            >
+
+            </a>
           </div>
         {% endif %}
 
-        <div class="hidden md:block w-16 h-px bg-zinc-900"></div>
+        <div class="hidden h-px w-16 bg-zinc-900 md:block"></div>
 
         {% if next %}
-          <div class="relative group ml-auto md:ml-0">
-            <span aria-hidden="true" class="absolute inset-0 bg-zinc-900 [clip-path:inset(0_0_0_100%)] ease-[cubic-bezier(0.785_0.135_0.15_0.86)] transition-[clip-path] duration-200 delay-0 group-hover:[clip-path:inset(0_0_0_0%)] group-hover:delay-200 pointer-events-none"></span>
+          <div class="group relative ml-auto md:ml-0">
             <span
               aria-hidden="true"
-              class="absolute inset-0 inline-flex items-center gap-x-3 text-white [clip-path:inset(0_0_0_100%)] ease-[cubic-bezier(0.785_0.135_0.15_0.86)] transition-[clip-path] duration-200 delay-0 group-hover:[clip-path:inset(0_0_0_0%)] group-hover:delay-200 pointer-events-none"
+              class="pointer-events-none absolute inset-0 bg-zinc-900 transition-[clip-path] delay-0 duration-200 ease-[cubic-bezier(0.785_0.135_0.15_0.86)] [clip-path:inset(0_0_0_100%)] group-hover:delay-200 group-hover:[clip-path:inset(0_0_0_0%)]"
             >
-              <em>Next:</em> {{ next.title }} {{ svg("@webroot/dist/images/icon--arrow-left.svg", true, true)|attr({ class: "rotate-180 w-2.5 translate-y-px" }) }}
-            </span>
-            <span
-              aria-hidden="true"
-              class="relative inline-flex items-center gap-x-3 [clip-path:inset(0_0%_0_0)] ease-[cubic-bezier(0.785_0.135_0.15_0.86)] transition-[clip-path] duration-200 delay-200 group-hover:[clip-path:inset(0_100%_0_0)] group-hover:delay-0"
-            >
-              <em>Next:</em> {{ next.title }} {{ svg("@webroot/dist/images/icon--arrow-left.svg", true, true)|attr({ class: "rotate-180 w-2.5 translate-y-px" }) }}
-            </span>
-            <a class="absolute inset-0" aria-label="View next project: {{ next.title }}" href="{{ url(next.uri) }}"></a>
 
+            </span>
+            <span
+              aria-hidden="true"
+              class="pointer-events-none absolute inset-0 inline-flex items-center gap-x-3 text-white transition-[clip-path] delay-0 duration-200 ease-[cubic-bezier(0.785_0.135_0.15_0.86)] [clip-path:inset(0_0_0_100%)] group-hover:delay-200 group-hover:[clip-path:inset(0_0_0_0%)]"
+            >
+              <em>Next:</em> {{ next.title }}
+              {{
+                svg('@webroot/dist/images/icon--arrow-left.svg', true, true)|attr({
+                  class: 'rotate-180 w-2.5 translate-y-px'
+                })
+              }}
+            </span>
+            <span
+              aria-hidden="true"
+              class="relative inline-flex items-center gap-x-3 transition-[clip-path] delay-200 duration-200 ease-[cubic-bezier(0.785_0.135_0.15_0.86)] [clip-path:inset(0_0%_0_0)] group-hover:delay-0 group-hover:[clip-path:inset(0_100%_0_0)]"
+            >
+              <em>Next:</em> {{ next.title }}
+              {{
+                svg('@webroot/dist/images/icon--arrow-left.svg', true, true)|attr({
+                  class: 'rotate-180 w-2.5 translate-y-px'
+                })
+              }}
+            </span>
+            <a
+              class="absolute inset-0"
+              aria-label="View next project: {{ next.title }}"
+              href="{{ url(next.uri) }}"
+            >
+
+            </a>
           </div>
         {% endif %}
-
       </div>
     </div>
   {% endif %}
-
 </div>

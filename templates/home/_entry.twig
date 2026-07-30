@@ -1,7 +1,6 @@
-{% extends "_layouts/scene" %}
+{% extends '_layouts/scene' %}
 
 {% block content %}
-
   <div class="col-span-full mb-16">
     <intro-scene class="sm-down:w-screen sm-down:-ml-6"></intro-scene>
   </div>
@@ -10,31 +9,23 @@
 
   {% set workTitle = entry.workTitle ?? null %}
   {% set workCtaChip = entry.workCtaChip ?? null %}
-  {% set workEntries = entry.workEntries ?? [] %}
 
   {% if workTitle and workCtaChip.url %}
-
     <div class="col-span-full">
-      {% include "_includes/sectionTitleChip.twig" with {
+      {% include '_includes/sectionTitleChip.twig' with {
         title: workTitle,
-        chipLabel: workCtaChip.label ?? "View All",
+        chipLabel: workCtaChip.label ?? 'View All',
         chipLink: workCtaChip.url,
-        classes: "mb-16",
+        classes: 'mb-16'
       } only %}
     </div>
-
   {% endif %}
 
-  {% include "_includes/workGrid" with {
-    entries: workEntries,
-  } only %}
+  {% include '_includes/workGrid' with { entries: entry.workEntries ?? [] } only %}
 
   <div class="col-span-full mb-16">
     <about-huw-scene class="sm-down:w-screen sm-down:-ml-16"></about-huw-scene>
   </div>
 
-  {% include "_includes/workGrid" with {
-    entries: workEntries,
-  } only %}
-
+  {% include '_includes/workGrid' with { entries: entry.workEntries ?? [] } only %}
 {% endblock %}

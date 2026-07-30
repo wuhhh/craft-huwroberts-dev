@@ -120,8 +120,7 @@ export class PointerMotionController implements ReactiveController {
 
   constructor(host: ReactiveControllerHost) {
     this.host = host;
-    this.intensity =
-      MIN_INTENSITY + Math.random() * (MAX_INTENSITY - MIN_INTENSITY);
+    this.intensity = MIN_INTENSITY + Math.random() * (MAX_INTENSITY - MIN_INTENSITY);
     host.addController(this);
   }
 
@@ -161,4 +160,3 @@ export class PointerMotionController implements ReactiveController {
     el.style.setProperty("--pm-y", `${this.y.toFixed(2)}px`);
   }
 }
-

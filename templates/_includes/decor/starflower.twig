@@ -41,10 +41,10 @@
     if (!$refs.r) return
     window.requestAnimationFrame((elapsed) => frame(elapsed))
   }"
-  class="container relative"
+  class="relative container"
   @scroll.window="handleScroll"
 >
-  <div class="hidden fixed inset-y-0 sm:flex items-end justify-center w-14 pb-12">
+  <div class="fixed inset-y-0 hidden w-14 items-end justify-center pb-12 sm:flex">
     <div x-ref="r" :style="`transform: rotate(0deg)`">
       {{ svg('@webroot/dist/images/icon--starflower.svg', true, true)|attr({ class: 'w-[30px]' }) }}
     </div>

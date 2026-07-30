@@ -1,18 +1,17 @@
-{% extends "_layouts/default" %}
+{% extends '_layouts/default' %}
 
-{% set gridLinesVariant = "outer" %}
+{% set gridLinesVariant = 'outer' %}
 
 {% block content %}
-
   {% set preamble = entry.richTextSimple ?? null %}
 
-  {% set entries = craft.entries()
-    .section('journal')
-    .with(['techTags'])
-    .orderBy('postDate DESC')
-    .all() ?? [] %}
+  {% set entries = craft.entries().section('journal').with(['techTags']).orderBy(
+    'postDate DESC'
+  ).all()
+    ?? []
+  %}
 
-  {% if entries|length <= 2 %}
+  {% if (entries|length) <= 2 %}
     {% set heroEntries = entries %}
     {% set midEntries = [] %}
     {% set listEntries = [] %}
@@ -23,50 +22,39 @@
     {% set listEntries = entries|slice(3) %}
   {% endif %}
 
-  {% include "_includes/decor/decorCellGrid.twig" only %}
+  {% include '_includes/decor/decorCellGrid.twig' only %}
 
   <div class="col-span-full grid grid-cols-subgrid">
-
-    <div class="col-span-full pt-33 sm:pt-30 sm:px-4 lg:px-0 lg:col-start-2 lg:col-span-9 xl:col-start-2 xl:col-span-8">
-
-      {% include "_includes/breadcrumb" with {
-        classes: "mb-8 sm:mb-12 2xl:mb-20",
-        links: [
-          {
-            label: "Home",
-            url: siteUrl,
-          },
-          {
-            label: "Journal",
-            url: "/journal",
-          }
-        ]
+    <div
+      class="col-span-full pt-33 sm:px-4 sm:pt-30 lg:col-span-9 lg:col-start-2 lg:px-0 xl:col-span-8 xl:col-start-2"
+    >
+      {% include '_includes/breadcrumb' with {
+        classes: 'mb-8 sm:mb-12 2xl:mb-20',
+        links: [{ label: 'Home', url: siteUrl }, { label: 'Journal', url: '/journal' }]
       } only %}
 
       <h1 class="sr-only">Journal</h1>
 
       {% if preamble %}
-        <h2 class="max-w-236.75 font-medium base-sans sm:heading5 [word-break:break-word] xl:heading4">
+        <h2
+          class="base-sans sm:heading5 xl:heading4 max-w-236.75 font-medium [word-break:break-word]"
+        >
           {{ preamble }}
         </h2>
       {% endif %}
 
       {% if entries|length %}
-        <div class="flex flex-col gap-y-16 sm:gap-y-20 {{ preamble ? "mt-16 sm:mt-20" : "" }}">
-
+        <div class="flex flex-col gap-y-16 sm:gap-y-20 {{ preamble ? 'mt-16 sm:mt-20' : '' }}">
           {% for heroEntry in heroEntries %}
-            {% include "_includes/journalFeaturedCard" with {
-              entry: heroEntry,
-              size: "lg",
-            } only %}
+            {% include '_includes/journalFeaturedCard' with { entry: heroEntry, size: 'lg' } only %}
           {% endfor %}
 
           {% if midEntries|length %}
             <div class="grid grid-cols-1 gap-x-10 gap-y-16 sm:grid-cols-2">
               {% for midEntry in midEntries %}
-                {% include "_includes/journalFeaturedCard" with {
+                {% include '_includes/journalFeaturedCard' with {
                   entry: midEntry,
-                  size: "md",
+                  size: 'md'
                 } only %}
               {% endfor %}
             </div>
@@ -75,37 +63,48 @@
           {% if listEntries|length %}
             <div>
               {% for listEntry in listEntries %}
-                {% set entryYear = listEntry.postDate|date("Y") %}
-                {% set prevYear = loop.index0 > 0 ? listEntries[loop.index0 - 1].postDate|date("Y") : null %}
+                {% set entryYear = listEntry.postDate|date('Y') %}
+                {% set prevYear = loop.index0 > 0
+                  ? listEntries[loop.index0 - 1].postDate|date('Y')
+                  : null
+                %}
 
                 {% if entryYear != prevYear %}
-                  <div class="{{ not loop.first ? "mt-4" : "mb-6" }} inline-flex w-fit items-center rounded-full bg-black px-5 py-4 text-base font-medium text-white">
+                  <div
+                    class="{{
+                    not loop.first
+                      ? 'mt-4'
+                      : 'mb-6'
+                    }} inline-flex w-fit items-center rounded-full bg-black px-5 py-4 text-base font-medium text-white"
+                  >
                     {{ entryYear }}
                   </div>
                 {% endif %}
 
-                <div class="group relative border-t border-smoke py-6">
+                <div class="group border-smoke relative border-t py-6">
                   <div class="flex items-center justify-between gap-x-8">
-                    <h3 class="[word-break:break-word] text-lg leading-[1.26] font-medium tracking-[-0.01em] text-black group-hover:underline">
+                    <h3
+                      class="text-lg leading-[1.26] font-medium tracking-[-0.01em] [word-break:break-word] text-black group-hover:underline"
+                    >
                       {{ listEntry.title }}
                     </h3>
-                    <span class="xs-mono shrink-0 text-black">{{ listEntry.postDate|date("M d")|upper }}</span>
+                    <span class="xs-mono shrink-0 text-black">
+                      {{ listEntry.postDate|date('M d')|upper }}
+                    </span>
                   </div>
                   <a
                     href="{{ url(listEntry.uri) }}"
-                    class="box-link focus-visible:outline-0 focus-visible:before:outline-2 focus-visible:before:outline-offset-2 focus-visible:before:outline-coral-red"
+                    class="box-link focus-visible:before:outline-coral-red focus-visible:outline-0 focus-visible:before:outline-2 focus-visible:before:outline-offset-2"
                     aria-label="{{ '{0}, read article'|t([listEntry.title]) }}"
-                  ></a>
+                  >
+
+                  </a>
                 </div>
               {% endfor %}
             </div>
           {% endif %}
-
         </div>
       {% endif %}
-
     </div>
-
   </div>
-
 {% endblock %}

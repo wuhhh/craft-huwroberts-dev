@@ -203,9 +203,7 @@ export class IntroSceneText extends LitElement {
         </div>
         <div>
           <div class="line" style="--i: 2">Partnering With Creative Teams</div>
-          <div class="line" style="--i: 3">
-            Building Modern, performant Websites
-          </div>
+          <div class="line" style="--i: 3">Building Modern, performant Websites</div>
         </div>
       </div>
     `;

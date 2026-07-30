@@ -11,31 +11,35 @@
     },
   }"
 >
-  <article class="grid grid-cols-12 w-full max-w-[736px] ml-auto lg:pt-16 lg:max-w-none lg:ml-0 lg:gap-x-10">
-    <div class="pointer-events-auto bg-zinc-50 col-span-full pb-16 sm:pt-[152px] md:pb-[72px] lg:pt-0 lg:col-span-7 lg:col-start-5 2xl:pb-24">
+  <article
+    class="ml-auto grid w-full max-w-[736px] grid-cols-12 lg:ml-0 lg:max-w-none lg:gap-x-10 lg:pt-16"
+  >
+    <div
+      class="pointer-events-auto col-span-full bg-zinc-50 pb-16 sm:pt-[152px] md:pb-[72px] lg:col-span-7 lg:col-start-5 lg:pt-0 2xl:pb-24"
+    >
+      {# Nav #}
 
-        {# Nav #}
+      {% include '_includes/slideoverNav' with { context: ['about'] } only %}
 
-        {% include "_includes/slideoverNav" with { context: ["about"] } only %}
+      <div class="space-y-10 pt-[160px] sm:space-y-14 sm:pt-0">
+        <div>
+          <template x-if="entry.heading">
+            <h2
+              x-dialog:title
+              class="heading3 md:heading1 relative z-10 !leading-none font-medium md:w-4/5 xl:w-auto"
+              x-text="entry.heading"
+            >
 
-        <div class="pt-[160px] sm:pt-0 space-y-10 sm:space-y-14">
+            </h2>
+          </template>
+        </div>
 
-          <div>
-            <template x-if="entry.heading">
-              <h2
-                x-dialog:title
-                class="relative z-10 font-medium heading3 md:heading1 !leading-none md:w-4/5 xl:w-auto"
-                x-text="entry.heading"
-              ></h2>
-            </template>
-          </div>
-
-          <template x-if="entry.portraitImage[0]?.url && entry.landscapeImage[0]?.url">
-            <div class="relative z-10 aspect-square sm:aspect-[764/350]">
-              <picture>
-                <source
-                  :srcset="entry.landscapeImage[0]?.srcset"
-                  sizes="
+        <template x-if="entry.portraitImage[0]?.url && entry.landscapeImage[0]?.url">
+          <div class="relative z-10 aspect-square sm:aspect-[764/350]">
+            <picture>
+              <source
+                :srcset="entry.landscapeImage[0]?.srcset"
+                sizes="
                     (min-width: 640px) 588w,
                     (min-width:768px) 716w,
                     (min-width:1024px) 743w,
@@ -43,33 +47,33 @@
                     (min-width:1440px) 640w,
                     (min-width:1728px) 752w
                   "
-                  media="(min-width: 640px)"
-                />
-                <img
-                  class="object-cover w-full h-full opacity-25"
-                  :src="entry.portraitImage[0]?.url"
-                  :srcset="entry.portraitImage[0]?.srcset"
-                  sizes="100vw"
-                  alt=""
-                />
-              </picture>
+                media="(min-width: 640px)"
+              />
+              <img
+                class="h-full w-full object-cover opacity-25"
+                :src="entry.portraitImage[0]?.url"
+                :srcset="entry.portraitImage[0]?.srcset"
+                sizes="100vw"
+                alt=""
+              />
+            </picture>
+          </div>
+        </template>
 
-            </div>
-          </template>
+        <template x-if="entry.richText">
+          <div
+            class="sm-sans sm:heading5 rich-text -simple relative z-10 sm:!font-medium"
+            x-html="entry.richText"
+          ></div>
+        </template>
 
-          <template x-if="entry.richText">
-            <div class="relative z-10 sm-sans sm:heading5 sm:!font-medium rich-text -simple" x-html="entry.richText"></div>
-          </template>
-
-          {# Tags #}
-          <template x-if="entry.techTags.length">
-            <div class="relative w-full max-w-[752px] md:w-4/5 xl:w-auto">
-              {% include "_includes/tagsGql" only %}
-            </div>
-          </template>
-
-        </div>
-
+        {# Tags #}
+        <template x-if="entry.techTags.length">
+          <div class="relative w-full max-w-[752px] md:w-4/5 xl:w-auto">
+            {% include '_includes/tagsGql' only %}
+          </div>
+        </template>
+      </div>
     </div>
   </article>
 </template>

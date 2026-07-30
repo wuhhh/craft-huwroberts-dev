@@ -12,12 +12,12 @@
   <div
     x-dialog:overlay
     x-transition.opacity.duration.500ms
-    class="hidden md:block fixed inset-0 bg-[#eee] bg-opacity-90 backdrop-blur-[3px]"
+    class="bg-opacity-90 fixed inset-0 hidden bg-[#eee] backdrop-blur-[3px] md:block"
   ></div>
 
   {# Panel background (white fill) #}
   <div
-    class="fixed inset-y-0 inset-x-0 bg-zinc-50 md:left-auto md:right-0 md:w-[var(--panel-w)] 3xl:w-[var(--3xl-panel-w)]"
+    class="3xl:w-[var(--3xl-panel-w)] fixed inset-x-0 inset-y-0 bg-zinc-50 md:right-0 md:left-auto md:w-[var(--panel-w)]"
     x-show="$store.global.slideoverOpen"
     x-transition:enter="transition duration-500 ease-out"
     x-transition:enter-start="translate-x-16 md:translate-x-8 opacity-0"
@@ -31,7 +31,7 @@
   <div
     x-dialog:panel
     aria-live="polite"
-    class="fixed inset-y-0 right-0 w-[var(--panel-w)] 3xl:w-[var(--3xl-panel-w)]"
+    class="3xl:w-[var(--3xl-panel-w)] fixed inset-y-0 right-0 w-[var(--panel-w)]"
   >
     <div
       data-name="slidover-panel-content"
@@ -44,15 +44,15 @@
       x-transition:leave-start="translate-x-0 opacity-100"
       x-transition:leave-end="translate-x-4 md:translate-x-2 opacity-0"
       @slideover-post-update.window="$el.scrollTop = 0"
-      class="absolute inset-0 overflow-auto -ml-[var(--panel-away-w)] 3xl:-ml-[calc(100vw-var(--3xl-panel-w))]"
+      class="3xl:-ml-[calc(100vw-var(--3xl-panel-w))] absolute inset-0 -ml-[var(--panel-away-w)] overflow-auto"
     >
-      {% include "_includes/followers/followerDotSlideover" only %}
+      {% include '_includes/followers/followerDotSlideover' only %}
       <div class="container">
         <template x-if="$store.global.slideoverTemplate === 'work'">
-          {% include "_includes/work/workArticleGql" only %}
+          {% include '_includes/work/workArticleGql' only %}
         </template>
         <template x-if="$store.global.slideoverTemplate === 'about'">
-          {% include "_includes/slideoverAboutGql" only %}
+          {% include '_includes/slideoverAboutGql' only %}
         </template>
       </div>
     </div>
@@ -61,7 +61,6 @@
   {# Click away region #}
   <div
     @click="close()"
-    class="fixed left-0 inset-y-0 w-[var(--panel-away-w)] 3xl:w-[var(--3xl-panel-away-w)]"
+    class="3xl:w-[var(--3xl-panel-away-w)] fixed inset-y-0 left-0 w-[var(--panel-away-w)]"
   ></div>
-
 </div> {# /Slideover #}

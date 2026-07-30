@@ -1,17 +1,15 @@
-{% extends "_layouts/default" %}
+{% extends '_layouts/default' %}
 
-{% set gridLinesVariant = "outer" %}
+{% set gridLinesVariant = 'outer' %}
 
 {% block content %}
-
-  {% include "_includes/entryDetail" with {
+  {% include '_includes/entryDetail' with {
     entry: entry,
     breadcrumbLinks: [
-      { label: "Home", url: siteUrl },
-      { label: "Case Studies", url: "/work" },
-      { label: entry.title, url: "" },
+      { label: 'Home', url: siteUrl },
+      { label: 'Case Studies', url: '/work' },
+      { label: entry.title, url: '' }
     ],
-    liveUrl: entry.liveUrl ?? null,
+    liveUrl: entry.liveUrl ?? null
   } only %}
-
 {% endblock %}

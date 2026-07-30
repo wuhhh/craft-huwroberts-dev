@@ -274,11 +274,7 @@ export class VideoPlayer extends LitElement {
       bottom: 0;
       z-index: 20;
       height: 3rem;
-      background-color: color-mix(
-        in oklab,
-        var(--color-zinc-900) 90%,
-        transparent
-      );
+      background-color: color-mix(in oklab, var(--color-zinc-900) 90%, transparent);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       opacity: 0;
@@ -324,11 +320,7 @@ export class VideoPlayer extends LitElement {
       inset: 0;
       z-index: 10;
       opacity: 0.2;
-      background-color: color-mix(
-        in oklab,
-        var(--color-zinc-900) 20%,
-        transparent
-      );
+      background-color: color-mix(in oklab, var(--color-zinc-900) 20%, transparent);
     }
 
     .poster-btn {
@@ -351,11 +343,7 @@ export class VideoPlayer extends LitElement {
     .poster-btn-bg {
       position: absolute;
       inset: 0;
-      background-color: color-mix(
-        in oklab,
-        var(--color-zinc-900) 90%,
-        transparent
-      );
+      background-color: color-mix(in oklab, var(--color-zinc-900) 90%, transparent);
       border-radius: 9999px;
       transition:
         background-color 200ms ease-in-out,
@@ -539,9 +527,7 @@ export class VideoPlayer extends LitElement {
 
     return html`
       <div class="backdrop" style="background-color: ${this.backdropColor}">
-        <div class="${this.entry.boxed ? `boxed` : ``} frame">
-          ${this.renderVideo()}
-        </div>
+        <div class="${this.entry.boxed ? `boxed` : ``} frame">${this.renderVideo()}</div>
       </div>
     `;
   }
@@ -562,26 +548,25 @@ export class VideoPlayer extends LitElement {
           @click=${this.onPlayPauseClick}
           aria-label="${this.paused ? "Play" : "Pause"}"
         >
-          ${showPlayIcon
-            ? html`<svg
-                class="icon icon--play"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 15 20"
-              >
-                <path
-                  fill="currentColor"
-                  d="M15 9.882 0 19.307V.458l15 9.424Z"
-                ></path>
-              </svg>`
-            : html`<svg
-                class="icon icon--paused"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 13 14"
-              >
-                <path fill="currentColor" d="M8 0h5v14H8zM0 0h5v14H0z"></path>
-              </svg>`}
+          ${
+            showPlayIcon
+              ? html`<svg
+                  class="icon icon--play"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 15 20"
+                >
+                  <path fill="currentColor" d="M15 9.882 0 19.307V.458l15 9.424Z"></path>
+                </svg>`
+              : html`<svg
+                  class="icon icon--paused"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 13 14"
+                >
+                  <path fill="currentColor" d="M8 0h5v14H8zM0 0h5v14H0z"></path>
+                </svg>`
+          }
         </button>
 
         <button
@@ -596,14 +581,9 @@ export class VideoPlayer extends LitElement {
             <span class="track"></span>
             <span
               class="progress"
-              style="transform: scaleX(${this.duration
-                ? this.currentTime / this.duration
-                : 0})"
+              style="transform: scaleX(${this.duration ? this.currentTime / this.duration : 0})"
             ></span>
-            <span
-              class="seek-visual"
-              style="transform: scaleX(${this.seek})"
-            ></span>
+            <span class="seek-visual" style="transform: scaleX(${this.seek})"></span>
           </span>
         </button>
 
@@ -638,10 +618,11 @@ export class VideoPlayer extends LitElement {
         >
           ${this.videoSources.map(
             // #t=0.1 forces Safari iOS to show the first frame (temporary fix).
-            (source) => html`<source
-              src=${(source.url ?? "") + "#t=0.1"}
-              type=${source.mimeType ?? nothing}
-            />`,
+            (source) =>
+              html`<source
+                src=${(source.url ?? "") + "#t=0.1"}
+                type=${source.mimeType ?? nothing}
+              />`,
           )}
         </video>
 
@@ -663,16 +644,10 @@ export class VideoPlayer extends LitElement {
       : nothing;
 
     const posterOverlay =
-      this.hasPosterImage && this.dimPoster
-        ? html`<span class="poster-overlay"></span>`
-        : nothing;
+      this.hasPosterImage && this.dimPoster ? html`<span class="poster-overlay"></span>` : nothing;
 
     return html`
-      <button
-        class="poster"
-        @click=${this.onPosterClick}
-        aria-label="Play video"
-      >
+      <button class="poster" @click=${this.onPosterClick} aria-label="Play video">
         ${posterImage} ${posterOverlay}
         <span class="poster-btn">
           <span class="poster-btn-bg"></span>
@@ -682,10 +657,7 @@ export class VideoPlayer extends LitElement {
             fill="none"
             viewBox="0 0 15 20"
           >
-            <path
-              fill="currentColor"
-              d="M15 9.882 0 19.307V.458l15 9.424Z"
-            ></path>
+            <path fill="currentColor" d="M15 9.882 0 19.307V.458l15 9.424Z"></path>
           </svg>
         </span>
       </button>

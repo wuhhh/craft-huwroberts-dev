@@ -51,9 +51,7 @@ function waitForPhase(root: HTMLElement, totalMs: number): Promise<void> {
         resolve();
       }
     };
-    const last = root.querySelector<HTMLElement>(
-      ".grid-transition--grid--fill-r",
-    );
+    const last = root.querySelector<HTMLElement>(".grid-transition--grid--fill-r");
     if (last) {
       last.addEventListener("animationend", finish, { once: true });
       last.addEventListener("animationcancel", finish, { once: true });
@@ -103,9 +101,7 @@ function syncHead(nextHtml: string): void {
     }
   }
   const incomingCanonical = doc.querySelector('link[rel="canonical"]');
-  const outgoingCanonical = document.head.querySelector<HTMLLinkElement>(
-    'link[rel="canonical"]',
-  );
+  const outgoingCanonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
   if (incomingCanonical) {
     const href = incomingCanonical.getAttribute("href") || "";
     if (outgoingCanonical) {
@@ -122,17 +118,13 @@ function syncHead(nextHtml: string): void {
 }
 
 /* Reset scroll, sync <head>, fire pageview + pagereveal, move focus to #main. */
-function onEnter(
-  next: { html?: string; url?: { path?: string } } | undefined,
-): void {
+function onEnter(next: { html?: string; url?: { path?: string } } | undefined): void {
   if (next?.html) syncHead(next.html);
   window.scrollTo(0, 0);
   lenis?.scrollTo(0, { immediate: true });
   // Plausible's auto-pageview script tracks full loads only — SPA nav needs
   // a manual event.
-  const plausible = (
-    window as unknown as { plausible?: (...a: unknown[]) => void }
-  ).plausible;
+  const plausible = (window as unknown as { plausible?: (...a: unknown[]) => void }).plausible;
   plausible?.("pageview", { props: { path: next?.url?.path ?? "" } });
   // Lets ./highlight.ts re-run on swapped <pre><code> etc.
   window.dispatchEvent(new Event("pagereveal"));
@@ -148,9 +140,7 @@ function init(): void {
   // `from` (scale 1 0) matches the persisted end state — no flicker.
   if (GRID_VISIBLE_MQ.matches) root.classList.add("is-revealing");
 
-  const container = document.querySelector<HTMLElement>(
-    '[data-barba="container"]',
-  );
+  const container = document.querySelector<HTMLElement>('[data-barba="container"]');
   if (!container) return; // error pages — Barba never initialises
 
   barba.init({
@@ -161,9 +151,7 @@ function init(): void {
     transitions: [
       {
         name: "grid-fill-reveal",
-        async leave(data: {
-          current: { container: { style: { display: string } } };
-        }) {
+        async leave(data: { current: { container: { style: { display: string } } } }) {
           root.classList.remove("is-revealing");
           root.classList.add("is-filling");
           if (!GRID_VISIBLE_MQ.matches) {
@@ -184,9 +172,7 @@ function init(): void {
             data.current.container.style.display = "none";
           }
         },
-        enter(data: {
-          next: { html?: string; url?: { path?: string } } | undefined;
-        }) {
+        enter(data: { next: { html?: string; url?: { path?: string } } | undefined }) {
           root.classList.remove("is-filling");
           root.classList.add("is-revealing");
           onEnter(data.next);

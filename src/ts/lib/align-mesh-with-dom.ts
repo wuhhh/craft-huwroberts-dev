@@ -49,11 +49,8 @@ export interface AlignMeshResult {
  * @param options - Configuration options
  * @returns The calculated position, scale, and viewport
  */
-export function alignMeshWithDOM(
-  options: AlignMeshWithDOMOptions,
-): AlignMeshResult | null {
-  const { mesh, domElement, camera, host, scaleToMatch = "height" } =
-    options;
+export function alignMeshWithDOM(options: AlignMeshWithDOMOptions): AlignMeshResult | null {
+  const { mesh, domElement, camera, host, scaleToMatch = "height" } = options;
 
   const canvasRect = host.getBoundingClientRect();
   const viewport = options.viewport ?? getViewport(camera, host, 0);
@@ -73,11 +70,7 @@ export function alignMeshWithDOM(
   const normalizedY = -(centerY / canvasRect.height - 0.5);
 
   // Convert to 3D world coordinates
-  const position = new THREE.Vector3(
-    normalizedX * visibleWidth,
-    normalizedY * visibleHeight,
-    0,
-  );
+  const position = new THREE.Vector3(normalizedX * visibleWidth, normalizedY * visibleHeight, 0);
 
   mesh.position.copy(position);
 
@@ -159,11 +152,7 @@ export function domToWorldPosition(
   const normalizedY = -(centerY / canvasRect.height - 0.5);
 
   // Convert to 3D world coordinates
-  const position = new THREE.Vector3(
-    normalizedX * visibleWidth,
-    normalizedY * visibleHeight,
-    0,
-  );
+  const position = new THREE.Vector3(normalizedX * visibleWidth, normalizedY * visibleHeight, 0);
 
   return { position, viewport, rect };
 }
