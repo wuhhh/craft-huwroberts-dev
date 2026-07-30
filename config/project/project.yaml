@@ -1,76 +1,76 @@
-dateModified: 1784564879
+dateModified: 1785421501
 email:
   fromEmail: hello@rootsy.co.uk
-  fromName: 'Huw Roberts | Freelance Web Developer'
+  fromName: "Huw Roberts | Freelance Web Developer"
   transportType: craft\mail\transportadapters\Sendmail
 fs:
   local:
     hasUrls: true
     name: Local
     settings:
-      path: '@webroot/volumes/local'
+      path: "@webroot/volumes/local"
     type: craft\fs\Local
-    url: '@web/volumes/local'
+    url: "@web/volumes/local"
 meta:
   __names__:
-    0c6d4176-996d-4614-bdff-a2d9abe117cc: 'Work (Index)' # Work (Index)
-    0c63feb6-fcfa-46d6-befd-8445e10a9e7a: 'Image & Caption' # Image & Caption
-    2f8ab51a-6475-423d-a4d4-81ae028ad2dd: '🔹 Bio Section' # 🔹 Bio Section
-    4e5f4410-fe03-41d3-a103-8619a3dee7de: 'Live URL' # Live URL
+    0c6d4176-996d-4614-bdff-a2d9abe117cc: "Work (Index)" # Work (Index)
+    0c63feb6-fcfa-46d6-befd-8445e10a9e7a: "Image & Caption" # Image & Caption
+    2f8ab51a-6475-423d-a4d4-81ae028ad2dd: "🔹 Bio Section" # 🔹 Bio Section
+    4e5f4410-fe03-41d3-a103-8619a3dee7de: "Live URL" # Live URL
     4fb7eacc-a8a0-4a3a-8659-9d29b1f619e5: Tech # Tech
-    4ffac4bc-7b4a-4579-9cc7-8dd3074e1e83: 'Entry: Journal' # Entry: Journal
+    4ffac4bc-7b4a-4579-9cc7-8dd3074e1e83: "Entry: Journal" # Entry: Journal
     5c24cd7c-3d48-44f0-831a-3abc4d6b54ff: Work # Work
-    5ce6d819-412b-470b-a122-a6d474f65997: 'Rich Text Post' # Rich Text Post
-    6e9cca5e-e4eb-416d-a05c-8fdf191de744: 'See Also' # See Also
-    7c1c74c5-a5d4-4026-9234-01f024909531: 'Journal (Index)' # Journal (Index)
+    5ce6d819-412b-470b-a122-a6d474f65997: "Rich Text Post" # Rich Text Post
+    6e9cca5e-e4eb-416d-a05c-8fdf191de744: "See Also" # See Also
+    7c1c74c5-a5d4-4026-9234-01f024909531: "Journal (Index)" # Journal (Index)
     7d71bee4-9355-40e3-8514-ee80a2a15c2f: Home # Home
-    7e3c30a7-fdc1-41a8-af20-5e6a20bd61ac: 'Video Asset' # Video Asset
+    7e3c30a7-fdc1-41a8-af20-5e6a20bd61ac: "Video Asset" # Video Asset
     08c5f708-e62c-41c7-8648-8137caa17c81: Text # Text
-    9aeedb1c-23bf-4011-ab51-39b3e1120bb1: '🔹 Copy & Aside' # 🔹 Copy & Aside
+    9aeedb1c-23bf-4011-ab51-39b3e1120bb1: "🔹 Copy & Aside" # 🔹 Copy & Aside
     9c8143c4-1bee-47ca-8acc-865b5fb5824c: Globals # Globals
-    9df05e4c-ad18-498a-9fba-144f3ed8f8db: 'Summary Short' # Summary Short
+    9df05e4c-ad18-498a-9fba-144f3ed8f8db: "Summary Short" # Summary Short
     25a33ae6-3901-458a-8998-5f63d864a3f3: Default # Default
     38bb9460-7e16-475c-bca2-c9bcead39aef: Icon # Icon
-    42a845ce-2d17-4963-951a-a0d7508a1219: 'Page: Journal Index' # Page: Journal Index
+    42a845ce-2d17-4963-951a-a0d7508a1219: "Page: Journal Index" # Page: Journal Index
     52ecdaa0-e78c-4b23-a67b-b2de241c25ac: Year # Year
     62d3afc2-48c5-413e-9a5f-edbb5bf79857: GitHub # GitHub
     63c2141a-a3b1-4d55-ba4e-cf06c274ba4d: About # About
-    68c90757-4b39-4910-94b6-94eb4f0a370b: 'Rich Text Simple' # Rich Text Simple
+    68c90757-4b39-4910-94b6-94eb4f0a370b: "Rich Text Simple" # Rich Text Simple
     87a940b2-87cc-4846-b166-bfb9b6d845ae: Toggle # Toggle
     87d208be-b37d-4f86-83c2-b793301c8d43: Globals # Globals
-    92f2ad43-f173-454f-92a5-a93e7094cc7b: 'Bio Sections' # Bio Sections
-    98c01f82-d7ef-4c51-92d4-0465aba00af4: 'Title (Short)' # Title (Short)
-    279cfc2e-8324-4a53-aa20-56b80bfebaa7: 'Work Type' # Work Type
-    485a1249-2b8a-4895-b4f1-2d9de2650d6a: 'Video Mode' # Video Mode
-    710f67ff-c1cc-40b2-be88-ecdd28c20a5b: 'Work Entries' # Work Entries
+    92f2ad43-f173-454f-92a5-a93e7094cc7b: "Bio Sections" # Bio Sections
+    98c01f82-d7ef-4c51-92d4-0465aba00af4: "Title (Short)" # Title (Short)
+    279cfc2e-8324-4a53-aa20-56b80bfebaa7: "Work Type" # Work Type
+    485a1249-2b8a-4895-b4f1-2d9de2650d6a: "Video Mode" # Video Mode
+    710f67ff-c1cc-40b2-be88-ecdd28c20a5b: "Work Entries" # Work Entries
     763f00c3-3720-4070-ab7e-910babff9419: Tech # Tech
-    991d481c-d8c7-4e13-91f6-7e4112026e22: 'Link Entry' # Link Entry
-    3304bc86-e804-4dc5-8c9b-0907003b0734: 'Image Asset' # Image Asset
-    4824e26e-358e-48a3-8ff0-7e2517806ba0: 'Footer Words' # Footer Words
-    26815ef3-9cba-4a58-b54c-135487262816: 'Video & Caption' # Video & Caption
-    80763c4f-603e-4f78-8e46-e05e80044efe: 'Huw Roberts' # Huw Roberts
+    991d481c-d8c7-4e13-91f6-7e4112026e22: "Link Entry" # Link Entry
+    3304bc86-e804-4dc5-8c9b-0907003b0734: "Image Asset" # Image Asset
+    4824e26e-358e-48a3-8ff0-7e2517806ba0: "Footer Words" # Footer Words
+    26815ef3-9cba-4a58-b54c-135487262816: "Video & Caption" # Video & Caption
+    80763c4f-603e-4f78-8e46-e05e80044efe: "Huw Roberts" # Huw Roberts
     99701ea9-a4da-4fb6-b997-541f0661f9a9: Agency # Agency
     2462263f-d971-4727-b2d2-8cbf1aa3bf8f: SEO # SEO
-    98337978-21e0-4fe0-baf9-f1eb86492071: '🔹 Video & Caption' # 🔹 Video & Caption
+    98337978-21e0-4fe0-baf9-f1eb86492071: "🔹 Video & Caption" # 🔹 Video & Caption
     a411ecc1-c3dc-4a0b-9458-8fe295d73e56: LinkedIn # LinkedIn
-    ad34d564-b010-4b10-9cbe-473ebc2699ff: 'Page: Work Index' # Page: Work Index
-    b72f3694-5d2a-478c-badd-08344714d7d0: 'Entry: Agency' # Entry: Agency
-    bbae9f82-980e-46b3-8f33-580a96372be7: 'Full Width' # Full Width
-    c0160475-3256-40fc-89bf-3e63d0add54c: 'Page: Home' # Page: Home
-    c5b973a9-a07d-4d67-acb9-a3f0cbcb1450: 'Tech Tags' # Tech Tags
-    ce84f3b1-226d-40f1-9fae-0fde3b70f8ab: '🔹 Image & Caption' # 🔹 Image & Caption
+    ad34d564-b010-4b10-9cbe-473ebc2699ff: "Page: Work Index" # Page: Work Index
+    b72f3694-5d2a-478c-badd-08344714d7d0: "Entry: Agency" # Entry: Agency
+    bbae9f82-980e-46b3-8f33-580a96372be7: "Full Width" # Full Width
+    c0160475-3256-40fc-89bf-3e63d0add54c: "Page: Home" # Page: Home
+    c5b973a9-a07d-4d67-acb9-a3f0cbcb1450: "Tech Tags" # Tech Tags
+    ce84f3b1-226d-40f1-9fae-0fde3b70f8ab: "🔹 Image & Caption" # 🔹 Image & Caption
     d5f87477-e8cd-4d2e-b3b9-c8c97050dadb: Assets # Assets
     d3887c2a-c6e0-4983-acf7-a4ee3ac0f95b: Bluesky # Bluesky
-    dd8ce595-c035-4e42-ba87-fceec501d0bc: 'Public Schema' # Public Schema
+    dd8ce595-c035-4e42-ba87-fceec501d0bc: "Public Schema" # Public Schema
     dd23509a-d49a-4d16-88ed-5f5e03a83e55: Journal # Journal
     e3f4a53d-c1e3-40fc-8be5-5523b72fadd8: Agency # Agency
-    e8279da5-f90e-4b6c-8c56-239c06e74f6b: 'Feature Video' # Feature Video
+    e8279da5-f90e-4b6c-8c56-239c06e74f6b: "Feature Video" # Feature Video
     ea335930-ce93-4c99-96bd-ebdb490c2b75: Boxed # Boxed
-    eaf86955-6679-4b0b-aac6-cc5e4d5b9723: 'Box Background Colour' # Box Background Colour
+    eaf86955-6679-4b0b-aac6-cc5e4d5b9723: "Box Background Colour" # Box Background Colour
     ebc310ef-c008-43b9-8f8e-9f569dbd9334: Aside # Aside
-    f1f18843-3eb2-4ca5-89e4-e4600950acf9: 'Page: About' # Page: About
-    f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae: 'Entry: Work' # Entry: Work
-    f93ff202-7643-4d47-b2cc-126d5595da3f: 'Work Type' # Work Type
+    f1f18843-3eb2-4ca5-89e4-e4600950acf9: "Page: About" # Page: About
+    f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae: "Entry: Work" # Entry: Work
+    f93ff202-7643-4d47-b2cc-126d5595da3f: "Work Type" # Work Type
 plugins:
   blitz:
     edition: standard
@@ -105,7 +105,7 @@ plugins:
 system:
   edition: solo
   live: true
-  name: 'Huw Roberts'
+  name: "Huw Roberts"
   retryDuration: null
   schemaVersion: 5.10.0.0
   timeZone: Europe/London

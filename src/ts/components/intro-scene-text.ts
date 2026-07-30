@@ -19,6 +19,18 @@ export class IntroSceneText extends LitElement {
   @property({ type: Number, attribute: "reveal-delay" })
   revealDelay = 1250;
 
+  @property({ type: String, attribute: "line-1" })
+  line1 = "";
+
+  @property({ type: String, attribute: "line-2" })
+  line2 = "";
+
+  @property({ type: String, attribute: "line-3" })
+  line3 = "";
+
+  @property({ type: String, attribute: "line-4" })
+  line4 = "";
+
   #revealTimer?: number;
   #labels?: HTMLElement | null;
 
@@ -198,12 +210,12 @@ export class IntroSceneText extends LitElement {
     return html`
       <div class="labels">
         <div>
-          <div class="line" style="--i: 0">Design Conscious</div>
-          <div class="line" style="--i: 1">Full Stack Developer</div>
+          <div class="line" style="--i: 0">${this.line1}</div>
+          <div class="line" style="--i: 1">${this.line2}</div>
         </div>
         <div>
-          <div class="line" style="--i: 2">Partnering With Creative Teams</div>
-          <div class="line" style="--i: 3">Building Modern, performant Websites</div>
+          <div class="line" style="--i: 2">${this.line3}</div>
+          <div class="line" style="--i: 3">${this.line4}</div>
         </div>
       </div>
     `;

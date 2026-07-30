@@ -574,9 +574,7 @@ export class IntroScene extends LitElement {
   }
 
   protected render() {
-    return html`
-      <div><intro-scene-decor></intro-scene-decor><intro-scene-text></intro-scene-text></div>
-    `;
+    return html` <div><slot></slot></div> `;
   }
 }
 

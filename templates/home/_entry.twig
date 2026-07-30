@@ -2,7 +2,15 @@
 
 {% block content %}
   <div class="col-span-full mb-16">
-    <intro-scene class="sm-down:w-screen sm-down:-ml-6"></intro-scene>
+    <intro-scene class="sm-down:w-screen sm-down:-ml-6">
+      <intro-scene-decor></intro-scene-decor>
+      <intro-scene-text
+        line-1="{{ entry.introLine1 ?? '' }}"
+        line-2="{{ entry.introLine2 ?? '' }}"
+        line-3="{{ entry.introLine3 ?? '' }}"
+        line-4="{{ entry.introLine4 ?? '' }}"
+      ></intro-scene-text>
+    </intro-scene>
   </div>
 
   {# == Featured Work == #}

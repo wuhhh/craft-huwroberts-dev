@@ -5,15 +5,13 @@ fieldLayouts:
   c2f125f0-13b9-42a4-b0b2-5afbc60c616a:
     cardThumbAlignment: end
     tabs:
-      -
-        elementCondition: null
+      - elementCondition: null
         elements:
-          -
-            autocapitalize: true
+          - autocapitalize: true
             autocomplete: false
             autocorrect: true
             class: null
-            dateAdded: '2025-01-06T11:47:31+00:00'
+            dateAdded: "2025-01-06T11:47:31+00:00"
             disabled: false
             elementCondition: null
             id: null
@@ -36,22 +34,86 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
-          -
-            dateAdded: '2026-06-27T14:42:30+00:00'
+          - dateAdded: "2026-07-30T14:25:01+00:00"
             elementCondition: null
-            heading: 'Featured Work'
+            heading: Hero
+            type: craft\fieldlayoutelements\Heading
+            uid: 0ba8b791-0c7a-4410-b257-9e4d08484727
+            userCondition: null
+          - dateAdded: "2026-07-30T14:25:01+00:00"
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 08c5f708-e62c-41c7-8648-8137caa17c81 # Text
+            handle: introLine1
+            instructions: null
+            label: "Intro Line 1"
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: c1269802-a097-408b-8826-19fdcaa728f8
+            userCondition: null
+            warning: null
+            width: 50
+          - dateAdded: "2026-07-30T14:25:01+00:00"
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 08c5f708-e62c-41c7-8648-8137caa17c81 # Text
+            handle: introLine2
+            instructions: null
+            label: "Intro Line 2"
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 333a6093-8cef-4f0e-b905-c82b061c8d54
+            userCondition: null
+            warning: null
+            width: 50
+          - dateAdded: "2026-07-30T14:25:01+00:00"
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 08c5f708-e62c-41c7-8648-8137caa17c81 # Text
+            handle: introLine3
+            instructions: null
+            label: "Intro Line 3"
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 98da966b-b696-46ce-a481-0c98cfaa292f
+            userCondition: null
+            warning: null
+            width: 50
+          - dateAdded: "2026-07-30T14:25:01+00:00"
+            editCondition: null
+            elementCondition: null
+            elementEditCondition: null
+            fieldUid: 08c5f708-e62c-41c7-8648-8137caa17c81 # Text
+            handle: introLine4
+            instructions: null
+            label: "Intro Line 4"
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 2faa2ac3-f38b-4a87-8a36-21d1ee165db1
+            userCondition: null
+            warning: null
+            width: 50
+          - dateAdded: "2026-06-27T14:42:30+00:00"
+            elementCondition: null
+            heading: "Featured Work"
             type: craft\fieldlayoutelements\Heading
             uid: d05acee5-0412-40ab-bf19-29f3ca8573a7
             userCondition: null
-          -
-            dateAdded: '2026-06-27T14:42:30+00:00'
+          - dateAdded: "2026-06-27T14:42:30+00:00"
             editCondition: null
             elementCondition: null
             elementEditCondition: null
             fieldUid: 08c5f708-e62c-41c7-8648-8137caa17c81 # Text
             handle: workTitle
             instructions: null
-            label: 'Work Title'
+            label: "Work Title"
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
@@ -59,15 +121,14 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
-          -
-            dateAdded: '2026-06-27T14:42:30+00:00'
+          - dateAdded: "2026-06-27T14:42:30+00:00"
             editCondition: null
             elementCondition: null
             elementEditCondition: null
             fieldUid: 991d481c-d8c7-4e13-91f6-7e4112026e22 # Link Entry
             handle: workCtaChip
             instructions: null
-            label: 'Work CTA Chip'
+            label: "Work CTA Chip"
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
@@ -75,8 +136,7 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
-          -
-            dateAdded: '2026-06-27T14:43:09+00:00'
+          - dateAdded: "2026-06-27T14:43:09+00:00"
             editCondition: null
             elementCondition: null
             elementEditCondition: null
@@ -94,11 +154,9 @@ fieldLayouts:
         name: Content
         uid: 20a74ab7-6018-4505-b33c-b8264fe51858
         userCondition: null
-      -
-        elementCondition: null
+      - elementCondition: null
         elements:
-          -
-            dateAdded: '2026-06-27T20:51:55+00:00'
+          - dateAdded: "2026-06-27T20:51:55+00:00"
             editCondition: null
             elementCondition: null
             elementEditCondition: null
@@ -120,7 +178,7 @@ fieldLayouts:
 handle: pageHome
 hasTitleField: true
 icon: moon-stars
-name: 'Page: Home'
+name: "Page: Home"
 showSlugField: true
 showStatusField: true
 slugTranslationKeyFormat: null
@@ -128,4 +186,4 @@ slugTranslationMethod: site
 titleFormat: null
 titleTranslationKeyFormat: null
 titleTranslationMethod: site
-uiLabelFormat: '{title}'
+uiLabelFormat: "{title}"
