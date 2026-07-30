@@ -18,9 +18,11 @@ jobs:
     name: Format, lint, typecheck, build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      # v7 majors run on node24. v4 targeted node20, which the runner now forces
+      # onto node24 with a deprecation warning.
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -39,7 +41,7 @@ jobs:
     name: Twig coding standards
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # 8.2 matches composer.lock's platform-overrides, so CI resolves exactly the
       # versions committed rather than a set the lock was never built against.
