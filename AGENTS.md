@@ -66,7 +66,7 @@ A `Makefile` wraps the common flows: `make build`, `make dev`, `make install`.
 ### Twig linting
 
 ```sh
-ddev exec vendor/bin/twig-cs-fixer lint     # must be clean
+npm run lint:twig    # must be clean; runs on the host, no ddev needed
 ```
 
 Two tools with deliberately disjoint jobs — don't let them overlap:
@@ -74,7 +74,7 @@ Two tools with deliberately disjoint jobs — don't let them overlap:
 - **Prettier** (`.prettierrc.json`, via `@zackad/prettier-plugin-twig`) owns _all_ formatting: whitespace, indentation, quotes, hash spacing, trailing commas.
 - **twig-cs-fixer** (`.twig-cs-fixer.dist.php`) owns naming and correctness only. Its ruleset is an explicit allowlist, not a bundled standard — every standard leads with spacing rules that contradict Prettier, so adopting one makes the two fight on every save. Variables, macro args, named args, filenames and directories are camelCase with an optional `_` prefix.
 
-Never register twig-cs-fixer as a formatter (don't run it with `--fix`, and don't add it to conform) — that is the collision the split exists to avoid. Two further constraints are documented in the config file itself: `allowNonFixableRules()` is required or every rule is silently dropped, and no rule may implement `NodeRuleInterface` or Twig's parser starts running and chokes on Craft's tags (`{% cache %}`, `{% nav %}`, `{% js %}`…).
+Never register twig-cs-fixer as a formatter — don't run it with `--fix`, don't put it in `lint-staged` as a writer, and don't wire it into an editor's format-on-save. That is the collision the split exists to avoid. Two further constraints are documented in the config file itself: `allowNonFixableRules()` is required or every rule is silently dropped, and no rule may implement `NodeRuleInterface` or Twig's parser starts running and chokes on Craft's tags (`{% cache %}`, `{% nav %}`, `{% js %}`…).
 
 ## Craft CLI
 
