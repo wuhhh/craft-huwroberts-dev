@@ -43,13 +43,14 @@ export class AboutHuwScene extends LitElement {
     :host {
       display: block;
       position: relative;
+      height: var(--stable-vh, 100vh);
     }
 
     div {
       display: grid;
       place-items: center;
       width: 100%;
-      height: var(--stable-vh, 100vh);
+      height: 100%;
       text-align: center;
     }
   `;
