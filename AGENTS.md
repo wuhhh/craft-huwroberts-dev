@@ -1,20 +1,42 @@
 # AGENTS.md
 
+## Before you call a change done
+
+```sh
+npm run check    # format:check + eslint + twig-cs-fixer + tsc, ~4s on the host
+```
+
+Everything in it also runs in CI, so a failure here is a failure there. Individually: `npm run format` (write), `format:check`, `lint`, `lint:twig`, `typecheck`.
+
+Three layers enforce this, and they are deliberately redundant:
+
+| Layer                                                    | Covers                          | Bypassable                |
+| -------------------------------------------------------- | ------------------------------- | ------------------------- |
+| Claude Code `PostToolUse` hook (`.claude/settings.json`) | Prettier, on every file written | n/a — the harness runs it |
+| Pre-commit (`.husky/pre-commit` → lint-staged)           | Staged files + full typecheck   | yes, `--no-verify`        |
+| GitHub Actions (`.github/workflows/ci.yml`)              | Everything, plus the build      | no                        |
+
+Do not add a formatter to two layers with different opinions — see the Twig linting section for why Prettier and twig-cs-fixer are kept to disjoint jobs.
+
 ## Stack
 
 Craft CMS (Craft 5) + PHP 8.4, MySQL 8.0, nginx-fpm. Frontend: Vite + Lit + Tailwind. Managed by DDEV (project type `craftcms`).
 
-## DDEV — always run commands in the container
+## DDEV — what runs where
 
-`node_modules` is installed inside the container (Linux), so platform-specific binaries (e.g. `@rollup/rollup-linux-arm64-gnu`) only exist there. **Never run `npm`/`composer`/`php craft` on the host.** Prefix everything with `ddev`:
+`node_modules` is installed inside the container (Linux), so anything with a **native binary** only works there. In practice that means the Vite build: only `@rollup/rollup-linux-arm64-gnu` is installed, so `vite build` on the host fails with a missing-binary error. That is a host/container mismatch, not a broken dependency — don't try to fix it by installing anything.
+
+Run in the container:
 
 ```sh
 ddev npm run build          # production build → web/dist/
 ddev npm run serve          # Vite dev server (:3000), set VITE_USE_DEV_SERVER=true
 ddev composer craft-update  # apply migrations + clear caches
-ddev exec php craft ...     # any craft CLI
+ddev exec php craft ...     # any craft CLI (needs the DB)
 ddev describe               # status / URLs
 ```
+
+**The formatters and linters are pure JS or PHP and run fine on the host** — `prettier`, `eslint`, `tsc` and `vendor/bin/twig-cs-fixer` all work without `ddev`, which is why the git hooks call them directly. Prefixing those with `ddev` only makes them slower and makes them fail whenever the project is stopped.
 
 A `Makefile` wraps the common flows: `make build`, `make dev`, `make install`.
 
@@ -40,6 +62,19 @@ A `Makefile` wraps the common flows: `make build`, `make dev`, `make install`.
 - `templates/_includes/` — shared partials (`footer.twig`, `scripts.twig`, `decor/*`).
 - Footer content (email, social links, footer words) comes from the `globals` Craft section — edit in the CP, not in Twig.
 - `svg('@webroot/dist/images/...')` inlines an SVG; chain `|attr({ class: '...' })` for sizing.
+
+### Twig linting
+
+```sh
+ddev exec vendor/bin/twig-cs-fixer lint     # must be clean
+```
+
+Two tools with deliberately disjoint jobs — don't let them overlap:
+
+- **Prettier** (`.prettierrc.json`, via `@zackad/prettier-plugin-twig`) owns _all_ formatting: whitespace, indentation, quotes, hash spacing, trailing commas.
+- **twig-cs-fixer** (`.twig-cs-fixer.dist.php`) owns naming and correctness only. Its ruleset is an explicit allowlist, not a bundled standard — every standard leads with spacing rules that contradict Prettier, so adopting one makes the two fight on every save. Variables, macro args, named args, filenames and directories are camelCase with an optional `_` prefix.
+
+Never register twig-cs-fixer as a formatter (don't run it with `--fix`, and don't add it to conform) — that is the collision the split exists to avoid. Two further constraints are documented in the config file itself: `allowNonFixableRules()` is required or every rule is silently dropped, and no rule may implement `NodeRuleInterface` or Twig's parser starts running and chokes on Craft's tags (`{% cache %}`, `{% nav %}`, `{% js %}`…).
 
 ## Craft CLI
 

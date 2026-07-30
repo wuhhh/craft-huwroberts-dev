@@ -43,8 +43,10 @@
 
                   <div class="{{ not loop.first ? 'pt-3' : '' }}">
                     <h3 class="xs-mono-capped uppercase">{{ title }}</h3>
-                    {# prettier-ignore #}
-                    <div aria-hidden class="xs-mono-capped uppercase">{% for c in title|split('') %}+{% endfor %}</div>
+                    {# +++ underline #}
+                    <div aria-hidden class="xs-mono-capped uppercase">
+                      {{ title|replace('/./u', '+') }}
+                    </div>
                   </div>
                   <div class="rich-text -simple">
                     {{ bio }}

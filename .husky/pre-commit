@@ -1,0 +1,11 @@
+# Formats and lints only what is staged, then typechecks the project.
+#
+# Runs on the host, not in DDEV: prettier, eslint, tsc and twig-cs-fixer are all
+# pure JS or PHP and work natively (only `vite build` needs the container, for
+# rollup's Linux binary). Shelling into `ddev exec` here would add seconds per
+# commit and fail outright whenever the project happens to be stopped.
+npx lint-staged
+
+# Project-wide, so it cannot run per staged file. ~1.5s, and it catches the class
+# of breakage that formatting cannot.
+npx tsc --noEmit

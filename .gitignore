@@ -19,3 +19,7 @@ prepros-6.config
 /node_modules/*
 /vendor
 /web/dist
+# twig-cs-fixer result cache; .twig-cs-fixer.dist.php is the committed config and
+# .twig-cs-fixer.php is an optional local override that takes precedence over it.
+/.twig-cs-fixer.cache
+/.twig-cs-fixer.php

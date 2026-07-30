@@ -8,7 +8,24 @@
     "serve": "NODE_ENV=dev vite",
     "format": "prettier --write \"src/**/*.{ts,js,css,html}\" \"templates/**/*.twig\"",
     "format:check": "prettier --check \"src/**/*.{ts,js,css,html}\" \"templates/**/*.twig\"",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "lint:twig": "vendor/bin/twig-cs-fixer lint",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run format:check && npm run lint && npm run lint:twig && npm run typecheck",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,html,json,md,yml,yaml}": [
+      "prettier --write"
+    ],
+    "*.twig": [
+      "prettier --write",
+      "vendor/bin/twig-cs-fixer lint"
+    ]
   },
   "author": "wuhhh",
   "license": "ISC",
@@ -21,7 +38,9 @@
     "@zackad/prettier-plugin-twig": "^0.17.0",
     "eslint": "^10.5.0",
     "globals": "^17.6.0",
+    "husky": "^9.1.7",
     "jiti": "^2.7.0",
+    "lint-staged": "^17.2.0",
     "prettier": "^3.9.0",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "ts-lit-plugin": "^2.0.2",
