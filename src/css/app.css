@@ -1,11 +1,11 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @import "tw-fade";
-@import "@css/common.css";
-@import "@css/fonts.css";
-@import "@css/vars.css";
-@import "@css/type.css";
-@import "@css/utilities.css";
+@import "./common.css";
+@import "./fonts.css";
+@import "./vars.css";
+@import "./type.css";
+@import "./utilities.css";
 
 /** Grid: 13 cols, 84px w, 40px gutter - 1572px w total **/
 /** Obi: 1 col, 84px w -> 40px gutter leaves 1572 - (84+40) = 1448px w <- the 12 col grid

@@ -38,13 +38,16 @@ ddev describe               # status / URLs
 
 **The formatters and linters are pure JS or PHP and run fine on the host** — `prettier`, `eslint`, `tsc` and `vendor/bin/twig-cs-fixer` all work without `ddev`, which is why the git hooks call them directly. Prefixing those with `ddev` only makes them slower and makes them fail whenever the project is stopped.
 
+The same split catches editor tooling. Anything running on the host that wants a native binary finds only the Linux one and throws — Tailwind's language server logs `Cannot find native binding` because `@tailwindcss/oxide` has no macOS build here. That failure is confined to its file scanner; completions, hover and colour swatches are pure JS and work regardless, and the build and dev server both scan correctly since they run in the container. Nothing that ships is affected, so leave it alone rather than installing host binaries into the shared `node_modules`.
+
 A `Makefile` wraps the common flows: `make build`, `make dev`, `make install`.
 
 ## Frontend build
 
 - `vite.config.ts` — entry `src/ts/app.ts`, output `web/dist/`, base `/dist/`.
 - Lit components in `src/ts/components/**/*.ts` are auto-registered via `import.meta.glob("./components/**/*.ts", { eager: true })` in `src/ts/app.ts`. Drop a `.ts` file in — no import wiring needed.
-- Tailwind (`tailwind.config.ts`) scans `templates/**/*.twig`. Edit class strings in Twig and rebuild.
+- Tailwind is v4 and **CSS-first — there is no `tailwind.config.ts`**. Source files are found by v4's automatic detection, the theme lives in `src/css/vars.css`, and classes applied dynamically are safelisted with `@source inline(...)` in `src/css/app.css`. A JS config would be inert unless a CSS `@config` directive pointed at it, so don't reintroduce one. Edit class strings in Twig and rebuild.
+- **Imports in `src/css/*.css` must be relative (`@import "./vars.css"`), never the `@css/*` alias.** The alias is defined only in `vite.config.ts`, so Vite resolves it but nothing else does. Tailwind's language server resolves CSS the standard way, fails on the alias, and silently builds a design system with none of your theme in it — which kills editor autocomplete while the build carries on working, so nothing catches it. The `@css/*` alias is still fine in TS (`import "@css/app.css"`).
 - Vite copies `src/public/images/**` and `src/public/fonts/**` into `web/dist/`. SVGs referenced in Twig via `svg('@webroot/dist/images/...')` must exist in `web/dist/images/` — **rebuild after adding/ changing assets under `src/public/`**.
 
 ### Dev server vs production bundle
