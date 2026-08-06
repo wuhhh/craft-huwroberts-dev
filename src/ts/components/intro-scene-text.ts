@@ -198,14 +198,12 @@ export class IntroSceneText extends LitElement {
     return html`
       <div class="labels">
         <div>
-          <div class="line" style="--i: 0">Design Conscious</div>
-          <div class="line" style="--i: 1">Full Stack Developer</div>
+          <div class="line" style="--i: 0">Design Conscious Developer</div>
+          <div class="line" style="--i: 1">Twenty Years' Experience</div>
         </div>
         <div>
-          <div class="line" style="--i: 2">Partnering With Creative Teams</div>
-          <div class="line" style="--i: 3">
-            Building Modern, performant Websites
-          </div>
+          <div class="line" style="--i: 2">AI-Accelerated Delivery</div>
+          <div class="line" style="--i: 3">For Businesses &amp; Agencies</div>
         </div>
       </div>
     `;
