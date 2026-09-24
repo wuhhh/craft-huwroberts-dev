@@ -1,0 +1,39 @@
+{#
+  Staggered card grid. Embed and fill the `card` block, which runs per entry
+  with `entry` in scope.
+#}
+{% set entries = entries ?? [] %}
+
+{% if entries|length %}
+
+  <div class="col-span-full grid grid-cols-subgrid gap-y-24 {{ class ?? "" }}">
+    {% for entry in entries %}
+
+      {% set cls = "" %}
+
+      {% set base6Index0 = loop.index0 % 6 %}
+
+      {# Vertical spacing #}
+      {% if base6Index0 == 1 or base6Index0 == 4 or base6Index0 == 5 %}
+        {% set cls = "ml-auto lg:ml-0" %}
+      {% endif %}
+
+      {# Horizontal spacing #}
+      {% set blank %}
+        <div class="hidden xl:block xl:col-span-4"></div>
+      {% endset %}
+
+      {% if base6Index0 == 2 %}
+        {{ blank }}{{ blank }}
+      {% elseif base6Index0 == 5 %}
+        {{ blank }}
+      {% endif %}
+
+      <div class="col-span-full w-full max-w-120 lg:max-w-none lg:col-span-6 xl:col-span-4 {{ cls }}">
+        {% block card %}{% endblock %}
+      </div>
+
+    {% endfor %}
+  </div>
+
+{% endif %}

@@ -55,31 +55,19 @@
         <div class="flex flex-col gap-y-16 sm:gap-y-20 {{ preamble ? "mt-16 sm:mt-20" : "" }}">
 
           {% for heroEntry in heroEntries %}
-            {% embed "_includes/entryCard" with {
+            {% include "_includes/journalCard" with {
               entry: heroEntry,
               size: "lg",
             } only %}
-              {% block metaStart %}
-                {{ svg("@webroot/dist/images/icon--featured.svg", true, true)|attr({ class: "size-3.5", "aria-hidden": "true" }) }}
-                Featured
-              {% endblock %}
-              {% block metaEnd %}{{ entry.postDate|date("F Y")|upper }}{% endblock %}
-            {% endembed %}
           {% endfor %}
 
           {% if midEntries|length %}
             <div class="grid grid-cols-1 gap-x-10 gap-y-16 sm:grid-cols-2">
               {% for midEntry in midEntries %}
-                {% embed "_includes/entryCard" with {
+                {% include "_includes/journalCard" with {
                   entry: midEntry,
                   size: "md",
                 } only %}
-                  {% block metaStart %}
-                    {{ svg("@webroot/dist/images/icon--featured.svg", true, true)|attr({ class: "size-3.5", "aria-hidden": "true" }) }}
-                    Featured
-                  {% endblock %}
-                  {% block metaEnd %}{{ entry.postDate|date("F Y")|upper }}{% endblock %}
-                {% endembed %}
               {% endfor %}
             </div>
           {% endif %}
