@@ -54,9 +54,10 @@ export class AboutHuwScene extends LitElement {
       display: block;
       position: relative;
       height: var(--stable-vh, 100vh);
-      /* Layout is in cqw from the centre (where the string rests), so the
-         composition scales with width like the Figma frame */
-      container-type: inline-size;
+      /* Layout is in cqh from the centre (where the string rests). The string
+         is sized in world units, so it scales with height — cqh keeps the
+         composition in step with it at any aspect */
+      container-type: size;
     }
 
     .photo,
@@ -68,19 +69,19 @@ export class AboutHuwScene extends LitElement {
     }
 
     .photo {
-      width: 52.3cqw;
+      width: 61.6cqh;
       aspect-ratio: 117 / 84; /* diamondPlane's bounds */
-      translate: calc(-50% - 15.2cqw) calc(-50% - 10.8cqw);
+      translate: calc(-50% - 17.9cqh) calc(-50% - 12.7cqh);
     }
 
     .circle {
-      width: 9.1cqw;
+      width: 10.7cqh;
       aspect-ratio: 1;
-      translate: calc(-50% + 27.5cqw) calc(-50% + 13.2cqw);
+      translate: calc(-50% + 32.4cqh) calc(-50% + 15.5cqh);
     }
 
     .copy {
-      translate: -50% 15.2cqw;
+      translate: -50% 17.9cqh;
     }
   `;
 

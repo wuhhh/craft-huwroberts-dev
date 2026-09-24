@@ -2,7 +2,7 @@ import { css, html, LitElement, type CSSResultGroup } from "lit";
 import { customElement } from "lit/decorators.js";
 
 /**
- * Decor for about-huw-scene. Positions are cqw offsets from the scene centre
+ * Decor for about-huw-scene. Positions are cqh offsets from the scene centre
  * (the host is the container), placed via left/top because decor-diamond owns
  * its transform and translate.
  */
@@ -25,37 +25,37 @@ export class AboutHuwSceneDecor extends LitElement {
 
     /* decor-diamond is a rotated square, so --size is its visual width / √2 */
     decor-diamond:nth-child(1) {
-      --x: -34.5cqw;
-      --y: -20.7cqw;
-      --size: 1.9cqw;
+      --x: -40.6cqh;
+      --y: -24.4cqh;
+      --size: 2.2cqh;
     }
 
     decor-diamond:nth-child(2) {
-      --x: 32.1cqw;
-      --y: -24.7cqw;
-      --size: 2.5cqw;
+      --x: 37.8cqh;
+      --y: -29.1cqh;
+      --size: 2.9cqh;
     }
 
     decor-diamond:nth-child(3) {
-      --x: 5.9cqw;
-      --y: 3.2cqw;
-      --size: 5.2cqw;
+      --x: 7cqh;
+      --y: 3.8cqh;
+      --size: 6.1cqh;
       opacity: 0.2;
-      filter: blur(0.4cqw);
+      filter: blur(0.5cqh);
     }
 
     decor-diamond:nth-child(4) {
-      --x: -19.9cqw;
-      --y: 27.9cqw;
-      --size: 3.4cqw;
+      --x: -23.4cqh;
+      --y: 32.9cqh;
+      --size: 4cqh;
       opacity: 0.2;
-      filter: blur(0.4cqw);
+      filter: blur(0.5cqh);
     }
 
     decor-star {
-      --x: -36.4cqw;
-      --y: 20.1cqw;
-      --size: 3.5cqw;
+      --x: -42.9cqh;
+      --y: 23.7cqh;
+      --size: 4.1cqh;
     }
 
     .dot {
@@ -63,16 +63,16 @@ export class AboutHuwSceneDecor extends LitElement {
     }
 
     .dot.coral {
-      --x: 37cqw;
-      --y: 9cqw;
-      --size: 1.9cqw;
+      --x: 43.6cqh;
+      --y: 10.6cqh;
+      --size: 2.2cqh;
       background-color: var(--color-coral-red);
     }
 
     .dot.indigo {
-      --x: 29.1cqw;
-      --y: 21.7cqw;
-      --size: 1.2cqw;
+      --x: 34.3cqh;
+      --y: 25.6cqh;
+      --size: 1.4cqh;
       background-color: var(--color-seabed-indigo);
     }
   `;
