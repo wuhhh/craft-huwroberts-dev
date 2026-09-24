@@ -7,12 +7,13 @@
   "config": {
     "allow-plugins": {
       "craftcms/plugin-installer": true,
+      "php-http/discovery": true,
       "treeware/plant": false,
       "yiisoft/yii2-composer": true
     },
     "optimize-autoloader": true,
     "platform": {
-      "php": "8.2"
+      "php": "8.3"
     },
     "sort-packages": true
   },
@@ -22,8 +23,10 @@
     "nystudio107/craft-seomatic": "^5.1.21",
     "nystudio107/craft-vite": "5.0.1",
     "putyourlightson/craft-blitz": "^5.12.9",
+    "stimmt/craft-mcp": "^v1.4.0",
     "verbb/knock-knock": "^3.0.6",
     "vlucas/phpdotenv": "^5.6.0",
+    "wuhhh/craft-mcp-field-agent": "^1.0.0",
     "wuhhh/craft-phosphor-icons": "^2.0.0"
   },
   "require-dev": {
