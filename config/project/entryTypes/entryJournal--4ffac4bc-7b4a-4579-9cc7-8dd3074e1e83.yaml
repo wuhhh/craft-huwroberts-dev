@@ -7,15 +7,13 @@ fieldLayouts:
     cardView:
       - uri
     tabs:
-      -
-        elementCondition: null
+      - elementCondition: null
         elements:
-          -
-            autocapitalize: true
+          - autocapitalize: true
             autocomplete: false
             autocorrect: true
             class: null
-            dateAdded: '2026-06-24T14:57:50+00:00'
+            dateAdded: "2026-06-24T14:57:50+00:00"
             disabled: false
             elementCondition: null
             id: null
@@ -38,15 +36,14 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
-          -
-            dateAdded: '2026-07-13T13:52:48+00:00'
+          - dateAdded: "2026-07-13T13:52:48+00:00"
             editCondition: null
             elementCondition: null
             elementEditCondition: null
             fieldUid: 3304bc86-e804-4dc5-8c9b-0907003b0734 # Image Asset
             handle: null
             instructions: null
-            label: 'Card Image'
+            label: "Card Image"
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
@@ -54,14 +51,12 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
-          -
-            dateAdded: '2026-07-13T13:52:48+00:00'
+          - dateAdded: "2026-07-13T13:52:48+00:00"
             elementCondition: null
             type: craft\fieldlayoutelements\HorizontalRule
             uid: 19c10922-1daa-4108-aac6-57a47587d3b3
             userCondition: null
-          -
-            dateAdded: '2026-07-13T13:52:48+00:00'
+          - dateAdded: "2026-07-13T13:52:48+00:00"
             editCondition: null
             elementCondition: null
             elementEditCondition: null
@@ -76,8 +71,7 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
-          -
-            dateAdded: '2026-07-13T13:52:48+00:00'
+          - dateAdded: "2026-07-13T13:52:48+00:00"
             editCondition: null
             elementCondition: null
             elementEditCondition: null
@@ -92,14 +86,12 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
-          -
-            dateAdded: '2026-07-13T13:52:48+00:00'
+          - dateAdded: "2026-07-13T13:52:48+00:00"
             elementCondition: null
             type: craft\fieldlayoutelements\HorizontalRule
             uid: 3b1654f7-cd8c-4057-a664-0e406fda2b11
             userCondition: null
-          -
-            dateAdded: '2026-06-27T21:43:44+00:00'
+          - dateAdded: "2026-06-27T21:43:44+00:00"
             editCondition: null
             elementCondition: null
             elementEditCondition: null
@@ -114,8 +106,7 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
-          -
-            dateAdded: '2026-06-27T22:02:45+00:00'
+          - dateAdded: "2026-06-27T22:02:45+00:00"
             editCondition: null
             elementCondition: null
             elementEditCondition: null
@@ -130,8 +121,7 @@ fieldLayouts:
             userCondition: null
             warning: null
             width: 100
-          -
-            dateAdded: '2026-07-13T13:47:24+00:00'
+          - dateAdded: "2026-07-13T13:47:24+00:00"
             editCondition: null
             elementCondition: null
             elementEditCondition: null
@@ -149,11 +139,9 @@ fieldLayouts:
         name: Content
         uid: ad190e45-b0fc-4482-8fc5-d7c953121349
         userCondition: null
-      -
-        elementCondition: null
+      - elementCondition: null
         elements:
-          -
-            dateAdded: '2026-06-27T20:51:38+00:00'
+          - dateAdded: "2026-06-27T20:51:38+00:00"
             editCondition: null
             elementCondition: null
             elementEditCondition: null
@@ -171,11 +159,11 @@ fieldLayouts:
         name: SEO
         uid: b173789d-2b26-472b-9d3c-af4fdaf17e69
         userCondition: null
-    thumbFieldKey: null
+    thumbFieldKey: "layoutElement:f11fde33-b7a9-4730-87f5-559c11c8534b"
 handle: entryJournal
 hasTitleField: true
 icon: feather
-name: 'Entry: Journal'
+name: "Entry: Journal"
 showSlugField: true
 showStatusField: true
 slugTranslationKeyFormat: null
@@ -183,4 +171,4 @@ slugTranslationMethod: site
 titleFormat: null
 titleTranslationKeyFormat: null
 titleTranslationMethod: site
-uiLabelFormat: '{title}'
+uiLabelFormat: "{title}"

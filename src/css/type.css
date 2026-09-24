@@ -249,6 +249,10 @@
     margin-bottom: 0.5em;
   }
 
+  li > ol li {
+    list-style-type: lower-roman;
+  }
+
   /* Blockquotes */
   blockquote {
     border-left: 4px solid var(--color-seabed-indigo-100);

@@ -36,4 +36,39 @@
   </div>
 
   {% include '_includes/workGrid' with { entries: entry.workEntries ?? [] } only %}
+
+  {# == Featured Journal == #}
+
+  {% set journalTitle = entry.journalTitle ?? null %}
+  {% set journalCtaChip = entry.journalCtaChip ?? null %}
+  {% set journalEntries = entry.journalEntries.with(['imageAsset']).all() ?? [] %}
+
+  {% if journalEntries|length %}
+    {% if journalTitle and journalCtaChip.url %}
+      <div class="col-span-full mt-36 md:mt-48 xl:mt-60">
+        {% include '_includes/sectionTitleChip.twig' with {
+          title: journalTitle,
+          chipLabel: journalCtaChip.label ?? 'View All',
+          chipLink: journalCtaChip.url,
+          classes: 'mb-16'
+        } only %}
+      </div>
+    {% endif %}
+
+    {% embed '_includes/entryGrid'
+      with {
+        entries: journalEntries,
+        class: not (journalTitle and journalCtaChip.url) ? 'mt-36 md:mt-48 xl:mt-60'
+      } only
+    %}
+      {% block card %}
+        {% include '_includes/journalCard' with {
+          entry: entry,
+          featured: false,
+          showTags: false,
+          sizes: '(max-width: 480px) 100vw, (min-width: 1280px) 700px, 480px'
+        } only %}
+      {% endblock %}
+    {% endembed %}
+  {% endif %}
 {% endblock %}

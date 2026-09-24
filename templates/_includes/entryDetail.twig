@@ -24,7 +24,7 @@
       <div class="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
         <h1 class="heading2 sm:heading1 max-w-3xl leading-none! font-medium">{{ entry.title }}</h1>
         {% if liveUrl %}
-          {% include '_includes/liveLink.twig' with { url: liveUrl } only %}
+          {% include '_includes/liveLink.twig' with { url: liveUrl, label: liveUrl.label } only %}
         {% endif %}
       </div>
 

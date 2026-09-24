@@ -1,4 +1,4 @@
-dateModified: 1785421501
+dateModified: 1790259663
 email:
   fromEmail: hello@rootsy.co.uk
   fromName: "Huw Roberts | Freelance Web Developer"
@@ -70,6 +70,7 @@ meta:
     ebc310ef-c008-43b9-8f8e-9f569dbd9334: Aside # Aside
     f1f18843-3eb2-4ca5-89e4-e4600950acf9: "Page: About" # Page: About
     f8d2f1dd-eb4d-47ef-8911-beb9fcdf1cae: "Entry: Work" # Entry: Work
+    f43f7df5-744d-4a8d-9d8c-fd39b6ede570: "Journal Entries" # Journal Entries
     f93ff202-7643-4d47-b2cc-126d5595da3f: "Work Type" # Work Type
 plugins:
   blitz:

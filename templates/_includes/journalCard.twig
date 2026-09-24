@@ -1,0 +1,41 @@
+{#
+  Journal entry card: shared entryCard with a journal header.
+
+  Params:
+    entry, size   as entryCard
+    featured      show the featured label, date on the right (default true);
+                  when false the date moves to the left
+    showTags      as entryCard (default true)
+    sizes         as entryCard
+#}
+{% set entry = entry ?? null %}
+{% set size = size ?? 'md' %}
+{% set featured = featured ?? true %}
+{% set showTags = showTags ?? true %}
+
+{% embed '_includes/entryCard'
+  with {
+    entry: entry,
+    size: size,
+    sizes: sizes ?? null,
+    showTags: showTags,
+    featured: featured
+  } only
+%}
+  {% block metaStart %}
+    {% if featured %}
+      {{
+        svg('@webroot/dist/images/icon--featured.svg', true, true)|attr({
+          class: 'size-3.5',
+          'aria-hidden': 'true'
+        })
+      }}
+      Featured
+    {% else %}
+      {{ entry.postDate|date('F Y')|upper }}
+    {% endif %}
+  {% endblock %}
+  {% block metaEnd %}
+    {{ featured ? entry.postDate|date('F Y')|upper }}
+  {% endblock %}
+{% endembed %}

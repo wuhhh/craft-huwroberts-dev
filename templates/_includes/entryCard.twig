@@ -1,0 +1,121 @@
+{#
+  Shared card for work and journal entries: image, title, summary, tech tags.
+
+  Use with `embed` to fill the header row:
+    {% block metaStart %}  left of the header row (e.g. "Featured", work type)
+    {% block metaEnd %}    right of the header row (e.g. post date, year)
+
+  Params:
+    entry       the entry to render
+    size        "md" (default) | "lg"
+    sizes       optional `sizes` override for the image
+    linkLabel   optional aria-label for the card link
+    follower    optional data-follower value for the card link
+    showTags    render tech tags (default true)
+#}
+{% set entry = entry ?? null %}
+{% set size = size ?? 'md' %}
+{% set isLarge = size == 'lg' %}
+
+{% if entry %}
+  {# Prefer the dedicated card image, fall back to the feature image #}
+  {% set imageCaption = entry.imageCaption ?? null %}
+  {% set image = entry.imageAsset.one() ?? imageCaption ? imageCaption.imageAsset.one() : null %}
+  {% set summary = entry.summaryShort ?? null %}
+  {% set showTags = showTags ?? true %}
+  {% set techTags = showTags ? entry.techTags.all() ?? [] : [] %}
+  {% set sizes = sizes ?? isLarge
+    ? '(min-width: 1024px) 951px, 100vw'
+    : '(min-width: 1024px) 456px, (min-width: 640px) 45vw, 100vw'
+  %}
+  {% set linkLabel = linkLabel ?? ('{0}, read article'|t([entry.title])) %}
+  {% set follower = follower ?? null %}
+
+  <div class="group relative flex w-full flex-col items-start gap-4">
+    <div class="flex min-h-3.5 w-full items-center justify-between gap-x-4">
+      <div class="xs-mono flex items-center gap-2 uppercase">
+        {%- block metaStart %}
+
+        {% endblock -%}
+      </div>
+      <div class="xs-mono shrink-0 uppercase">
+        {%- block metaEnd %}
+
+        {% endblock -%}
+      </div>
+    </div>
+
+    <div class="flex w-full flex-col items-start {{ isLarge ? 'gap-4 sm:gap-8' : 'gap-6.75' }}">
+      {% if image %}
+        <div
+          class="relative w-full overflow-hidden {{
+          isLarge
+            ? 'aspect-951/570 rounded-2xl'
+            : 'aspect-456/273 rounded-lg'
+          }}"
+        >
+          {{
+            image.getImg(
+              {
+                width: isLarge ? 951 : 456,
+                height: isLarge ? 570 : 273,
+                format: 'avif',
+                mode: 'crop'
+              },
+              isLarge ? ['720w', '951w', '1440w', '1902w'] : ['456w', '684w', '912w']
+            )|attr({
+              sizes: sizes,
+              class: 'absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease group-hover:scale-[1.02]',
+              alt: image.alt ?? entry.title
+            })
+          }}
+        </div>
+      {% endif %}
+
+      {# text group: tighter than the image gap so it reads as one block #}
+      <div class="flex w-full flex-col items-start {{ isLarge ? 'gap-3 sm:gap-4' : 'gap-2' }}">
+        <h2
+          class="[word-break:break-word] {{
+          isLarge
+            ? 'base-sans sm:heading5'
+            : 'base-sans'
+          }} font-medium group-hover:underline"
+        >
+          {# widont #}
+          {% set titleWords = entry.title|split(' ') %}
+          {% if (titleWords|length) > 1 %}
+            {{ titleWords|slice(0, -1)|join(' ') }}&nbsp;{{ titleWords|last }}
+          {% else %}
+            {{ entry.title }}
+          {% endif %}
+        </h2>
+
+        {% if summary %}
+          <p
+            class="{{
+            isLarge
+              ? 'xs-sans sm:xm-sans md:base-sans max-w-160'
+              : 'pr-8 text-sm leading-[1.35] font-light text-zinc-700'
+            }}"
+          >
+            {{ summary }}
+          </p>
+        {% endif %}
+
+        {% include '_includes/techTags' with {
+          techTags: techTags,
+          id: 'tech-tags-' ~ entry.id
+        } only %}
+      </div>
+    </div>
+
+    <a
+      href="{{ url(entry.uri) }}"
+      {{ attr({ 'data-follower': follower }) }}
+      class="box-link focus-visible:before:outline-coral-red focus-visible:outline-0 focus-visible:before:outline-2 focus-visible:before:outline-offset-2"
+      aria-label="{{ linkLabel }}"
+    >
+
+    </a>
+  </div>
+{% endif %}
