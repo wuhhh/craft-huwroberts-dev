@@ -1,12 +1,16 @@
 import { css, html, LitElement, type CSSResultGroup } from "lit";
 import { customElement } from "lit/decorators.js";
 import * as THREE from "three/webgpu";
+import { texture, uv } from "three/tsl";
 import type { SceneDrawFn, SceneSetupAsyncFn, SceneViewport } from "../types";
 import { SceneController } from "../controllers/scene-controller";
 import { DRACOLoader, GLTFLoader } from "three/examples/jsm/Addons.js";
 import getViewport from "../lib/get-viewport";
 import { disposeObject3D } from "../lib/dispose";
 import { SpringScalar } from "../lib/spring";
+import { alignMeshWithDOM } from "../lib/align-mesh-with-dom";
+import { createSpatialImage } from "../lib/spatial-image";
+import { createDiamondPlaneMat } from "../lib/materials";
 
 const CURVE_THICKNESS = 0.06; // how fat the red debug ribbon is
 const CURVE_SEGMENTS = 128; // ribbon smoothness
@@ -26,32 +30,57 @@ interface AboutHuwSceneContext {
     box?: THREE.Mesh | null;
     wuhhh?: THREE.Mesh | null;
     curve?: THREE.Mesh | null;
+    photo?: THREE.Mesh | null;
+    circle?: THREE.Mesh | null;
   };
   /** One spring per wobble — the shape everything is built from. */
   modes?: SpringScalar[] | null;
   /** Steps the springs and rebuilds both meshes. */
   updateString?: ((delta: number) => void) | null;
+  /** Offscreen photo scene, rendered into an RT each frame. */
+  spatialImage?: ReturnType<typeof createSpatialImage> | null;
+  /** World-space cursor, relative to the host centre — drives the photo tilt. */
+  mouse: THREE.Vector3;
   /** Cleanup callbacks (event listeners). */
   disposers: Array<() => void>;
 }
 
 @customElement("about-huw-scene")
 export class AboutHuwScene extends LitElement {
-  #ctx: AboutHuwSceneContext = { meshRefs: {}, disposers: [] };
+  #ctx: AboutHuwSceneContext = { meshRefs: {}, disposers: [], mouse: new THREE.Vector3() };
 
   static styles?: CSSResultGroup | undefined = css`
     :host {
       display: block;
       position: relative;
       height: var(--stable-vh, 100vh);
+      /* Layout is in cqw from the centre (where the string rests), so the
+         composition scales with width like the Figma frame */
+      container-type: inline-size;
     }
 
-    div {
-      display: grid;
-      place-items: center;
-      width: 100%;
-      height: 100%;
-      text-align: center;
+    .photo,
+    .circle,
+    .copy {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+    }
+
+    .photo {
+      width: 52.3cqw;
+      aspect-ratio: 117 / 84; /* diamondPlane's bounds */
+      translate: calc(-50% - 15.2cqw) calc(-50% - 10.8cqw);
+    }
+
+    .circle {
+      width: 9.1cqw;
+      aspect-ratio: 1;
+      translate: calc(-50% + 27.5cqw) calc(-50% + 13.2cqw);
+    }
+
+    .copy {
+      translate: -50% 15.2cqw;
     }
   `;
 
@@ -62,6 +91,9 @@ export class AboutHuwScene extends LitElement {
      * Setup
      */
     const setupFn: SceneSetupAsyncFn = async ({ host }) => {
+      // On a Barba nav setup can beat the first render — the ref divs live in it
+      await this.updateComplete;
+
       const aspect = host.clientWidth / host.clientHeight;
       const camera = new THREE.PerspectiveCamera(25, aspect, 1, 20);
       camera.position.z = 10;
@@ -167,6 +199,62 @@ export class AboutHuwScene extends LitElement {
         scene.add(this.#ctx.meshRefs.wuhhh);
       }
 
+      // Photo — the about page's spatial image, clipped by using the intro's
+      // diamondPlane quad as the display surface
+      const photo = (modelMap.get("diamondPlane") as THREE.Mesh) ?? null;
+      const photoRef = this.renderRoot.querySelector<HTMLElement>(".photo");
+      if (photo && photoRef) {
+        const textureLoader = new THREE.TextureLoader();
+        const [colorTexture, depthTexture] = await Promise.all([
+          textureLoader.loadAsync("/dist/textures/huw-and-his-dog@2x.jpg"),
+          textureLoader.loadAsync("/dist/textures/huw-and-his-dog-depth@2x.jpg"),
+        ]);
+        colorTexture.colorSpace = THREE.SRGBColorSpace;
+
+        photo.geometry.computeBoundingBox();
+        const size = photo.geometry.boundingBox!.getSize(new THREE.Vector3());
+        const si = createSpatialImage({ colorTexture, depthTexture, aspect: size.x / size.y });
+        this.#ctx.spatialImage = si;
+
+        // glTF UVs run top-down, which already matches the RT, so no V-flip
+        // (si.displayMaterial flips for PlaneGeometry)
+        (photo.material as THREE.Material).dispose();
+        const photoMat = new THREE.MeshBasicNodeMaterial();
+        photoMat.colorNode = texture(si.rt.texture, uv());
+        photo.material = photoMat;
+
+        this.#ctx.meshRefs.photo = photo;
+        scene.add(photo);
+
+        this.#ctx.disposers.push(() => {
+          si.rt.dispose();
+          colorTexture.dispose();
+          depthTexture.dispose();
+        });
+      }
+
+      // Gradient circle — the intro diamond's material
+      const circleRef = this.renderRoot.querySelector<HTMLElement>(".circle");
+      if (circleRef) {
+        const circle = new THREE.Mesh(new THREE.CircleGeometry(0.5, 64), createDiamondPlaneMat());
+        this.#ctx.meshRefs.circle = circle;
+        scene.add(circle);
+      }
+
+      const alignWithDOM = () => {
+        const { photo, circle } = this.#ctx.meshRefs;
+        if (photo && photoRef) {
+          alignMeshWithDOM({ mesh: photo, domElement: photoRef, camera, host });
+          photo.position.z = -0.01; // behind the string
+        }
+        if (circle && circleRef) {
+          alignMeshWithDOM({ mesh: circle, domElement: circleRef, camera, host });
+        }
+      };
+      alignWithDOM();
+      window.addEventListener("resize", alignWithDOM);
+      this.#ctx.disposers.push(() => window.removeEventListener("resize", alignWithDOM));
+
       // Red debug ribbon — shows the string itself
       const curveGeo = new THREE.PlaneGeometry(viewport.width, CURVE_THICKNESS, CURVE_SEGMENTS, 1);
       const curveBase = new Float32Array(curveGeo.attributes.position.array);
@@ -205,6 +293,13 @@ export class AboutHuwScene extends LitElement {
 
         const x = ((e.clientX - r.left) / r.width - 0.5) * viewport.width;
         const y = -((e.clientY - r.top) / r.height - 0.5) * viewport.height;
+        // Clamped to the host — the tilt is unbounded, and a cursor sections
+        // away would pitch the photo flat (the about page's host is the page)
+        this.#ctx.mouse.set(
+          THREE.MathUtils.clamp(x, -halfWidth, halfWidth),
+          THREE.MathUtils.clamp(y, -viewport.height / 2, viewport.height / 2),
+          0,
+        );
         const nextSide = Math.sign(y - curveY(x));
         const inside =
           e.clientX >= r.left &&
@@ -229,8 +324,16 @@ export class AboutHuwScene extends LitElement {
     /**
      * Draw
      */
-    const drawFn: SceneDrawFn = ({ delta }) => {
+    const drawFn: SceneDrawFn = ({ renderer, delta }) => {
       this.#ctx.updateString?.(delta);
+
+      const si = this.#ctx.spatialImage;
+      if (si) {
+        si.update(delta, this.#ctx.mouse);
+        renderer.setRenderTarget(si.rt);
+        renderer.render(si.offScene, si.offCamera);
+        renderer.setRenderTarget(null);
+      }
 
       if (this.#ctx.meshRefs.wuhhh) {
         const wuhhh = this.#ctx.meshRefs.wuhhh;
@@ -249,16 +352,24 @@ export class AboutHuwScene extends LitElement {
       this.#ctx.disposers.forEach((fn) => fn());
       this.#ctx.disposers = [];
       this.#ctx.updateString = null;
+      this.#ctx.spatialImage = null;
       if (this.#ctx.meshRefs.curve) disposeObject3D(this.#ctx.meshRefs.curve);
       // A fresh GLTF loads per navigation, so this has to go too
       if (this.#ctx.meshRefs.wuhhh) disposeObject3D(this.#ctx.meshRefs.wuhhh);
+      if (this.#ctx.meshRefs.photo) disposeObject3D(this.#ctx.meshRefs.photo);
+      if (this.#ctx.meshRefs.circle) disposeObject3D(this.#ctx.meshRefs.circle);
     };
 
     new SceneController({ host: this, setupFn, drawFn }, dispose);
   }
 
   protected render() {
-    return html` <div></div> `;
+    return html`
+      <div class="photo"></div>
+      <div class="circle"></div>
+      <about-huw-scene-decor></about-huw-scene-decor>
+      <div class="copy"><slot></slot></div>
+    `;
   }
 }
 
