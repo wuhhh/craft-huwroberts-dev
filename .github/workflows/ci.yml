@@ -43,11 +43,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # 8.2 matches composer.lock's platform-overrides, so CI resolves exactly the
+      # 8.3 matches composer.lock's platform-overrides, so CI resolves exactly the
       # versions committed rather than a set the lock was never built against.
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.2"
+          php-version: "8.3"
           extensions: ctype
           coverage: none
 
