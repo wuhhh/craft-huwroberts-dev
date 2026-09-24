@@ -1,0 +1,12 @@
+{
+    "mcpServers": {
+        "hrdev": {
+            "command": "ddev",
+            "args": [
+                "exec",
+                "php",
+                "vendor/stimmt/craft-mcp/bin/mcp-server"
+            ]
+        }
+    }
+}
