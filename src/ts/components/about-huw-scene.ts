@@ -25,6 +25,9 @@ const PLUCK_MAX = 1; // hardest possible pluck
 
 const FOLLOW_STRENGTH = 0.9; // 0 = letters slide up/down, 1 = they lean into the curve
 
+const PHONE_QUERY = "(max-width: 639px)"; // matches the CSS phone query
+const PHONE_MARQUEE_SCALE = 0.85;
+
 interface AboutHuwSceneContext {
   meshRefs: {
     box?: THREE.Mesh | null;
@@ -39,7 +42,7 @@ interface AboutHuwSceneContext {
   updateString?: ((delta: number) => void) | null;
   /** Offscreen photo scene, rendered into an RT each frame. */
   spatialImage?: ReturnType<typeof createSpatialImage> | null;
-  /** World-space cursor, relative to the host centre — drives the photo tilt. */
+  /** Cursor in world units from the host centre — drives the photo tilt. */
   mouse: THREE.Vector3;
   /** Cleanup callbacks (event listeners). */
   disposers: Array<() => void>;
@@ -54,10 +57,11 @@ export class AboutHuwScene extends LitElement {
       display: block;
       position: relative;
       height: var(--stable-vh, 100vh);
-      /* Layout is in cqh from the centre (where the string rests). The string
-         is sized in world units, so it scales with height — cqh keeps the
-         composition in step with it at any aspect */
       container-type: size;
+      /* Tracks the marquee (sized by height), widening to the Figma proportion on wide hosts */
+      --u: clamp(1cqh, 0.849cqw, 1.2cqh);
+      /* The phone photo ref overflows */
+      overflow: clip;
     }
 
     .photo,
@@ -69,19 +73,42 @@ export class AboutHuwScene extends LitElement {
     }
 
     .photo {
-      width: 61.6cqh;
+      width: calc(61.6 * var(--u));
       aspect-ratio: 117 / 84; /* diamondPlane's bounds */
-      translate: calc(-50% - 17.9cqh) calc(-50% - 12.7cqh);
+      translate: calc(-50% - 17.9 * var(--u)) calc(-50% - 12.7 * var(--u));
     }
 
     .circle {
-      width: 10.7cqh;
+      width: calc(10.7 * var(--u));
       aspect-ratio: 1;
-      translate: calc(-50% + 32.4cqh) calc(-50% + 15.5cqh);
+      translate: calc(-50% + 32.4 * var(--u)) calc(-50% + 15.5 * var(--u));
     }
 
     .copy {
-      translate: -50% 17.9cqh;
+      /* Keeps the <br> lines from rewrapping */
+      width: max-content;
+      translate: -50% calc(17.9 * var(--u));
+    }
+
+    /* Stacked. 2.786 = 2 × the photo aspect, so its bottom sits 8cqh below centre */
+    @container (aspect-ratio < 0.9) {
+      .photo {
+        --photo-w: 80cqw;
+        width: var(--photo-w);
+        translate: -50% calc(-50% + 8cqh - var(--photo-w) / 2.786);
+      }
+
+      .circle {
+        width: 18cqw;
+        translate: calc(-50% + 28cqw) calc(-50% - 36cqh);
+      }
+    }
+
+    /* Phones — the photo overflows, capped by height to leave room for the decor */
+    @media (max-width: 639px) {
+      .photo {
+        --photo-w: min(120cqw, 53cqh);
+      }
     }
   `;
 
@@ -92,7 +119,7 @@ export class AboutHuwScene extends LitElement {
      * Setup
      */
     const setupFn: SceneSetupAsyncFn = async ({ host }) => {
-      // On a Barba nav setup can beat the first render — the ref divs live in it
+      // Barba navs can run setup before the first render
       await this.updateComplete;
 
       const aspect = host.clientWidth / host.clientHeight;
@@ -196,12 +223,12 @@ export class AboutHuwScene extends LitElement {
         this.#ctx.meshRefs.wuhhh = wuhhh;
 
         wuhhhBase = new Float32Array(wuhhh.geometry.attributes.position.array);
+        wuhhh.userData.baseScale = wuhhh.scale.clone();
 
         scene.add(this.#ctx.meshRefs.wuhhh);
       }
 
-      // Photo — the about page's spatial image, clipped by using the intro's
-      // diamondPlane quad as the display surface
+      // Photo — the spatial image, displayed on the diamondPlane quad
       const photo = (modelMap.get("diamondPlane") as THREE.Mesh) ?? null;
       const photoRef = this.renderRoot.querySelector<HTMLElement>(".photo");
       if (photo && photoRef) {
@@ -217,8 +244,7 @@ export class AboutHuwScene extends LitElement {
         const si = createSpatialImage({ colorTexture, depthTexture, aspect: size.x / size.y });
         this.#ctx.spatialImage = si;
 
-        // glTF UVs run top-down, which already matches the RT, so no V-flip
-        // (si.displayMaterial flips for PlaneGeometry)
+        // glTF UVs already run top-down, so no V-flip
         (photo.material as THREE.Material).dispose();
         const photoMat = new THREE.MeshBasicNodeMaterial();
         photoMat.colorNode = texture(si.rt.texture, uv());
@@ -234,7 +260,7 @@ export class AboutHuwScene extends LitElement {
         });
       }
 
-      // Gradient circle — the intro diamond's material
+      // Gradient circle
       const circleRef = this.renderRoot.querySelector<HTMLElement>(".circle");
       if (circleRef) {
         const circle = new THREE.Mesh(new THREE.CircleGeometry(0.5, 64), createDiamondPlaneMat());
@@ -242,8 +268,12 @@ export class AboutHuwScene extends LitElement {
         scene.add(circle);
       }
 
-      const alignWithDOM = () => {
+      const layout = () => {
         const { photo, circle } = this.#ctx.meshRefs;
+        if (wuhhh) {
+          const k = window.matchMedia(PHONE_QUERY).matches ? PHONE_MARQUEE_SCALE : 1;
+          wuhhh.scale.copy(wuhhh.userData.baseScale).multiplyScalar(k);
+        }
         if (photo && photoRef) {
           alignMeshWithDOM({ mesh: photo, domElement: photoRef, camera, host });
           photo.position.z = -0.01; // behind the string
@@ -252,9 +282,9 @@ export class AboutHuwScene extends LitElement {
           alignMeshWithDOM({ mesh: circle, domElement: circleRef, camera, host });
         }
       };
-      alignWithDOM();
-      window.addEventListener("resize", alignWithDOM);
-      this.#ctx.disposers.push(() => window.removeEventListener("resize", alignWithDOM));
+      layout();
+      window.addEventListener("resize", layout);
+      this.#ctx.disposers.push(() => window.removeEventListener("resize", layout));
 
       // Red debug ribbon — shows the string itself
       const curveGeo = new THREE.PlaneGeometry(viewport.width, CURVE_THICKNESS, CURVE_SEGMENTS, 1);
@@ -294,8 +324,7 @@ export class AboutHuwScene extends LitElement {
 
         const x = ((e.clientX - r.left) / r.width - 0.5) * viewport.width;
         const y = -((e.clientY - r.top) / r.height - 0.5) * viewport.height;
-        // Clamped to the host — the tilt is unbounded, and a cursor sections
-        // away would pitch the photo flat (the about page's host is the page)
+        // Clamped so a far-off cursor can't over-tilt the photo
         this.#ctx.mouse.set(
           THREE.MathUtils.clamp(x, -halfWidth, halfWidth),
           THREE.MathUtils.clamp(y, -viewport.height / 2, viewport.height / 2),

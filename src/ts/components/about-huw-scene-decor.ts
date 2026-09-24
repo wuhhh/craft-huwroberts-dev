@@ -2,9 +2,8 @@ import { css, html, LitElement, type CSSResultGroup } from "lit";
 import { customElement } from "lit/decorators.js";
 
 /**
- * Decor for about-huw-scene. Positions are cqh offsets from the scene centre
- * (the host is the container), placed via left/top because decor-diamond owns
- * its transform and translate.
+ * Decor for about-huw-scene, offset from its centre. Placed with left/top
+ * because decor-diamond owns transform and translate.
  */
 @customElement("about-huw-scene-decor")
 export class AboutHuwSceneDecor extends LitElement {
@@ -25,37 +24,37 @@ export class AboutHuwSceneDecor extends LitElement {
 
     /* decor-diamond is a rotated square, so --size is its visual width / √2 */
     decor-diamond:nth-child(1) {
-      --x: -40.6cqh;
-      --y: -24.4cqh;
-      --size: 2.2cqh;
+      --x: calc(-40.6 * var(--u));
+      --y: calc(-24.4 * var(--u));
+      --size: calc(2.2 * var(--u));
     }
 
     decor-diamond:nth-child(2) {
-      --x: 37.8cqh;
-      --y: -29.1cqh;
-      --size: 2.9cqh;
+      --x: calc(37.8 * var(--u));
+      --y: calc(-29.1 * var(--u));
+      --size: calc(2.9 * var(--u));
     }
 
     decor-diamond:nth-child(3) {
-      --x: 7cqh;
-      --y: 3.8cqh;
-      --size: 6.1cqh;
+      --x: calc(7 * var(--u));
+      --y: calc(3.8 * var(--u));
+      --size: calc(6.1 * var(--u));
       opacity: 0.2;
-      filter: blur(0.5cqh);
+      filter: blur(calc(0.5 * var(--u)));
     }
 
     decor-diamond:nth-child(4) {
-      --x: -23.4cqh;
-      --y: 32.9cqh;
-      --size: 4cqh;
+      --x: calc(-23.4 * var(--u));
+      --y: calc(32.9 * var(--u));
+      --size: calc(4 * var(--u));
       opacity: 0.2;
-      filter: blur(0.5cqh);
+      filter: blur(calc(0.5 * var(--u)));
     }
 
     decor-star {
-      --x: -42.9cqh;
-      --y: 23.7cqh;
-      --size: 4.1cqh;
+      --x: calc(-42.9 * var(--u));
+      --y: calc(23.7 * var(--u));
+      --size: calc(4.1 * var(--u));
     }
 
     .dot {
@@ -63,17 +62,62 @@ export class AboutHuwSceneDecor extends LitElement {
     }
 
     .dot.coral {
-      --x: 43.6cqh;
-      --y: 10.6cqh;
-      --size: 2.2cqh;
+      --x: calc(43.6 * var(--u));
+      --y: calc(10.6 * var(--u));
+      --size: calc(2.2 * var(--u));
       background-color: var(--color-coral-red);
     }
 
     .dot.indigo {
-      --x: 34.3cqh;
-      --y: 25.6cqh;
-      --size: 1.4cqh;
+      --x: calc(34.3 * var(--u));
+      --y: calc(25.6 * var(--u));
+      --size: calc(1.4 * var(--u));
       background-color: var(--color-seabed-indigo);
+    }
+
+    /* Stacked */
+    @container (aspect-ratio < 0.9) {
+      decor-diamond:nth-child(1) {
+        --x: -32cqw;
+        --y: -32cqh;
+        --size: 3cqw;
+      }
+
+      decor-diamond:nth-child(2) {
+        --x: -26cqw;
+        --y: 44cqh;
+        --size: 4cqw;
+      }
+
+      decor-diamond:nth-child(3),
+      decor-diamond:nth-child(4) {
+        display: none;
+      }
+
+      decor-star {
+        --x: 32cqw;
+        --y: 35cqh;
+        --size: 6cqw;
+      }
+
+      .dot.coral {
+        --x: 40cqw;
+        --y: -20cqh;
+        --size: 3cqw;
+      }
+
+      .dot.indigo {
+        --x: -20cqw;
+        --y: -41cqh;
+        --size: 2cqw;
+      }
+    }
+
+    /* Phones */
+    @media (max-width: 639px) {
+      .dot.coral {
+        --y: -24cqh;
+      }
     }
   `;
 

@@ -31,11 +31,10 @@
 
   {% include '_includes/workGrid' with { entries: entry.workEntries ?? [] } only %}
 
-  {# Even margins centre the scene between the work and journal grids #}
   <div class="relative col-span-full my-26 h-screen md:my-32 xl:my-38">
     {% set aboutUrl = craft.entries.section('about').one().url ?? null %}
 
-    <about-huw-scene class="sm-down:w-screen sm-down:-ml-16">
+    <about-huw-scene class="sm-down:w-screen sm-down:-ml-6">
       <div class="flex flex-col items-center text-center font-mono text-sm uppercase">
         {{
           svg('@webroot/dist/images/icon--eye-can-see-you.svg', true, true)|attr({
