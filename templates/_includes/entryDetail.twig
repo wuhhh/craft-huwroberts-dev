@@ -26,7 +26,7 @@
         {% if liveUrl %}
           {% include "_includes/liveLink.twig" with {
             url: liveUrl,
-            label: liveUrl.label ?? "View Live",
+            label: liveUrl.label,
           } only %}
         {% endif %}
       </div>
