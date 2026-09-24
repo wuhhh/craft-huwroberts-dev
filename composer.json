@@ -24,7 +24,7 @@
     "putyourlightson/craft-blitz": "^5.12.9",
     "verbb/knock-knock": "^3.0.6",
     "vlucas/phpdotenv": "^5.6.0",
-    "wuhhh/craft-phosphor-icons": "^1.0"
+    "wuhhh/craft-phosphor-icons": "^2.0.0"
   },
   "require-dev": {
     "yiisoft/yii2-shell": "^2.0.3"

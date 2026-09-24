@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e99da22418a85a2db7a072150c49192",
+    "content-hash": "a33cb349af24457484bb05c2d912beed",
     "packages": [
         {
             "name": "amphp/amp",
@@ -9374,11 +9374,11 @@
         },
         {
             "name": "wuhhh/craft-phosphor-icons",
-            "version": "1.0.2",
+            "version": "2.0.0",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wuhhh/craft-phosphor-icons/zipball/fc0641d7aa47c3c26bc1af5da2c9bdb00dd7ced3",
-                "reference": "fc0641d7aa47c3c26bc1af5da2c9bdb00dd7ced3",
+                "url": "https://api.github.com/repos/wuhhh/craft-phosphor-icons/zipball/d03ad20aecab5d8176f0e8e17578ba40ea623f59",
+                "reference": "d03ad20aecab5d8176f0e8e17578ba40ea623f59",
                 "shasum": ""
             },
             "require": {
@@ -9390,10 +9390,11 @@
                 "handle": "phosphor-icons",
                 "developer": "Huw Roberts",
                 "developerUrl": "https://github.com/wuhhh",
-                "documentationUrl": "https://github.com/wuhhh/phosphor-icons/blob/main/README.md",
+                "documentationUrl": "https://github.com/wuhhh/craft-phosphor-icons/blob/main/README.md",
                 "aliases": {
                     "@phosphoricons": "src"
-                }
+                },
+                "changelogUrl": "https://raw.githubusercontent.com/wuhhh/craft-phosphor-icons/main/CHANGELOG.md"
             },
             "autoload": {
                 "psr-4": {
@@ -9419,10 +9420,11 @@
                 "phosphor-icons"
             ],
             "support": {
-                "docs": "https://github.com/wuhhh/phosphor-icons/blob/main/README.md",
-                "issues": "https://github.com/wuhhh/phosphor-icons/issues"
+                "docs": "https://github.com/wuhhh/craft-phosphor-icons/blob/main/README.md",
+                "issues": "https://github.com/wuhhh/craft-phosphor-icons/issues",
+                "source": "https://github.com/wuhhh/craft-phosphor-icons"
             },
-            "time": "2026-07-06T10:12:22+00:00"
+            "time": "2026-09-08T10:58:15+00:00"
         },
         {
             "name": "yiisoft/yii2",
