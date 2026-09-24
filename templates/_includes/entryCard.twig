@@ -20,14 +20,18 @@
 {% if entry %}
   {# Prefer the dedicated card image, fall back to the feature image #}
   {% set imageCaption = entry.imageCaption ?? null %}
-  {% set image = entry.imageAsset.one() ?? imageCaption ? imageCaption.imageAsset.one() : null %}
+  {# Separate sets, not parens: the Twig Prettier plugin strips parens around a
+     ternary after `??`, which silently rebinds it as `(a ?? b) ? c : d` #}
+  {% set featureImage = imageCaption ? imageCaption.imageAsset.one() : null %}
+  {% set image = entry.imageAsset.one() ?? featureImage %}
   {% set summary = entry.summaryShort ?? null %}
   {% set showTags = showTags ?? true %}
   {% set techTags = showTags ? entry.techTags.all() ?? [] : [] %}
-  {% set sizes = sizes ?? isLarge
+  {% set defaultSizes = isLarge
     ? '(min-width: 1024px) 951px, 100vw'
     : '(min-width: 1024px) 456px, (min-width: 640px) 45vw, 100vw'
   %}
+  {% set sizes = sizes ?? defaultSizes %}
   {% set linkLabel = linkLabel ?? ('{0}, read article'|t([entry.title])) %}
   {% set follower = follower ?? null %}
 
